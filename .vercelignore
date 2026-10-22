@@ -1,0 +1,6 @@
+Ready Website.zip
+*.zip
+.git
+.vercel
+.env
+node_modules/

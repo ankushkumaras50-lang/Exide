@@ -1,0 +1,23 @@
+{
+  "name": "exide-battery-wholesale-nepal",
+  "version": "2.0.0",
+  "description": "Exide Battery Wholesale & AET Official Partner - The Power House Nepal E-Commerce & ERP System",
+  "main": "dev-server.js",
+  "scripts": {
+    "start": "node dev-server.js",
+    "dev": "node dev-server.js",
+    "test": "node test/verify-system.js"
+  },
+  "keywords": [
+    "exide",
+    "battery",
+    "nepal",
+    "ecommerce",
+    "erp",
+    "inverter",
+    "solar",
+    "vat-tax-invoice"
+  ],
+  "author": "Exide Battery Wholesale Nepal",
+  "license": "ISC"
+}

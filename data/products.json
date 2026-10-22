@@ -1,0 +1,641 @@
+[
+  {
+    "id": "exide-battery-150-invamaster",
+    "sku": "EX-IMTT1500",
+    "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+    "brand": "Exide",
+    "brandSlug": "exide",
+    "brandColor": "#ED1C24",
+    "categories": [
+      "inverter-battery"
+    ],
+    "price": 34000,
+    "originalPrice": 36000,
+    "discount": "6% off",
+    "image": "assets/images/exide-imtt1500.png",
+    "featured": true,
+    "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+    "capacity": "150Ah - 12V",
+    "stock": 12,
+    "minStock": 5,
+    "costPrice": 27500,
+    "rating": 4.9,
+    "reviewsCount": 142,
+    "shortDesc": "Heavy-duty tubular plate battery engineered for deep cyclic discharges and frequent power cuts in Nepal.",
+    "description": "The Exide 150 Ah Invamaster Tubular Battery (IMTT1500) is Nepal's most trusted choice for residential and commercial power backups. Built with robust tubular plates and superior spine alloy composition, it withstands prolonged power outages and extreme temperature fluctuations with minimal maintenance.",
+    "features": [
+      "Higher backups with minimal plate degradation",
+      "Superior recovery from deep discharge cycles",
+      "Special tubular technology requires lower topping-up frequency",
+      "Exceptional thermal management for hot lowland climates",
+      "Factory charged & ready to install"
+    ],
+    "specs": {
+      "Brand": "Exide",
+      "Model": "Invamaster IMTT1500",
+      "Capacity": "150 Ah @ C20",
+      "Nominal Voltage": "12 V",
+      "Technology": "Tall Tubular Lead-Acid",
+      "Dimensions (L x W x H)": "535 x 215 x 480 mm",
+      "Gross Weight": "58.1 kg",
+      "Electrolyte Volume": "18.5 Litres",
+      "Terminal Type": "L-Type Heavy Lead Terminals",
+      "Recommended Inverter": "900VA - 1500VA Pure Sinewave"
+    },
+    "serialNumbers": [
+      "EX-IM-982101",
+      "EX-IM-982102",
+      "EX-IM-982103",
+      "EX-IM-982104"
+    ]
+  },
+  {
+    "id": "exide-200ah-invamaster-battery",
+    "sku": "EX-IMTT2000",
+    "name": "Exide 200 Ah Invamaster Tall Tubular Battery - IMTT2000",
+    "brand": "Exide",
+    "brandSlug": "exide",
+    "brandColor": "#ED1C24",
+    "categories": [
+      "inverter-battery"
+    ],
+    "price": 44499,
+    "originalPrice": 73100,
+    "discount": "39% off",
+    "image": "assets/images/exide-imtt2000.png",
+    "featured": true,
+    "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+    "capacity": "200Ah - 12V",
+    "stock": 13,
+    "minStock": 4,
+    "costPrice": 36000,
+    "rating": 4.9,
+    "reviewsCount": 98,
+    "shortDesc": "Maximum capacity tall tubular battery for large homes, hospitals, and commercial office backups.",
+    "description": "The Exide 200 Ah Invamaster IMTT2000 provides high-capacity endurance for high power draws and extended backup demands. Engineered with thick gauntlet plates and extra electrolyte volume, it ensures uninterrupted lighting, computing, and refrigeration.",
+    "features": [
+      "Massive 200Ah capacity for up to 10+ hours continuous load",
+      "Heavy duty tall container design preventing acid spillage",
+      "Optimized for high-draw appliances including refrigerators & laser printers",
+      "High purity lead-antimony spine grid alloy"
+    ],
+    "specs": {
+      "Brand": "Exide",
+      "Model": "Invamaster IMTT2000",
+      "Capacity": "200 Ah @ C20",
+      "Nominal Voltage": "12 V",
+      "Technology": "Tall Tubular Deep Cycle",
+      "Dimensions (L x W x H)": "535 x 215 x 505 mm",
+      "Gross Weight": "67.4 kg",
+      "Electrolyte Volume": "21.0 Litres",
+      "Terminal Type": "Heavy Duty Threaded Lead",
+      "Recommended Inverter": "1100VA - 2500VA"
+    },
+    "serialNumbers": [
+      "EX-IM-200101",
+      "EX-IM-200102",
+      "EX-IM-200103"
+    ]
+  },
+  {
+    "id": "exide-battery-200ah-invamagic",
+    "sku": "EX-MGTT2000",
+    "name": "Exide 200 Ah Invamagic Tubular Battery - MGTT2000",
+    "brand": "Exide",
+    "brandSlug": "exide",
+    "brandColor": "#ED1C24",
+    "categories": [
+      "inverter-battery"
+    ],
+    "price": 39899,
+    "originalPrice": 61049,
+    "discount": "35% off",
+    "image": "assets/images/exide-invamagic.png",
+    "featured": true,
+    "warranty": "48 Months (24M Replacement + 24M Pro-Rata)",
+    "capacity": "200Ah - 12V",
+    "stock": 25,
+    "minStock": 4,
+    "costPrice": 32500,
+    "rating": 4.8,
+    "reviewsCount": 76,
+    "shortDesc": "Premium extended warranty tubular battery with enhanced magic eye electrolyte indicators.",
+    "description": "Exide Invamagic MGTT2000 is built for heavy duty applications with superior active materials. Features easy float level visual indicators so you can check electrolyte levels at a single glance without unscrewing caps.",
+    "features": [
+      "48-Month Extended Warranty protection",
+      "Integrated Magic Eye electrolyte level float indicators",
+      "Fast recharge recovery even on low mains voltage (100V-280V)",
+      "High vibration resistance and leak-proof vent plugs"
+    ],
+    "specs": {
+      "Brand": "Exide",
+      "Model": "Invamagic MGTT2000",
+      "Capacity": "200 Ah @ C20",
+      "Nominal Voltage": "12 V",
+      "Technology": "Super Tubular Grid",
+      "Dimensions (L x W x H)": "530 x 215 x 490 mm",
+      "Gross Weight": "64.2 kg",
+      "Electrolyte Volume": "20.2 Litres",
+      "Recommended Inverter": "1000VA - 2200VA"
+    },
+    "serialNumbers": [
+      "EX-MG-300101",
+      "EX-MG-300102"
+    ]
+  },
+  {
+    "id": "exide-matrix-car-battery",
+    "sku": "EX-MTX80",
+    "name": "Exide Matrix 12V 80Ah Heavy-Duty Car Battery (MTX-80)",
+    "brand": "Exide",
+    "brandSlug": "exide",
+    "brandColor": "#ED1C24",
+    "categories": [
+      "car-battery",
+      "automotive-battery"
+    ],
+    "price": 13500,
+    "originalPrice": 15500,
+    "discount": "13% off",
+    "image": "assets/images/exide-matrix.png",
+    "featured": true,
+    "warranty": "60 Months (36 Months Free Replacement + 24 Months Pro-Rata)",
+    "capacity": "80Ah - 12V",
+    "stock": 16,
+    "minStock": 5,
+    "costPrice": 10200,
+    "rating": 4.9,
+    "reviewsCount": 112,
+    "shortDesc": "Zero-maintenance sealed car battery with 750 CCA cranking power for SUVs, 4x4s, and luxury vehicles.",
+    "description": "Exide Matrix delivers unmatched cranking power for demanding vehicle electronics. Built with pure calcium alloy grids and advanced labyrinth design to eliminate water loss, keeping the battery 100% maintenance-free for its entire service life.",
+    "features": [
+      "60-Month Warranty - Nepal's longest car battery warranty",
+      "Massive 750A Cold Cranking Amps for instant winter starts",
+      "Hermetically sealed maintenance-free cover",
+      "Magic Eye state-of-charge indicator",
+      "High shock & vibration resistance for rough Nepal roads"
+    ],
+    "specs": {
+      "Brand": "Exide",
+      "Model": "Matrix MTX-80",
+      "Capacity": "80 Ah",
+      "CCA (Cold Cranking)": "750 A (EN)",
+      "Technology": "Silver Calcium Sealed MF",
+      "Dimensions (L x W x H)": "260 x 173 x 225 mm",
+      "Gross Weight": "19.8 kg",
+      "Terminal Layout": "Right Positive (+)",
+      "Compatible Vehicles": "Toyota Hilux, Land Cruiser, Scorpio, Safari, Fortuner, Pajero"
+    },
+    "serialNumbers": [
+      "EX-MT-771001",
+      "EX-MT-771002",
+      "EX-MT-771003"
+    ]
+  },
+  {
+    "id": "exide-xplore-bike-battery",
+    "sku": "EX-12XL5LB",
+    "name": "Exide Xplore 12V 5Ah VRLA Maintenance-Free Motorcycle Battery",
+    "brand": "Exide",
+    "brandSlug": "exide",
+    "brandColor": "#ED1C24",
+    "categories": [
+      "automotive-battery"
+    ],
+    "price": 2950,
+    "originalPrice": 3400,
+    "discount": "13% off",
+    "image": "assets/images/exide-xplore.png",
+    "featured": true,
+    "warranty": "48 Months (24M Replacement + 24M Pro-Rata)",
+    "capacity": "5Ah - 12V",
+    "stock": 35,
+    "minStock": 10,
+    "costPrice": 2100,
+    "rating": 4.8,
+    "reviewsCount": 165,
+    "shortDesc": "VRLA AGM spill-proof battery for Nepal's popular 125cc-250cc bikes (Pulsar, FZ, Apache, Shine).",
+    "description": "Exide Xplore motorcycle battery uses AGM (Absorbent Glass Mat) separators and VRLA technology. Spill-proof and leak-proof in any riding orientation, providing high cranking performance for reliable push-button electric start.",
+    "features": [
+      "100% Maintenance Free - Never needs water top-ups",
+      "VRLA design guarantees zero acid leakage",
+      "High Cold Cranking Current (70A CCA)",
+      "Ultra-low self-discharge when motorcycle is parked"
+    ],
+    "specs": {
+      "Brand": "Exide",
+      "Model": "Xplore 12XL5L-B",
+      "Capacity": "5 Ah",
+      "CCA": "70 A",
+      "Dimensions (L x W x H)": "120 x 60 x 130 mm",
+      "Weight": "2.1 kg",
+      "Compatible Bikes": "Bajaj Pulsar 150/180/220, TVS Apache RTR, Yamaha FZ, Honda Shine, Hero Splendor"
+    },
+    "serialNumbers": [
+      "EX-XP-5001",
+      "EX-XP-5002",
+      "EX-XP-5003",
+      "EX-XP-5004"
+    ]
+  },
+  {
+    "id": "smarten-1500-inverter-with-inbuilt-lithium-battery",
+    "sku": "SM-EVERON1500",
+    "name": "Smarten 1500VA Inverter with Inbuilt Lithium Battery: Everon 1500",
+    "brand": "Smarten",
+    "brandSlug": "smarten",
+    "brandColor": "#10509A",
+    "categories": [
+      "inverter",
+      "lithium-battery"
+    ],
+    "price": 70000,
+    "originalPrice": 80000,
+    "discount": "13% off",
+    "image": "assets/images/smarten-everon.png",
+    "featured": true,
+    "warranty": "60 Months Comprehensive Warranty",
+    "capacity": "1500VA / 1.28kWh LiFePO4",
+    "stock": 25,
+    "minStock": 2,
+    "costPrice": 58000,
+    "rating": 4.9,
+    "reviewsCount": 54,
+    "shortDesc": "All-in-one compact wall-mountable pure sinewave UPS with built-in Lithium Iron Phosphate battery.",
+    "description": "Smarten Everon 1500 eliminates messy external lead-acid batteries and cables. Integrated with high-grade Lithium Iron Phosphate (LiFePO4) cells boasting 3500+ charge cycles, LCD digital touchscreen display, and fast 2-hour recharge.",
+    "features": [
+      "Compact sleek wall-mountable or floor-standing unit",
+      "Zero maintenance LiFePO4 cells with 10+ years design life",
+      "Superfast charging - 0 to 100% in under 2.5 hours",
+      "Smart BMS with over-temperature and short-circuit protection"
+    ],
+    "specs": {
+      "Brand": "Smarten",
+      "Model": "Everon 1500",
+      "Capacity": "1500 VA / 1200 W",
+      "Battery Type": "Built-in Lithium LiFePO4 (12.8V 100Ah)",
+      "Cycle Life": "> 3,500 Cycles @ 80% DOD",
+      "Recharge Time": "2 - 3 Hours",
+      "Dimensions": "420 x 310 x 180 mm",
+      "Weight": "18.5 kg"
+    },
+    "serialNumbers": [
+      "SM-EV-1501",
+      "SM-EV-1502"
+    ]
+  },
+  {
+    "id": "genus-maxillion-1000va-pure-sinewave-lithium-inverter-battery",
+    "sku": "GN-MAX1000",
+    "name": "Genus Maxilion 1000VA UPS with Inbuilt Lithium Battery",
+    "brand": "Genus",
+    "brandSlug": "genus",
+    "brandColor": "#0161A8",
+    "categories": [
+      "inverter",
+      "lithium-battery",
+      "inverter-battery"
+    ],
+    "price": 75000,
+    "originalPrice": 75000,
+    "discount": "Popular",
+    "image": "assets/images/genus-maxilion.webp",
+    "featured": true,
+    "warranty": "60 Months Comprehensive Warranty",
+    "capacity": "1000VA / 12.8V 100Ah LiFePO4",
+    "stock": 25,
+    "minStock": 2,
+    "costPrice": 62000,
+    "rating": 4.7,
+    "reviewsCount": 39,
+    "shortDesc": "Next-gen silent power backup system with integrated smart Lithium battery and interactive LCD display.",
+    "description": "Genus Maxilion 1000VA is designed for modern smart homes and executive offices. Whisper-quiet operation, pure sinewave output safe for sensitive computers and medical equipment, and high-energy density lithium cells.",
+    "features": [
+      "Integrated LiFePO4 Lithium battery with Smart BMS",
+      "Sleek aesthetics matching contemporary home decor",
+      "Fast charging allows full backup even with 3-hour power slots",
+      "Comprehensive multi-color LCD status indicator"
+    ],
+    "specs": {
+      "Brand": "Genus",
+      "Model": "Maxilion 1000",
+      "Rating": "1000 VA / 800 W",
+      "Battery Capacity": "1280 Wh (12.8V 100Ah LiFePO4)",
+      "Output Waveform": "Pure Sinewave (<3% THD)",
+      "Warranty": "5 Years on complete system",
+      "Weight": "16.8 kg"
+    },
+    "serialNumbers": [
+      "GN-MX-1001",
+      "GN-MX-1002"
+    ]
+  },
+  {
+    "id": "smarten-100ah-12-6v-inverter-lithium-batery",
+    "sku": "SM-LITH100",
+    "name": "Smarten 100Ah 12.8V Lithium Battery for Inverter: Energia 100",
+    "brand": "Smarten",
+    "brandSlug": "smarten",
+    "brandColor": "#10509A",
+    "categories": [
+      "lithium-battery"
+    ],
+    "price": 45500,
+    "originalPrice": 55000,
+    "discount": "17% off",
+    "image": "assets/images/smarten-lithium.png",
+    "featured": true,
+    "warranty": "36 Months Manufacturer Warranty",
+    "capacity": "100Ah - 12.8V LiFePO4",
+    "stock": 14,
+    "minStock": 3,
+    "costPrice": 37000,
+    "rating": 4.8,
+    "reviewsCount": 42,
+    "shortDesc": "Direct drop-in replacement lithium battery for existing home inverters and solar systems.",
+    "description": "Upgrade your existing inverter system with Smarten Energia 12.8V 100Ah LiFePO4 battery. Weighs 70% less than standard lead-acid tubular batteries while delivering 3x longer operational lifespan and 2-hour quick charging.",
+    "features": [
+      "Lightweight - only 12 kg (vs 58 kg tubular battery)",
+      "3000+ deep discharge cycles",
+      "Built-in active BMS cell balancer",
+      "Compatible with almost all 12V inverters"
+    ],
+    "specs": {
+      "Brand": "Smarten",
+      "Model": "Energia 100Ah",
+      "Chemistry": "Lithium Iron Phosphate (LiFePO4)",
+      "Rated Voltage": "12.8 V",
+      "Energy": "1280 Wh",
+      "Max Continuous Discharge": "100 A",
+      "Dimensions": "330 x 172 x 215 mm",
+      "Weight": "11.8 kg"
+    },
+    "serialNumbers": [
+      "SM-EN-101",
+      "SM-EN-102",
+      "SM-EN-103"
+    ]
+  },
+  {
+    "id": "livfast-tubular-battery-150-ah-mxtt-1845",
+    "sku": "LF-MXTT1845",
+    "name": "Livfast Tubular Battery 150 Ah - MXTT 1845",
+    "brand": "Livfast",
+    "brandSlug": "livfast",
+    "brandColor": "#FF5F1D",
+    "categories": [
+      "inverter-battery"
+    ],
+    "price": 26999,
+    "originalPrice": 45600,
+    "discount": "41% off",
+    "image": "assets/images/livfast-1845.webp",
+    "featured": false,
+    "warranty": "45 Months (24M Free + 21M Pro-Rata)",
+    "capacity": "150Ah - 12V",
+    "stock": 10,
+    "minStock": 4,
+    "costPrice": 21500,
+    "rating": 4.6,
+    "reviewsCount": 68,
+    "shortDesc": "Value-packed 150Ah tubular battery with fast charging 3D grid design for daily load-shedding.",
+    "description": "Livfast MXTT 1845 is built with heavy duty tubular plates and specialized oxide paste that absorbs charge quickly during brief grid availability windows. Ideal for budget-conscious families across Nepal.",
+    "features": [
+      "41% Super Deal discount for Nepal buyers",
+      "High surface area tubular gauntlet plates",
+      "Ceramic water level indicators included",
+      "Low antimony alloy reduces self-discharge"
+    ],
+    "specs": {
+      "Brand": "Livfast",
+      "Model": "MXTT 1845",
+      "Capacity": "150 Ah",
+      "Voltage": "12 V",
+      "Weight": "52.5 kg",
+      "Warranty": "45 Months"
+    },
+    "serialNumbers": [
+      "LF-1845-01",
+      "LF-1845-02"
+    ]
+  },
+  {
+    "id": "livfast-tubular-battery-160-ah-mxtt-1954",
+    "sku": "LF-MXTT1954",
+    "name": "Livfast Tubular Battery 160 Ah - MXTT 1954",
+    "brand": "Livfast",
+    "brandSlug": "livfast",
+    "brandColor": "#FF5F1D",
+    "categories": [
+      "inverter-battery"
+    ],
+    "price": 30499,
+    "originalPrice": 49400,
+    "discount": "38% off",
+    "image": "assets/images/livfast-1954.png",
+    "featured": false,
+    "warranty": "54 Months (30M Free + 24M Pro-Rata)",
+    "capacity": "160Ah - 12V",
+    "stock": 25,
+    "minStock": 3,
+    "costPrice": 24200,
+    "rating": 4.7,
+    "reviewsCount": 52,
+    "shortDesc": "Extra 160Ah capacity tubular battery with an extended 54-month warranty package.",
+    "description": "Livfast MXTT 1954 provides enhanced 160Ah storage with a robust 54-month warranty. Designed to deliver consistent voltage curve even during peak appliance power surges.",
+    "features": [
+      "Extra 10Ah capacity buffer over standard 150Ah units",
+      "54-Month extensive manufacturer warranty",
+      "Special micro-porous separators",
+      "High temperature stability"
+    ],
+    "specs": {
+      "Brand": "Livfast",
+      "Model": "MXTT 1954",
+      "Capacity": "160 Ah",
+      "Voltage": "12 V",
+      "Weight": "55.0 kg",
+      "Warranty": "54 Months"
+    },
+    "serialNumbers": [
+      "LF-1954-01",
+      "LF-1954-02"
+    ]
+  },
+  {
+    "id": "sf-150-ah-tubular-battery-tt60s150",
+    "sku": "SF-TT60S150",
+    "name": "SF Sonic 150Ah Tubular Battery - TT60S150",
+    "brand": "SF Sonic",
+    "brandSlug": "sf-sonic",
+    "brandColor": "#2E3077",
+    "categories": [
+      "inverter-battery"
+    ],
+    "price": 31500,
+    "originalPrice": 34000,
+    "discount": "7% off",
+    "image": "assets/images/sf-150ah.png",
+    "featured": false,
+    "warranty": "60 Months (36M Free + 24M Pro-Rata)",
+    "capacity": "150Ah - 12V",
+    "stock": 14,
+    "minStock": 4,
+    "costPrice": 25500,
+    "rating": 4.8,
+    "reviewsCount": 63,
+    "shortDesc": "From the makers of Exide: Ultra-durable 60-month warranty tall tubular inverter battery.",
+    "description": "SF Sonic TT60S150 is backed by Exide Industries technology, offering high discharge endurance and robust tubular spines that deliver high amp-hour efficiency in heavy cyclic applications.",
+    "features": [
+      "5-Year (60 Month) complete warranty confidence",
+      "Spine casted at high pressure (100 bar) for pore-free structure",
+      "High antimony spine alloy with selenium grains",
+      "Optimized for frequent deep discharge recovery"
+    ],
+    "specs": {
+      "Brand": "SF Sonic (An Exide Group Brand)",
+      "Model": "TT60S150",
+      "Capacity": "150 Ah",
+      "Voltage": "12 V",
+      "Dimensions": "505 x 190 x 415 mm",
+      "Weight": "54.8 kg"
+    },
+    "serialNumbers": [
+      "SF-TT-1501",
+      "SF-TT-1502",
+      "SF-TT-1503"
+    ]
+  },
+  {
+    "id": "eastman-1500va-inverter-with-150ah-lithium-battery",
+    "sku": "EM-SOLAR1500",
+    "name": "Eastman 1000VA Solar Inverter with 150Ah Lithium Battery",
+    "brand": "Eastman",
+    "brandSlug": "eastman",
+    "brandColor": "#253B81",
+    "categories": [
+      "inverter",
+      "inverter-battery",
+      "lithium-battery"
+    ],
+    "price": 100000,
+    "originalPrice": 100000,
+    "discount": "Solar Ready",
+    "image": "assets/images/eastman-solar.png",
+    "featured": true,
+    "warranty": "60 Months Warranty",
+    "capacity": "1000VA + 150Ah LiFePO4",
+    "stock": 25,
+    "minStock": 2,
+    "costPrice": 82000,
+    "rating": 4.9,
+    "reviewsCount": 31,
+    "shortDesc": "Complete plug-and-play solar hybrid power station with 150Ah LiFePO4 lithium storage.",
+    "description": "Eastman Solar Lithium Station offers a complete integrated solar hybrid inverter with MPPT solar charger controller and 150Ah high-capacity LiFePO4 battery pack inside a single ventilated metal chassis.",
+    "features": [
+      "Inbuilt MPPT Solar Charge Controller (supports up to 1000W PV)",
+      "150Ah heavy LiFePO4 lithium battery with 1920Wh capacity",
+      "Dual charging from Solar & Nepal Grid (NEA)",
+      "Smart Mobile App Bluetooth monitoring"
+    ],
+    "specs": {
+      "Brand": "Eastman",
+      "Model": "Solar Station 1000/150L",
+      "Inverter Capacity": "1000 VA / 800 W",
+      "Battery Capacity": "12.8V 150Ah LiFePO4",
+      "Solar Input": "Up to 1000W VOC 50V",
+      "Weight": "24.5 kg"
+    },
+    "serialNumbers": [
+      "EM-SL-101",
+      "EM-SL-102"
+    ]
+  },
+  {
+    "id": "geon-1250-inverter-with-inbuilt-lithium-battery",
+    "sku": "GN-FLITH1250",
+    "name": "Geon 1250VA Inverter with Inbuilt Lithium Battery: Gelithium 1250",
+    "brand": "Geon",
+    "brandSlug": "geon",
+    "brandColor": "#004B85",
+    "categories": [
+      "inverter",
+      "lithium-battery"
+    ],
+    "price": 70000,
+    "originalPrice": 70000,
+    "discount": "Top Rated",
+    "image": "assets/images/geon-lithium.png",
+    "featured": false,
+    "warranty": "60 Months Warranty",
+    "capacity": "1250VA / 1.28kWh",
+    "stock": 25,
+    "minStock": 2,
+    "costPrice": 56000,
+    "rating": 4.7,
+    "reviewsCount": 28,
+    "shortDesc": "High efficiency smart lithium inverter engineered for uninterrupted power supply in Nepal.",
+    "description": "Geon Gelithium 1250 is an advanced UPS system featuring intelligent battery temperature compensation, digital harmonic filter, and quick switchover under 10ms so your desktop PCs never restart during cuts.",
+    "features": [
+      "Sub-10ms transfer time - No PC or Router reboots",
+      "Zero fume, clean indoor friendly lithium design",
+      "Smart overload auto-reset mechanism",
+      "High surge capability (up to 2500VA for pump/motor starts)"
+    ],
+    "specs": {
+      "Brand": "Geon",
+      "Model": "Gelithium 1250",
+      "Inverter Rating": "1250 VA / 1000 W",
+      "Battery Storage": "12.8V 100Ah LiFePO4",
+      "Dimensions": "400 x 300 x 170 mm",
+      "Weight": "17.0 kg"
+    },
+    "serialNumbers": [
+      "GN-FL-1201"
+    ]
+  },
+  {
+    "id": "livfast-home-ups-1125",
+    "sku": "LF-RENO1125",
+    "name": "Livfast 1175 Pure Sinewave Inverter (Reno 1125)",
+    "brand": "Livfast",
+    "brandSlug": "livfast",
+    "brandColor": "#FF5F1D",
+    "categories": [
+      "inverter"
+    ],
+    "price": 12000,
+    "originalPrice": 13000,
+    "discount": "8% off",
+    "image": "assets/images/livfast-reno.png",
+    "featured": false,
+    "warranty": "24 Months Comprehensive Warranty",
+    "capacity": "1050VA / 12V",
+    "stock": 19,
+    "minStock": 5,
+    "costPrice": 9400,
+    "rating": 4.6,
+    "reviewsCount": 47,
+    "shortDesc": "Reliable pure sinewave home inverter with 3-stage adaptive charging for tubular batteries.",
+    "description": "Livfast Reno 1125 provides pure sinewave AC output that protects domestic appliances from humming noise and thermal wear. Equipped with dual charging modes for both Tubular and Flat Plate batteries.",
+    "features": [
+      "Pure Sinewave output - Zero humming in fans & lights",
+      "Adaptive battery charging algorithm extends battery life by 25%",
+      "Wide input voltage window (90V - 290V) handles low village voltage",
+      "High load capability for mix of lighting, fans, and computers"
+    ],
+    "specs": {
+      "Brand": "Livfast",
+      "Model": "Reno 1125 (1050VA)",
+      "System Voltage": "12 V DC",
+      "Max Recommended Battery": "150Ah - 220Ah (1 Unit)",
+      "Output": "230V AC ± 5%, 50Hz",
+      "Weight": "9.8 kg"
+    },
+    "serialNumbers": [
+      "LF-RN-1101",
+      "LF-RN-1102",
+      "LF-RN-1103"
+    ]
+  }
+]

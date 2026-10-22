@@ -1,0 +1,3077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exide Battery Wholesale | AET Official Partner - The Power House</title>
+  <meta name="description" content="Exide Battery Wholesale - AET Official Partner. Genuine Exide inverter batteries, automotive car batteries, lithium UPS, solar PCU & stabilizers with free doorstep delivery and installation across Nepal.">
+  <meta name="keywords" content="Exide battery wholesale price in nepal, inverter battery nepal, car battery kathmandu, exide battery wholesale butwal, solar inverter nepal, lithium battery nepal">
+  <meta name="author" content="Exide Battery Wholesale">
+  <link rel="canonical" href="https://www.exidebatterywholesale.com.np">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Exide Battery Wholesale | AET Official Partner">
+  <meta property="og:description" content="Nepal's premier wholesale and retail battery store offering genuine Exide batteries, inverters, solar systems, and 24/7 doorstep installation.">
+  <meta property="og:image" content="assets/logo.png">
+  <meta property="og:type" content="website">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/logo.png">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css?v=2.4">
+
+  <!-- Google Identity Services (GIS) & Firebase Web App SDK -->
+  <meta name="google-signin-client_id" content="847291039485-exidebatterywholesale.apps.googleusercontent.com">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+  <!-- HTML2PDF for Official Nepal VAT Bill PDF Generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <!-- Schema.org Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ElectronicsStore",
+    "name": "Exide Battery Wholesale",
+    "image": "assets/logo.png",
+    "telephone": "+9779705997260",
+    "email": "batterymartbtl@gmail.com",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Bijulibazar, Anamnagar (near to BhatBhateni)",
+      "addressLocality": "Kathmandu",
+      "addressRegion": "Bagmati Province",
+      "addressCountry": "NP"
+    },
+    "areaServed": ["Kathmandu", "Pokhara", "Butwal", "Chitwan", "Itahari", "Biratnagar", "Bhairahawa"],
+    "priceRange": "NPR 2500 - 150000"
+  }
+  </script>
+</head>
+<body>
+  <script>
+    // Critical Mobile Navigation Shell - Available Immediately on Parse
+    window.toggleMobileDrawer = function(forceState) {
+      const drawer = document.getElementById('mobile-nav-drawer');
+      const overlay = document.getElementById('mobile-drawer-overlay');
+      const hamburger = document.getElementById('mobile-menu-toggle-btn');
+      if (!drawer || !overlay) return;
+
+      const isOpen = forceState !== undefined ? forceState : !drawer.classList.contains('open');
+      if (isOpen) {
+        drawer.classList.add('open');
+        overlay.classList.add('open');
+        if (hamburger) hamburger.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        if (window.authManager) window.authManager.updateAuthUI();
+      } else {
+        drawer.classList.remove('open');
+        overlay.classList.remove('open');
+        if (hamburger) hamburger.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    };
+
+    window.toggleMobileFilters = function(forceState) {
+      const sidebar = document.getElementById('catalog-sidebar');
+      const btn = document.getElementById('btn-toggle-filters-mobile');
+      const chevron = document.getElementById('mobile-filter-chevron');
+      if (!sidebar) return;
+
+      const isOpen = forceState !== undefined ? forceState : !sidebar.classList.contains('mobile-expanded');
+      if (isOpen) {
+        sidebar.classList.add('mobile-expanded');
+        if (btn) btn.classList.add('active');
+        if (chevron) chevron.textContent = '▴';
+      } else {
+        sidebar.classList.remove('mobile-expanded');
+        if (btn) btn.classList.remove('active');
+        if (chevron) chevron.textContent = '▾';
+      }
+    };
+
+    window.forceLeaveAndNavigate = function(targetSelector, sourceBtn) {
+      const btn = sourceBtn || (window.event && window.event.target ? window.event.target.closest('button, a, .mobile-nav-item, .drawer-link') : null);
+      if (btn) {
+        btn.classList.add('btn-just-clicked');
+        setTimeout(() => btn.classList.remove('btn-just-clicked'), 300);
+      }
+
+      // Forcibly close ALL modals and overlays
+      document.querySelectorAll('.modal-overlay.open').forEach(modal => {
+        modal.classList.remove('open');
+      });
+
+      // Forcibly close Cart Drawer
+      const cartOverlay = document.getElementById('cart-drawer-overlay');
+      if (cartOverlay) cartOverlay.classList.remove('open');
+      if (window.cartSystem) {
+        window.cartSystem.isDrawerOpen = false;
+      }
+
+      // Forcibly close Mobile Menu Drawer
+      if (typeof window.toggleMobileDrawer === 'function') {
+        window.toggleMobileDrawer(false);
+      } else {
+        const mobDrawer = document.getElementById('mobile-nav-drawer');
+        const mobOverlay = document.getElementById('mobile-drawer-overlay');
+        if (mobDrawer) mobDrawer.classList.remove('open');
+        if (mobOverlay) mobOverlay.classList.remove('open');
+      }
+
+      // Forcibly close Mobile Filters Drawer
+      if (typeof window.toggleMobileFilters === 'function') {
+        window.toggleMobileFilters(false);
+      }
+
+      // Clean up Product Detail modal URL param if present
+      const qv = document.getElementById('quickview-modal-overlay');
+      if (qv) qv.classList.remove('open');
+      if (window.location.search && window.location.search.includes('product=')) {
+        try {
+          const cleanUrl = new URL(window.location.href);
+          cleanUrl.searchParams.delete('product');
+          window.history.pushState({}, '', cleanUrl.pathname + (cleanUrl.search ? '?' + cleanUrl.searchParams.toString() : '') + (cleanUrl.hash || ''));
+        } catch(e) {}
+      }
+
+      // Forcibly restore body and html scroll
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      document.body.classList.remove('modal-open');
+
+      if (!targetSelector) return;
+
+      // Update Active Navigation Item Visuals
+      if (targetSelector === '#' || targetSelector === '#hero') {
+        if (window.setMobileActiveNav) window.setMobileActiveNav('mob-nav-home');
+      } else if (targetSelector === '#products-section') {
+        if (window.setMobileActiveNav) window.setMobileActiveNav('mob-nav-shop');
+      } else if (targetSelector === '#finder-section') {
+        if (window.setMobileActiveNav) window.setMobileActiveNav('mob-nav-finder');
+      }
+
+      document.querySelectorAll('.nav-links a').forEach(a => {
+        if (a.getAttribute('href') === targetSelector) {
+          a.classList.add('active');
+        } else {
+          a.classList.remove('active');
+        }
+      });
+
+      // Scroll to target element with header offset
+      setTimeout(() => {
+        if (targetSelector === '#' || targetSelector === '#hero') {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          return;
+        }
+
+        const target = document.querySelector(targetSelector);
+        if (target) {
+          const headerOffset = 70;
+          const elementPosition = target.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+          window.scrollTo({
+            top: Math.max(0, offsetPosition),
+            behavior: 'smooth'
+          });
+        }
+      }, 40);
+    };
+
+    window.smoothNav = function(targetSelector, sourceBtn) {
+      window.forceLeaveAndNavigate(targetSelector, sourceBtn);
+    };
+  </script>
+
+  <!-- ==========================================================================
+       1. TOP ANNOUNCEMENT BAR
+       ========================================================================== -->
+  <div class="top-bar">
+    <div class="container top-bar-inner">
+      <div class="top-bar-left">
+        <span class="top-bar-badge">Nepal Power Hub</span>
+        <span>🇳🇵 Free Delivery & Terminal Fitting inside Kathmandu Valley, Butwal & Major Cities!</span>
+      </div>
+      <div class="top-bar-right">
+        <a href="#calculator-section" class="top-bar-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>
+          Inverter Load Calculator
+        </a>
+        <a href="tel:+9779705997260" class="top-bar-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          24/7 Hotline: +9779705997260
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       2. MAIN HEADER & NAVIGATION
+       ========================================================================== -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-main">
+        <!-- Logo & Brand Identity -->
+        <a href="index.html" class="brand-wrapper" aria-label="Exide Battery Wholesale" onclick="window.location.href='index.html'; return false;">
+          <img src="assets/logo.png" alt="Exide Battery Wholesale Logo" class="brand-logo-img">
+          <div class="brand-title-group">
+            <span class="brand-name">EXIDE BATTERY WHOLESALE</span>
+            <span class="brand-tagline">AET Official Partner • The Power House</span>
+          </div>
+        </a>
+
+        <!-- Global Search Bar -->
+        <div class="header-search">
+          <div class="search-input-wrapper">
+            <span class="search-icon-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            </span>
+            <input type="search" id="global-search-input" class="search-input" placeholder="Search Exide batteries, inverters, models (e.g. IMTT1500)..." autocomplete="off">
+            <button type="button" class="search-clear-btn" id="search-clear-btn" onclick="window.clearGlobalSearch()" aria-label="Clear Search" title="Clear Search & Exit">&times;</button>
+            <!-- Smart Live Search Results Dropdown -->
+            <div id="global-search-dropdown" class="global-search-dropdown"></div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="header-actions">
+          <!-- Customer Account / Authentication Pill -->
+          <div class="header-customer-auth-wrap">
+            <button class="btn-header-action btn-customer-login-pill" onclick="window.authManager.openCustomerLoginModal()" title="Customer Account Login">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span>Sign In</span>
+            </button>
+          </div>
+
+          <!-- Stock ERP Portal Toggle (Admin Only) -->
+          <button class="btn-header-action btn-admin-pill" onclick="window.stockManager.openAdminModal()" title="Stock & Inventory Management System (Staff & Admin Only)">
+            <span class="badge-pulse"></span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span>Stock ERP</span>
+          </button>
+
+          <!-- Cart Button -->
+          <button class="btn-header-action btn-cart-header" onclick="window.cartSystem.openDrawer()" aria-label="Open Shopping Cart">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+            <span>Cart</span>
+            <span class="cart-counter-bubble" id="header-cart-count">0</span>
+          </button>
+
+          <!-- Mobile Hamburger Menu Button -->
+          <button class="mobile-menu-btn" id="mobile-menu-toggle-btn" onclick="window.toggleMobileDrawer()" aria-label="Toggle Mobile Navigation Menu">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Menu Bar -->
+    <nav class="header-nav-bar" aria-label="Main Navigation">
+      <div class="container">
+        <ul class="nav-links-list">
+          <li class="nav-link-item active"><a href="index.html" onclick="window.location.href='index.html'; return false;">Home</a></li>
+          <li class="nav-link-item"><a href="#products-section">Products Catalog</a></li>
+          <li class="nav-link-item"><a href="#brands-section">Brands</a></li>
+          <li class="nav-link-item"><a href="#categories-section">Categories</a></li>
+          <li class="nav-link-item"><a href="#finder-section">Vehicle Finder</a></li>
+          <li class="nav-link-item"><a href="#calculator-section">Load Calculator</a></li>
+          <li class="nav-link-item"><a href="#warranty-section">Warranty Check</a></li>
+          <li class="nav-link-item"><a href="#outlets-section">Store Outlets</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ==========================================================================
+       MOBILE NAVIGATION DRAWER & OVERLAY (Strictly Mobile Phone UX)
+       ========================================================================== -->
+  <div class="mobile-drawer-overlay" id="mobile-drawer-overlay" onclick="window.toggleMobileDrawer(false)"></div>
+  <aside class="mobile-nav-drawer" id="mobile-nav-drawer" aria-label="Mobile Navigation Drawer">
+    <div class="drawer-header">
+      <div class="drawer-brand">
+        <img src="assets/logo.png" alt="Exide" class="drawer-brand-logo">
+        <div>
+          <div class="drawer-title">EXIDE BATTERY</div>
+          <div class="drawer-subtitle">The Power House • Nepal</div>
+        </div>
+      </div>
+      <button class="drawer-close-btn" onclick="window.toggleMobileDrawer(false)" aria-label="Close navigation drawer">✕</button>
+    </div>
+
+    <!-- User Account Quick Status in Drawer -->
+    <div class="drawer-user-status" id="drawer-user-status"></div>
+
+    <nav class="drawer-nav">
+      <a href="#hero" class="drawer-link" onclick="window.smoothNav('#hero'); return false;">
+        <span class="drawer-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </span>
+        <span>Home</span>
+      </a>
+      <a href="#products-section" class="drawer-link" onclick="window.smoothNav('#products-section'); return false;">
+        <span class="drawer-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7h10"/><path d="M7 12h10"/><path d="M7 17h10"/></svg>
+        </span>
+        <span>Products Catalog</span>
+      </a>
+      <a href="#finder-section" class="drawer-link" onclick="window.smoothNav('#finder-section'); return false;">
+        <span class="drawer-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>
+        </span>
+        <span>Vehicle Battery Finder</span>
+      </a>
+      <a href="#calculator-section" class="drawer-link" onclick="window.smoothNav('#calculator-section'); return false;">
+        <span class="drawer-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>
+        </span>
+        <span>Home Load Calculator</span>
+      </a>
+      <a href="#brands-section" class="drawer-link" onclick="window.smoothNav('#brands-section'); return false;">
+        <span class="drawer-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+        </span>
+        <span>Official Brands</span>
+      </a>
+      <a href="#warranty-section" class="drawer-link" onclick="window.smoothNav('#warranty-section'); return false;">
+        <span class="drawer-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+        </span>
+        <span>Warranty Verification</span>
+      </a>
+      <a href="#outlets-section" class="drawer-link" onclick="window.smoothNav('#outlets-section'); return false;">
+        <span class="drawer-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        </span>
+        <span>Store Outlets</span>
+      </a>
+    </nav>
+
+    <div class="drawer-actions">
+      <button type="button" class="btn-drawer-google" onclick="window.smoothNav(null); window.authManager.loginWithGoogle();" style="display:flex; align-items:center; justify-content:center; gap:0.6rem; width:100%; height:44px; border-radius:10px; font-weight:700; background:#FFFFFF; color:#1F2937; border:1.5px solid #CBD5E1; box-shadow:0 2px 6px rgba(0,0,0,0.06); cursor:pointer; font-size:0.9rem; margin-bottom:0.65rem;">
+        <svg width="18" height="18" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+          <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+          <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+          <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+        </svg>
+        <span>Continue with Google</span>
+      </button>
+      <button type="button" class="btn-drawer-erp" onclick="window.smoothNav(null); window.stockManager.openAdminModal();">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <span>Stock ERP Portal (Admin)</span>
+      </button>
+      <a href="tel:+9779705997260" class="btn-drawer-call">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span>Hotline: +977 9705997260</span>
+      </a>
+    </div>
+  </aside>
+
+  <main>
+    <!-- ==========================================================================
+         3. HERO SECTION WITH DYNAMIC ROTATOR & VEHICLE FINDER WIDGET
+         ========================================================================== -->
+    <section class="hero-section" id="hero">
+      <div class="container hero-grid">
+        <!-- Hero Text & Tagline -->
+        <div>
+          <div class="hero-badge-pill">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            Authorized Multi-Branded Power Store Nepal
+          </div>
+          <h1 class="hero-title">
+            Powering Your <br>
+            <span class="hero-rotator-word" id="hero-rotator-text">World</span>
+          </h1>
+          <p class="hero-subtitle">
+            Nepal's premier power destination offering 100% genuine Exide tubular batteries, automotive car batteries, smart lithium inverters & solar hybrid systems with free doorstep fitting and official warranty.
+          </p>
+          <div class="hero-cta-group">
+            <a href="#products-section" class="btn-primary-red">
+              <span>Explore Products</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+            </a>
+            <a href="#calculator-section" class="btn-outline-white">
+              <span>Calculate Home Load</span>
+            </a>
+          </div>
+
+          <div class="hero-highlights-strip">
+            <div class="hero-highlight-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>100% Genuine Exide</span>
+            </div>
+            <div class="hero-highlight-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Up to 60 Months Warranty</span>
+            </div>
+            <div class="hero-highlight-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Scrap Exchange Bonus</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Vehicle Battery Finder Widget -->
+        <div id="finder-section">
+          <div class="battery-finder-card">
+            <div class="finder-header">
+              <h2 class="finder-title">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--color-exide-red);"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>
+                Vehicle Battery Finder
+              </h2>
+              <p class="finder-subtitle">Find exact fitting Exide battery for your vehicle in Nepal</p>
+            </div>
+
+            <form id="vehicle-finder-form" class="finder-form">
+              <div class="finder-row">
+                <label for="finder-vehicle-type" class="finder-label">Vehicle Type</label>
+                <select id="finder-vehicle-type" class="finder-select">
+                  <option value="cars">Car / SUV / Commercial (4-Wheeler)</option>
+                  <option value="bikes">Motorcycle / Scooter (2-Wheeler)</option>
+                </select>
+              </div>
+
+              <div class="finder-row">
+                <label for="finder-vehicle-make" class="finder-label">Manufacturer / Brand</label>
+                <select id="finder-vehicle-make" class="finder-select">
+                  <option value="">Select Make</option>
+                </select>
+              </div>
+
+              <div class="finder-row">
+                <label for="finder-vehicle-model" class="finder-label">Model</label>
+                <select id="finder-vehicle-model" class="finder-select" disabled>
+                  <option value="">Select Model</option>
+                </select>
+              </div>
+
+              <button type="submit" class="finder-btn-submit">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                Find Compatible Batteries
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Wave divider -->
+      <div class="hero-curved-svg">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+          <path d="M0,0 C150,90 350,-40 500,60 C650,160 900,10 1200,40 L1200,120 L0,120 Z"></path>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         4. TRUST BADGES STRIP
+         ========================================================================== -->
+    <section class="trust-bar-section">
+      <div class="container">
+        <div class="trust-badges-grid">
+          <div class="trust-badge-item">
+            <div class="trust-badge-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+            </div>
+            <div>
+              <div class="trust-badge-title">100% Genuine Guaranteed</div>
+              <div class="trust-badge-desc">Direct factory authorized warranty</div>
+            </div>
+          </div>
+
+          <div class="trust-badge-item">
+            <div class="trust-badge-icon red">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+            </div>
+            <div>
+              <div class="trust-badge-title">Old Battery Scrap Buyback</div>
+              <div class="trust-badge-desc">Get up to Rs. 2,500 off on exchange</div>
+            </div>
+          </div>
+
+          <div class="trust-badge-item">
+            <div class="trust-badge-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            </div>
+            <div>
+              <div class="trust-badge-title">Free Doorstep Fitting</div>
+              <div class="trust-badge-desc">Trained battery technicians in Nepal</div>
+            </div>
+          </div>
+
+          <div class="trust-badge-item">
+            <div class="trust-badge-icon red">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div>
+              <div class="trust-badge-title">Express Same-Day Delivery</div>
+              <div class="trust-badge-desc">Across Kathmandu, Pokhara, Butwal & more</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         5. PRODUCTS CATALOG WITH REAL-TIME FILTERS & SEARCH
+         ========================================================================== -->
+    <section class="section" id="products-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-pill">Our Products Catalog</span>
+          <h2 class="section-title">
+            Featured Power Solutions
+            <span class="accent-bar"></span>
+          </h2>
+          <p class="section-desc">
+            Explore authentic tall tubular batteries, maintenance-free car batteries, solar hybrid inverters, and high-efficiency lithium systems with real-time Nepal stock status.
+          </p>
+        </div>
+
+        <!-- Dynamic Search Results Banner (Shown when searching) -->
+        <div id="search-results-banner-slot"></div>
+
+        <!-- Mobile Collapsible Filter Trigger (Phone Only) -->
+        <div class="mobile-filter-bar">
+          <button type="button" class="btn-toggle-filters-mobile" id="btn-toggle-filters-mobile" onclick="window.toggleMobileFilters()" aria-expanded="false" aria-controls="catalog-sidebar">
+            <span class="filter-btn-text">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+              <span>Filter & Sort Products</span>
+              <span class="mobile-filter-badge" id="mobile-filter-count-badge">All</span>
+            </span>
+            <span class="filter-toggle-chevron" id="mobile-filter-chevron">▾</span>
+          </button>
+        </div>
+
+        <div class="catalog-main-layout">
+          <!-- Filter Sidebar (Collapsible on Mobile) -->
+          <aside class="catalog-sidebar" id="catalog-sidebar">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem; border-bottom:1.5px solid var(--color-border); padding-bottom:0.75rem;">
+              <h3 style="font-size:1.1rem; font-weight:800; color:#0F172A;">Filters</h3>
+              <button onclick="resetCatalogFilters()" style="font-size:0.75rem; color:var(--color-exide-red); font-weight:700;">Reset All</button>
+            </div>
+
+            <!-- Search in catalog -->
+            <div style="margin-bottom:1.5rem;">
+              <label for="catalog-search-input" style="font-size:0.8rem; font-weight:700; color:#475569; display:block; margin-bottom:0.35rem;">Search Item</label>
+              <input type="text" id="catalog-search-input" placeholder="Model, capacity, brand..." style="width:100%; height:38px; padding:0 0.75rem; border:1px solid var(--color-border); border-radius:6px; font-size:0.85rem;">
+            </div>
+
+            <!-- Price Slider -->
+            <div style="margin-bottom:1.5rem;">
+              <div style="display:flex; justify-content:space-between; font-size:0.8rem; font-weight:700; color:#475569; margin-bottom:0.35rem;">
+                <span>Max Price (NPR)</span>
+                <span id="price-slider-display" style="color:var(--color-exide-red);">Up to NPR 100,000</span>
+              </div>
+              <input type="range" id="filter-price-slider" min="2500" max="100000" step="2500" value="100000" style="width:100%; accent-color:var(--color-exide-red);">
+            </div>
+
+            <!-- Special Toggles -->
+            <div style="display:flex; flex-direction:column; gap:0.5rem; margin-bottom:1.5rem; padding-bottom:1.25rem; border-bottom:1px solid var(--color-border);">
+              <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem; font-weight:600; cursor:pointer;">
+                <input type="checkbox" id="filter-sale-only" style="width:16px; height:16px; accent-color:var(--color-exide-red);">
+                <span>Discounted Deals Only</span>
+              </label>
+              <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem; font-weight:600; cursor:pointer;">
+                <input type="checkbox" id="filter-stock-only" style="width:16px; height:16px; accent-color:var(--color-success);">
+                <span>In Stock Only</span>
+              </label>
+            </div>
+
+            <!-- Category Radio Group -->
+            <div style="margin-bottom:1.5rem;">
+              <h4 style="font-size:0.85rem; font-weight:800; text-transform:uppercase; color:#0F172A; margin-bottom:0.6rem;">Categories</h4>
+              <div style="display:flex; flex-direction:column; gap:0.4rem; max-height:200px; overflow-y:auto; padding-right:0.25rem;">
+                <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem; cursor:pointer;">
+                  <input type="radio" name="cat-filter-radio" value="all" checked style="accent-color:var(--color-exide-blue);">
+                  <span>All Categories</span>
+                </label>
+                <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem; cursor:pointer;">
+                  <input type="radio" name="cat-filter-radio" value="inverter-battery" style="accent-color:var(--color-exide-blue);">
+                  <span>Inverter Battery</span>
+                </label>
+                <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem; cursor:pointer;">
+                  <input type="radio" name="cat-filter-radio" value="car-battery" style="accent-color:var(--color-exide-blue);">
+                  <span>Car Battery</span>
+                </label>
+                <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem; cursor:pointer;">
+                  <input type="radio" name="cat-filter-radio" value="automotive-battery" style="accent-color:var(--color-exide-blue);">
+                  <span>Automotive & Bike</span>
+                </label>
+                <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem; cursor:pointer;">
+                  <input type="radio" name="cat-filter-radio" value="lithium-battery" style="accent-color:var(--color-exide-blue);">
+                  <span>Lithium Battery</span>
+                </label>
+                <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem; cursor:pointer;">
+                  <input type="radio" name="cat-filter-radio" value="inverter" style="accent-color:var(--color-exide-blue);">
+                  <span>Inverters & UPS</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Brand Radio Group -->
+            <div>
+              <h4 style="font-size:0.85rem; font-weight:800; text-transform:uppercase; color:#0F172A; margin-bottom:0.6rem;">Brand</h4>
+              <div style="display:flex; flex-direction:column; gap:0.4rem; max-height:180px; overflow-y:auto; padding-right:0.25rem;">
+                <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem; cursor:pointer;">
+                  <input type="radio" name="brand-filter-radio" value="all" checked style="accent-color:var(--color-exide-red);">
+                  <span>All Brands</span>
+                </label>
+                <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem; cursor:pointer;">
+                  <input type="radio" name="brand-filter-radio" value="exide" style="accent-color:var(--color-exide-red);">
+                  <strong>Exide (Featured)</strong>
+                </label>
+                <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem; cursor:pointer;">
+                  <input type="radio" name="brand-filter-radio" value="smarten" style="accent-color:var(--color-exide-red);">
+                  <span>Smarten</span>
+                </label>
+                <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem; cursor:pointer;">
+                  <input type="radio" name="brand-filter-radio" value="livfast" style="accent-color:var(--color-exide-red);">
+                  <span>Livfast</span>
+                </label>
+                <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem; cursor:pointer;">
+                  <input type="radio" name="brand-filter-radio" value="sf-sonic" style="accent-color:var(--color-exide-red);">
+                  <span>SF Sonic</span>
+                </label>
+                <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem; cursor:pointer;">
+                  <input type="radio" name="brand-filter-radio" value="eastman" style="accent-color:var(--color-exide-red);">
+                  <span>Eastman</span>
+                </label>
+                <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem; cursor:pointer;">
+                  <input type="radio" name="brand-filter-radio" value="genus" style="accent-color:var(--color-exide-red);">
+                  <span>Genus</span>
+                </label>
+              </div>
+            </div>
+          </aside>
+
+          <!-- Catalog Main Grid Area -->
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem; flex-wrap:wrap; gap:1rem;">
+              <span id="catalog-products-count" style="font-size:0.9rem; color:#64748B; font-weight:600;">Showing products...</span>
+              <div style="display:flex; align-items:center; gap:0.5rem;">
+                <label for="catalog-sort-select" style="font-size:0.85rem; color:#64748B; font-weight:600;">Sort by:</label>
+                <select id="catalog-sort-select" style="height:36px; padding:0 0.75rem; border:1px solid var(--color-border); border-radius:6px; font-size:0.85rem; background:#fff;">
+                  <option value="featured">Featured First</option>
+                  <option value="price-low">Price: Low to High</option>
+                  <option value="price-high">Price: High to Low</option>
+                  <option value="rating">Top Rated</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="products-grid" id="products-catalog-grid">
+              <!-- Rendered via js/app.js -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         6. ASSOCIATED BRANDS SHOWCASE
+         ========================================================================== -->
+    <section class="section brands-section" id="brands-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-pill">Trusted Manufacturers</span>
+          <h2 class="section-title">
+            Associated Brands
+            <span class="accent-bar"></span>
+          </h2>
+          <p class="section-desc">
+            Partnering with world-class battery and power electronics manufacturers to guarantee maximum longevity and peak performance in Nepal.
+          </p>
+        </div>
+        <div class="brands-grid" id="brands-grid-container">
+          <!-- Rendered via js/app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         7. CATEGORIES SHOWCASE
+         ========================================================================== -->
+    <section class="section" id="categories-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-pill">Browse By Application</span>
+          <h2 class="section-title">
+            Power Solution Categories
+            <span class="accent-bar"></span>
+          </h2>
+          <p class="section-desc">
+            Find tailored battery models for home inverters, private cars, commercial trucks, two-wheelers, and solar backup systems.
+          </p>
+        </div>
+        <div class="categories-grid" id="categories-grid-container">
+          <!-- Rendered via js/app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         8. NEPAL INVERTER & BATTERY LOAD CALCULATOR
+         ========================================================================== -->
+    <section class="section calculator-section" id="calculator-section">
+      <div class="container">
+        <div class="section-header" style="color:#fff;">
+          <span class="section-pill" style="background:rgba(255,255,255,0.15); color:#FFDE59;">Smart Sizing & Recycling Tools</span>
+          <h2 class="section-title" style="color:#fff;" id="calculator-section-title">
+            Inverter Load & Scrap Battery Calculator
+            <span class="accent-bar" style="background:#FFDE59;"></span>
+          </h2>
+          <p class="section-desc" style="color:rgba(255,255,255,0.8);" id="calculator-section-desc">
+            Size your home or office backup system accurately, or calculate the guaranteed cash buyback value of your old scrap batteries.
+          </p>
+
+          <!-- Top-Level Dual Calculator Mode Toggle -->
+          <div class="calc-main-tabs">
+            <button type="button" class="btn-calc-tab-toggle active" id="tab-btn-load-calc" onclick="switchMainCalculatorTab('load')">
+              <span>⚡ Inverter & Backup Sizing</span>
+            </button>
+            <button type="button" class="btn-calc-tab-toggle" id="tab-btn-scrap-calc" onclick="switchMainCalculatorTab('scrap')">
+              <span>♻️ Scrap & Old Battery Cash Calculator</span>
+              <span class="calc-tab-rate-badge">NPR 35/Ah</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 1. INVERTER & BATTERY LOAD CALCULATOR WRAPPER -->
+        <div class="calculator-wrapper" id="panel-load-calculator">
+          <!-- Left: Appliances Inputs -->
+          <div>
+            <!-- Solar / Inverter Application Choice -->
+            <div class="system-application-box">
+              <label class="calc-step-label">⚡ Step 1: Select Application & Energy Source</label>
+              <div class="system-type-tabs">
+                <button type="button" class="btn-sys-type active" data-type="inverter">
+                  🔌 Inverter / UPS
+                </button>
+                <button type="button" class="btn-sys-type" data-type="solar">
+                  ☀️ Solar Hybrid PCU
+                </button>
+                <button type="button" class="btn-sys-type" data-type="both">
+                  ⚡ Both / Dual Hybrid
+                </button>
+              </div>
+            </div>
+
+            <h3 style="font-family:var(--font-heading); font-size:1.15rem; font-weight:800; color:#FFFFFF; margin-bottom:0.4rem; margin-top:1.25rem;">
+              Step 2: Select Your Active Appliances
+            </h3>
+            <p style="font-size:0.85rem; color:#94A3B8; margin-bottom:0.75rem;">Type direct quantities in the box or click + / - to adjust:</p>
+
+            <div class="calc-appliance-list" id="calc-appliances-container">
+              <!-- Rendered via js/app.js with direct inputs -->
+            </div>
+
+            <div class="backup-hours-selector" style="margin-top:1.5rem;">
+              <label class="calc-step-label">Step 3: Desired Backup Duration</label>
+              <div class="hours-buttons">
+                <button type="button" class="btn-hour-choice" data-hours="1">1 Hour</button>
+                <button type="button" class="btn-hour-choice" data-hours="2">2 Hours</button>
+                <button type="button" class="btn-hour-choice" data-hours="3">3 Hours</button>
+                <button type="button" class="btn-hour-choice active" data-hours="4">4 Hours</button>
+              </div>
+
+              <!-- Dropdown Menu for Desired Hours -->
+              <div class="calc-hours-dropdown-row">
+                <label for="calc-backup-hours-dropdown" style="font-size:0.82rem; color:#CBD5E1; font-weight:600;">Or Select from Hours Dropdown:</label>
+                <select id="calc-backup-hours-dropdown" class="calc-hours-select">
+                  <option value="1">1 Hour Backup</option>
+                  <option value="2">2 Hours Backup</option>
+                  <option value="3">3 Hours Backup</option>
+                  <option value="4" selected>4 Hours Backup (Standard Home)</option>
+                  <option value="5">5 Hours Backup</option>
+                  <option value="6">6 Hours Backup (Extended Home)</option>
+                  <option value="8">8 Hours Backup (Commercial Office)</option>
+                  <option value="10">10 Hours Backup</option>
+                  <option value="12">12 Hours Backup (Heavy Duty)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Calculated Requirements & Recommendations -->
+          <div class="calc-results-box">
+            <div>
+              <h3 style="font-family:var(--font-heading); font-size:1.25rem; font-weight:800; color:#FFFFFF; margin-bottom:1.25rem;">
+                Power Requirement & Recommendation
+              </h3>
+              <div class="calc-metric-group">
+                <div class="calc-metric">
+                  <span class="calc-metric-label">Total Running Load</span>
+                  <div class="calc-metric-val" id="calc-total-watts">-- W</div>
+                </div>
+                <div class="calc-metric">
+                  <span class="calc-metric-label">Recommended Inverter Rating</span>
+                  <div class="calc-metric-val" id="calc-recommended-va">-- VA</div>
+                </div>
+                <div class="calc-metric">
+                  <span class="calc-metric-label">Required Battery Configuration</span>
+                  <div class="calc-metric-val" id="calc-recommended-ah">-- Ah</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Optimal Package Match with Checkable Items & Animated Button -->
+            <div class="calc-recommended-pkg" id="calc-package-breakdown">
+              <!-- Rendered via js/app.js -->
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. DEDICATED SCRAP & OLD BATTERY BUYBACK CALCULATOR WRAPPER -->
+        <div class="calculator-wrapper" id="panel-scrap-calculator" style="display:none;">
+          <!-- Left: Battery Type & Capacity Selectors -->
+          <div>
+            <div class="system-application-box">
+              <label class="calc-step-label">♻️ Step 1: Choose Your Battery Category</label>
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:0.5rem; margin-top:0.6rem;">
+                <button type="button" class="btn-standalone-scrap-cat active" data-ah="150" onclick="selectStandaloneScrapCategory('inverter', 150, this)" style="padding:0.6rem; border-radius:8px; border:1px solid rgba(255,255,255,0.25); background:rgba(255,255,255,0.08); color:#fff; text-align:left; cursor:pointer;">
+                  <strong style="display:block; font-size:0.85rem; color:#FFDE59;">🔋 Inverter / UPS</strong>
+                  <span style="font-size:0.75rem; color:#94A3B8;">150Ah Tubular</span>
+                </button>
+                <button type="button" class="btn-standalone-scrap-cat" data-ah="200" onclick="selectStandaloneScrapCategory('tall-tubular', 200, this)" style="padding:0.6rem; border-radius:8px; border:1px solid rgba(255,255,255,0.25); background:rgba(255,255,255,0.08); color:#fff; text-align:left; cursor:pointer;">
+                  <strong style="display:block; font-size:0.85rem; color:#FFDE59;">⚡ Heavy Tubular</strong>
+                  <span style="font-size:0.75rem; color:#94A3B8;">200Ah Capacity</span>
+                </button>
+                <button type="button" class="btn-standalone-scrap-cat" data-ah="35" onclick="selectStandaloneScrapCategory('car', 35, this)" style="padding:0.6rem; border-radius:8px; border:1px solid rgba(255,255,255,0.25); background:rgba(255,255,255,0.08); color:#fff; text-align:left; cursor:pointer;">
+                  <strong style="display:block; font-size:0.85rem; color:#FFDE59;">🚗 Car / Hatchback</strong>
+                  <span style="font-size:0.75rem; color:#94A3B8;">35Ah - 45Ah</span>
+                </button>
+                <button type="button" class="btn-standalone-scrap-cat" data-ah="75" onclick="selectStandaloneScrapCategory('suv', 75, this)" style="padding:0.6rem; border-radius:8px; border:1px solid rgba(255,255,255,0.25); background:rgba(255,255,255,0.08); color:#fff; text-align:left; cursor:pointer;">
+                  <strong style="display:block; font-size:0.85rem; color:#FFDE59;">🚙 SUV / Jeep / Van</strong>
+                  <span style="font-size:0.75rem; color:#94A3B8;">65Ah - 80Ah</span>
+                </button>
+                <button type="button" class="btn-standalone-scrap-cat" data-ah="150" onclick="selectStandaloneScrapCategory('truck', 150, this)" style="padding:0.6rem; border-radius:8px; border:1px solid rgba(255,255,255,0.25); background:rgba(255,255,255,0.08); color:#fff; text-align:left; cursor:pointer;">
+                  <strong style="display:block; font-size:0.85rem; color:#FFDE59;">🚚 Truck / Tractor</strong>
+                  <span style="font-size:0.75rem; color:#94A3B8;">120Ah - 180Ah</span>
+                </button>
+                <button type="button" class="btn-standalone-scrap-cat" data-ah="500" onclick="selectStandaloneScrapCategory('solar', 500, this)" style="padding:0.6rem; border-radius:8px; border:1px solid rgba(255,255,255,0.25); background:rgba(255,255,255,0.08); color:#fff; text-align:left; cursor:pointer;">
+                  <strong style="display:block; font-size:0.85rem; color:#FFDE59;">☀️ Solar Bank</strong>
+                  <span style="font-size:0.75rem; color:#94A3B8;">500Ah - 2000Ah+</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Quantity & Ampere Rating Inputs -->
+            <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15); border-radius:12px; padding:1.25rem; margin-top:1.25rem;">
+              <label class="calc-step-label">Step 2: Number of Old Batteries to Trade In</label>
+              <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1.25rem; flex-wrap:wrap;">
+                <div style="display:flex; align-items:center; background:#0F172A; border:1.5px solid rgba(255,255,255,0.3); border-radius:8px; overflow:hidden;">
+                  <button type="button" onclick="adjustStandaloneScrapQty(-1)" style="background:none; border:none; color:#FFDE59; font-size:1.4rem; padding:0.4rem 1rem; cursor:pointer; font-weight:800;">-</button>
+                  <input type="number" id="scrap-standalone-qty" value="1" min="1" max="1000" oninput="recalcStandaloneScrap()" style="width:75px; background:none; border:none; color:#fff; text-align:center; font-weight:800; font-size:1.2rem;" aria-label="Scrap battery quantity">
+                  <button type="button" onclick="adjustStandaloneScrapQty(1)" style="background:none; border:none; color:#FFDE59; font-size:1.4rem; padding:0.4rem 1rem; cursor:pointer; font-weight:800;">+</button>
+                </div>
+                <span style="color:#94A3B8; font-size:0.88rem;">Battery Unit(s)</span>
+              </div>
+
+              <label class="calc-step-label">Step 3: Capacity per Battery (Ah)</label>
+              <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.75rem; flex-wrap:wrap;">
+                <div style="display:flex; align-items:center; gap:0.35rem;">
+                  <input type="number" id="scrap-standalone-ah" value="150" min="5" max="100000" step="5" oninput="recalcStandaloneScrap()" style="width:130px; background:#0F172A; border:1.5px solid #FFDE59; border-radius:8px; color:#fff; font-weight:800; font-size:1.2rem; padding:0.5rem 0.75rem;" aria-label="Scrap battery capacity in Ah">
+                  <span style="color:#FFDE59; font-weight:800; font-size:1.1rem;">Ah</span>
+                </div>
+                <span style="color:#94A3B8; font-size:0.8rem;">(Supports any value from 5 Ah to 100,000+ Ah)</span>
+              </div>
+
+              <!-- Quick Ah Selector Pills -->
+              <div class="scrap-quick-ah-list">
+                <button type="button" class="btn-hour-choice" onclick="setStandaloneScrapAh(35)">35Ah</button>
+                <button type="button" class="btn-hour-choice" onclick="setStandaloneScrapAh(75)">75Ah</button>
+                <button type="button" class="btn-hour-choice" onclick="setStandaloneScrapAh(100)">100Ah</button>
+                <button type="button" class="btn-hour-choice active" onclick="setStandaloneScrapAh(150)">150Ah</button>
+                <button type="button" class="btn-hour-choice" onclick="setStandaloneScrapAh(200)">200Ah</button>
+                <button type="button" class="btn-hour-choice" onclick="setStandaloneScrapAh(300)">300Ah</button>
+                <button type="button" class="btn-hour-choice" onclick="setStandaloneScrapAh(500)">500Ah</button>
+                <button type="button" class="btn-hour-choice" onclick="setStandaloneScrapAh(1000)">1,000Ah</button>
+                <button type="button" class="btn-hour-choice" onclick="setStandaloneScrapAh(2000)">2,000Ah</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Calculated Cash Valuation & Instant Actions -->
+          <div class="calc-results-box" style="display:flex; flex-direction:column; justify-content:space-between;">
+            <div>
+              <h3 style="font-family:var(--font-heading); font-size:1.25rem; font-weight:800; color:#FFFFFF; margin-bottom:1.25rem; display:flex; align-items:center; gap:0.5rem;">
+                <span>♻️ Instant Buyback & Trade-In Valuation</span>
+              </h3>
+              
+              <div class="calc-metric-group">
+                <div class="calc-metric">
+                  <span class="calc-metric-label">Total Scrap Capacity</span>
+                  <div class="calc-metric-val" id="scrap-total-ah-val">150 Ah</div>
+                </div>
+                <div class="calc-metric">
+                  <span class="calc-metric-label">Official Buyback Rate</span>
+                  <div class="calc-metric-val" id="scrap-live-rate-val" style="color:#FFDE59;">NPR 35 / Ah</div>
+                </div>
+                <div class="calc-metric" style="background:rgba(16, 185, 129, 0.15); border-color:#10B981;">
+                  <span class="calc-metric-label" style="color:#6EE7B7;">Total Cash Rebate Valuation</span>
+                  <div class="calc-metric-val" id="scrap-total-cash-val" style="color:#34D399; font-size:1.6rem;">NPR 5,250</div>
+                </div>
+              </div>
+
+              <div style="background:rgba(255,255,255,0.06); border-radius:10px; padding:1rem; border:1px dashed rgba(255,255,255,0.2); margin-top:1.25rem;">
+                <div style="display:flex; align-items:flex-start; gap:0.6rem;">
+                  <span style="font-size:1.4rem;">🌱</span>
+                  <div>
+                    <strong style="color:#FFFFFF; font-size:0.88rem; display:block;">100% Certified Environmental Recycling</strong>
+                    <p style="color:#94A3B8; font-size:0.78rem; margin:3px 0 0 0; line-height:1.45;">
+                      Official Nepal Lead-Acid Recycling Protocol. Prevents hazardous acid pollution, complies with IRD Nepal rules, and gives you cash on the spot or direct discount on your new battery.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons: Apply to Cart or Book Doorstep Pickup -->
+            <div style="margin-top:1.75rem; display:flex; flex-direction:column; gap:0.75rem;">
+              <button type="button" class="btn btn-primary" onclick="applyStandaloneScrapToCart()" style="width:100%; justify-content:center; padding:0.9rem; font-size:0.95rem; font-weight:800; border-radius:10px; box-shadow:0 6px 20px rgba(192,18,25,0.4);">
+                <span>🛒 Apply NPR <span id="scrap-btn-apply-amt">5,250</span> Trade-In to Cart</span>
+                <span>➔</span>
+              </button>
+              <button type="button" class="btn" onclick="bookScrapPickupWhatsApp()" style="width:100%; justify-content:center; padding:0.8rem; font-size:0.9rem; font-weight:700; border-radius:10px; background:#25D366; color:#FFFFFF; border:none; display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                <span>Book Doorstep Scrap Pickup (Cash on Spot)</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         9. WARRANTY VERIFICATION & SERIAL NUMBER TRACKER
+         ========================================================================== -->
+    <section class="section" id="warranty-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-pill">Customer Assurance</span>
+          <h2 class="section-title">
+            Warranty & Serial Number Lookup
+            <span class="accent-bar"></span>
+          </h2>
+          <p class="section-desc">
+            Verify the authenticity of your Exide or partner battery, check remaining warranty period, and initiate digital claims.
+          </p>
+        </div>
+
+        <div class="warranty-checker-box">
+          <form id="warranty-checker-form">
+            <label for="warranty-serial-input" style="font-weight:700; font-size:0.9rem; color:#0F172A; display:block;">
+              Enter Battery Serial Number / Barcode
+            </label>
+            <p style="font-size:0.8rem; color:#64748B; margin-bottom:0.75rem;">
+              You can find this on the top casing stamp or warranty card (e.g. <code>EX-IM-982101</code> or <code>EX-MT-771001</code>).
+            </p>
+            <div class="serial-input-group">
+              <input type="text" id="warranty-serial-input" class="serial-input" placeholder="e.g. EX-IM-982101">
+              <button type="submit" class="btn-verify-serial">
+                Verify Serial
+              </button>
+            </div>
+          </form>
+
+          <div id="warranty-result-box" style="margin-top:1.5rem; display:none;">
+            <!-- Output populated via js/app.js -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         10. STORE OUTLETS & LOCATIONS IN NEPAL
+         ========================================================================== -->
+    <section class="section" id="outlets-section" style="background:#F1F5F9;">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-pill">Our Physical Locations</span>
+          <h2 class="section-title">
+            Exide Battery Wholesale Outlets Across Nepal
+            <span class="accent-bar"></span>
+          </h2>
+          <p class="section-desc">
+            Visit any of our walk-in service centers and dealer hubs for battery testing, warranty exchange, terminal health checks, and instant sales.
+          </p>
+        </div>
+
+        <div class="outlets-grid" id="outlets-grid-container">
+          <!-- Rendered via js/app.js -->
+        </div>
+
+        <!-- Google Maps Embed Representation -->
+        <div style="margin-top:2.5rem; border-radius:var(--radius-xl); overflow:hidden; border:2px solid var(--color-border); box-shadow:var(--shadow-md);">
+          <iframe 
+            src="https://maps.google.com/maps?q=Bijulibazar%2C%20Anamnagar%2C%20Kathmandu%2C%20Nepal&t=m&z=15&output=embed&iwloc=near" 
+            title="Exide Battery Wholesale Outlets" 
+            width="100%" 
+            height="360" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy">
+          </iframe>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================================================
+       11. SITE FOOTER
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Col 1: About & Exide Partnership -->
+        <div>
+          <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1rem;">
+            <img src="assets/logo.png" alt="Exide Battery Wholesale" style="height:44px; filter:brightness(1.1);">
+          </div>
+          <p style="font-size:0.875rem; color:#94A3B8; line-height:1.6; margin-bottom:1.25rem;">
+            Exide Battery Wholesale (AET Official Partner) is Nepal's premier power and battery wholesale network. We supply genuine Exide, Smarten, Livfast, and Eastman power storage systems with guaranteed nationwide warranty, doorstep fitting, and old battery exchange programs.
+          </p>
+          <div style="font-size:0.8rem; color:#E2E8F0; font-weight:700;">
+            IRD Nepal PAN/VAT Registration: 609823412
+          </div>
+        </div>
+
+        <!-- Col 2: Navigation Links -->
+        <div>
+          <h4 class="footer-col-title">Quick Links</h4>
+          <ul class="footer-links-list">
+            <li><a href="index.html" onclick="window.location.href='index.html'; return false;">Home Page</a></li>
+            <li><a href="#products-section">Products Catalog</a></li>
+            <li><a href="#brands-section">Associated Brands</a></li>
+            <li><a href="#categories-section">Categories</a></li>
+            <li><a href="#calculator-section">Load Calculator</a></li>
+            <li><a href="#warranty-section">Verify Warranty</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Popular Categories -->
+        <div>
+          <h4 class="footer-col-title">Popular Categories</h4>
+          <ul class="footer-links-list">
+            <li><a href="#products-section" onclick="filterProductsByCategory('inverter-battery')">Tall Tubular Batteries</a></li>
+            <li><a href="#products-section" onclick="filterProductsByCategory('car-battery')">Exide Maintenance-Free Car Batteries</a></li>
+            <li><a href="#products-section" onclick="filterProductsByCategory('lithium-battery')">LiFePO4 Lithium Batteries</a></li>
+            <li><a href="#products-section" onclick="filterProductsByCategory('inverter')">Pure Sinewave Inverters</a></li>
+            <li><a href="#products-section" onclick="filterProductsByCategory('solar-hybrid-pcu')">Solar Hybrid PCU</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Store Contact & Nepal Hotline -->
+        <div>
+          <h4 class="footer-col-title">Contact & Service</h4>
+          <div class="footer-contact-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>Kathmandu - Bijulibazar (Head office) - Bijulibazar, Anamnagar (near to BhatBhateni)</span>
+          </div>
+          <div class="footer-contact-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <a href="tel:+9779705997260" style="color:#fff; font-weight:700;">+9779705997260</a>
+          </div>
+          <div class="footer-contact-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            <span>batterymartbtl@gmail.com</span>
+          </div>
+          <div class="footer-contact-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>Sunday - Friday: 09:00 AM — 07:30 PM (Sat: 10 AM - 5 PM)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom-bar">
+        <div>
+          &copy; 2026 Exide Battery Wholesale | AET Official Partner. All rights reserved. The Power House.
+        </div>
+        <div style="display:flex; gap:1.25rem;">
+          <a href="#warranty-section" style="color:#94A3B8;">Privacy Policy</a>
+          <a href="#warranty-section" style="color:#94A3B8;">Warranty Terms</a>
+          <a href="#calculator-section" style="color:#94A3B8;">Scrap Battery Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating WhatsApp Quick Connect Button -->
+  <a href="https://wa.me/9779705997260?text=Hello%20Battery%20Mart%20Nepal%2C%20I%20have%20an%20inquiry%20regarding%20Exide%20batteries." target="_blank" rel="noopener noreferrer" class="whatsapp-floating-btn" title="Chat on WhatsApp" aria-label="WhatsApp Contact">
+    <svg viewBox="0 0 256 259" width="30" height="30" fill="#fff"><path d="m67.663 221.823 4.185 2.093c17.44 10.463 36.971 15.346 56.503 15.346 61.385 0 111.609-50.224 111.609-111.609 0-29.297-11.859-57.897-32.785-78.824-20.927-20.927-48.83-32.785-78.824-32.785-61.385 0-111.61 50.224-110.912 112.307 0 20.926 6.278 41.156 16.741 58.594l2.79 4.186-11.16 41.156 41.853-10.464Z"/><path d="M219.033 37.668C195.316 13.254 162.531 0 129.048 0 57.898 0 .698 57.897 1.395 128.35c0 22.322 6.278 43.947 16.742 63.478L0 258.096l67.663-17.439c18.834 10.464 39.76 15.347 60.688 15.347 70.453 0 127.653-57.898 127.653-128.35 0-34.181-13.254-66.269-36.97-89.986Z" fill="none"/></svg>
+  </a>
+
+  <!-- ==========================================================================
+       12. SLIDE-OUT CART DRAWER
+       ========================================================================== -->
+  <div class="cart-drawer-overlay" id="cart-drawer-overlay" onclick="if(event.target === this) window.cartSystem.closeDrawer();">
+    <aside class="cart-drawer" aria-label="Shopping Cart Drawer">
+      <div class="cart-drawer-header">
+        <h3 class="cart-drawer-title">
+          <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--color-exide-red);"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+          Shopping Cart <span id="drawer-items-count">(0)</span>
+        </h3>
+        <button class="cart-close-btn" onclick="window.cartSystem.closeDrawer()" aria-label="Close cart">&times;</button>
+      </div>
+
+      <div class="cart-free-shipping-bar">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-5.28a2 2 0 0 0-.8-1.6l-3.2-2.4a2 2 0 0 0-1.2-.42H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
+        <span>Eligible for Free Doorstep Delivery & Fitting inside Nepal!</span>
+      </div>
+
+      <div class="cart-items-scroll" id="cart-items-container">
+        <!-- Rendered via js/cart-checkout.js -->
+      </div>
+
+      <div class="cart-drawer-footer">
+        <!-- Old Battery Trade-in Toggle & Dynamic Ampere-Hour Calculation -->
+        <div class="scrap-exchange-card">
+          <label class="exchange-scrap-toggle">
+            <input type="checkbox" id="exchange-scrap-checkbox" onchange="window.cartSystem.toggleScrapExchange(this.checked)">
+            <div>
+              <div class="exchange-text-main">♻️ Exchange Old Battery for Recycling?</div>
+              <div class="exchange-text-sub">Instant cash rebate calculated per Ampere-hour (Ah)</div>
+            </div>
+          </label>
+
+          <!-- Dynamic Ah Input Box -->
+          <div id="scrap-calc-container" style="display:none; margin-top:0.75rem; background:#F8FAFC; border:1px solid #CBD5E1; border-radius:8px; padding:0.85rem;">
+            <div style="font-size:0.82rem; color:#334155; margin-bottom:0.4rem; font-weight:600;">
+              Enter scrap battery capacity in Ampere (Rate: <strong style="color:var(--color-exide-red);">NPR <span id="scrap-rate-display">35</span> / Ah</strong>):
+            </div>
+            <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem; flex-wrap:wrap;">
+              <div style="display:flex; align-items:center; gap:0.25rem;">
+                <input type="number" id="scrap-ah-input" placeholder="e.g. 150" min="0" max="100000" step="5" class="scrap-ah-field" oninput="window.cartSystem.setScrapAh(this.value)" style="width:110px;">
+                <span style="font-weight:700; font-size:0.88rem; color:#0F172A;">Ah</span>
+              </div>
+              <div class="quick-ah-chips" style="display:flex; gap:4px; flex-wrap:wrap;">
+                <button type="button" class="btn-ah-pill" onclick="window.cartSystem.setScrapAh(100)">100Ah</button>
+                <button type="button" class="btn-ah-pill" onclick="window.cartSystem.setScrapAh(150)">150Ah</button>
+                <button type="button" class="btn-ah-pill" onclick="window.cartSystem.setScrapAh(200)">200Ah</button>
+                <button type="button" class="btn-ah-pill" onclick="window.cartSystem.setScrapAh(300)">300Ah</button>
+                <button type="button" class="btn-ah-pill" onclick="window.cartSystem.setScrapAh(500)">500Ah</button>
+                <button type="button" class="btn-ah-pill" onclick="window.cartSystem.setScrapAh(1000)">1,000Ah</button>
+                <button type="button" class="btn-ah-pill" onclick="window.cartSystem.setScrapAh(2000)">2,000Ah</button>
+              </div>
+            </div>
+            <div id="scrap-discount-feedback" style="display:none;" class="scrap-feedback-pill">
+              <!-- Dynamically populated via js/cart-checkout.js -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Totals breakdown -->
+        <div class="cart-totals-breakdown">
+          <div class="cart-total-row">
+            <span>Subtotal:</span>
+            <span id="cart-subtotal-val">NPR 0</span>
+          </div>
+          <div class="cart-total-row" id="cart-scrap-deduction-row" style="color:var(--color-success); display:none;">
+            <span>Old Battery Trade-in Discount:</span>
+            <span id="cart-scrap-deduction-val">- NPR 0</span>
+          </div>
+          <div class="cart-total-row">
+            <span>Delivery & Fitting:</span>
+            <span id="cart-delivery-val" style="color:var(--color-success);">FREE</span>
+          </div>
+          <div class="cart-total-row grand">
+            <span>Total (NPR):</span>
+            <span id="cart-grandtotal-val" style="color:var(--color-exide-red);">NPR 0</span>
+          </div>
+        </div>
+
+        <button class="btn-proceed-checkout" id="btn-cart-drawer-proceed" onclick="window.cartSystem.openCheckoutModal()" style="display:flex; align-items:center; justify-content:center; gap:0.55rem; background:var(--color-exide-red); color:#FFFFFF; font-weight:800; font-size:0.95rem; border-radius:8px; box-shadow:0 4px 15px rgba(192, 18, 25, 0.35); width:100%; border:none; padding:0.85rem; cursor:pointer;">
+          <span>Proceed to Checkout</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ==========================================================================
+       13. NEPAL MULTI-STEP CHECKOUT MODAL
+       ========================================================================== -->
+  <div class="modal-overlay" id="checkout-modal-overlay">
+    <div class="checkout-modal-content">
+      <div class="checkout-modal-header">
+        <div style="display:flex; align-items:center; gap:0.75rem;">
+          <img src="assets/logo.png" alt="Exide" style="height:32px; filter:brightness(1.2);">
+          <h3 style="font-family:var(--font-heading); font-size:1.3rem; font-weight:800;">Nepal Secure Checkout</h3>
+        </div>
+        <button onclick="window.cartSystem.closeCheckoutModal()" style="color:#fff; font-size:1.75rem; line-height:1;">&times;</button>
+      </div>
+
+      <!-- Steps Indicator -->
+      <div class="checkout-steps-nav">
+        <div class="checkout-step-indicator active" data-step="1">
+          <span class="step-num-circle">1</span>
+          <span>Delivery Address</span>
+        </div>
+        <div class="checkout-step-indicator" data-step="2">
+          <span class="step-num-circle">2</span>
+          <span>Fitting & Add-ons</span>
+        </div>
+        <div class="checkout-step-indicator" data-step="3">
+          <span class="step-num-circle">3</span>
+          <span>Nepal Payment</span>
+        </div>
+        <div class="checkout-step-indicator" data-step="4">
+          <span class="step-num-circle">4</span>
+          <span>Invoice & VAT Bill</span>
+        </div>
+      </div>
+
+      <div class="checkout-body-scroll">
+        <!-- STEP 1: Address & Customer Details -->
+        <div id="checkout-step-1">
+          <h4 style="font-size:1.1rem; font-weight:800; color:#0F172A; margin-bottom:1rem;">
+            Step 1: Contact & Delivery Information
+          </h4>
+
+          <!-- Verified Customer Login Box in Checkout -->
+          <div id="checkout-customer-auth-box"></div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="chk-fullname" class="form-label">Full Name *</label>
+              <input type="text" id="chk-fullname" class="form-input" placeholder="e.g. Ramesh Shrestha" value="Ramesh Shrestha" required>
+            </div>
+            <div class="form-group">
+              <label for="chk-phone" class="form-label">Nepal Mobile Number (+977) *</label>
+              <input type="tel" id="chk-phone" class="form-input" placeholder="98XXXXXXXX" value="9841234567" required>
+            </div>
+          </div>
+
+          <div class="form-grid-2" style="margin-top:1rem;">
+            <div class="form-group">
+              <label for="chk-email" class="form-label">Email Address (Optional)</label>
+              <input type="email" id="chk-email" class="form-input" placeholder="name@domain.com" value="ramesh.nepal@gmail.com">
+            </div>
+            <div class="form-group">
+              <label for="chk-buyer-pan" class="form-label">Company VAT / PAN (Optional)</label>
+              <input type="text" id="chk-buyer-pan" class="form-input" placeholder="e.g. 601928374">
+            </div>
+          </div>
+
+          <div class="form-grid-2" style="margin-top:1rem;">
+            <div class="form-group">
+              <label for="chk-province" class="form-label">Province *</label>
+              <select id="chk-province" class="form-select">
+                <option value="bagmati" selected>Bagmati Province (बागमती)</option>
+                <option value="lumbini">Lumbini Province (लुम्बिनी)</option>
+                <option value="gandaki">Gandaki Province (गण्डकी)</option>
+                <option value="koshi">Koshi Province (कोशी)</option>
+                <option value="madhesh">Madhesh Province (मधेश)</option>
+                <option value="karnali">Karnali Province (कर्णाली)</option>
+                <option value="sudurpashchim">Sudurpashchim (सुदूरपश्चिम)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="chk-district" class="form-label">District *</label>
+              <select id="chk-district" class="form-select">
+                <option value="Kathmandu" selected>Kathmandu</option>
+                <option value="Lalitpur">Lalitpur</option>
+                <option value="Bhaktapur">Bhaktapur</option>
+                <option value="Chitwan">Chitwan</option>
+                <option value="Rupandehi">Rupandehi (Butwal)</option>
+                <option value="Kaski">Kaski (Pokhara)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-grid-2" style="margin-top:1rem;">
+            <div class="form-group">
+              <label for="chk-city" class="form-label">Municipality / City *</label>
+              <input type="text" id="chk-city" class="form-input" placeholder="e.g. Kathmandu Metro" value="Kathmandu Metro">
+            </div>
+            <div class="form-group">
+              <label for="chk-ward" class="form-label">Ward No. *</label>
+              <input type="text" id="chk-ward" class="form-input" placeholder="e.g. 10" value="10">
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top:1rem;">
+            <label for="chk-address" class="form-label">Street / Tole / Colony Address *</label>
+            <input type="text" id="chk-address" class="form-input" placeholder="e.g. New Baneshwor, Near Everest Hotel" value="New Baneshwor, Tole-4">
+          </div>
+
+          <div class="form-group" style="margin-top:1rem;">
+            <label for="chk-landmark" class="form-label">Notable Landmark (Helps delivery rider)</label>
+            <input type="text" id="chk-landmark" class="form-input" placeholder="e.g. Opposite Krishna Bakery">
+          </div>
+
+          <div style="display:flex; justify-content:flex-end; margin-top:2rem;">
+            <button class="btn-primary-red" onclick="window.cartSystem.goToCheckoutStep(2)">
+              <span>Continue to Installation & Services</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 2: Delivery & Installation Options -->
+        <div id="checkout-step-2" style="display:none;">
+          <h4 style="font-size:1.1rem; font-weight:800; color:#0F172A; margin-bottom:1.25rem;">
+            Step 2: Delivery Method & Free Installation Options
+          </h4>
+
+          <div style="display:flex; flex-direction:column; gap:1rem; margin-bottom:1.5rem;">
+            <label style="border:2px solid var(--color-exide-blue); border-radius:var(--radius-lg); padding:1.25rem; display:flex; align-items:flex-start; gap:1rem; cursor:pointer; background:var(--color-exide-blue-light);">
+              <input type="radio" name="delivery-type" value="Doorstep Express Delivery" checked style="margin-top:0.25rem; accent-color:var(--color-exide-blue);">
+              <div>
+                <div style="font-weight:800; color:#0F172A; font-size:1rem;">Express Doorstep Delivery with Technician (Recommended)</div>
+                <div style="font-size:0.85rem; color:#475569; margin-top:0.25rem;">Our certified technician delivers the battery and performs free terminal greasing & clamp check.</div>
+                <div style="color:var(--color-success); font-weight:700; font-size:0.85rem; margin-top:0.25rem;">FREE Shipping & Fitting inside City Limits</div>
+              </div>
+            </label>
+
+            <label style="border:1.5px solid var(--color-border); border-radius:var(--radius-lg); padding:1.25rem; display:flex; align-items:flex-start; gap:1rem; cursor:pointer; background:#fff;">
+              <input type="radio" name="delivery-type" value="Self Pickup at Outlet" style="margin-top:0.25rem; accent-color:var(--color-exide-blue);">
+              <div>
+                <div style="font-weight:800; color:#0F172A; font-size:1rem;">Self-Pickup from Store Outlet</div>
+                <div style="font-size:0.85rem; color:#475569; margin-top:0.25rem;">Pick up directly from Kathmandu Teku, Butwal HQ, Pokhara, or Chitwan outlets.</div>
+              </div>
+            </label>
+          </div>
+
+          <div style="background:#F8FAFC; border:1px solid var(--color-border); border-radius:var(--radius-md); padding:1.25rem; margin-bottom:1.5rem;">
+            <h5 style="font-weight:700; color:#0F172A; margin-bottom:0.75rem;">Complimentary Nepal Power Services Included:</h5>
+            <div style="display:flex; flex-direction:column; gap:0.5rem; font-size:0.875rem;">
+              <label style="display:flex; align-items:center; gap:0.5rem;">
+                <input type="checkbox" id="chk-fitting-service" checked disabled style="accent-color:var(--color-success);">
+                <span>Free Battery Terminal Greasing (Prevents sulfur buildup)</span>
+              </label>
+              <label style="display:flex; align-items:center; gap:0.5rem;">
+                <input type="checkbox" checked disabled style="accent-color:var(--color-success);">
+                <span>Free Inverter Charging Voltage Calibration Check</span>
+              </label>
+              <label style="display:flex; align-items:center; gap:0.5rem;">
+                <input type="checkbox" checked disabled style="accent-color:var(--color-success);">
+                <span>Free Official Stamped Warranty Card Verification</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="chk-notes" class="form-label">Special Delivery Instructions / Preferred Time Slot</label>
+            <textarea id="chk-notes" class="form-textarea" placeholder="e.g. Please deliver between 10am-1pm, call before arriving."></textarea>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; margin-top:2rem;">
+            <button class="btn-outline-white" style="border-color:#CBD5E1; color:#0F172A;" onclick="window.cartSystem.goToCheckoutStep(1)">
+              Back
+            </button>
+            <button class="btn-primary-red" onclick="window.cartSystem.goToCheckoutStep(3)">
+              <span>Continue to Nepal Payment</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 3: Nepal Payment Gateways -->
+        <div id="checkout-step-3" style="display:none;">
+          <h4 style="font-size:1.1rem; font-weight:800; color:#0F172A; margin-bottom:0.75rem;">
+            Step 3: Select Nepal Payment Method
+          </h4>
+
+          <div id="checkout-payment-summary"></div>
+
+          <!-- Payment Options Grid -->
+          <div class="payment-methods-grid">
+            <!-- eSewa -->
+            <div class="payment-method-card selected" data-method="esewa" onclick="window.cartSystem.selectPaymentMethod('esewa')">
+              <div class="payment-logo-badge esewa">eSewa</div>
+              <div>
+                <div style="font-weight:800; color:#0F172A;">eSewa Mobile Wallet</div>
+                <div style="font-size:0.75rem; color:#64748B;">Nepal's #1 digital wallet</div>
+              </div>
+            </div>
+
+            <!-- Khalti -->
+            <div class="payment-method-card" data-method="khalti" onclick="window.cartSystem.selectPaymentMethod('khalti')">
+              <div class="payment-logo-badge khalti">Khalti</div>
+              <div>
+                <div style="font-weight:800; color:#0F172A;">Khalti Digital Wallet</div>
+                <div style="font-size:0.75rem; color:#64748B;">Instant online pay & cashback</div>
+              </div>
+            </div>
+
+            <!-- Fonepay Dynamic QR -->
+            <div class="payment-method-card" data-method="fonepay" onclick="window.cartSystem.selectPaymentMethod('fonepay')">
+              <div class="payment-logo-badge fonepay">Fonepay</div>
+              <div>
+                <div style="font-weight:800; color:#0F172A;">Fonepay Dynamic QR</div>
+                <div style="font-size:0.75rem; color:#64748B;">Scan with any Nepal bank app</div>
+              </div>
+            </div>
+
+            <!-- Cash on Delivery -->
+            <div class="payment-method-card" data-method="cod" onclick="window.cartSystem.selectPaymentMethod('cod')">
+              <div class="payment-logo-badge cod">COD</div>
+              <div>
+                <div style="font-weight:800; color:#0F172A;">Cash / Card on Delivery</div>
+                <div style="font-size:0.75rem; color:#64748B;">Pay after battery installation</div>
+              </div>
+            </div>
+
+            <!-- Bank Transfer -->
+            <div class="payment-method-card" data-method="bank" onclick="window.cartSystem.selectPaymentMethod('bank')" style="grid-column: 1 / -1;">
+              <div class="payment-logo-badge bank">Bank</div>
+              <div>
+                <div style="font-weight:800; color:#0F172A;">Direct Bank Transfer / ConnectIPS</div>
+                <div style="font-size:0.75rem; color:#64748B;">NIC Asia, Global IME, Nabil Bank corporate accounts</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Gateway Sub-Panels -->
+          <!-- eSewa Details -->
+          <div id="pay-details-esewa" style="background:#F0FDF4; border:1.5px solid var(--color-esewa); border-radius:var(--radius-md); padding:1.25rem;">
+            <div style="display:flex; align-items:center; gap:0.5rem; color:var(--color-esewa); font-weight:800; margin-bottom:0.5rem;">
+              <span>eSewa Instant Pay & QR Checkout</span>
+            </div>
+            <p style="font-size:0.85rem; color:#166534; margin-bottom:0.75rem;">
+              Scan the dynamic QR code below using your eSewa app. The billed amount will automatically appear on your screen:
+            </p>
+            <div class="dynamic-qr-slot"></div>
+            <div class="form-group" style="margin-top:1rem;">
+              <label for="esewa-id-input" class="form-label" style="color:#166534;">eSewa Registered Mobile / Email</label>
+              <input type="text" id="esewa-id-input" class="form-input" placeholder="98XXXXXXXX" value="9857086733">
+            </div>
+          </div>
+
+          <!-- Khalti Details -->
+          <div id="pay-details-khalti" style="display:none; background:#FAF5FF; border:1.5px solid var(--color-khalti); border-radius:var(--radius-md); padding:1.25rem;">
+            <div style="color:var(--color-khalti); font-weight:800; margin-bottom:0.5rem;">Khalti Payment Gateway & QR</div>
+            <p style="font-size:0.85rem; color:#6B21A8; margin-bottom:0.75rem;">
+              Scan the dynamic QR code below using Khalti or enter your Khalti mobile number:
+            </p>
+            <div class="dynamic-qr-slot"></div>
+            <div class="form-group" style="margin-top:1rem;">
+              <label for="khalti-phone-input" class="form-label" style="color:#6B21A8;">Khalti Mobile Number</label>
+              <input type="text" id="khalti-phone-input" class="form-input" placeholder="98XXXXXXXX" value="9857086733">
+            </div>
+          </div>
+
+          <!-- Fonepay Details -->
+          <div id="pay-details-fonepay" style="display:none; background:#FFF1F2; border:1.5px solid var(--color-fonepay); border-radius:var(--radius-md); padding:1.25rem;">
+            <div class="fonepay-qr-display">
+              <div style="color:var(--color-fonepay); font-weight:800; margin-bottom:0.5rem;">Scan & Pay via Fonepay / NepalPay QR</div>
+              <p style="font-size:0.8rem; color:#475569; margin-bottom:0.75rem;">
+                Compatible with all Nepal mobile banking apps (Global IME, NIC Asia, Nabil, Prabhu, Sanima, etc.)
+              </p>
+              <div class="dynamic-qr-slot"></div>
+            </div>
+            <div class="form-group" style="margin-top:1rem;">
+              <label for="fonepay-ref-input" class="form-label" style="color:var(--color-fonepay);">Bank Reference Number / Transaction ID</label>
+              <input type="text" id="fonepay-ref-input" class="form-input" placeholder="e.g. FP-98127392" value="FP-98127392">
+            </div>
+          </div>
+
+          <!-- Bank Details -->
+          <div id="pay-details-bank" style="display:none; background:#F0F7FF; border:1.5px solid var(--color-exide-blue); border-radius:var(--radius-md); padding:1.25rem;">
+            <h5 style="color:var(--color-exide-blue); font-weight:800; margin-bottom:0.5rem;">Corporate Bank Transfer & NepalPay QR</h5>
+            <div class="dynamic-qr-slot"></div>
+            <div style="font-size:0.85rem; color:#334155; line-height:1.6; margin-top:1rem;">
+              <p><strong>Bank:</strong> Global IME Bank Ltd. (Main Branch)</p>
+              <p><strong>Account Name:</strong> Exide Battery Wholesale (AET Official Partner)</p>
+              <p><strong>Account Number:</strong> 01010100482910</p>
+              <p><strong>Branch:</strong> Traffic Chowk, Butwal / New Road, Kathmandu</p>
+            </div>
+          </div>
+
+          <!-- COD Details -->
+          <div id="pay-details-cod" style="display:none; background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:var(--radius-md); padding:1.25rem;">
+            <h5 style="font-weight:800; color:#0F172A; margin-bottom:0.5rem;">Cash or Card on Delivery</h5>
+            <p style="font-size:0.85rem; color:#475569;">
+              You do not need to pay anything in advance. Inspect your new battery, review the stamped warranty card, observe technician test parameters, and pay using cash or mobile banking to our rider upon completion.
+            </p>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; margin-top:2rem;">
+            <button class="btn-outline-white" style="border-color:#CBD5E1; color:#0F172A;" onclick="window.cartSystem.goToCheckoutStep(2)">
+              Back
+            </button>
+            <button class="btn-primary-red" id="btn-confirm-order-action" onclick="window.cartSystem.processFinalOrder()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Confirm & Place Order</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 4: Order Confirmation & Nepal VAT Bill -->
+        <div id="checkout-step-4" style="display:none;">
+          <!-- Dynamically populated with Tax Invoice via js/cart-checkout.js -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       14. STOCK & INVENTORY MANAGEMENT SYSTEM (ADMIN ERP MODAL)
+       ========================================================================== -->
+  <div class="modal-overlay" id="admin-modal-overlay">
+    <div class="admin-modal-content">
+      <div class="admin-header">
+        <div class="admin-title-row">
+          <img src="assets/logo.png" alt="Exide Battery Wholesale" style="height:32px; filter:brightness(1.2);">
+          <h2 class="admin-title">Exide Battery Wholesale • Commercial Store ERP & Logistics System</h2>
+          <span class="admin-badge-live">● Live Store Sync</span>
+          <div id="erp-admin-status-strip"></div>
+        </div>
+        <button onclick="window.stockManager.closeAdminModal()" style="color:#fff; font-size:1.75rem; line-height:1; background:none; border:none; cursor:pointer;" aria-label="Close ERP">&times;</button>
+      </div>
+
+      <!-- Real-Time KPIs -->
+      <div class="admin-kpis-bar">
+        <div class="kpi-stat-card">
+          <div class="kpi-stat-label">Total Unique SKUs</div>
+          <div class="kpi-stat-val blue" id="kpi-total-skus">0</div>
+        </div>
+        <div class="kpi-stat-card">
+          <div class="kpi-stat-label">Total Units In Stock</div>
+          <div class="kpi-stat-val" id="kpi-total-units">0</div>
+        </div>
+        <div class="kpi-stat-card">
+          <div class="kpi-stat-label">Asset Valuation (Cost)</div>
+          <div class="kpi-stat-val green" id="kpi-asset-val">NPR 0</div>
+        </div>
+        <div class="kpi-stat-card">
+          <div class="kpi-stat-label">Retail Value (NPR)</div>
+          <div class="kpi-stat-val" id="kpi-retail-val">NPR 0</div>
+        </div>
+        <div class="kpi-stat-card">
+          <div class="kpi-stat-label">Stock Alerts</div>
+          <div class="kpi-stat-val red" id="kpi-low-stock">0</div>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <div class="admin-tabs-nav">
+        <button type="button" class="admin-tab-btn active" data-tab="inventory" onclick="window.stockManager.switchAdminTab('inventory')">
+          📦 Inventory & SKUs
+        </button>
+        <button type="button" class="admin-tab-btn" data-tab="orders" onclick="window.stockManager.switchAdminTab('orders')">
+          🛍️ Commercial Orders (<span id="admin-orders-count-badge">0</span>)
+        </button>
+        <button type="button" class="admin-tab-btn" data-tab="audit" onclick="window.stockManager.switchAdminTab('audit')">
+          📋 Inventory Audit Trail
+        </button>
+        <button type="button" class="admin-tab-btn" data-tab="settings" onclick="window.stockManager.switchAdminTab('settings')">
+          ⚙️ Store & ERP Settings
+        </button>
+      </div>
+
+      <!-- TAB 1: INVENTORY & SKUS -->
+      <div id="admin-tab-inventory">
+        <div class="admin-controls-strip">
+          <div class="admin-filter-group">
+            <input type="text" id="admin-search-input" placeholder="Search SKU or Name..." style="height:36px; padding:0 0.75rem; border:1px solid var(--color-border); border-radius:6px; font-size:0.85rem;" oninput="window.stockManager.filterAndRenderTable()">
+            <select id="admin-brand-filter" style="height:36px; padding:0 0.5rem; border:1px solid var(--color-border); border-radius:6px; font-size:0.85rem;" onchange="window.stockManager.filterAndRenderTable()">
+              <option value="all">All Brands</option>
+              <option value="exide">Exide</option>
+              <option value="smarten">Smarten</option>
+              <option value="livfast">Livfast</option>
+              <option value="sf-sonic">SF Sonic</option>
+              <option value="genus">Genus</option>
+              <option value="eastman">Eastman</option>
+            </select>
+            <select id="admin-status-filter" style="height:36px; padding:0 0.5rem; border:1px solid var(--color-border); border-radius:6px; font-size:0.85rem;" onchange="window.stockManager.filterAndRenderTable()">
+              <option value="all">All Stock Statuses</option>
+              <option value="in-stock">In Stock Only</option>
+              <option value="low-stock">Low Stock Alerts</option>
+              <option value="out-stock">Out of Stock</option>
+            </select>
+          </div>
+
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+            <button class="btn-primary-red" style="height:36px; font-size:0.8rem; padding:0 0.9rem;" onclick="window.stockManager.openProductFormModal()">
+              + Add New SKU
+            </button>
+            <button class="btn-header-action btn-admin-pill" style="height:36px; font-size:0.8rem; padding:0 0.9rem;" onclick="window.stockManager.exportToCSV()">
+              Export CSV
+            </button>
+            <button class="btn-header-action" style="border:1px solid #CBD5E1; height:36px; font-size:0.8rem; padding:0 0.8rem;" onclick="window.stockManager.resetDemoData()">
+              Reset Demo
+            </button>
+          </div>
+        </div>
+
+        <div class="admin-table-container">
+          <table class="admin-stock-table">
+            <thead>
+              <tr>
+                <th>SKU</th>
+                <th>Product Title & Capacity</th>
+                <th>Brand</th>
+                <th>Cost (NPR)</th>
+                <th>Retail (NPR)</th>
+                <th>Margin</th>
+                <th style="text-align:center;">Stock Qty</th>
+                <th>Status</th>
+                <th style="text-align:center;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-stock-table-body">
+              <!-- Rendered via js/stock-management.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB 2: COMMERCIAL ORDERS MANAGEMENT -->
+      <div id="admin-tab-orders" style="display:none;">
+        <div class="admin-controls-strip">
+          <div class="admin-filter-group">
+            <input type="text" id="admin-orders-search" placeholder="Search Order ID, Customer, Phone, City..." style="height:36px; padding:0 0.75rem; border:1px solid var(--color-border); border-radius:6px; font-size:0.85rem; width:280px;" oninput="window.stockManager.renderOrdersTable()">
+            <select id="admin-orders-status-filter" style="height:36px; padding:0 0.5rem; border:1px solid var(--color-border); border-radius:6px; font-size:0.85rem;" onchange="window.stockManager.renderOrdersTable()">
+              <option value="all">All Order Stages</option>
+              <option value="confirmed">Confirmed Orders</option>
+              <option value="pending">Pending Orders</option>
+              <option value="processing">Processing & Packaged</option>
+              <option value="dispatched">Dispatched / Out for Fitting</option>
+              <option value="delivered">Delivered & Finalized</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
+          <div style="font-size:0.85rem; color:#64748B; font-weight:600;">
+            Nepal Nationwide Commercial Orders & Doorstep Installation Dispatch
+          </div>
+        </div>
+
+        <div class="admin-table-container">
+          <table class="admin-stock-table">
+            <thead>
+              <tr>
+                <th>Order ID & Date</th>
+                <th>Customer & Phone</th>
+                <th>Packaging Destination</th>
+                <th>Ordered Items</th>
+                <th>Grand Total</th>
+                <th>Payment</th>
+                <th>Assigned Logistics</th>
+                <th style="text-align:center;">Stage</th>
+                <th style="text-align:center;">Commercial Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-orders-table-body">
+              <!-- Rendered via js/stock-management.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB 3: INVENTORY AUDIT TRAIL -->
+      <div id="admin-tab-audit" style="display:none;">
+        <div class="admin-table-container">
+          <div style="padding:1rem 1.5rem; background:#F8FAFC; border-bottom:1px solid var(--color-border); display:flex; justify-content:space-between; align-items:center;">
+            <h4 style="font-size:0.95rem; font-weight:800; color:#0F172A; margin:0;">Complete Chronological Audit Trail & Restock History</h4>
+            <span style="font-size:0.8rem; color:#64748B;">Automated compliance logging</span>
+          </div>
+          <table class="admin-stock-table">
+            <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>SKU</th>
+                <th>Action</th>
+                <th>Stock Change</th>
+                <th>Audit Reason / Reference</th>
+                <th>Author</th>
+              </tr>
+            </thead>
+            <tbody id="admin-audit-logs-body">
+              <!-- Rendered via js/stock-management.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB 4: STORE & ERP SETTINGS -->
+      <div id="admin-tab-settings" style="display:none; padding:1.5rem 2rem;">
+        <div id="admin-settings-container">
+          <!-- Rendered via js/stock-management.js -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sub-Modal: Quick Stock Adjust / Restock -->
+  <div class="modal-overlay" id="stock-adjust-modal">
+    <div style="background:#fff; border-radius:var(--radius-lg); padding:2rem; width:100%; max-width:480px; box-shadow:var(--shadow-xl);">
+      <h3 style="font-family:var(--font-heading); font-size:1.25rem; font-weight:800; color:#0F172A; margin-bottom:0.25rem;">
+        Inventory Stock Adjustment
+      </h3>
+      <div id="adjust-product-title" style="font-size:0.9rem; font-weight:700; color:var(--color-exide-blue); margin-bottom:1rem;"></div>
+      <p style="font-size:0.85rem; color:#64748B; margin-bottom:1rem;">
+        Current Stock: <strong id="adjust-current-stock" style="color:#0F172A; font-size:1.1rem;">0</strong> units
+      </p>
+
+      <input type="hidden" id="adjust-product-id">
+
+      <div class="form-group" style="margin-bottom:1rem;">
+        <label for="adjust-action-type" class="form-label">Action</label>
+        <select id="adjust-action-type" class="form-select">
+          <option value="add">Receive Inbound Shipment (+)</option>
+          <option value="deduct">Deduct / Damaged / Return (-)</option>
+        </select>
+      </div>
+
+      <div class="form-group" style="margin-bottom:1rem;">
+        <label for="adjust-qty-input" class="form-label">Quantity</label>
+        <input type="number" id="adjust-qty-input" class="form-input" min="1" value="10">
+      </div>
+
+      <div class="form-group" style="margin-bottom:1.5rem;">
+        <label for="adjust-reason-input" class="form-label">Reason / Reference Note</label>
+        <input type="text" id="adjust-reason-input" class="form-input" placeholder="e.g. Shipment invoice #4928">
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:0.75rem;">
+        <button class="btn-outline-white" style="border-color:#CBD5E1; color:#0F172A;" onclick="document.getElementById('stock-adjust-modal').classList.remove('open')">
+          Cancel
+        </button>
+        <button class="btn-primary-red" onclick="window.stockManager.submitStockAdjustment()">
+          Save Stock Change
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sub-Modal: Add / Edit Product SKU with Media Uploads & Dynamic Tech Features -->
+  <div class="modal-overlay" id="new-product-modal">
+    <div style="background:#fff; border-radius:var(--radius-xl); padding:2rem; width:100%; max-width:720px; box-shadow:var(--shadow-xl); max-height:90vh; overflow-y:auto;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; border-bottom:1.5px solid var(--color-border); padding-bottom:0.75rem;">
+        <h3 id="product-form-title" style="font-family:var(--font-heading); font-size:1.35rem; font-weight:800; color:#0F172A; margin:0;">
+          Add New Product to Inventory
+        </h3>
+        <button type="button" onclick="document.getElementById('new-product-modal').classList.remove('open')" style="font-size:1.5rem; background:none; border:none; cursor:pointer; color:#64748B;">&times;</button>
+      </div>
+
+      <form id="new-product-form" onsubmit="event.preventDefault(); window.stockManager.saveProductFromForm();">
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="new-sku" class="form-label">SKU Code *</label>
+            <input type="text" id="new-sku" class="form-input" placeholder="e.g. EX-IMTT1500" required>
+          </div>
+          <div class="form-group">
+            <label for="new-brand" class="form-label">Brand *</label>
+            <select id="new-brand" class="form-select" onchange="window.stockManager.onBrandChange(this.value)">
+              <option value="Exide">Exide</option>
+              <option value="Smarten">Smarten</option>
+              <option value="Livfast">Livfast</option>
+              <option value="SF Sonic">SF Sonic</option>
+              <option value="Eastman">Eastman</option>
+              <option value="Genus">Genus</option>
+              <option value="Geon">Geon</option>
+              <option value="Luminous">Luminous</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top:1rem;">
+          <label for="new-name" class="form-label">Product Name / Title *</label>
+          <input type="text" id="new-name" class="form-input" placeholder="e.g. Exide 150 Ah Invamaster Tubular Battery - IMTT1500" required>
+        </div>
+
+        <!-- Category Selection with Custom Category capability -->
+        <div class="form-grid-2" style="margin-top:1rem;">
+          <div class="form-group">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.25rem;">
+              <label for="new-category" class="form-label" style="margin-bottom:0;">Category *</label>
+              <button type="button" onclick="const name = prompt('Enter New Custom Category Name:'); if(name) { const newId = window.stockManager.addCustomCategory(name); window.stockManager.populateCategoryDropdowns(newId); window.stockManager.renderCategoryTechFields(newId); }" style="background:none; border:none; color:var(--color-exide-blue); font-size:0.75rem; font-weight:700; cursor:pointer;">
+                + Add Custom Category
+              </button>
+            </div>
+            <select id="new-category" class="form-select" onchange="if(this.value === '__new_custom__'){ const name = prompt('Enter New Custom Category Name:'); if(name){ const newId = window.stockManager.addCustomCategory(name); this.value = newId; window.stockManager.renderCategoryTechFields(newId); } else { this.value = 'inverter-battery'; } } else { window.stockManager.renderCategoryTechFields(this.value); }">
+              <!-- Dynamically populated via js/stock-management.js -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="new-capacity" class="form-label">Capacity Specification</label>
+            <input type="text" id="new-capacity" class="form-input" placeholder="e.g. 150Ah - 12V or 1050VA / 840W">
+          </div>
+        </div>
+
+        <!-- Descriptions -->
+        <div class="form-group" style="margin-top:1rem;">
+          <label for="new-short-desc" class="form-label">Short Description (Catalog Summary)</label>
+          <input type="text" id="new-short-desc" class="form-input" placeholder="e.g. Heavy-duty tubular plate battery engineered for deep cyclic discharges in Nepal.">
+        </div>
+
+        <!-- Rich Text Detailed Product Description with Media/Formatting Support -->
+        <div class="form-group" style="margin-top:1rem;">
+          <label class="form-label" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
+            <span>Detailed Product Description *</span>
+            <span style="font-size:0.75rem; color:#64748B; font-weight:normal;">Rich text formatting & media file insertion supported</span>
+          </label>
+
+          <!-- Rich Text Formatting Toolbar -->
+          <div class="rte-toolbar" id="desc-rte-toolbar">
+            <div class="rte-btn-group">
+              <button type="button" class="rte-btn" onclick="formatDescText('bold')" title="Bold (Ctrl+B)"><b>B</b></button>
+              <button type="button" class="rte-btn" onclick="formatDescText('italic')" title="Italic (Ctrl+I)"><i>I</i></button>
+              <button type="button" class="rte-btn" onclick="formatDescText('underline')" title="Underline (Ctrl+U)"><u>U</u></button>
+              <button type="button" class="rte-btn" onclick="formatDescText('strikeThrough')" title="Strikethrough"><s>S</s></button>
+            </div>
+            <div class="rte-btn-group">
+              <select class="rte-select" onchange="formatDescHeading(this.value)">
+                <option value="p">Normal text</option>
+                <option value="h3">Heading 3</option>
+                <option value="h4">Heading 4</option>
+                <option value="lead">Lead paragraph</option>
+              </select>
+              <select class="rte-select" onchange="formatDescFontSize(this.value)">
+                <option value="3">Size: Medium</option>
+                <option value="2">Size: Small</option>
+                <option value="4">Size: Large</option>
+                <option value="5">Size: Extra Large</option>
+              </select>
+            </div>
+            <div class="rte-btn-group">
+              <button type="button" class="rte-btn" onclick="formatDescText('insertUnorderedList')" title="Bullet List">• List</button>
+              <button type="button" class="rte-btn" onclick="formatDescText('insertOrderedList')" title="Numbered List">1. List</button>
+            </div>
+            <div class="rte-btn-group">
+              <button type="button" class="rte-btn" onclick="insertDescLink()" title="Insert Web Link">🔗 Link</button>
+              <label class="rte-btn rte-upload-btn" title="Insert / Upload Multiple Media Files (Images or Videos)">
+                📷 Multi-Media
+                <input type="file" accept="image/*,video/*" multiple style="display:none;" onchange="insertDescMediaFiles(this.files)">
+              </label>
+              <button type="button" class="rte-btn" onclick="formatDescText('removeFormat')" title="Clear Formatting">🧹 Clear</button>
+            </div>
+            <!-- Table Tools Group -->
+            <div class="rte-btn-group" id="rte-desc-table-group">
+              <button type="button" class="rte-btn rte-btn-primary-table" onclick="openDescTableModal()" title="Insert Responsive Table into Description">
+                📊 Insert Table
+              </button>
+              <button type="button" class="rte-btn" onclick="addDescTableRow()" title="Add Row to Current/Last Table">➕ Row</button>
+              <button type="button" class="rte-btn" onclick="addDescTableColumn()" title="Add Column to Current/Last Table">➕ Col</button>
+              <button type="button" class="rte-btn" onclick="deleteDescTableRow()" title="Delete Row from Table">➖ Row</button>
+              <button type="button" class="rte-btn" onclick="deleteDescTableColumn()" title="Delete Column from Table">➖ Col</button>
+              <button type="button" class="rte-btn rte-btn-del" onclick="deleteDescTable()" title="Delete Table from Description">🗑️ Table</button>
+            </div>
+          </div>
+
+          <!-- Rich Text Editable Container -->
+          <div id="new-detailed-desc-editor" class="rte-editor-container" contenteditable="true" placeholder="Enter rich product background, engineering features, applications, durability..." oninput="document.getElementById('new-detailed-desc').value = this.innerHTML;"></div>
+          <textarea id="new-detailed-desc" style="display:none;"></textarea>
+        </div>
+
+        <!-- Media Uploads: Multiple Media & Images Upload System -->
+        <div class="product-media-mgmt-box" style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:10px; padding:1.25rem; margin-top:1.25rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem; flex-wrap:wrap; gap:0.5rem;">
+            <div>
+              <label class="form-label" style="font-weight:800; color:#0F172A; margin-bottom:0.15rem; display:flex; align-items:center; gap:0.4rem;">
+                <span>🖼️ Product Images & Media Files</span>
+                <span class="badge-multi-upload">Multi-Upload Enabled</span>
+              </label>
+              <span style="font-size:0.78rem; color:#64748B;">Upload multiple images, videos, and technical spec sheets simultaneously</span>
+            </div>
+            <div style="display:flex; gap:0.5rem;">
+              <button type="button" class="btn-sm btn-outline-primary" onclick="document.getElementById('new-multi-media-input').click()" style="padding:0.35rem 0.75rem; font-size:0.8rem; border-radius:6px; cursor:pointer;">
+                📁 Browse Multiple Files
+              </button>
+            </div>
+          </div>
+          
+          <!-- Drag & Drop Upload Zone -->
+          <div id="media-dropzone" class="media-dropzone" onclick="document.getElementById('new-multi-media-input').click()">
+            <input type="file" id="new-multi-media-input" accept="image/*,video/*,application/pdf" multiple style="display:none;" onchange="window.stockManager.handleMultipleMediaUpload(this.files)">
+            <div class="dropzone-content">
+              <div class="dropzone-icon">☁️</div>
+              <div class="dropzone-text">
+                <strong>Click to browse or Drag & Drop multiple media files here</strong>
+                <p>Supports multiple JPG, PNG, WEBP, SVG images, MP4 videos, and PDF spec sheets</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick URL Adder -->
+          <div class="media-url-adder-row" style="margin-top:0.75rem; display:flex; gap:0.5rem; align-items:center;">
+            <input type="text" id="new-media-url-input" class="form-input" style="flex:1; font-size:0.85rem;" placeholder="Or paste Image/Media URL (e.g. assets/images/exide-imtt1500.png or https://...) — multiple comma-separated URLs supported" onkeydown="if(event.key==='Enter'){event.preventDefault(); window.stockManager.addMediaFromUrlInput();}">
+            <button type="button" class="btn-secondary-blue" style="padding:0.55rem 0.9rem; font-size:0.82rem; white-space:nowrap;" onclick="window.stockManager.addMediaFromUrlInput()">
+              + Add URL
+            </button>
+          </div>
+
+          <!-- Hidden Synchronized Elements for Legacy Support -->
+          <input type="hidden" id="new-image-url" value="">
+          <img id="new-image-preview" src="" alt="Preview" style="display:none;">
+
+          <!-- Interactive Uploaded Media Gallery Preview Grid -->
+          <div id="product-media-gallery" class="product-media-gallery-container" style="margin-top:0.75rem;">
+            <!-- Rendered dynamically by window.stockManager.renderMediaGalleryUI() -->
+          </div>
+
+          <!-- Brochure / PDF Manual Link -->
+          <div style="margin-top:0.9rem; border-top:1px dashed #CBD5E1; padding-top:0.75rem;">
+            <label style="font-size:0.8rem; font-weight:700; color:#475569; display:block; margin-bottom:0.25rem;">
+              📄 Official Product Brochure / PDF Datasheet Link (Optional)
+            </label>
+            <input type="text" id="new-brochure-url" class="form-input" placeholder="e.g. assets/docs/exide-imtt1500-specsheet.pdf or https://..." style="font-size:0.85rem;">
+          </div>
+        </div>
+
+        <!-- Dynamic Category-Specific Technical Features Container -->
+        <div style="margin-top:1.25rem;">
+          <label class="form-label" style="font-weight:800; color:#0F172A; display:block; margin-bottom:0.5rem;">
+            ⚙️ Category-Specific Technical Features
+          </label>
+          <div id="new-tech-features-container">
+            <!-- Dynamically rendered based on selected category via js/stock-management.js -->
+          </div>
+        </div>
+
+        <!-- Pricing & Stock -->
+        <div class="form-grid-2" style="margin-top:1rem;">
+          <div class="form-group">
+            <label for="new-cost" class="form-label">Cost Price (NPR)</label>
+            <input type="number" id="new-cost" class="form-input" placeholder="25000" required>
+          </div>
+          <div class="form-group">
+            <label for="new-price" class="form-label">Selling Retail Price (NPR) *</label>
+            <input type="number" id="new-price" class="form-input" placeholder="32000" required>
+          </div>
+        </div>
+
+        <div class="form-grid-2" style="margin-top:1rem;">
+          <div class="form-group">
+            <label for="new-stock" class="form-label">Current Stock Quantity</label>
+            <input type="number" id="new-stock" class="form-input" placeholder="10" value="10">
+          </div>
+          <div class="form-group">
+            <label for="new-min-stock" class="form-label">Minimum Stock Alert Threshold</label>
+            <input type="number" id="new-min-stock" class="form-input" placeholder="3" value="3">
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top:1rem;">
+          <label for="new-warranty" class="form-label">Warranty Period</label>
+          <input type="text" id="new-warranty" class="form-input" placeholder="e.g. 36 Months Warranty" value="36 Months">
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:0.75rem; margin-top:2rem;">
+          <button type="button" class="btn-outline-white" style="border-color:#CBD5E1; color:#0F172A;" onclick="document.getElementById('new-product-modal').classList.remove('open')">
+            Cancel
+          </button>
+          <button type="submit" id="product-form-submit-btn" class="btn-primary-red">
+            Save Product Entry
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Sub-Modal: Commercial Order Details & Tracking Inspector -->
+  <div class="modal-overlay" id="order-detail-modal">
+    <div style="background:#fff; border-radius:var(--radius-xl); width:100%; max-width:880px; box-shadow:var(--shadow-xl); max-height:92vh; overflow:hidden; display:flex; flex-direction:column;">
+      <div id="order-detail-content">
+        <!-- Rendered dynamically via js/stock-management.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Sub-Modal: Insert Table in Product Description -->
+  <div class="modal-overlay" id="desc-table-modal">
+    <div class="table-modal-card">
+      <div class="table-modal-header">
+        <div style="display:flex; align-items:center; gap:0.5rem;">
+          <span style="font-size:1.35rem;">📊</span>
+          <h3 style="font-family:var(--font-heading); font-size:1.25rem; font-weight:800; color:#0F172A; margin:0;">
+            Insert Table in Product Description
+          </h3>
+        </div>
+        <button type="button" onclick="closeDescTableModal()" class="modal-close-btn">&times;</button>
+      </div>
+
+      <div class="table-modal-body">
+        <!-- Quick Presets -->
+        <div style="margin-bottom:1.15rem;">
+          <label style="font-size:0.8rem; font-weight:700; color:#475569; display:block; margin-bottom:0.4rem;">
+            ⚡ Quick Presets (Click to instant-apply format)
+          </label>
+          <div class="table-presets-row">
+            <button type="button" class="table-preset-btn active" id="preset-tech-specs" onclick="applyTablePreset('tech-specs')">
+              📌 Technical Specs (2 cols × 4 rows)
+            </button>
+            <button type="button" class="table-preset-btn" id="preset-comparison" onclick="applyTablePreset('comparison')">
+              ⚡ Comparison Matrix (3 cols × 4 rows)
+            </button>
+            <button type="button" class="table-preset-btn" id="preset-warranty" onclick="applyTablePreset('warranty')">
+              🛡️ Warranty & Box (2 cols × 3 rows)
+            </button>
+            <button type="button" class="table-preset-btn" id="preset-simple-grid" onclick="applyTablePreset('simple-grid')">
+              📐 Simple Grid (2 cols × 2 rows)
+            </button>
+          </div>
+        </div>
+
+        <!-- Dimension Inputs -->
+        <div class="form-grid-2" style="margin-bottom:1rem;">
+          <div class="form-group">
+            <label class="form-label" for="desc-table-cols">Columns Count (1 - 8)</label>
+            <input type="number" id="desc-table-cols" class="form-input" min="1" max="8" value="2" oninput="updateDescTablePreview()">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="desc-table-rows">Rows Count (1 - 20)</label>
+            <input type="number" id="desc-table-rows" class="form-input" min="1" max="20" value="4" oninput="updateDescTablePreview()">
+          </div>
+        </div>
+
+        <!-- Style and Caption -->
+        <div class="form-grid-2" style="margin-bottom:1rem;">
+          <div class="form-group">
+            <label class="form-label" for="desc-table-style">Table Theme Style</label>
+            <select id="desc-table-style" class="form-select" onchange="updateDescTablePreview()">
+              <option value="desc-table-blue">Exide Electric Blue (Corporate & Crisp)</option>
+              <option value="desc-table-slate">Modern Slate (Minimalist & Sleek)</option>
+              <option value="desc-table-red">Exide Crimson Red (High Contrast)</option>
+              <option value="desc-table-gray">Clean Subtle Gray (Neutral Grid)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="desc-table-caption">Table Header Title / Caption (Optional)</label>
+            <input type="text" id="desc-table-caption" class="form-input" placeholder="e.g. Official Technical Specifications" value="Technical Specifications" oninput="updateDescTablePreview()">
+          </div>
+        </div>
+
+        <!-- Options checkboxes -->
+        <div style="display:flex; gap:1.5rem; margin-bottom:1.25rem; flex-wrap:wrap;">
+          <label style="display:flex; align-items:center; gap:0.4rem; font-size:0.85rem; color:#334155; cursor:pointer;">
+            <input type="checkbox" id="desc-table-has-header" checked onchange="updateDescTablePreview()">
+            <span>Include Header Row (<code>&lt;th&gt;</code>)</span>
+          </label>
+          <label style="display:flex; align-items:center; gap:0.4rem; font-size:0.85rem; color:#334155; cursor:pointer;">
+            <input type="checkbox" id="desc-table-zebra" checked onchange="updateDescTablePreview()">
+            <span>Zebra Striping (Alternating row backgrounds)</span>
+          </label>
+        </div>
+
+        <!-- Live Visual Preview -->
+        <div>
+          <label style="font-size:0.8rem; font-weight:700; color:#475569; display:block; margin-bottom:0.35rem;">
+            👁️ Live Table Preview
+          </label>
+          <div id="desc-table-preview-box" class="desc-table-preview-box">
+            <!-- Preview populated by updateDescTablePreview() -->
+          </div>
+        </div>
+      </div>
+
+      <div class="table-modal-footer">
+        <button type="button" class="btn-outline-white" style="border-color:#CBD5E1; color:#334155;" onclick="closeDescTableModal()">
+          Cancel
+        </button>
+        <button type="button" class="btn-primary-red" onclick="insertDescTableFromModal()">
+          Insert Table into Description
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       15. PRODUCT QUICK VIEW MODAL (WITH INTERACTIVE ZOOM & RELATED PRODUCTS)
+       ========================================================================== -->
+  <div class="modal-overlay" id="quickview-modal-overlay" onclick="if(event.target === this) closeQuickViewModal();">
+    <div class="quickview-modal-content">
+      <div class="quickview-header-bar">
+        <div style="display:flex; align-items:center; gap:0.5rem;">
+          <span style="font-size:0.8rem; font-weight:800; color:var(--color-exide-red); background:var(--color-exide-red-light); padding:2px 8px; border-radius:4px;">
+            PRODUCT SPECIFICATION
+          </span>
+          <span style="font-size:0.8rem; color:#64748B;">AET Official Partner</span>
+        </div>
+        <button onclick="closeQuickViewModal()" class="quickview-close-icon" aria-label="Close modal">&times;</button>
+      </div>
+      <div id="quickview-modal-body">
+        <!-- Rendered dynamically via js/app.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Printable Bill Portal for Clean 1-Page A4 Tax Invoice Printing -->
+  <div id="printable-bill-portal" class="printable-bill-portal" style="display:none;" aria-hidden="true"></div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- ==========================================================================
+       16. ADMIN LOGIN GATEWAY MODAL (STOCK ERP ACCESS CONTROL)
+       ========================================================================== -->
+  <div class="modal-overlay" id="admin-login-modal-overlay">
+    <div class="auth-modal-content admin-auth-box">
+      <div class="auth-modal-header admin-auth-header">
+        <div style="display:flex; align-items:center; gap:0.65rem;">
+          <div class="admin-auth-shield">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div>
+            <h3 class="auth-modal-title" style="color:#FFFFFF; margin:0; font-size:1.1rem; font-weight:800;">Stock ERP Access Gateway</h3>
+            <span style="font-size:0.75rem; color:#94A3B8;">Exide Battery Wholesale • Commercial System Security</span>
+          </div>
+        </div>
+        <button type="button" class="auth-modal-close" onclick="window.authManager.closeAdminLoginModal()" style="color:#FFF;">&times;</button>
+      </div>
+
+      <div class="auth-modal-body" style="padding:1.5rem;">
+        <div class="admin-auth-notice" style="background:#FEF2F2; border:1px solid #FECACA; border-radius:8px; padding:0.75rem 1rem; margin-bottom:1.25rem; display:flex; gap:0.65rem; align-items:flex-start;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2" style="flex-shrink:0; margin-top:2px;"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <div>
+            <strong style="color:#991B1B; font-size:0.85rem; display:block;">Restricted Commercial Area</strong>
+            <p style="color:#7F1D1D; font-size:0.78rem; margin:2px 0 0 0; line-height:1.4;">Only authorized warehouse managers and store executives may access inventory valuation, profit margins, and stock adjustments.</p>
+          </div>
+        </div>
+
+        <!-- Quick ERP Demo Credentials & 1-Click Access -->
+        <div class="admin-demo-creds-card" style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:10px; padding:0.85rem; margin-bottom:1.25rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+            <strong style="font-size:0.82rem; color:#0F172A; display:flex; align-items:center; gap:0.35rem;">
+              <span>🔑</span> Official Store ERP Logins (Click to Auto-Fill):
+            </strong>
+            <span style="font-size:0.72rem; background:#E2E8F0; padding:2px 6px; border-radius:4px; font-weight:700; color:#475569;">1-Click Fill</span>
+          </div>
+          <div class="admin-demo-creds-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:0.45rem;">
+            <button type="button" class="btn-demo-cred-chip" onclick="fillAdminCreds('admin@exidebattery.com.np', 'NepalPowerHouse@2026', 'SuperAdmin')" style="text-align:left; background:#FFFFFF; border:1px solid #CBD5E1; padding:0.5rem 0.6rem; border-radius:6px; cursor:pointer;">
+              <strong style="display:block; color:#991B1B; font-size:0.78rem;">👑 Super Administrator</strong>
+              <span style="color:#64748B; font-size:0.7rem;">admin@exidebattery.com.np</span>
+            </button>
+            <button type="button" class="btn-demo-cred-chip" onclick="fillAdminCreds('manager@exidebattery.com.np', 'StoreManager@2026', 'StoreManager')" style="text-align:left; background:#FFFFFF; border:1px solid #CBD5E1; padding:0.5rem 0.6rem; border-radius:6px; cursor:pointer;">
+              <strong style="display:block; color:#1E40AF; font-size:0.78rem;">🏬 Store General Manager</strong>
+              <span style="color:#64748B; font-size:0.7rem;">manager@exidebattery.com.np</span>
+            </button>
+            <button type="button" class="btn-demo-cred-chip" onclick="fillAdminCreds('inventory@exidebattery.com.np', 'Inventory@2026', 'InventoryStaff')" style="text-align:left; background:#FFFFFF; border:1px solid #CBD5E1; padding:0.5rem 0.6rem; border-radius:6px; cursor:pointer;">
+              <strong style="display:block; color:#065F46; font-size:0.78rem;">📦 Warehouse Controller</strong>
+              <span style="color:#64748B; font-size:0.7rem;">inventory@exidebattery.com.np</span>
+            </button>
+            <button type="button" class="btn-demo-cred-chip" onclick="fillAdminCreds('rider@exidebattery.com.np', 'RiderNepal@2026', 'DeliveryRider')" style="text-align:left; background:#FFFFFF; border:1px solid #CBD5E1; padding:0.5rem 0.6rem; border-radius:6px; cursor:pointer;">
+              <strong style="display:block; color:#D97706; font-size:0.78rem;">🏍️ Delivery Rider</strong>
+              <span style="color:#64748B; font-size:0.7rem;">rider@exidebattery.com.np</span>
+            </button>
+          </div>
+        </div>
+
+        <form id="admin-login-form" onsubmit="event.preventDefault(); handleAdminLoginFormSubmit();">
+          <div class="form-group" style="margin-bottom:1rem;">
+            <label for="admin-login-username" class="form-label" style="font-weight:700; font-size:0.84rem; color:#1E293B;">Administrator Username or Email</label>
+            <input type="text" id="admin-login-username" class="form-input" placeholder="Enter admin username or email" required autocomplete="username" style="font-size:0.9rem;">
+          </div>
+
+          <div class="form-group" style="margin-bottom:1rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.25rem;">
+              <label for="admin-login-password" class="form-label" style="font-weight:700; font-size:0.84rem; color:#1E293B; margin:0;">Master Password</label>
+              <button type="button" onclick="togglePasswordVisibility('admin-login-password', this)" style="background:none; border:none; color:#2563EB; font-size:0.75rem; cursor:pointer; font-weight:700;">Show</button>
+            </div>
+            <input type="password" id="admin-login-password" class="form-input" placeholder="Enter administrative password" required autocomplete="current-password" style="font-size:0.9rem;">
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem; flex-wrap:wrap; gap:0.5rem;">
+            <label style="display:flex; align-items:center; gap:0.4rem; font-size:0.82rem; color:#475569; cursor:pointer; margin:0;">
+              <input type="checkbox" id="admin-remember-me" checked> Remember session on this browser
+            </label>
+            <span style="font-size:0.75rem; color:#64748B;">SHA-256 Protected</span>
+          </div>
+
+          <div id="admin-login-error-msg" class="auth-error-alert" style="display:none; background:#FEE2E2; border:1px solid #EF4444; color:#B91C1C; padding:0.6rem 0.8rem; border-radius:6px; font-size:0.82rem; font-weight:600; margin-bottom:1rem;"></div>
+
+          <button type="submit" id="btn-admin-submit-login" class="btn btn-primary" style="width:100%; justify-content:center; padding:0.8rem; font-weight:800; font-size:0.95rem; border-radius:8px;">
+            <span>Unlock & Access Stock ERP</span>
+            <span>➔</span>
+          </button>
+
+          <div style="margin-top:1.25rem; display:flex; align-items:center; justify-content:center; gap:0.5rem; color:#64748B; font-size:0.75rem;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span>Authorized Commercial Staff & Dispatch Operators Only</span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       17. CUSTOMER AUTHENTICATION MODAL (GOOGLE, PHONE OTP & SECURE ACCESS)
+       ========================================================================== -->
+  <div class="modal-overlay" id="customer-auth-modal-overlay">
+    <div class="auth-modal-content customer-auth-box">
+      <div class="auth-modal-header customer-auth-header">
+        <div style="display:flex; align-items:center; gap:0.65rem;">
+          <div class="cust-auth-avatar" style="width:38px; height:38px; border-radius:50%; background:#EFF6FF; display:flex; align-items:center; justify-content:center; color:#0047BA;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <div>
+            <h3 class="auth-modal-title" style="color:#0F172A; margin:0; font-size:1.1rem; font-weight:800;">Customer Account Portal</h3>
+            <span style="font-size:0.75rem; color:#64748B;">Exide Battery Wholesale & Official Partner Nepal</span>
+          </div>
+        </div>
+        <button type="button" class="auth-modal-close" onclick="window.authManager.closeCustomerLoginModal()" style="font-size:1.6rem; background:none; border:none; cursor:pointer; color:#64748B;">&times;</button>
+      </div>
+
+      <!-- Auth Tabs Switcher -->
+      <div class="auth-tabs-strip">
+        <button type="button" class="auth-tab-btn active" id="tab-cust-phone" onclick="switchCustomerAuthTab('phone')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><line x1="12" x2="12.01" y1="18" y2="18"/></svg>
+          <span>Phone OTP</span>
+        </button>
+        <button type="button" class="auth-tab-btn" id="tab-cust-google" onclick="switchCustomerAuthTab('google')">
+          <svg width="15" height="15" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
+          <span>Google</span>
+        </button>
+        <button type="button" class="auth-tab-btn" id="tab-cust-login" onclick="switchCustomerAuthTab('login')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span>Password</span>
+        </button>
+        <button type="button" class="auth-tab-btn" id="tab-cust-register" onclick="switchCustomerAuthTab('register')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+          <span>Register</span>
+        </button>
+      </div>
+
+      <div class="auth-modal-body" style="padding:1.5rem;">
+        <!-- Google Fast Authentication Quick Trigger Button -->
+        <button type="button" class="btn-google-auth" id="btn-google-auth-login" onclick="window.authManager.loginWithGoogle()" style="width:100%; display:flex; align-items:center; justify-content:center; gap:0.75rem; background:#FFFFFF; color:#1F2937; border:1.5px solid #CBD5E1; border-radius:8px; padding:0.75rem; font-weight:700; font-size:0.92rem; box-shadow:0 1px 3px rgba(0,0,0,0.06); cursor:pointer; margin-bottom:1rem; transition:all 0.2s ease;">
+          <svg width="18" height="18" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+            <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+          </svg>
+          <span id="btn-google-auth-login-text">Continue with Google</span>
+        </button>
+
+        <div id="auth-divider-line" style="display:flex; align-items:center; margin:1rem 0; color:#94A3B8; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.5px; font-weight:700;">
+          <span style="flex:1; height:1px; background:#E2E8F0;"></span>
+          <span style="padding:0 0.65rem;">Or Continue With</span>
+          <span style="flex:1; height:1px; background:#E2E8F0;"></span>
+        </div>
+
+        <!-- Google Fast Authentication Panel View -->
+        <div id="customer-google-view" style="display:none; margin-bottom:1rem;">
+          <div class="google-auth-card" style="text-align:center; padding:1.25rem 1rem; border-radius:12px; background:#F8FAFC; border:1px solid #E2E8F0; margin-bottom:1rem;">
+            <div style="width:48px; height:48px; border-radius:50%; background:#FFFFFF; display:flex; align-items:center; justify-content:center; margin:0 auto 0.75rem; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+              <svg width="26" height="26" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+                <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+                <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+                <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+              </svg>
+            </div>
+            <h4 style="font-size:1.05rem; font-weight:800; color:#1E293B; margin-bottom:0.25rem;">Choose an account</h4>
+            <p style="font-size:0.8rem; color:#64748B; margin-bottom:0;">to continue to Exide Battery Wholesale</p>
+          </div>
+
+          <!-- 1-Click Google Account Chooser List -->
+          <div class="google-account-chooser" id="google-accounts-list">
+            <!-- Account 1: Ankush Kumar -->
+            <div class="google-account-row" onclick="handleGoogleFastAuthSubmit({ email: 'ankushkumaras50@gmail.com', fullName: 'Ankush Kumar', phone: '9705997260' })">
+              <div class="google-account-avatar" style="background:#0047BA;">A</div>
+              <div class="google-account-info">
+                <div class="google-account-name">Ankush Kumar</div>
+                <div class="google-account-email">ankushkumaras50@gmail.com</div>
+              </div>
+              <span class="google-account-badge">✓ 1-Click Login</span>
+            </div>
+
+            <!-- Dynamic Slot for previously remembered Google Account if different -->
+            <div id="google-quick-account-slot" style="display:none;"></div>
+
+            <!-- Option 3: Add / Enter another Gmail -->
+            <div class="google-account-row" onclick="window.toggleCustomGoogleInput()" style="background:#F8FAFC;">
+              <div class="google-account-avatar" style="background:#64748B; font-size:1.3rem;">+</div>
+              <div class="google-account-info">
+                <div class="google-account-name">Use another Google account</div>
+                <div class="google-account-email">Click to enter your Gmail address</div>
+              </div>
+              <span style="font-size:0.85rem; color:#64748B;">▾</span>
+            </div>
+          </div>
+
+          <!-- Fast Google Account Input Form (Expandable) -->
+          <form id="customer-google-form" style="display:none; margin-top:0.85rem;" onsubmit="event.preventDefault(); handleGoogleFastAuthSubmit();">
+            <div class="form-group" style="margin-bottom:0.85rem;">
+              <label class="form-label" style="font-weight:700; font-size:0.84rem; color:#1E293B;">Google Email Address *</label>
+              <input type="email" id="cust-google-email" class="form-input" placeholder="e.g. name@gmail.com" required style="font-size:0.92rem;">
+            </div>
+            <div class="form-group" style="margin-bottom:0.85rem;">
+              <label class="form-label" style="font-weight:700; font-size:0.84rem; color:#1E293B;">Full Name (As on Google)</label>
+              <input type="text" id="cust-google-fullname" class="form-input" placeholder="e.g. Ramesh Shrestha" style="font-size:0.92rem;">
+            </div>
+            <div class="form-group" style="margin-bottom:1rem;">
+              <label class="form-label" style="font-weight:700; font-size:0.84rem; color:#1E293B;">Nepal Mobile (+977) - Optional</label>
+              <div style="display:flex; gap:0.5rem;">
+                <span style="display:flex; align-items:center; padding:0 0.85rem; background:#F1F5F9; border:1.5px solid #CBD5E1; border-radius:8px; font-weight:700; font-size:0.88rem; color:#475569;">+977</span>
+                <input type="tel" id="cust-google-phone" class="form-input" placeholder="98XXXXXXXX" pattern="[0-9]{10}" maxlength="10" style="font-size:0.92rem; flex:1;">
+              </div>
+            </div>
+            <div id="cust-google-error-msg" class="auth-error-alert" style="display:none; background:#FEE2E2; border:1px solid #EF4444; color:#B91C1C; padding:0.6rem 0.8rem; border-radius:6px; font-size:0.82rem; font-weight:600; margin-bottom:1rem;"></div>
+            <button type="submit" id="btn-cust-google-submit" class="btn-google-action">
+              <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#fff" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#fff" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/></svg>
+              <span>Instant Sign-In with Google</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Phone OTP Form (Default Tab) -->
+        <form id="customer-phone-form" onsubmit="event.preventDefault(); handleCustomerPhoneOtpSubmit();">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
+            <label class="form-label" style="font-weight:700; font-size:0.84rem; color:#1E293B; margin:0;">Nepal Mobile Number (+977) *</label>
+            <button type="button" onclick="document.getElementById('cust-phone-input').value='9801234567'" style="background:none; border:none; color:#2563EB; font-size:0.75rem; cursor:pointer; font-weight:700;">Demo: 9801234567</button>
+          </div>
+          <div class="form-group" style="margin-bottom:0.85rem;">
+            <div style="display:flex; gap:0.5rem;">
+              <span style="display:flex; align-items:center; padding:0 0.85rem; background:#F1F5F9; border:1.5px solid #CBD5E1; border-radius:8px; font-weight:700; font-size:0.88rem; color:#475569;">+977</span>
+              <input type="tel" id="cust-phone-input" class="form-input" placeholder="98XXXXXXXX" pattern="[0-9]{10}" maxlength="10" required style="font-size:0.92rem; flex:1;">
+            </div>
+          </div>
+
+          <div id="phone-otp-code-group" style="display:none; margin-bottom:1rem;">
+            <div id="phone-otp-banner-slot"></div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
+              <label class="form-label" style="font-weight:700; font-size:0.84rem; color:#1E293B; margin:0;">6-Digit OTP Code *</label>
+              <span id="phone-otp-timer" style="font-size:0.75rem; color:#2563EB; font-weight:700;">Code sent</span>
+            </div>
+            <input type="text" id="cust-phone-otp-input" class="form-input" placeholder="Enter 6-digit SMS code" maxlength="6" style="font-size:1.1rem; letter-spacing:4px; text-align:center; font-weight:700;">
+          </div>
+
+          <div id="cust-phone-error-msg" class="auth-error-alert" style="display:none; background:#FEE2E2; border:1px solid #EF4444; color:#B91C1C; padding:0.6rem 0.8rem; border-radius:6px; font-size:0.82rem; font-weight:600; margin-bottom:1rem;"></div>
+
+          <button type="submit" id="btn-cust-phone-action" class="btn btn-primary" style="width:100%; justify-content:center; padding:0.8rem; font-weight:800; font-size:0.95rem; border-radius:8px;">
+            Send SMS OTP
+          </button>
+        </form>
+
+        <!-- Customer Login Form -->
+        <form id="customer-login-form" style="display:none;" onsubmit="event.preventDefault(); handleCustomerLoginFormSubmit();">
+          <!-- Quick Verified Customer Account Fill -->
+          <div style="background:#F1F5F9; border:1px solid #CBD5E1; border-radius:8px; padding:0.65rem 0.85rem; margin-bottom:1rem; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <strong style="font-size:0.8rem; color:#0F172A; display:block;">👤 Verified Customer Account:</strong>
+              <span style="font-size:0.75rem; color:#64748B;">Sunil Yadav (9809163454)</span>
+            </div>
+            <button type="button" onclick="fillCustomerCreds('9809163454', 'pass_3454')" style="background:#2563EB; color:#fff; border:none; padding:4px 10px; border-radius:5px; font-size:0.75rem; font-weight:700; cursor:pointer;">
+              1-Click Fill
+            </button>
+          </div>
+
+          <div class="form-group" style="margin-bottom:1rem;">
+            <label class="form-label" style="font-weight:700; font-size:0.84rem; color:#1E293B;">Nepal Mobile Number or Email *</label>
+            <input type="text" id="cust-login-identifier" class="form-input" placeholder="e.g. 98XXXXXXXX or your@email.com" required style="font-size:0.9rem;">
+          </div>
+          <div class="form-group" style="margin-bottom:1.25rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.25rem;">
+              <label class="form-label" style="font-weight:700; font-size:0.84rem; color:#1E293B; margin:0;">Password *</label>
+              <button type="button" onclick="togglePasswordVisibility('cust-login-password', this)" style="background:none; border:none; color:#2563EB; font-size:0.75rem; cursor:pointer; font-weight:700;">Show</button>
+            </div>
+            <input type="password" id="cust-login-password" class="form-input" placeholder="Enter your password" required style="font-size:0.9rem;">
+          </div>
+          <div id="cust-login-error-msg" class="auth-error-alert" style="display:none; background:#FEE2E2; border:1px solid #EF4444; color:#B91C1C; padding:0.6rem 0.8rem; border-radius:6px; font-size:0.82rem; font-weight:600; margin-bottom:1rem;"></div>
+          <button type="submit" id="btn-cust-submit-login" class="btn btn-primary" style="width:100%; justify-content:center; padding:0.8rem; font-weight:800; font-size:0.95rem; border-radius:8px;">
+            Sign In to Account
+          </button>
+        </form>
+
+        <!-- Customer Register Form -->
+        <form id="customer-register-form" style="display:none;" onsubmit="event.preventDefault(); handleCustomerRegisterFormSubmit();">
+          <div class="form-group" style="margin-bottom:0.85rem;">
+            <label class="form-label" style="font-weight:700; font-size:0.84rem; color:#1E293B;">Full Name *</label>
+            <input type="text" id="cust-reg-fullname" class="form-input" placeholder="e.g. Ramesh Shrestha" required style="font-size:0.9rem;">
+          </div>
+          <div class="form-grid-2" style="gap:0.75rem; margin-bottom:0.85rem;">
+            <div class="form-group">
+              <label class="form-label" style="font-weight:700; font-size:0.84rem; color:#1E293B;">Mobile (+977) *</label>
+              <input type="tel" id="cust-reg-phone" class="form-input" placeholder="98XXXXXXXX" required style="font-size:0.9rem;">
+            </div>
+            <div class="form-group">
+              <label class="form-label" style="font-weight:700; font-size:0.84rem; color:#1E293B;">Email (Optional)</label>
+              <input type="email" id="cust-reg-email" class="form-input" placeholder="name@domain.com" style="font-size:0.9rem;">
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom:0.85rem;">
+            <label class="form-label" style="font-weight:700; font-size:0.84rem; color:#1E293B;">Create Password *</label>
+            <input type="password" id="cust-reg-password" class="form-input" placeholder="At least 4 characters" required minlength="4" style="font-size:0.9rem;">
+          </div>
+          <div class="form-grid-2" style="gap:0.75rem; margin-bottom:1.25rem;">
+            <div class="form-group">
+              <label class="form-label" style="font-weight:700; font-size:0.84rem; color:#1E293B;">Delivery District</label>
+              <select id="cust-reg-district" class="form-select" style="font-size:0.85rem;">
+                <option value="Kathmandu" selected>Kathmandu</option>
+                <option value="Lalitpur">Lalitpur</option>
+                <option value="Bhaktapur">Bhaktapur</option>
+                <option value="Rupandehi">Rupandehi (Butwal/Bhairahawa)</option>
+                <option value="Kaski">Kaski (Pokhara)</option>
+                <option value="Chitwan">Chitwan (Bharatpur)</option>
+                <option value="Morang">Morang (Biratnagar)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" style="font-weight:700; font-size:0.84rem; color:#1E293B;">Street Address</label>
+              <input type="text" id="cust-reg-address" class="form-input" placeholder="e.g. Bijulibazar, Anamnagar" style="font-size:0.9rem;">
+            </div>
+          </div>
+          <div id="cust-reg-error-msg" class="auth-error-alert" style="display:none; background:#FEE2E2; border:1px solid #EF4444; color:#B91C1C; padding:0.6rem 0.8rem; border-radius:6px; font-size:0.82rem; font-weight:600; margin-bottom:1rem;"></div>
+          <button type="submit" id="btn-cust-submit-reg" class="btn btn-primary" style="width:100%; justify-content:center; padding:0.8rem; font-weight:800; font-size:0.95rem; border-radius:8px;">
+            Register & Sign In
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       18. CUSTOMER PROFILE MODAL
+       ========================================================================== -->
+  <div class="modal-overlay" id="customer-profile-modal-overlay">
+    <div class="auth-modal-content customer-auth-box">
+      <div class="auth-modal-header customer-auth-header">
+        <div style="display:flex; align-items:center; gap:0.65rem;">
+          <div class="cust-auth-avatar">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <div>
+            <h3 class="auth-modal-title" id="prof-name-val" style="color:#0F172A; margin:0; font-size:1.1rem; font-weight:800;">Customer Profile</h3>
+            <span style="font-size:0.75rem; color:#64748B;">Verified Exide Wholesale Customer</span>
+          </div>
+        </div>
+        <button type="button" class="auth-modal-close" onclick="window.authManager.closeCustomerProfileModal()" style="font-size:1.6rem; background:none; border:none; cursor:pointer; color:#64748B;">&times;</button>
+      </div>
+
+      <div class="auth-modal-body" style="padding:1.5rem;">
+        <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:1rem; margin-bottom:1.25rem;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem; font-size:0.85rem;">
+            <span style="color:#64748B;">Mobile Phone:</span>
+            <strong id="prof-phone-val" style="color:#0F172A;">-</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem; font-size:0.85rem;">
+            <span style="color:#64748B;">Email:</span>
+            <strong id="prof-email-val" style="color:#0F172A;">-</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:0.85rem;">
+            <span style="color:#64748B;">Default Address:</span>
+            <strong id="prof-address-val" style="color:#0F172A;">-</strong>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:0.75rem;">
+          <button type="button" class="btn btn-outline-primary" onclick="window.authManager.closeCustomerProfileModal(); window.cartSystem.openCheckoutModal();" style="flex:1; justify-content:center; font-size:0.85rem; padding:0.65rem; display:inline-flex; align-items:center; gap:0.4rem;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+            <span>View Cart / Checkout</span>
+          </button>
+          <button type="button" class="btn" onclick="window.authManager.logoutCustomer(); window.authManager.closeCustomerProfileModal();" style="background:#FEE2E2; color:#DC2626; border:1px solid #FCA5A5; font-size:0.85rem; padding:0.65rem 1rem; font-weight:700;">
+            Sign Out
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Global Authentication Form Handlers Script -->
+  <script>
+    function togglePasswordVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (!input) return;
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.textContent = 'Hide';
+      } else {
+        input.type = 'password';
+        btn.textContent = 'Show';
+      }
+    }
+
+    // 1-Click Credential Fillers for Testing & ERP Access
+    function fillAdminCreds(username, password, role) {
+      const userInput = document.getElementById('admin-login-username');
+      const passInput = document.getElementById('admin-login-password');
+      const errorBox = document.getElementById('admin-login-error-msg');
+      if (userInput) userInput.value = username;
+      if (passInput) passInput.value = password;
+      if (errorBox) errorBox.style.display = 'none';
+      if (typeof showToast === 'function') {
+        showToast(`Loaded ${role || 'ERP'} credentials: ${username}`, 'info');
+      }
+    }
+
+    function fillCustomerCreds(phone, password) {
+      switchCustomerAuthTab('login');
+      const idInput = document.getElementById('cust-login-identifier');
+      const passInput = document.getElementById('cust-login-password');
+      const errorBox = document.getElementById('cust-login-error-msg');
+      if (idInput) idInput.value = phone;
+      if (passInput) passInput.value = password;
+      if (errorBox) errorBox.style.display = 'none';
+      if (typeof showToast === 'function') {
+        showToast(`Loaded customer credentials for ${phone}`, 'info');
+      }
+    }
+
+    // Main Dual-Calculator Mode Switcher & Standalone Scrap Buyback Logic
+    function switchMainCalculatorTab(mode) {
+      const tabLoad = document.getElementById('tab-btn-load-calc');
+      const tabScrap = document.getElementById('tab-btn-scrap-calc');
+      const panelLoad = document.getElementById('panel-load-calculator');
+      const panelScrap = document.getElementById('panel-scrap-calculator');
+
+      if (mode === 'scrap') {
+        if (tabScrap) {
+          tabScrap.classList.add('active');
+          tabScrap.style.setProperty('background', '#FFDE59', 'important');
+          tabScrap.style.setProperty('color', '#0F172A', 'important');
+          tabScrap.style.setProperty('border-color', '#FFDE59', 'important');
+        }
+        if (tabLoad) {
+          tabLoad.classList.remove('active');
+          tabLoad.style.setProperty('background', 'rgba(255,255,255,0.08)', 'important');
+          tabLoad.style.setProperty('color', '#FFFFFF', 'important');
+          tabLoad.style.setProperty('border-color', 'rgba(255,255,255,0.3)', 'important');
+        }
+        if (panelLoad) panelLoad.style.setProperty('display', 'none', 'important');
+        if (panelScrap) panelScrap.style.setProperty('display', 'grid', 'important');
+        if (typeof recalcStandaloneScrap === 'function') recalcStandaloneScrap();
+      } else {
+        if (tabLoad) {
+          tabLoad.classList.add('active');
+          tabLoad.style.setProperty('background', '#FFDE59', 'important');
+          tabLoad.style.setProperty('color', '#0F172A', 'important');
+          tabLoad.style.setProperty('border-color', '#FFDE59', 'important');
+        }
+        if (tabScrap) {
+          tabScrap.classList.remove('active');
+          tabScrap.style.setProperty('background', 'rgba(255,255,255,0.08)', 'important');
+          tabScrap.style.setProperty('color', '#FFFFFF', 'important');
+          tabScrap.style.setProperty('border-color', 'rgba(255,255,255,0.3)', 'important');
+        }
+        if (panelLoad) panelLoad.style.setProperty('display', 'grid', 'important');
+        if (panelScrap) panelScrap.style.setProperty('display', 'none', 'important');
+      }
+    }
+
+    function selectStandaloneScrapCategory(category, defaultAh, element) {
+      document.querySelectorAll('.btn-standalone-scrap-cat').forEach(b => b.classList.remove('active'));
+      if (element) element.classList.add('active');
+      const ahInput = document.getElementById('scrap-standalone-ah');
+      if (ahInput) ahInput.value = defaultAh;
+
+      document.querySelectorAll('#panel-scrap-calculator .btn-hour-choice').forEach(pill => {
+        pill.classList.toggle('active', parseInt(pill.textContent.replace(/\D/g, '')) === defaultAh);
+      });
+
+      recalcStandaloneScrap();
+    }
+
+    function adjustStandaloneScrapQty(delta) {
+      const qtyInput = document.getElementById('scrap-standalone-qty');
+      if (!qtyInput) return;
+      let cur = parseInt(qtyInput.value) || 1;
+      cur = Math.max(1, Math.min(1000, cur + delta));
+      qtyInput.value = cur;
+      recalcStandaloneScrap();
+    }
+
+    function setStandaloneScrapAh(ah) {
+      const ahInput = document.getElementById('scrap-standalone-ah');
+      if (ahInput) ahInput.value = ah;
+
+      document.querySelectorAll('#panel-scrap-calculator .btn-hour-choice').forEach(pill => {
+        pill.classList.toggle('active', parseInt(pill.textContent.replace(/\D/g, '')) === ah);
+      });
+
+      recalcStandaloneScrap();
+    }
+
+    function recalcStandaloneScrap() {
+      const qtyInput = document.getElementById('scrap-standalone-qty');
+      const ahInput = document.getElementById('scrap-standalone-ah');
+      const qty = Math.max(1, parseInt(qtyInput?.value) || 1);
+      const ah = Math.max(0, parseFloat(ahInput?.value) || 0);
+      const totalAh = qty * ah;
+      const rate = (window.cartSystem && window.cartSystem.scrapRate) ? window.cartSystem.scrapRate : 35;
+      const totalCash = Math.round(totalAh * rate);
+
+      const totalAhEl = document.getElementById('scrap-total-ah-val');
+      const rateEl = document.getElementById('scrap-live-rate-val');
+      const totalCashEl = document.getElementById('scrap-total-cash-val');
+      const applyBtnAmtEl = document.getElementById('scrap-btn-apply-amt');
+
+      if (totalAhEl) totalAhEl.textContent = `${totalAh.toLocaleString()} Ah`;
+      if (rateEl) rateEl.textContent = `NPR ${rate} / Ah`;
+      if (totalCashEl) totalCashEl.textContent = `NPR ${totalCash.toLocaleString()}`;
+      if (applyBtnAmtEl) applyBtnAmtEl.textContent = totalCash.toLocaleString();
+    }
+
+    function applyStandaloneScrapToCart() {
+      const qty = Math.max(1, parseInt(document.getElementById('scrap-standalone-qty')?.value) || 1);
+      const ah = Math.max(0, parseFloat(document.getElementById('scrap-standalone-ah')?.value) || 0);
+      const totalAh = qty * ah;
+      const rate = (window.cartSystem && window.cartSystem.scrapRate) ? window.cartSystem.scrapRate : 35;
+      const totalCash = Math.round(totalAh * rate);
+
+      if (window.cartSystem) {
+        window.cartSystem.openDrawer();
+        const chk = document.getElementById('exchange-scrap-checkbox');
+        if (chk) {
+          chk.checked = true;
+          window.cartSystem.toggleScrapExchange(true);
+        }
+        const inp = document.getElementById('scrap-ah-input');
+        if (inp) inp.value = totalAh;
+        window.cartSystem.setScrapAh(totalAh);
+
+        if (typeof showToast === 'function') {
+          showToast(`Scrap buyback value of NPR ${totalCash.toLocaleString()} (${totalAh.toLocaleString()} Ah) added to your cart trade-in!`, 'success');
+        }
+      }
+    }
+
+    function bookScrapPickupWhatsApp() {
+      const qty = Math.max(1, parseInt(document.getElementById('scrap-standalone-qty')?.value) || 1);
+      const ah = Math.max(0, parseFloat(document.getElementById('scrap-standalone-ah')?.value) || 0);
+      const totalAh = qty * ah;
+      const rate = (window.cartSystem && window.cartSystem.scrapRate) ? window.cartSystem.scrapRate : 35;
+      const totalCash = Math.round(totalAh * rate);
+
+      const msg = `Namaste Exide Battery Wholesale, I want to book a Doorstep Scrap Battery Pickup for cash:
+• Quantity: ${qty} Unit(s)
+• Single Unit Capacity: ${ah} Ah
+• Total Capacity: ${totalAh.toLocaleString()} Ah
+• Estimated Buyback Value: NPR ${totalCash.toLocaleString()} (Rate: NPR ${rate}/Ah)
+Please arrange technician pickup and spot cash payment. Thank you!`;
+
+      const url = `https://wa.me/9779705997260?text=${encodeURIComponent(msg)}`;
+      window.open(url, '_blank');
+    }
+
+    async function handleAdminLoginFormSubmit() {
+      const username = document.getElementById('admin-login-username')?.value.trim();
+      const password = document.getElementById('admin-login-password')?.value.trim();
+      const remember = document.getElementById('admin-remember-me')?.checked;
+      const errorBox = document.getElementById('admin-login-error-msg');
+      const submitBtn = document.getElementById('btn-admin-submit-login');
+
+      if (errorBox) errorBox.style.display = 'none';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = 'Verifying Credentials...';
+      }
+
+      try {
+        const res = await window.authManager.loginAdmin(username, password, remember);
+        if (res.success) {
+          if (typeof showToast === 'function') showToast('Administrator authorized. Welcome to Stock ERP!', 'success');
+          window.authManager.closeAdminLoginModal();
+          // Open ERP
+          if (window.stockManager) window.stockManager.openAdminModal();
+        } else {
+          if (errorBox) {
+            errorBox.textContent = res.message || 'Invalid administrator credentials.';
+            errorBox.style.display = 'block';
+          }
+        }
+      } catch (err) {
+        if (errorBox) {
+          errorBox.textContent = 'An error occurred during verification. Please try again.';
+          errorBox.style.display = 'block';
+        }
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<span>Unlock & Access Stock ERP</span> <span>➔</span>';
+        }
+      }
+    }
+
+    function switchCustomerAuthTab(tab) {
+      const tabPhone = document.getElementById('tab-cust-phone');
+      const tabGoogle = document.getElementById('tab-cust-google');
+      const tabLogin = document.getElementById('tab-cust-login');
+      const tabReg = document.getElementById('tab-cust-register');
+      const formPhone = document.getElementById('customer-phone-form');
+      const formGoogle = document.getElementById('customer-google-view');
+      const formLogin = document.getElementById('customer-login-form');
+      const formReg = document.getElementById('customer-register-form');
+      const btnGoogleQuick = document.getElementById('btn-google-auth-login');
+      const authDivider = document.getElementById('auth-divider-line');
+
+      [tabPhone, tabGoogle, tabLogin, tabReg].forEach(t => t?.classList.remove('active'));
+      if (formPhone) formPhone.style.display = 'none';
+      if (formGoogle) formGoogle.style.display = 'none';
+      if (formLogin) formLogin.style.display = 'none';
+      if (formReg) formReg.style.display = 'none';
+
+      if (tab === 'google') {
+        tabGoogle?.classList.add('active');
+        if (formGoogle) formGoogle.style.display = 'block';
+        if (btnGoogleQuick) btnGoogleQuick.style.display = 'none';
+        if (authDivider) authDivider.style.display = 'none';
+
+        // Check for remembered Google account if different from primary
+        const quickSlot = document.getElementById('google-quick-account-slot');
+        try {
+          const savedStr = localStorage.getItem('bm_saved_google_user');
+          if (savedStr && quickSlot) {
+            const saved = JSON.parse(savedStr);
+            if (saved && saved.email && saved.email.toLowerCase() !== 'ankushkumaras50@gmail.com') {
+              quickSlot.style.display = 'block';
+              quickSlot.innerHTML = `
+                <div class="google-account-row" onclick="handleGoogleFastAuthSubmit({ email: '${escapeHtml(saved.email)}', fullName: '${escapeHtml(saved.fullName || '')}', phone: '${escapeHtml(saved.phone || '')}' })">
+                  <div class="google-account-avatar" style="background:#2563EB;">${(saved.fullName || saved.email).charAt(0).toUpperCase()}</div>
+                  <div class="google-account-info">
+                    <div class="google-account-name">${escapeHtml(saved.fullName || saved.email.split('@')[0])}</div>
+                    <div class="google-account-email">${escapeHtml(saved.email)}</div>
+                  </div>
+                  <span class="google-account-badge">✓ 1-Click Login</span>
+                </div>
+              `;
+            } else if (quickSlot) {
+              quickSlot.style.display = 'none';
+            }
+          }
+        } catch (e) {}
+      } else {
+        if (btnGoogleQuick) btnGoogleQuick.style.display = 'flex';
+        if (authDivider) authDivider.style.display = 'flex';
+
+        if (tab === 'phone') {
+          tabPhone?.classList.add('active');
+          if (formPhone) formPhone.style.display = 'block';
+        } else if (tab === 'login') {
+          tabLogin?.classList.add('active');
+          if (formLogin) formLogin.style.display = 'block';
+        } else {
+          tabReg?.classList.add('active');
+          if (formReg) formReg.style.display = 'block';
+        }
+      }
+    }
+
+    window.toggleCustomGoogleInput = function() {
+      const form = document.getElementById('customer-google-form');
+      if (!form) return;
+      const isHidden = form.style.display === 'none' || !form.style.display;
+      form.style.display = isHidden ? 'block' : 'none';
+      if (isHidden) {
+        const emailInput = document.getElementById('cust-google-email');
+        if (emailInput) {
+          setTimeout(() => emailInput.focus(), 80);
+        }
+      }
+    };
+
+    async function handleGoogleFastAuthSubmit(directUser = null) {
+      const emailInput = document.getElementById('cust-google-email');
+      const nameInput = document.getElementById('cust-google-fullname');
+      const phoneInput = document.getElementById('cust-google-phone');
+      const errorBox = document.getElementById('cust-google-error-msg');
+      const submitBtn = document.getElementById('btn-cust-google-submit');
+
+      if (errorBox) errorBox.style.display = 'none';
+
+      let email = directUser ? directUser.email : emailInput?.value?.trim();
+      let fullName = directUser ? directUser.fullName : nameInput?.value?.trim();
+      let phone = directUser ? directUser.phone : phoneInput?.value?.trim();
+
+      if (!email || !email.includes('@')) {
+        if (errorBox) {
+          errorBox.textContent = 'Please enter a valid Google email address.';
+          errorBox.style.display = 'block';
+        }
+        return;
+      }
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `
+          <svg class="spin-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
+          <span>Signing in with Google...</span>
+        `;
+      }
+
+      try {
+        const res = await window.authManager.loginWithGoogleFast({
+          email: email.toLowerCase(),
+          fullName: fullName || email.split('@')[0],
+          phone: phone ? phone.replace(/\D/g, '') : '',
+          authProvider: 'google'
+        });
+
+        if (res.success) {
+          if (typeof showToast === 'function') {
+            showToast(`Signed in with Google as ${res.customer.fullName}!`, 'success');
+          }
+          window.authManager.closeCustomerLoginModal();
+          if (window.cartSystem) window.cartSystem.syncCheckoutAuthUI();
+        } else {
+          if (errorBox) {
+            errorBox.textContent = res.message || 'Google authentication could not be completed.';
+            errorBox.style.display = 'block';
+          }
+        }
+      } catch (err) {
+        if (errorBox) {
+          errorBox.textContent = 'Google Sign-In error: ' + (err.message || 'Please try again.');
+          errorBox.style.display = 'block';
+        }
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `
+            <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#fff" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#fff" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/></svg>
+            <span>Instant Sign-In with Google</span>
+          `;
+        }
+      }
+    }
+
+    let phoneOtpSentState = false;
+
+    async function handleCustomerPhoneOtpSubmit() {
+      const phoneInput = document.getElementById('cust-phone-input');
+      const otpGroup = document.getElementById('phone-otp-code-group');
+      const otpInput = document.getElementById('cust-phone-otp-input');
+      const errorBox = document.getElementById('cust-phone-error-msg');
+      const actionBtn = document.getElementById('btn-cust-phone-action');
+
+      if (errorBox) errorBox.style.display = 'none';
+      const cleanPhone = (phoneInput?.value || '').replace(/\D/g, '');
+
+      if (cleanPhone.length < 10) {
+        if (errorBox) {
+          errorBox.textContent = 'Please enter a valid 10-digit Nepal mobile number (e.g. 98XXXXXXXX)';
+          errorBox.style.display = 'block';
+        }
+        return;
+      }
+
+      if (!phoneOtpSentState) {
+        // Step 1: Request OTP
+        if (actionBtn) {
+          actionBtn.disabled = true;
+          actionBtn.innerHTML = 'Sending OTP SMS...';
+        }
+
+        try {
+          const res = await window.authManager.requestPhoneOtp(cleanPhone);
+          if (res.success) {
+            phoneOtpSentState = true;
+            if (otpGroup) otpGroup.style.display = 'block';
+            if (phoneInput) phoneInput.readOnly = true;
+            if (actionBtn) {
+              actionBtn.disabled = false;
+              actionBtn.innerHTML = 'Verify OTP & Sign In';
+            }
+            if (otpInput) {
+              otpInput.focus();
+              if (res.demoOtp) {
+                otpInput.value = res.demoOtp;
+                const bannerSlot = document.getElementById('phone-otp-banner-slot');
+                if (bannerSlot) {
+                  bannerSlot.innerHTML = `
+                    <div style="background:#ECFDF5; border:1px solid #10B981; border-radius:6px; padding:0.5rem 0.75rem; margin-bottom:0.75rem; display:flex; justify-content:space-between; align-items:center;">
+                      <span style="font-size:0.82rem; color:#065F46;">📲 Official SMS OTP: <strong style="font-size:1rem; letter-spacing:2px; color:#047857;">${res.demoOtp}</strong></span>
+                      <span style="font-size:0.72rem; color:#059669; font-weight:700; background:#D1FAE5; padding:2px 6px; border-radius:4px;">Verified</span>
+                    </div>
+                  `;
+                }
+              }
+            }
+            if (typeof showToast === 'function') showToast(`SMS verification code sent to +977-${cleanPhone}`, 'info');
+          } else {
+            if (errorBox) {
+              errorBox.textContent = res.message || 'Failed to send OTP.';
+              errorBox.style.display = 'block';
+            }
+            if (actionBtn) {
+              actionBtn.disabled = false;
+              actionBtn.innerHTML = 'Send SMS OTP';
+            }
+          }
+        } catch (err) {
+          if (errorBox) {
+            errorBox.textContent = 'Unable to send OTP. Please try again.';
+            errorBox.style.display = 'block';
+          }
+          if (actionBtn) {
+            actionBtn.disabled = false;
+            actionBtn.innerHTML = 'Send SMS OTP';
+          }
+        }
+      } else {
+        // Step 2: Verify OTP
+        const otpCode = otpInput?.value?.trim();
+        if (!otpCode || otpCode.length < 4) {
+          if (errorBox) {
+            errorBox.textContent = 'Please enter the verification code sent to your phone.';
+            errorBox.style.display = 'block';
+          }
+          return;
+        }
+
+        if (actionBtn) {
+          actionBtn.disabled = true;
+          actionBtn.innerHTML = 'Verifying Code...';
+        }
+
+        try {
+          const res = await window.authManager.verifyPhoneOtp(cleanPhone, otpCode);
+          if (res.success) {
+            phoneOtpSentState = false;
+            if (typeof showToast === 'function') showToast(`Mobile verified! Welcome, ${res.customer.fullName}`, 'success');
+            window.authManager.closeCustomerLoginModal();
+            if (window.cartSystem) window.cartSystem.syncCheckoutAuthUI();
+          } else {
+            if (errorBox) {
+              errorBox.textContent = res.message || 'Invalid or expired OTP code.';
+              errorBox.style.display = 'block';
+            }
+          }
+        } catch (err) {
+          if (errorBox) {
+            errorBox.textContent = 'Verification error. Please retry.';
+            errorBox.style.display = 'block';
+          }
+        } finally {
+          if (actionBtn) {
+            actionBtn.disabled = false;
+            actionBtn.innerHTML = 'Verify OTP & Sign In';
+          }
+        }
+      }
+    }
+
+    async function handleCustomerLoginFormSubmit() {
+      const identifier = document.getElementById('cust-login-identifier')?.value.trim();
+      const password = document.getElementById('cust-login-password')?.value.trim();
+      const errorBox = document.getElementById('cust-login-error-msg');
+      const submitBtn = document.getElementById('btn-cust-submit-login');
+
+      if (errorBox) errorBox.style.display = 'none';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = 'Signing in...';
+      }
+
+      try {
+        const res = await window.authManager.loginCustomer(identifier, password);
+        if (res.success) {
+          if (typeof showToast === 'function') showToast(`Welcome back, ${res.customer.fullName}!`, 'success');
+          window.authManager.closeCustomerLoginModal();
+          if (window.cartSystem) window.cartSystem.syncCheckoutAuthUI();
+        } else {
+          if (errorBox) {
+            errorBox.textContent = res.message || 'Login failed. Please check your credentials.';
+            errorBox.style.display = 'block';
+          }
+        }
+      } catch (err) {
+        if (errorBox) {
+          errorBox.textContent = 'An error occurred. Please try again.';
+          errorBox.style.display = 'block';
+        }
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = 'Sign In to Account';
+        }
+      }
+    }
+
+    async function handleCustomerRegisterFormSubmit() {
+      const fullName = document.getElementById('cust-reg-fullname')?.value.trim();
+      const phone = document.getElementById('cust-reg-phone')?.value.trim();
+      const email = document.getElementById('cust-reg-email')?.value.trim();
+      const password = document.getElementById('cust-reg-password')?.value.trim();
+      const district = document.getElementById('cust-reg-district')?.value;
+      const address = document.getElementById('cust-reg-address')?.value.trim();
+      const errorBox = document.getElementById('cust-reg-error-msg');
+      const submitBtn = document.getElementById('btn-cust-submit-reg');
+
+      if (errorBox) errorBox.style.display = 'none';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = 'Creating Account...';
+      }
+
+      try {
+        const res = await window.authManager.registerCustomer({
+          fullName, phone, email, password, district, address
+        });
+        if (res.success) {
+          if (typeof showToast === 'function') showToast(`Account created successfully! Welcome, ${res.customer.fullName}`, 'success');
+          window.authManager.closeCustomerLoginModal();
+          if (window.cartSystem) window.cartSystem.syncCheckoutAuthUI();
+        } else {
+          if (errorBox) {
+            errorBox.textContent = res.message || 'Registration failed.';
+            errorBox.style.display = 'block';
+          }
+        }
+      } catch (err) {
+        if (errorBox) {
+          errorBox.textContent = 'An error occurred during account creation.';
+          errorBox.style.display = 'block';
+        }
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = 'Register & Sign In';
+        }
+      }
+    }
+  </script>
+
+  <!-- ==========================================================================
+       MOBILE PHONE BOTTOM APP NAVIGATION BAR (Native App Feel)
+       ========================================================================== -->
+  <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Mobile Bottom App Navigation">
+    <a href="#hero" class="mobile-nav-item active" id="mob-nav-home" onclick="window.smoothNav('#hero'); return false;">
+      <div class="mob-icon-wrap">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+      <span>Home</span>
+    </a>
+
+    <a href="#products-section" class="mobile-nav-item" id="mob-nav-shop" onclick="window.smoothNav('#products-section'); return false;">
+      <div class="mob-icon-wrap">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7h10"/><path d="M7 12h10"/><path d="M7 17h10"/></svg>
+      </div>
+      <span>Catalog</span>
+    </a>
+
+    <a href="#finder-section" class="mobile-nav-item" id="mob-nav-finder" onclick="window.smoothNav('#finder-section'); return false;">
+      <div class="mob-icon-wrap">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      </div>
+      <span>Finder</span>
+    </a>
+
+    <button type="button" class="mobile-nav-item mob-cart-trigger" id="mob-nav-cart" onclick="window.smoothNav(null); window.cartSystem.openDrawer();">
+      <div class="mob-icon-wrap">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+        <span class="mob-cart-badge" id="mob-bottom-cart-count">0</span>
+      </div>
+      <span>Cart</span>
+    </button>
+
+    <button type="button" class="mobile-nav-item" id="mob-nav-account" onclick="window.smoothNav(null); window.authManager.openCustomerLoginModal();">
+      <div class="mob-icon-wrap">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <span id="mob-nav-account-label">Account</span>
+    </button>
+  </nav>
+
+  <!-- Scripts -->
+  <script src="js/firebase-config.js"></script>
+  <script src="js/notify-manager.js"></script>
+  <script src="js/auth-manager.js"></script>
+  <script src="js/products-data.js"></script>
+  <script src="js/stock-management.js"></script>
+  <script src="js/cart-checkout.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

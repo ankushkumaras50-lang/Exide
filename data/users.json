@@ -1,0 +1,186 @@
+[
+  {
+    "id": "USER-SUPERADMIN-001",
+    "username": "admin@exidebattery.com.np",
+    "email": "admin@exidebattery.com.np",
+    "fullName": "Executive Super Administrator",
+    "role": "SuperAdmin",
+    "permissions": [
+      "*"
+    ],
+    "passwordHash": "6d0d95b8dc4f178569c664dc7d7c36c4df95c3fe4abdbdf3699e6b4d2dcc57ae87b65325185859a2766a82cc3375ee1901acb36a9fd92957d053134e1e57a41c",
+    "passwordSalt": "839d134504ffe63ec287c29b82be3eef",
+    "phone": "9705997260",
+    "active": true,
+    "createdAt": "2026-10-14T18:50:32.339Z"
+  },
+  {
+    "id": "USER-MANAGER-001",
+    "username": "manager@exidebattery.com.np",
+    "email": "manager@exidebattery.com.np",
+    "fullName": "Kathmandu Store General Manager",
+    "role": "StoreManager",
+    "permissions": [
+      "inventory_read",
+      "inventory_write",
+      "orders_all",
+      "logistics_manage",
+      "reports_view"
+    ],
+    "passwordHash": "dfb2f353e371cd8e0d192a9d5c41a8bce39cee1e7d58473242ceb5d898884e05632fb3a79e5d2b4a374f72681de8d6b28f9332511e92d2ea34cbb49cf776add8",
+    "passwordSalt": "18bc57f3151fda56f52489717cfcb530",
+    "phone": "9851000001",
+    "active": true,
+    "createdAt": "2026-10-14T18:50:32.340Z"
+  },
+  {
+    "id": "USER-INVENTORY-001",
+    "username": "inventory@exidebattery.com.np",
+    "email": "inventory@exidebattery.com.np",
+    "fullName": "Central Warehouse Stock Controller",
+    "role": "InventoryStaff",
+    "permissions": [
+      "inventory_read",
+      "inventory_write",
+      "serials_verify",
+      "batch_adjust"
+    ],
+    "passwordHash": "ab63d9e444632dc6cbb3918be7eb8d2423c17d06982984ea08162e64e3a6294624514f95e1634bd9d62e93f8c07ede4dcb3783e0029f20fb9c536dd0560f053a",
+    "passwordSalt": "1e0ae5a96be67a905b73e5ab877e2640",
+    "phone": "9851000002",
+    "active": true,
+    "createdAt": "2026-10-14T18:50:32.340Z"
+  },
+  {
+    "id": "USER-RIDER-001",
+    "username": "rider@exidebattery.com.np",
+    "email": "rider@exidebattery.com.np",
+    "fullName": "Bikram Shrestha (Lead Rider)",
+    "role": "DeliveryRider",
+    "permissions": [
+      "deliveries_assigned",
+      "payment_collect",
+      "status_update"
+    ],
+    "passwordHash": "b51c4e97f8b4076793709e83b0245f12c4c755ba894ce97ed01a140a71787576fb2088b364a35489e66fcd4cca231758ed5aa64676a093aef1af0e000bcc6c40",
+    "passwordSalt": "38a72300d018b62e9ab233b3e5aa857b",
+    "phone": "9801234567",
+    "active": true,
+    "createdAt": "2026-10-14T18:50:32.340Z"
+  },
+  {
+    "id": "CUST-MV8I63K6",
+    "username": "9809163454",
+    "fullName": "Sunil Yadav",
+    "phone": "9809163454",
+    "email": "9809163454@customer.exidebattery.com.np",
+    "role": "Customer",
+    "permissions": [
+      "orders_view_own",
+      "profile_manage"
+    ],
+    "passwordHash": "ab5f991dd600c9c9479a8590b56213a164ddbb2ba2304d3c66521e93268b3023b45d66fb61861b55443bedb14d2e5711cae868230fcbd49ac6d4d162d0e61eab",
+    "passwordSalt": "9df8349924af78b3e6f465c41f9fef70",
+    "district": "Kathmandu",
+    "address": "New Baneshwor, Tole-4",
+    "isEmailVerified": false,
+    "emailVerificationToken": "c252bb326fa3cf7eb7c9c6a9f43ea98e829cf649",
+    "active": true,
+    "createdAt": "2026-10-14T19:28:29.607Z"
+  },
+  {
+    "id": "CUST-G-MV8ISUOV",
+    "username": "ramesh.nepal@gmail.com",
+    "email": "ramesh.nepal@gmail.com",
+    "fullName": "Ramesh Shrestha",
+    "phone": "9841234567",
+    "role": "Customer",
+    "permissions": [
+      "orders_view_own",
+      "profile_manage"
+    ],
+    "passwordHash": "d981cb88be7a13a8173a74170a0d1fd6ed1515afe0521c136d2b9e75eba34ff964415142153ae57e7e655b07e8cb16dbb3cc2d539a68175d40ae6bfa2bed6143",
+    "passwordSalt": "0e3b633a0b10090bb24f3dc560f4ab56",
+    "authProvider": "google",
+    "isEmailVerified": true,
+    "photoURL": "https://lh3.googleusercontent.com/a/default-user",
+    "active": true,
+    "createdAt": "2026-10-14T19:46:11.167Z"
+  },
+  {
+    "id": "CUST-G-MV8IYARE",
+    "username": "testcustomer@gmail.com",
+    "email": "testcustomer@gmail.com",
+    "fullName": "Test Google Customer",
+    "phone": "",
+    "role": "Customer",
+    "permissions": [
+      "orders_view_own",
+      "profile_manage"
+    ],
+    "passwordHash": "5b4b8690b4b6704b019a25f79c3d82e5f2ea94430ff09507e591b057957b05adff676896bb8ed20d19ebab9c6d529c88998a9a08396951824f836e59fc46d068",
+    "passwordSalt": "3f9f3216af5d5f93fccf4bf54df6a94e",
+    "authProvider": "google",
+    "isEmailVerified": true,
+    "photoURL": "",
+    "active": true,
+    "createdAt": "2026-10-14T19:50:25.274Z"
+  },
+  {
+    "id": "CUST-G-MV8J8YLE",
+    "username": "verified_google_user@gmail.com",
+    "email": "verified_google_user@gmail.com",
+    "fullName": "Ramesh Adhikari",
+    "phone": "9841234567",
+    "role": "Customer",
+    "permissions": [
+      "orders_view_own",
+      "profile_manage"
+    ],
+    "passwordHash": "59702c35ae9bff78ea4e7d280c8fa2751cb5e0a789b3b5c477d74831b53f8488210b24c05f4ca30d5cfa071066020c22a10dbdceeae806b6b9b2a67cb189fd52",
+    "passwordSalt": "d569878456c6f512ff8058693956cfa3",
+    "authProvider": "google",
+    "isEmailVerified": true,
+    "photoURL": "",
+    "active": true,
+    "createdAt": "2026-10-14T19:58:42.722Z"
+  },
+  {
+    "id": "CUST-G-G-17920080",
+    "username": "ankush.exide@gmail.com",
+    "email": "ankush.exide@gmail.com",
+    "fullName": "Ankush Kumar",
+    "phone": "",
+    "role": "Customer",
+    "permissions": [
+      "orders_view_own",
+      "profile_manage"
+    ],
+    "passwordHash": "21efacac380f9fd7dd820569bd32d92cc28ad104368f79a692be7c452092ce1cb2041ad64859d26a6efd2ae868067264a16685d7dbeca6464476edaa4d2b8891",
+    "passwordSalt": "3e8b860413e87a0c0d6b75d8f8296aa9",
+    "authProvider": "google",
+    "isEmailVerified": true,
+    "photoURL": "",
+    "active": true,
+    "createdAt": "2026-10-14T20:01:18.000Z"
+  },
+  {
+    "id": "CUST-G-G-17927013",
+    "username": "ankushkumaras50@gmail.com",
+    "email": "ankushkumaras50@gmail.com",
+    "fullName": "Ankush Kumar",
+    "phone": "9705997260",
+    "role": "Customer",
+    "permissions": [
+      "orders_view_own",
+      "profile_manage"
+    ],
+    "passwordHash": "742525a4c5a1ff15ea27aa26aba1dcb423cef867ab1e6865cb61c17194543442c00a341f0a112f8820831ce0d22acabbb70f63f997c19d37a02c67fe50271efe",
+    "passwordSalt": "201ac4caebef32a230e59908d585a004",
+    "authProvider": "google",
+    "isEmailVerified": true,
+    "photoURL": "",
+    "active": true,
+    "createdAt": "2026-10-22T20:35:37.001Z"
+  }
+]

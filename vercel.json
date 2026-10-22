@@ -1,0 +1,9 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/erp", "destination": "/index.html" },
+    { "source": "/admin", "destination": "/index.html" },
+    { "source": "/login", "destination": "/index.html" },
+    { "source": "/portal", "destination": "/index.html" }
+  ]
+}

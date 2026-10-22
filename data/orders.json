@@ -1,0 +1,2811 @@
+[
+  {
+    "orderId": "EXD-381419",
+    "id": "EXD-381419",
+    "invoiceNumber": "INV-2026-01034",
+    "trackingNumber": "NP-EXD-34602",
+    "date": "2026-10-22T20:25:19.654Z",
+    "orderDate": "23 Oct 2026, 02:10",
+    "orderDateFormatted": "23 Oct 2026, 02:10",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ramesh Shrestha",
+      "phone": "9841234567",
+      "email": "ramesh.nepal@gmail.com",
+      "district": "Kathmandu",
+      "city": "Kathmandu",
+      "ward": "10",
+      "address": "Bijulibazar, Anamnagar",
+      "deliveryAddress": "Bijulibazar, Anamnagar",
+      "assignedRider": "Standard Courier Express"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 1,
+        "itemTotal": 34000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7000,
+      "couponDiscount": 2700,
+      "deliveryFee": 0,
+      "grandTotal": 24300,
+      "vatAmount": 2796,
+      "taxableAmount": 21504,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "calculations": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7000,
+      "scrapBatteryAh": 200,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 2796,
+      "taxableAmount": 21504,
+      "grandTotal": 24300
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 200,
+      "ratePerAh": 35,
+      "totalScrapValue": 7000,
+      "calculatedDiscount": 7000,
+      "excessScrapRefund": 0,
+      "batteryBrand": "Customer Trade-in",
+      "batteryCondition": "Recyclable Lead Acid"
+    },
+    "appliedCoupon": {
+      "code": "EXIDE2026",
+      "percent": 10,
+      "discountAmount": 2700
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "status": "Confirmed",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": null
+  },
+  {
+    "orderId": "EXD-171327",
+    "id": "EXD-171327",
+    "invoiceNumber": "INV-2026-01033",
+    "trackingNumber": "NP-EXD-40693",
+    "date": "2026-10-22T20:15:59.521Z",
+    "orderDate": "23 Oct 2026, 02:00",
+    "orderDateFormatted": "23 Oct 2026, 02:00",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ramesh Shrestha",
+      "phone": "9841234567",
+      "email": "ramesh.nepal@gmail.com",
+      "district": "Kathmandu",
+      "city": "Kathmandu",
+      "ward": "10",
+      "address": "Bijulibazar, Anamnagar",
+      "deliveryAddress": "Bijulibazar, Anamnagar",
+      "assignedRider": "Standard Courier Express"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 1,
+        "itemTotal": 34000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7000,
+      "couponDiscount": 2700,
+      "deliveryFee": 0,
+      "grandTotal": 24300,
+      "vatAmount": 2796,
+      "taxableAmount": 21504,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "calculations": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7000,
+      "scrapBatteryAh": 200,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 2796,
+      "taxableAmount": 21504,
+      "grandTotal": 24300
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 200,
+      "ratePerAh": 35,
+      "totalScrapValue": 7000,
+      "calculatedDiscount": 7000,
+      "excessScrapRefund": 0,
+      "batteryBrand": "Customer Trade-in",
+      "batteryCondition": "Recyclable Lead Acid"
+    },
+    "appliedCoupon": {
+      "code": "EXIDE2026",
+      "percent": 10,
+      "discountAmount": 2700
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "status": "Confirmed",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": null
+  },
+  {
+    "orderId": "EXD-150615",
+    "id": "EXD-150615",
+    "invoiceNumber": "INV-2026-01032",
+    "trackingNumber": "NP-EXD-12685",
+    "date": "2026-10-22T19:58:48.978Z",
+    "orderDate": "23 Oct 2026, 01:43",
+    "orderDateFormatted": "23 Oct 2026, 01:43",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ramesh Shrestha",
+      "phone": "9841234567",
+      "email": "ramesh.nepal@gmail.com",
+      "district": "Kathmandu",
+      "city": "Kathmandu",
+      "ward": "10",
+      "address": "Bijulibazar, Anamnagar",
+      "deliveryAddress": "Bijulibazar, Anamnagar",
+      "assignedRider": "Standard Courier Express"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 1,
+        "itemTotal": 34000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7000,
+      "couponDiscount": 2700,
+      "deliveryFee": 0,
+      "grandTotal": 24300,
+      "vatAmount": 2796,
+      "taxableAmount": 21504,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "calculations": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7000,
+      "scrapBatteryAh": 200,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 2796,
+      "taxableAmount": 21504,
+      "grandTotal": 24300
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 200,
+      "ratePerAh": 35,
+      "totalScrapValue": 7000,
+      "calculatedDiscount": 7000,
+      "excessScrapRefund": 0,
+      "batteryBrand": "Customer Trade-in",
+      "batteryCondition": "Recyclable Lead Acid"
+    },
+    "appliedCoupon": {
+      "code": "EXIDE2026",
+      "percent": 10,
+      "discountAmount": 2700
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "status": "Confirmed",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": null
+  },
+  {
+    "orderId": "EXD-582986",
+    "id": "EXD-582986",
+    "invoiceNumber": "INV-2026-01031",
+    "trackingNumber": "NP-EXD-63044",
+    "date": "2026-10-22T19:41:29.555Z",
+    "orderDate": "23 Oct 2026, 01:26",
+    "orderDateFormatted": "23 Oct 2026, 01:26",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ankush Kumar",
+      "phone": "9779851012345",
+      "email": "ankushkumar.as50@gmail.com",
+      "district": "Kathmandu",
+      "city": "Kathmandu Metro",
+      "ward": "10",
+      "address": "Teku Central Depot, Kathmandu",
+      "deliveryAddress": "Teku Central Depot, Kathmandu",
+      "assignedRider": "Standard Courier Express"
+    },
+    "items": [
+      {
+        "id": "livfast-tubular-battery-150-ah-mxtt-1845",
+        "sku": "LF-MXTT1845",
+        "name": "Livfast Tubular Battery 150 Ah - MXTT 1845",
+        "brand": "Livfast",
+        "capacity": "150Ah - 12V",
+        "warranty": "45 Months (24M Free + 21M Pro-Rata)",
+        "price": 26999,
+        "quantity": 1,
+        "itemTotal": 26999,
+        "image": "assets/images/livfast-1845.webp"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 26999,
+      "scrapExchangeDeduction": 7000,
+      "couponDiscount": 0,
+      "deliveryFee": 0,
+      "grandTotal": 19999,
+      "vatAmount": 2301,
+      "taxableAmount": 17698,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "calculations": {
+      "rawSubtotal": 26999,
+      "scrapExchangeDeduction": 7000,
+      "scrapBatteryAh": 200,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 2301,
+      "taxableAmount": 17698,
+      "grandTotal": 19999
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 200,
+      "ratePerAh": 35,
+      "totalScrapValue": 7000,
+      "calculatedDiscount": 7000,
+      "excessScrapRefund": 0,
+      "batteryBrand": "Customer Trade-in",
+      "batteryCondition": "Used / Scrap"
+    },
+    "appliedCoupon": null,
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "status": "Confirmed",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": "idemp_1792698089529_waqana"
+  },
+  {
+    "orderId": "EXD-885687",
+    "id": "EXD-885687",
+    "invoiceNumber": "INV-2026-01030",
+    "trackingNumber": "NP-EXD-61959",
+    "date": "2026-10-22T19:37:57.671Z",
+    "orderDate": "23 Oct 2026, 01:22",
+    "orderDateFormatted": "23 Oct 2026, 01:22",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ramesh Shrestha",
+      "phone": "9841234567",
+      "email": "ramesh.nepal@gmail.com",
+      "district": "Kathmandu",
+      "city": "Kathmandu",
+      "ward": "10",
+      "address": "Bijulibazar, Anamnagar",
+      "deliveryAddress": "Bijulibazar, Anamnagar",
+      "assignedRider": "Standard Courier Express"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 1,
+        "itemTotal": 34000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7000,
+      "couponDiscount": 2700,
+      "deliveryFee": 0,
+      "grandTotal": 24300,
+      "vatAmount": 2796,
+      "taxableAmount": 21504,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "calculations": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7000,
+      "scrapBatteryAh": 200,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 2796,
+      "taxableAmount": 21504,
+      "grandTotal": 24300
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 200,
+      "ratePerAh": 35,
+      "totalScrapValue": 7000,
+      "calculatedDiscount": 7000,
+      "excessScrapRefund": 0,
+      "batteryBrand": "Customer Trade-in",
+      "batteryCondition": "Recyclable Lead Acid"
+    },
+    "appliedCoupon": {
+      "code": "EXIDE2026",
+      "percent": 10,
+      "discountAmount": 2700
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "status": "Confirmed",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": null
+  },
+  {
+    "orderId": "EXD-210287",
+    "id": "EXD-210287",
+    "invoiceNumber": "INV-2026-01029",
+    "trackingNumber": "NP-EXD-85830",
+    "date": "2026-10-22T19:22:21.300Z",
+    "orderDate": "23 Oct 2026, 01:07",
+    "orderDateFormatted": "23 Oct 2026, 01:07",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ramesh Shrestha",
+      "phone": "9841234567",
+      "email": "ramesh.nepal@gmail.com",
+      "district": "Kathmandu",
+      "city": "Kathmandu",
+      "ward": "10",
+      "address": "Bijulibazar, Anamnagar",
+      "deliveryAddress": "Bijulibazar, Anamnagar",
+      "assignedRider": "Bikram Thapa"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 1,
+        "itemTotal": 34000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7000,
+      "couponDiscount": 2700,
+      "deliveryFee": 0,
+      "grandTotal": 24300,
+      "vatAmount": 2796,
+      "taxableAmount": 21504,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "calculations": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7000,
+      "scrapBatteryAh": 200,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 2796,
+      "taxableAmount": 21504,
+      "grandTotal": 24300
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 200,
+      "ratePerAh": 35,
+      "totalScrapValue": 7000,
+      "calculatedDiscount": 7000,
+      "excessScrapRefund": 0,
+      "batteryBrand": "Customer Trade-in",
+      "batteryCondition": "Recyclable Lead Acid"
+    },
+    "appliedCoupon": {
+      "code": "EXIDE2026",
+      "percent": 10,
+      "discountAmount": 2700
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "status": "Confirmed",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": null,
+    "assignedRider": {
+      "id": "RIDER-01",
+      "name": "Bikram Thapa",
+      "phone": "9851087654",
+      "vehicle": "Delivery Van (BA 2 CHA 4521)"
+    }
+  },
+  {
+    "orderId": "EXD-702640",
+    "id": "EXD-702640",
+    "invoiceNumber": "INV-2026-01028",
+    "trackingNumber": "NP-EXD-21095",
+    "date": "2026-10-22T19:06:42.638Z",
+    "orderDate": "23 Oct 2026, 00:51",
+    "orderDateFormatted": "23 Oct 2026, 00:51",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ramesh Shrestha",
+      "phone": "9841234567",
+      "email": "ramesh.nepal@gmail.com",
+      "district": "Kathmandu",
+      "city": "Kathmandu",
+      "ward": "10",
+      "address": "Bijulibazar, Anamnagar",
+      "deliveryAddress": "Bijulibazar, Anamnagar",
+      "assignedRider": "Standard Courier Express"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 1,
+        "itemTotal": 34000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7000,
+      "couponDiscount": 2700,
+      "deliveryFee": 0,
+      "grandTotal": 24300,
+      "vatAmount": 2796,
+      "taxableAmount": 21504,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "calculations": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7000,
+      "scrapBatteryAh": 200,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 2796,
+      "taxableAmount": 21504,
+      "grandTotal": 24300
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 200,
+      "ratePerAh": 35,
+      "totalScrapValue": 7000,
+      "calculatedDiscount": 7000,
+      "excessScrapRefund": 0,
+      "batteryBrand": "Customer Trade-in",
+      "batteryCondition": "Recyclable Lead Acid"
+    },
+    "appliedCoupon": {
+      "code": "EXIDE2026",
+      "percent": 10,
+      "discountAmount": 2700
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "status": "Confirmed",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": null
+  },
+  {
+    "orderId": "EXD-388121",
+    "id": "EXD-388121",
+    "invoiceNumber": "INV-2026-01027",
+    "trackingNumber": "NP-EXD-76564",
+    "date": "2026-10-17T19:04:00.641Z",
+    "orderDate": "18 Oct 2026, 00:49",
+    "orderDateFormatted": "18 Oct 2026, 00:49",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ramesh Shrestha",
+      "phone": "9841234567",
+      "email": "ramesh.nepal@gmail.com",
+      "district": "Kathmandu",
+      "city": "Kathmandu",
+      "ward": "10",
+      "address": "Bijulibazar, Anamnagar",
+      "deliveryAddress": "Bijulibazar, Anamnagar",
+      "assignedRider": "Standard Courier Express"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 1,
+        "itemTotal": 34000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7000,
+      "couponDiscount": 2700,
+      "deliveryFee": 0,
+      "grandTotal": 24300,
+      "vatAmount": 2796,
+      "taxableAmount": 21504,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "calculations": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7000,
+      "scrapBatteryAh": 200,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 2796,
+      "taxableAmount": 21504,
+      "grandTotal": 24300
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 200,
+      "ratePerAh": 35,
+      "totalScrapValue": 7000,
+      "calculatedDiscount": 7000,
+      "excessScrapRefund": 0,
+      "batteryBrand": "Customer Trade-in",
+      "batteryCondition": "Recyclable Lead Acid"
+    },
+    "appliedCoupon": {
+      "code": "EXIDE2026",
+      "percent": 10,
+      "discountAmount": 2700
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "status": "Confirmed",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": null
+  },
+  {
+    "orderId": "EXD-674824",
+    "id": "EXD-674824",
+    "invoiceNumber": "INV-2026-01026",
+    "trackingNumber": "NP-EXD-38246",
+    "date": "2026-10-17T18:51:05.602Z",
+    "orderDate": "18 Oct 2026, 00:36",
+    "orderDateFormatted": "18 Oct 2026, 00:36",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ramesh Shrestha",
+      "phone": "9841234567",
+      "email": "ramesh.nepal@gmail.com",
+      "district": "Kathmandu",
+      "city": "Kathmandu",
+      "ward": "10",
+      "address": "Bijulibazar, Anamnagar",
+      "deliveryAddress": "Bijulibazar, Anamnagar",
+      "assignedRider": "Standard Courier Express"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 1,
+        "itemTotal": 34000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7000,
+      "couponDiscount": 2700,
+      "deliveryFee": 0,
+      "grandTotal": 24300,
+      "vatAmount": 2796,
+      "taxableAmount": 21504,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "calculations": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7000,
+      "scrapBatteryAh": 200,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 2796,
+      "taxableAmount": 21504,
+      "grandTotal": 24300
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 200,
+      "ratePerAh": 35,
+      "totalScrapValue": 7000,
+      "calculatedDiscount": 7000,
+      "excessScrapRefund": 0,
+      "batteryBrand": "Customer Trade-in",
+      "batteryCondition": "Recyclable Lead Acid"
+    },
+    "appliedCoupon": {
+      "code": "EXIDE2026",
+      "percent": 10,
+      "discountAmount": 2700
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "status": "Confirmed",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": null
+  },
+  {
+    "orderId": "EXD-960680",
+    "id": "EXD-960680",
+    "invoiceNumber": "INV-2026-01025",
+    "trackingNumber": "NP-EXD-69595",
+    "date": "2026-10-17T18:12:46.145Z",
+    "orderDate": "17 Oct 2026, 23:57",
+    "orderDateFormatted": "17 Oct 2026, 23:57",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ramesh Shrestha",
+      "phone": "9841234567",
+      "email": "ramesh.nepal@gmail.com",
+      "district": "Kathmandu",
+      "city": "Kathmandu",
+      "ward": "10",
+      "address": "Bijulibazar, Anamnagar",
+      "deliveryAddress": "Bijulibazar, Anamnagar",
+      "assignedRider": "Standard Courier Express"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 1,
+        "itemTotal": 34000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7000,
+      "couponDiscount": 2700,
+      "deliveryFee": 0,
+      "grandTotal": 24300,
+      "vatAmount": 2796,
+      "taxableAmount": 21504,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "calculations": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7000,
+      "scrapBatteryAh": 200,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 2796,
+      "taxableAmount": 21504,
+      "grandTotal": 24300
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 200,
+      "ratePerAh": 35,
+      "totalScrapValue": 7000,
+      "calculatedDiscount": 7000,
+      "excessScrapRefund": 0,
+      "batteryBrand": "Customer Trade-in",
+      "batteryCondition": "Recyclable Lead Acid"
+    },
+    "appliedCoupon": {
+      "code": "EXIDE2026",
+      "percent": 10,
+      "discountAmount": 2700
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "status": "Confirmed",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": null
+  },
+  {
+    "orderId": "EXD-193173",
+    "id": "EXD-193173",
+    "invoiceNumber": "INV-2026-01024",
+    "trackingNumber": "NP-EXD-41604",
+    "date": "2026-10-17T18:05:57.940Z",
+    "orderDate": "17 Oct 2026, 23:50",
+    "orderDateFormatted": "17 Oct 2026, 23:50",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ramesh Shrestha",
+      "phone": "9841234567",
+      "email": "ramesh.nepal@gmail.com",
+      "district": "Kathmandu",
+      "city": "Kathmandu",
+      "ward": "10",
+      "address": "Bijulibazar, Anamnagar",
+      "deliveryAddress": "Bijulibazar, Anamnagar",
+      "assignedRider": "Standard Courier Express"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 1,
+        "itemTotal": 34000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7000,
+      "couponDiscount": 2700,
+      "deliveryFee": 0,
+      "grandTotal": 24300,
+      "vatAmount": 2796,
+      "taxableAmount": 21504,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "calculations": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7000,
+      "scrapBatteryAh": 200,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 2796,
+      "taxableAmount": 21504,
+      "grandTotal": 24300
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 200,
+      "ratePerAh": 35,
+      "totalScrapValue": 7000,
+      "calculatedDiscount": 7000,
+      "excessScrapRefund": 0,
+      "batteryBrand": "Customer Trade-in",
+      "batteryCondition": "Recyclable Lead Acid"
+    },
+    "appliedCoupon": {
+      "code": "EXIDE2026",
+      "percent": 10,
+      "discountAmount": 2700
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "status": "Confirmed",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": null
+  },
+  {
+    "orderId": "EXD-387970",
+    "invoiceNumber": "INV-2026-01023",
+    "trackingNumber": "NP-EXD-89506",
+    "date": "2026-10-17T17:36:28.468Z",
+    "orderDateFormatted": "17 Oct 2026, 23:21",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ramesh Shrestha",
+      "phone": "9841234567",
+      "email": "ramesh.nepal@gmail.com",
+      "district": "Kathmandu",
+      "deliveryAddress": "Bijulibazar, Anamnagar",
+      "assignedRider": "Standard Courier Express",
+      "city": "Kathmandu",
+      "address": "Bijulibazar, Anamnagar",
+      "ward": "01",
+      "province": "Bagmati"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 1,
+        "itemTotal": 34000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7000,
+      "couponDiscount": 2700,
+      "deliveryFee": 0,
+      "grandTotal": 24300,
+      "vatAmount": 2796,
+      "taxableAmount": 21504,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 200,
+      "ratePerAh": 35,
+      "totalScrapValue": 7000,
+      "calculatedDiscount": 7000,
+      "excessScrapRefund": 0,
+      "batteryBrand": "Customer Trade-in",
+      "batteryCondition": "Recyclable Lead Acid"
+    },
+    "appliedCoupon": {
+      "code": "EXIDE2026",
+      "percent": 10,
+      "discountAmount": 2700
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": null,
+    "status": "Confirmed",
+    "id": "EXD-387970",
+    "orderDate": "17 Oct 2026, 23:21",
+    "calculations": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7000,
+      "scrapBatteryAh": 200,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 2796,
+      "taxableAmount": 21504,
+      "grandTotal": 24300
+    }
+  },
+  {
+    "orderId": "EXD-561926",
+    "invoiceNumber": "INV-2026-01022",
+    "trackingNumber": "NP-EXD-43475",
+    "date": "2026-10-17T17:34:43.697Z",
+    "orderDateFormatted": "17 Oct 2026, 23:19",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ramesh Shrestha",
+      "phone": "9841234567",
+      "email": "ramesh.nepal@gmail.com",
+      "district": "Kathmandu",
+      "deliveryAddress": "Bijulibazar, Anamnagar",
+      "assignedRider": "Standard Courier Express",
+      "city": "Kathmandu",
+      "address": "Bijulibazar, Anamnagar",
+      "ward": "01",
+      "province": "Bagmati"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 1,
+        "itemTotal": 34000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7000,
+      "couponDiscount": 0,
+      "deliveryFee": 0,
+      "grandTotal": 27000,
+      "vatAmount": 3106,
+      "taxableAmount": 23894,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 200,
+      "ratePerAh": 35,
+      "totalScrapValue": 7000,
+      "calculatedDiscount": 7000,
+      "excessScrapRefund": 0,
+      "batteryBrand": "Customer Trade-in",
+      "batteryCondition": "Recyclable Lead Acid"
+    },
+    "appliedCoupon": null,
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": null,
+    "status": "Confirmed",
+    "id": "EXD-561926",
+    "orderDate": "17 Oct 2026, 23:19",
+    "calculations": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7000,
+      "scrapBatteryAh": 200,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 3106,
+      "taxableAmount": 23894,
+      "grandTotal": 27000
+    }
+  },
+  {
+    "orderId": "EXD-478976",
+    "invoiceNumber": "INV-2026-01021",
+    "trackingNumber": "NP-EXD-80340",
+    "date": "2026-10-17T17:34:08.551Z",
+    "orderDateFormatted": "17 Oct 2026, 23:19",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ramesh Shrestha",
+      "phone": "9841234567",
+      "email": "ramesh.nepal@gmail.com",
+      "district": "Kathmandu",
+      "deliveryAddress": "Bijulibazar, Anamnagar",
+      "assignedRider": "Standard Courier Express",
+      "city": "Kathmandu",
+      "address": "Bijulibazar, Anamnagar",
+      "ward": "01",
+      "province": "Bagmati"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 1,
+        "itemTotal": 34000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7000,
+      "couponDiscount": 2700,
+      "deliveryFee": 0,
+      "grandTotal": 24300,
+      "vatAmount": 2796,
+      "taxableAmount": 21504,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 200,
+      "ratePerAh": 35,
+      "totalScrapValue": 7000,
+      "calculatedDiscount": 7000,
+      "excessScrapRefund": 0,
+      "batteryBrand": "Customer Trade-in",
+      "batteryCondition": "Recyclable Lead Acid"
+    },
+    "appliedCoupon": {
+      "code": "EXIDE2026",
+      "percent": 10,
+      "discountAmount": 2700
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": null,
+    "status": "Confirmed",
+    "id": "EXD-478976",
+    "orderDate": "17 Oct 2026, 23:19",
+    "calculations": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7000,
+      "scrapBatteryAh": 200,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 2796,
+      "taxableAmount": 21504,
+      "grandTotal": 24300
+    }
+  },
+  {
+    "orderId": "EXD-265887",
+    "invoiceNumber": "INV-2026-01020",
+    "trackingNumber": "NP-EXD-61584",
+    "date": "2026-10-17T17:31:25.999Z",
+    "orderDateFormatted": "17 Oct 2026, 23:16",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ankush Kumar",
+      "phone": "9779851012345",
+      "email": "ankush.exide@gmail.com",
+      "district": "Kathmandu",
+      "deliveryAddress": "Kathmandu, Nepal",
+      "assignedRider": "Standard Courier Express",
+      "city": "Kathmandu",
+      "address": "Kathmandu, Nepal",
+      "ward": "01",
+      "province": "Bagmati"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 3,
+        "itemTotal": 102000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 102000,
+      "scrapExchangeDeduction": 7000,
+      "couponDiscount": 0,
+      "deliveryFee": 0,
+      "grandTotal": 95000,
+      "vatAmount": 10929,
+      "taxableAmount": 84071,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 200,
+      "ratePerAh": 35,
+      "totalScrapValue": 7000,
+      "calculatedDiscount": 7000,
+      "excessScrapRefund": 0,
+      "batteryBrand": "Customer Trade-in",
+      "batteryCondition": "Used / Scrap"
+    },
+    "appliedCoupon": null,
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": "idemp_1792258285883_dbh77p",
+    "status": "Confirmed",
+    "id": "EXD-265887",
+    "orderDate": "17 Oct 2026, 23:16",
+    "calculations": {
+      "rawSubtotal": 102000,
+      "scrapExchangeDeduction": 7000,
+      "scrapBatteryAh": 200,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 10929,
+      "taxableAmount": 84071,
+      "grandTotal": 95000
+    }
+  },
+  {
+    "orderId": "EXD-515479",
+    "invoiceNumber": "INV-2026-01019",
+    "trackingNumber": "NP-EXD-14475",
+    "date": "2026-10-17T17:29:42.134Z",
+    "orderDateFormatted": "17 Oct 2026, 23:14",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ankush Kumar",
+      "phone": "9841234567",
+      "email": "ankush.exide@gmail.com",
+      "district": "Kathmandu",
+      "deliveryAddress": "Kathmandu, Nepal",
+      "assignedRider": "Standard Courier Express",
+      "city": "Kathmandu",
+      "address": "Kathmandu, Nepal",
+      "ward": "01",
+      "province": "Bagmati"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 2,
+        "itemTotal": 68000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 68000,
+      "scrapExchangeDeduction": 7000,
+      "couponDiscount": 0,
+      "deliveryFee": 0,
+      "grandTotal": 61000,
+      "vatAmount": 7018,
+      "taxableAmount": 53982,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 200,
+      "ratePerAh": 35,
+      "totalScrapValue": 7000,
+      "calculatedDiscount": 7000,
+      "excessScrapRefund": 0,
+      "batteryBrand": "Customer Trade-in",
+      "batteryCondition": "Used / Scrap"
+    },
+    "appliedCoupon": null,
+    "paymentMethod": "ESEWA",
+    "paymentStatus": "Paid / Confirmed",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": "idemp_1792258182064_r4pkpj",
+    "status": "Confirmed",
+    "id": "EXD-515479",
+    "orderDate": "17 Oct 2026, 23:14",
+    "calculations": {
+      "rawSubtotal": 68000,
+      "scrapExchangeDeduction": 7000,
+      "scrapBatteryAh": 200,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 7018,
+      "taxableAmount": 53982,
+      "grandTotal": 61000
+    }
+  },
+  {
+    "orderId": "EXD-484447",
+    "invoiceNumber": "INV-2026-01018",
+    "trackingNumber": "NP-EXD-83892",
+    "date": "2026-10-17T17:29:27.427Z",
+    "orderDateFormatted": "17 Oct 2026, 23:14",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ankush Kumar",
+      "phone": "9841234567",
+      "email": "ankush.exide@gmail.com",
+      "district": "Kathmandu",
+      "deliveryAddress": "Kathmandu, Nepal",
+      "assignedRider": "Standard Courier Express",
+      "city": "Kathmandu",
+      "address": "Kathmandu, Nepal",
+      "ward": "01",
+      "province": "Bagmati"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 2,
+        "itemTotal": 68000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 68000,
+      "scrapExchangeDeduction": 7000,
+      "couponDiscount": 0,
+      "deliveryFee": 0,
+      "grandTotal": 61000,
+      "vatAmount": 7018,
+      "taxableAmount": 53982,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 200,
+      "ratePerAh": 35,
+      "totalScrapValue": 7000,
+      "calculatedDiscount": 7000,
+      "excessScrapRefund": 0,
+      "batteryBrand": "Customer Trade-in",
+      "batteryCondition": "Used / Scrap"
+    },
+    "appliedCoupon": null,
+    "paymentMethod": "ESEWA",
+    "paymentStatus": "Paid / Confirmed",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": "idemp_1792258167360_ir6itb",
+    "status": "Confirmed",
+    "id": "EXD-484447",
+    "orderDate": "17 Oct 2026, 23:14",
+    "calculations": {
+      "rawSubtotal": 68000,
+      "scrapExchangeDeduction": 7000,
+      "scrapBatteryAh": 200,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 7018,
+      "taxableAmount": 53982,
+      "grandTotal": 61000
+    }
+  },
+  {
+    "orderId": "EXD-621210",
+    "invoiceNumber": "INV-2026-01017",
+    "trackingNumber": "NP-EXD-80437",
+    "date": "2026-10-17T17:28:46.612Z",
+    "orderDateFormatted": "17 Oct 2026, 23:13",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ankush Kumar",
+      "phone": "9841234567",
+      "email": "ankush.exide@gmail.com",
+      "district": "Kathmandu",
+      "deliveryAddress": "Kathmandu, Nepal",
+      "assignedRider": "Standard Courier Express",
+      "city": "Kathmandu",
+      "address": "Kathmandu, Nepal",
+      "ward": "01",
+      "province": "Bagmati"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 2,
+        "itemTotal": 68000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 68000,
+      "scrapExchangeDeduction": 7000,
+      "couponDiscount": 0,
+      "deliveryFee": 0,
+      "grandTotal": 61000,
+      "vatAmount": 7018,
+      "taxableAmount": 53982,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 200,
+      "ratePerAh": 35,
+      "totalScrapValue": 7000,
+      "calculatedDiscount": 7000,
+      "excessScrapRefund": 0,
+      "batteryBrand": "Customer Trade-in",
+      "batteryCondition": "Used / Scrap"
+    },
+    "appliedCoupon": null,
+    "paymentMethod": "ESEWA",
+    "paymentStatus": "Paid / Confirmed",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": "idemp_1792258126552_7nt4s5",
+    "status": "Confirmed",
+    "id": "EXD-621210",
+    "orderDate": "17 Oct 2026, 23:13",
+    "calculations": {
+      "rawSubtotal": 68000,
+      "scrapExchangeDeduction": 7000,
+      "scrapBatteryAh": 200,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 7018,
+      "taxableAmount": 53982,
+      "grandTotal": 61000
+    }
+  },
+  {
+    "orderId": "EXD-446568",
+    "invoiceNumber": "INV-2026-01016",
+    "trackingNumber": "NP-EXD-20985",
+    "date": "2026-10-17T17:27:57.415Z",
+    "orderDateFormatted": "17 Oct 2026, 23:12",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ankush Kumar",
+      "phone": "9841234567",
+      "email": "ankush.exide@gmail.com",
+      "district": "Kathmandu",
+      "deliveryAddress": "Kathmandu, Nepal",
+      "assignedRider": "Standard Courier Express",
+      "city": "Kathmandu",
+      "address": "Kathmandu, Nepal",
+      "ward": "01",
+      "province": "Bagmati"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 2,
+        "itemTotal": 68000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 68000,
+      "scrapExchangeDeduction": 7000,
+      "couponDiscount": 0,
+      "deliveryFee": 0,
+      "grandTotal": 61000,
+      "vatAmount": 7018,
+      "taxableAmount": 53982,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 200,
+      "ratePerAh": 35,
+      "totalScrapValue": 7000,
+      "calculatedDiscount": 7000,
+      "excessScrapRefund": 0,
+      "batteryBrand": "Customer Trade-in",
+      "batteryCondition": "Used / Scrap"
+    },
+    "appliedCoupon": null,
+    "paymentMethod": "ESEWA",
+    "paymentStatus": "Paid / Confirmed",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": "idemp_1792258077352_m0q9xx",
+    "status": "Confirmed",
+    "id": "EXD-446568",
+    "orderDate": "17 Oct 2026, 23:12",
+    "calculations": {
+      "rawSubtotal": 68000,
+      "scrapExchangeDeduction": 7000,
+      "scrapBatteryAh": 200,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 7018,
+      "taxableAmount": 53982,
+      "grandTotal": 61000
+    }
+  },
+  {
+    "orderId": "EXD-687300",
+    "invoiceNumber": "INV-2026-01015",
+    "trackingNumber": "NP-EXD-60709",
+    "date": "2026-10-17T17:24:10.958Z",
+    "orderDateFormatted": "17 Oct 2026, 23:09",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ramesh Shrestha",
+      "phone": "9841234567",
+      "email": "ramesh.nepal@gmail.com",
+      "district": "Kathmandu",
+      "deliveryAddress": "Bijulibazar, Anamnagar",
+      "assignedRider": "Standard Courier Express",
+      "city": "Kathmandu",
+      "address": "Bijulibazar, Anamnagar",
+      "ward": "01",
+      "province": "Bagmati"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 1,
+        "itemTotal": 34000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7000,
+      "couponDiscount": 2700,
+      "deliveryFee": 0,
+      "grandTotal": 24300,
+      "vatAmount": 2796,
+      "taxableAmount": 21504,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 200,
+      "ratePerAh": 35,
+      "totalScrapValue": 7000,
+      "calculatedDiscount": 7000,
+      "excessScrapRefund": 0,
+      "batteryBrand": "Customer Trade-in",
+      "batteryCondition": "Recyclable Lead Acid"
+    },
+    "appliedCoupon": {
+      "code": "EXIDE2026",
+      "percent": 10,
+      "discountAmount": 2700
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": null,
+    "status": "Confirmed",
+    "id": "EXD-687300",
+    "orderDate": "17 Oct 2026, 23:09",
+    "calculations": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7000,
+      "scrapBatteryAh": 200,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 2796,
+      "taxableAmount": 21504,
+      "grandTotal": 24300
+    }
+  },
+  {
+    "orderId": "EXD-450924",
+    "invoiceNumber": "INV-2026-01014",
+    "trackingNumber": "NP-EXD-56503",
+    "date": "2026-10-17T17:18:07.503Z",
+    "orderDateFormatted": "17 Oct 2026, 23:03",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ankush Kumar",
+      "phone": "9779851012345",
+      "email": "ankush.exide@gmail.com",
+      "district": "Kathmandu",
+      "deliveryAddress": "Kathmandu, Nepal",
+      "assignedRider": "Standard Courier Express",
+      "city": "Kathmandu",
+      "address": "Kathmandu, Nepal",
+      "ward": "01",
+      "province": "Bagmati"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 1,
+        "itemTotal": 34000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7875,
+      "couponDiscount": 0,
+      "deliveryFee": 0,
+      "grandTotal": 26125,
+      "vatAmount": 3006,
+      "taxableAmount": 23119,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 225,
+      "ratePerAh": 35,
+      "totalScrapValue": 7875,
+      "calculatedDiscount": 7875,
+      "excessScrapRefund": 0,
+      "batteryBrand": "Customer Trade-in",
+      "batteryCondition": "Used / Scrap"
+    },
+    "appliedCoupon": null,
+    "paymentMethod": "ESEWA",
+    "paymentStatus": "Paid / Confirmed",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": "idemp_1792257487406_rf8pei",
+    "status": "Confirmed",
+    "id": "EXD-450924",
+    "orderDate": "17 Oct 2026, 23:03",
+    "calculations": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7875,
+      "scrapBatteryAh": 225,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 3006,
+      "taxableAmount": 23119,
+      "grandTotal": 26125
+    }
+  },
+  {
+    "orderId": "EXD-430781",
+    "invoiceNumber": "INV-2026-01013",
+    "trackingNumber": "NP-EXD-28676",
+    "date": "2026-10-17T17:17:58.702Z",
+    "orderDateFormatted": "17 Oct 2026, 23:02",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ankush Kumar",
+      "phone": "9779851012345",
+      "email": "ankush.exide@gmail.com",
+      "district": "Kathmandu",
+      "deliveryAddress": "Kathmandu, Nepal",
+      "assignedRider": "Standard Courier Express",
+      "city": "Kathmandu",
+      "address": "Kathmandu, Nepal",
+      "ward": "01",
+      "province": "Bagmati"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 1,
+        "itemTotal": 34000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7875,
+      "couponDiscount": 0,
+      "deliveryFee": 0,
+      "grandTotal": 26125,
+      "vatAmount": 3006,
+      "taxableAmount": 23119,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 225,
+      "ratePerAh": 35,
+      "totalScrapValue": 7875,
+      "calculatedDiscount": 7875,
+      "excessScrapRefund": 0,
+      "batteryBrand": "Customer Trade-in",
+      "batteryCondition": "Used / Scrap"
+    },
+    "appliedCoupon": null,
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": "idemp_1792257478637_p5lemt",
+    "status": "Confirmed",
+    "id": "EXD-430781",
+    "orderDate": "17 Oct 2026, 23:02",
+    "calculations": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7875,
+      "scrapBatteryAh": 225,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 3006,
+      "taxableAmount": 23119,
+      "grandTotal": 26125
+    }
+  },
+  {
+    "orderId": "EXD-871011",
+    "invoiceNumber": "INV-2026-01012",
+    "trackingNumber": "NP-EXD-54581",
+    "date": "2026-10-17T17:17:56.096Z",
+    "orderDateFormatted": "17 Oct 2026, 23:02",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ankush Kumar",
+      "phone": "9779851012345",
+      "email": "ankush.exide@gmail.com",
+      "district": "Kathmandu",
+      "deliveryAddress": "Kathmandu, Nepal",
+      "assignedRider": "Standard Courier Express",
+      "city": "Kathmandu",
+      "address": "Kathmandu, Nepal",
+      "ward": "01",
+      "province": "Bagmati"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 1,
+        "itemTotal": 34000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7875,
+      "couponDiscount": 0,
+      "deliveryFee": 0,
+      "grandTotal": 26125,
+      "vatAmount": 3006,
+      "taxableAmount": 23119,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 225,
+      "ratePerAh": 35,
+      "totalScrapValue": 7875,
+      "calculatedDiscount": 7875,
+      "excessScrapRefund": 0,
+      "batteryBrand": "Customer Trade-in",
+      "batteryCondition": "Used / Scrap"
+    },
+    "appliedCoupon": null,
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": "idemp_1792257475887_mhbdxg",
+    "status": "Confirmed",
+    "id": "EXD-871011",
+    "orderDate": "17 Oct 2026, 23:02",
+    "calculations": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7875,
+      "scrapBatteryAh": 225,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 3006,
+      "taxableAmount": 23119,
+      "grandTotal": 26125
+    }
+  },
+  {
+    "orderId": "EXD-921062",
+    "invoiceNumber": "INV-2026-01011",
+    "trackingNumber": "NP-EXD-97401",
+    "date": "2026-10-17T17:07:04.110Z",
+    "orderDateFormatted": "17 Oct 2026, 22:52",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Sunil Yadav",
+      "phone": "9809163454",
+      "email": "9809163454@customer.exidebattery.com.np",
+      "district": "Kathmandu",
+      "deliveryAddress": "New Baneshwor, Tole-4",
+      "assignedRider": "Standard Courier Express",
+      "city": "Kathmandu",
+      "address": "New Baneshwor, Tole-4",
+      "ward": "01",
+      "province": "Bagmati"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 1,
+        "itemTotal": 34000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 5250,
+      "couponDiscount": 2875,
+      "deliveryFee": 0,
+      "grandTotal": 25875,
+      "vatAmount": 2977,
+      "taxableAmount": 22898,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 150,
+      "ratePerAh": 35,
+      "totalScrapValue": 5250,
+      "calculatedDiscount": 5250,
+      "excessScrapRefund": 0,
+      "batteryBrand": "Customer Trade-in",
+      "batteryCondition": "Recyclable Lead Acid"
+    },
+    "appliedCoupon": {
+      "code": "EXIDE2026",
+      "percent": 10,
+      "discountAmount": 2875
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": null,
+    "status": "Confirmed",
+    "id": "EXD-921062",
+    "orderDate": "17 Oct 2026, 22:52",
+    "calculations": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 5250,
+      "scrapBatteryAh": 150,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 2977,
+      "taxableAmount": 22898,
+      "grandTotal": 25875
+    }
+  },
+  {
+    "orderId": "EXD-679134",
+    "invoiceNumber": "INV-2026-01010",
+    "trackingNumber": "NP-EXD-46661",
+    "date": "2026-10-17T17:04:47.557Z",
+    "orderDateFormatted": "17 Oct 2026, 22:49",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ramesh Shrestha",
+      "phone": "9841234567",
+      "email": "ramesh@gmail.com",
+      "district": "Kathmandu",
+      "deliveryAddress": "New Baneshwor",
+      "assignedRider": "Standard Courier Express",
+      "city": "Kathmandu",
+      "address": "New Baneshwor",
+      "ward": "01",
+      "province": "Bagmati"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 1,
+        "itemTotal": 34000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7000,
+      "couponDiscount": 0,
+      "deliveryFee": 0,
+      "grandTotal": 27000,
+      "vatAmount": 3106,
+      "taxableAmount": 23894,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 200,
+      "ratePerAh": 35,
+      "totalScrapValue": 7000,
+      "calculatedDiscount": 7000,
+      "excessScrapRefund": 0,
+      "batteryBrand": "Customer Trade-in",
+      "batteryCondition": "Recyclable Lead Acid"
+    },
+    "appliedCoupon": null,
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": null,
+    "status": "Confirmed",
+    "id": "EXD-679134",
+    "orderDate": "17 Oct 2026, 22:49",
+    "calculations": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 7000,
+      "scrapBatteryAh": 200,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 3106,
+      "taxableAmount": 23894,
+      "grandTotal": 27000
+    }
+  },
+  {
+    "orderId": "EXD-183023",
+    "invoiceNumber": "INV-2026-01009",
+    "trackingNumber": "NP-EXD-36977",
+    "date": "2026-10-16T21:30:35.699Z",
+    "orderDateFormatted": "17 Oct 2026, 03:15",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Sunil Yadav",
+      "phone": "9809163454",
+      "email": "9809163454@customer.exidebattery.com.np",
+      "district": "Kathmandu",
+      "deliveryAddress": "Kathmandu, Nepal",
+      "assignedRider": "Standard Courier Express",
+      "city": "Kathmandu",
+      "address": "Kathmandu, Nepal",
+      "ward": "01",
+      "province": "Bagmati"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 2,
+        "itemTotal": 68000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 68000,
+      "scrapExchangeDeduction": 52500,
+      "couponDiscount": 0,
+      "deliveryFee": 0,
+      "grandTotal": 15500,
+      "vatAmount": 1783,
+      "taxableAmount": 13717,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 1500,
+      "ratePerAh": 35,
+      "totalScrapValue": 52500,
+      "calculatedDiscount": 52500,
+      "excessScrapRefund": 0,
+      "batteryBrand": "Customer Trade-in",
+      "batteryCondition": "Recyclable Lead Acid"
+    },
+    "appliedCoupon": null,
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": null,
+    "status": "Confirmed",
+    "id": "EXD-183023",
+    "orderDate": "17 Oct 2026, 03:15",
+    "calculations": {
+      "rawSubtotal": 68000,
+      "scrapExchangeDeduction": 52500,
+      "scrapBatteryAh": 1500,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 1783,
+      "taxableAmount": 13717,
+      "grandTotal": 15500
+    }
+  },
+  {
+    "orderId": "EXD-528111",
+    "invoiceNumber": "INV-2026-01008",
+    "trackingNumber": "NP-EXD-56482",
+    "date": "2026-10-14T20:28:01.250Z",
+    "orderDateFormatted": "15 Oct 2026, 02:13",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ankush Kumar",
+      "phone": "9809163454",
+      "email": "ankush.exide@gmail.com",
+      "district": "Kathmandu",
+      "deliveryAddress": "Kathmandu, Nepal",
+      "assignedRider": "Standard Courier Express",
+      "city": "Kathmandu",
+      "address": "Kathmandu, Nepal",
+      "ward": "01",
+      "province": "Bagmati"
+    },
+    "items": [
+      {
+        "id": "livfast-tubular-battery-160-ah-mxtt-1954",
+        "sku": "LF-MXTT1954",
+        "name": "Livfast Tubular Battery 160 Ah - MXTT 1954",
+        "brand": "Livfast",
+        "capacity": "160Ah - 12V",
+        "warranty": "54 Months (30M Free + 24M Pro-Rata)",
+        "price": 30499,
+        "quantity": 1,
+        "itemTotal": 30499,
+        "image": "assets/images/livfast-1954.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 30499,
+      "scrapExchangeDeduction": 5250,
+      "couponDiscount": 0,
+      "deliveryFee": 0,
+      "grandTotal": 25249,
+      "vatAmount": 2905,
+      "taxableAmount": 22344,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 150,
+      "ratePerAh": 35,
+      "calculatedDiscount": 5250,
+      "batteryBrand": "Customer Trade-in",
+      "batteryCondition": "Used / Scrap"
+    },
+    "appliedCoupon": null,
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": "idemp_1792009681235_tlklgk",
+    "status": "Confirmed",
+    "id": "EXD-528111",
+    "orderDate": "15 Oct 2026, 02:13",
+    "calculations": {
+      "rawSubtotal": 30499,
+      "scrapExchangeDeduction": 5250,
+      "scrapBatteryAh": 150,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 2905,
+      "taxableAmount": 22344,
+      "grandTotal": 25249
+    }
+  },
+  {
+    "orderId": "EXD-523936",
+    "invoiceNumber": "INV-2026-01007",
+    "trackingNumber": "NP-EXD-55600",
+    "date": "2026-10-14T20:25:44.985Z",
+    "orderDateFormatted": "15 Oct 2026, 02:10",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Test User",
+      "phone": "9841234567",
+      "email": "9841234567@customer.exidebattery.com.np",
+      "district": "Kathmandu",
+      "deliveryAddress": "Kathmandu",
+      "assignedRider": "Standard Courier Express",
+      "city": "Kathmandu",
+      "address": "Kathmandu",
+      "ward": "01",
+      "province": "Bagmati"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 1,
+        "itemTotal": 34000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 0,
+      "couponDiscount": 0,
+      "deliveryFee": 0,
+      "grandTotal": 34000,
+      "vatAmount": 3912,
+      "taxableAmount": 30088,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "scrapExchange": null,
+    "appliedCoupon": null,
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": null,
+    "status": "Confirmed",
+    "id": "EXD-523936",
+    "orderDate": "15 Oct 2026, 02:10",
+    "calculations": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 0,
+      "scrapBatteryAh": 0,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 3912,
+      "taxableAmount": 30088,
+      "grandTotal": 34000
+    }
+  },
+  {
+    "orderId": "EXD-103614",
+    "invoiceNumber": "INV-2026-01006",
+    "trackingNumber": "NP-EXD-62390",
+    "date": "2026-10-14T20:18:44.798Z",
+    "orderDateFormatted": "15 Oct 2026, 02:03",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ankush Kumar",
+      "phone": "9809163454",
+      "email": "ankush.exide@gmail.com",
+      "district": "Kathmandu",
+      "deliveryAddress": "Kathmandu, Nepal",
+      "assignedRider": "Standard Courier Express",
+      "city": "Kathmandu",
+      "address": "Kathmandu, Nepal",
+      "ward": "01",
+      "province": "Bagmati"
+    },
+    "items": [
+      {
+        "id": "sf-150-ah-tubular-battery-tt60s150",
+        "sku": "SF-TT60S150",
+        "name": "SF Sonic 150Ah Tubular Battery - TT60S150",
+        "brand": "SF Sonic",
+        "capacity": "150Ah - 12V",
+        "warranty": "60 Months (36M Free + 24M Pro-Rata)",
+        "price": 31500,
+        "quantity": 1,
+        "itemTotal": 31500,
+        "image": "assets/images/sf-150ah.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 31500,
+      "scrapExchangeDeduction": 5250,
+      "couponDiscount": 0,
+      "deliveryFee": 0,
+      "grandTotal": 26250,
+      "vatAmount": 3020,
+      "taxableAmount": 23230,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 150,
+      "ratePerAh": 35,
+      "calculatedDiscount": 5250,
+      "batteryBrand": "Customer Trade-in",
+      "batteryCondition": "Used / Scrap"
+    },
+    "appliedCoupon": null,
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": "idemp_1792009124788_exvmn5",
+    "status": "Confirmed",
+    "id": "EXD-103614",
+    "orderDate": "15 Oct 2026, 02:03",
+    "calculations": {
+      "rawSubtotal": 31500,
+      "scrapExchangeDeduction": 5250,
+      "scrapBatteryAh": 150,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 3020,
+      "taxableAmount": 23230,
+      "grandTotal": 26250
+    }
+  },
+  {
+    "orderId": "EXD-920146",
+    "invoiceNumber": "INV-2026-01005",
+    "trackingNumber": "NP-EXD-30853",
+    "date": "2026-10-14T19:32:01.717Z",
+    "orderDateFormatted": "15 Oct 2026, 01:17",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Sunil Yadav",
+      "phone": "9809163454",
+      "email": "9809163454@customer.exidebattery.com.np",
+      "district": "Kathmandu",
+      "deliveryAddress": "New Baneshwor, Tole-4",
+      "assignedRider": "Standard Courier Express",
+      "city": "Kathmandu",
+      "address": "New Baneshwor, Tole-4",
+      "ward": "01",
+      "province": "Bagmati"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 1,
+        "itemTotal": 34000,
+        "image": "assets/images/exide-imtt1500.png"
+      },
+      {
+        "id": "exide-200ah-invamaster-battery",
+        "sku": "EX-IMTT2000",
+        "name": "Exide 200 Ah Invamaster Tall Tubular Battery - IMTT2000",
+        "brand": "Exide",
+        "capacity": "200Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 44499,
+        "quantity": 1,
+        "itemTotal": 44499,
+        "image": "assets/images/exide-imtt2000.png"
+      },
+      {
+        "id": "exide-battery-200ah-invamagic",
+        "sku": "EX-MGTT2000",
+        "name": "Exide 200 Ah Invamagic Tubular Battery - MGTT2000",
+        "brand": "Exide",
+        "capacity": "200Ah - 12V",
+        "warranty": "48 Months (24M Replacement + 24M Pro-Rata)",
+        "price": 39899,
+        "quantity": 7,
+        "itemTotal": 279293,
+        "image": "assets/images/exide-invamagic.png"
+      },
+      {
+        "id": "exide-matrix-car-battery",
+        "sku": "EX-MTX80",
+        "name": "Exide Matrix 12V 80Ah Heavy-Duty Car Battery (MTX-80)",
+        "brand": "Exide",
+        "capacity": "80Ah - 12V",
+        "warranty": "60 Months (36 Months Free Replacement + 24 Months Pro-Rata)",
+        "price": 13500,
+        "quantity": 2,
+        "itemTotal": 27000,
+        "image": "assets/images/exide-matrix.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 384792,
+      "scrapExchangeDeduction": 0,
+      "couponDiscount": 0,
+      "deliveryFee": 0,
+      "grandTotal": 384792,
+      "vatAmount": 44268,
+      "taxableAmount": 340524,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "scrapExchange": null,
+    "appliedCoupon": null,
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": "idemp_1792006321605_vgbivr",
+    "status": "Confirmed",
+    "id": "EXD-920146",
+    "orderDate": "15 Oct 2026, 01:17",
+    "calculations": {
+      "rawSubtotal": 384792,
+      "scrapExchangeDeduction": 0,
+      "scrapBatteryAh": 0,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 44268,
+      "taxableAmount": 340524,
+      "grandTotal": 384792
+    }
+  },
+  {
+    "orderId": "EXD-307251",
+    "invoiceNumber": "INV-2026-01004",
+    "trackingNumber": "NP-EXD-45207",
+    "date": "2026-10-14T19:28:59.188Z",
+    "orderDateFormatted": "15 Oct 2026, 01:13",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Sunil Yadav",
+      "phone": "9809163454",
+      "email": "9809163454@customer.exidebattery.com.np",
+      "district": "Kathmandu",
+      "deliveryAddress": "New Baneshwor, Tole-4",
+      "assignedRider": "Standard Courier Express",
+      "city": "Kathmandu",
+      "address": "New Baneshwor, Tole-4",
+      "ward": "01",
+      "province": "Bagmati"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 1,
+        "itemTotal": 34000,
+        "image": "assets/images/exide-imtt1500.png"
+      },
+      {
+        "id": "exide-200ah-invamaster-battery",
+        "sku": "EX-IMTT2000",
+        "name": "Exide 200 Ah Invamaster Tall Tubular Battery - IMTT2000",
+        "brand": "Exide",
+        "capacity": "200Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 44499,
+        "quantity": 1,
+        "itemTotal": 44499,
+        "image": "assets/images/exide-imtt2000.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 78499,
+      "scrapExchangeDeduction": 0,
+      "couponDiscount": 0,
+      "deliveryFee": 0,
+      "grandTotal": 78499,
+      "vatAmount": 9031,
+      "taxableAmount": 69468,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "scrapExchange": null,
+    "appliedCoupon": null,
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": "idemp_1792006139101_qvtcpl",
+    "status": "Confirmed",
+    "id": "EXD-307251",
+    "orderDate": "15 Oct 2026, 01:13",
+    "calculations": {
+      "rawSubtotal": 78499,
+      "scrapExchangeDeduction": 0,
+      "scrapBatteryAh": 0,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 9031,
+      "taxableAmount": 69468,
+      "grandTotal": 78499
+    }
+  },
+  {
+    "orderId": "EXD-366461",
+    "invoiceNumber": "INV-2026-01003",
+    "trackingNumber": "NP-EXD-69491",
+    "date": "2026-10-14T19:22:22.741Z",
+    "orderDateFormatted": "15 Oct 2026, 01:07",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ankush Kumar",
+      "phone": "9809163454",
+      "email": "ankushkumar.as50@gmail.com",
+      "district": "Kathmandu",
+      "deliveryAddress": "New Baneshwor, Tole-4",
+      "assignedRider": "Standard Courier Express",
+      "city": "Kathmandu",
+      "address": "New Baneshwor, Tole-4",
+      "ward": "01",
+      "province": "Bagmati"
+    },
+    "items": [
+      {
+        "id": "exide-200ah-invamaster-battery",
+        "sku": "EX-IMTT2000",
+        "name": "Exide 200 Ah Invamaster Tall Tubular Battery - IMTT2000",
+        "brand": "Exide",
+        "capacity": "200Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 44499,
+        "quantity": 1,
+        "itemTotal": 44499,
+        "image": "assets/images/exide-imtt2000.png"
+      },
+      {
+        "id": "genus-maxillion-1000va-pure-sinewave-lithium-inverter-battery",
+        "sku": "GN-MAX1000",
+        "name": "Genus Maxilion 1000VA UPS with Inbuilt Lithium Battery",
+        "brand": "Genus",
+        "capacity": "1000VA / 12.8V 100Ah LiFePO4",
+        "warranty": "60 Months Comprehensive Warranty",
+        "price": 75000,
+        "quantity": 1,
+        "itemTotal": 75000,
+        "image": "assets/images/genus-maxilion.webp"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 119499,
+      "scrapExchangeDeduction": 5250,
+      "couponDiscount": 0,
+      "deliveryFee": 0,
+      "grandTotal": 114249,
+      "vatAmount": 13144,
+      "taxableAmount": 101105,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 150,
+      "ratePerAh": 35,
+      "calculatedDiscount": 5250,
+      "batteryBrand": "Customer Trade-in",
+      "batteryCondition": "Used / Scrap"
+    },
+    "appliedCoupon": null,
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": "idemp_1792005742716_5926b9",
+    "status": "Confirmed",
+    "id": "EXD-366461",
+    "orderDate": "15 Oct 2026, 01:07",
+    "calculations": {
+      "rawSubtotal": 119499,
+      "scrapExchangeDeduction": 5250,
+      "scrapBatteryAh": 150,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 13144,
+      "taxableAmount": 101105,
+      "grandTotal": 114249
+    }
+  },
+  {
+    "orderId": "EXD-126753",
+    "invoiceNumber": "INV-2026-01002",
+    "trackingNumber": "NP-EXD-36844",
+    "date": "2026-10-14T18:51:38.414Z",
+    "orderDateFormatted": "15 Oct 2026, 00:36",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Idemp Test",
+      "phone": "9841234567",
+      "email": "9841234567@customer.exidebattery.com.np",
+      "district": "Kathmandu",
+      "deliveryAddress": "Teku",
+      "assignedRider": null,
+      "city": "Kathmandu",
+      "address": "Teku",
+      "ward": "01",
+      "province": "Bagmati"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 1,
+        "itemTotal": 34000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 0,
+      "couponDiscount": 0,
+      "deliveryFee": 0,
+      "grandTotal": 34000,
+      "vatAmount": 3912,
+      "taxableAmount": 30088,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "scrapExchange": null,
+    "appliedCoupon": null,
+    "paymentMethod": "COD",
+    "paymentStatus": "Paid / Confirmed",
+    "orderStatus": "Delivered",
+    "notes": "",
+    "idempotencyKey": "test-idemp-123",
+    "status": "Delivered",
+    "id": "EXD-126753",
+    "orderDate": "15 Oct 2026, 00:36",
+    "calculations": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 0,
+      "scrapBatteryAh": 0,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 3912,
+      "taxableAmount": 30088,
+      "grandTotal": 34000
+    },
+    "assignedRider": null,
+    "trackingHistory": [
+      {
+        "step": "Processing",
+        "time": "12:07 AM",
+        "note": "Advanced to Processing"
+      },
+      {
+        "step": "Dispatched",
+        "time": "12:07 AM",
+        "note": "Advanced to Dispatched"
+      },
+      {
+        "step": "Delivered",
+        "time": "12:07 AM",
+        "note": "Advanced to Delivered"
+      }
+    ]
+  },
+  {
+    "orderId": "EXD-872823",
+    "invoiceNumber": "INV-2026-01001",
+    "trackingNumber": "NP-EXD-19007",
+    "date": "2026-10-14T18:51:24.791Z",
+    "orderDateFormatted": "15 Oct 2026, 00:36",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ramesh Sharma",
+      "phone": "9841234567",
+      "email": "ramesh@example.com",
+      "district": "Kathmandu",
+      "deliveryAddress": "New Baneshwor, Kathmandu",
+      "assignedRider": "Standard Courier Express",
+      "city": "Kathmandu",
+      "address": "New Baneshwor, Kathmandu",
+      "ward": "01",
+      "province": "Bagmati"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 1,
+        "itemTotal": 34000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 3500,
+      "couponDiscount": 3050,
+      "deliveryFee": 0,
+      "grandTotal": 27450,
+      "vatAmount": 3158,
+      "taxableAmount": 24292,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 100,
+      "ratePerAh": 35,
+      "calculatedDiscount": 3500,
+      "batteryBrand": "Generic Old Battery",
+      "batteryCondition": "Scrap / Depleted"
+    },
+    "appliedCoupon": {
+      "code": "EXIDE2026",
+      "percent": 10,
+      "discountAmount": 3050
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": null,
+    "status": "Confirmed",
+    "id": "EXD-872823",
+    "orderDate": "15 Oct 2026, 00:36",
+    "calculations": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 3500,
+      "scrapBatteryAh": 100,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 3158,
+      "taxableAmount": 24292,
+      "grandTotal": 27450
+    }
+  }
+]
