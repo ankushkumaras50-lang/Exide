@@ -20,6 +20,17 @@ class CartSystem {
     this.loadCart();
     this.bindEvents();
     this.renderCartUI();
+
+    const handleHash = () => {
+      const hash = window.location.hash.toLowerCase();
+      if (hash === '#cart') {
+        this.openDrawer();
+      } else if (hash === '#exchange') {
+        this.navigateToScrapExchange();
+      }
+    };
+    window.addEventListener('hashchange', handleHash);
+    setTimeout(handleHash, 250);
   }
 
   loadCart() {
@@ -238,8 +249,13 @@ class CartSystem {
     const mobBottomCountEl = document.getElementById('mob-bottom-cart-count');
     if (mobBottomCountEl) mobBottomCountEl.textContent = calcs.totalItemsCount;
 
+    const scrapCardEl = document.getElementById('scrap-exchange-card') || document.querySelector('.scrap-exchange-card');
+    if (scrapCardEl) {
+      scrapCardEl.classList.toggle('active', !!this.exchangeScrapActive);
+    }
+
     if (exchangeCheckbox) {
-      exchangeCheckbox.checked = this.exchangeScrapActive;
+      exchangeCheckbox.checked = !!this.exchangeScrapActive;
     }
 
     if (scrapRateDisplay) {
@@ -255,20 +271,64 @@ class CartSystem {
       scrapAhInput.value = this.scrapBatteryAh > 0 ? this.scrapBatteryAh : '';
     }
 
+    // Highlight active preset Ah chip matching this.scrapBatteryAh
+    const ahChips = document.querySelectorAll('.btn-scrap-ah-chip');
+    ahChips.forEach(chip => {
+      const chipAh = parseFloat(chip.getAttribute('data-ah'));
+      if (this.exchangeScrapActive && this.scrapBatteryAh > 0 && chipAh === this.scrapBatteryAh) {
+        chip.classList.add('active');
+      } else {
+        chip.classList.remove('active');
+      }
+    });
+
     // Show discount calculation feedback
     if (scrapFeedback) {
       if (this.exchangeScrapActive && this.scrapBatteryAh > 0) {
         scrapFeedback.style.display = 'block';
         if (calcs.rawSubtotal === 0) {
-          scrapFeedback.innerHTML = `✓ ${this.scrapBatteryAh} Ah × NPR ${calcs.scrapRate}/Ah = <strong style="color:var(--color-success); font-size:0.95rem;">NPR ${calcs.rawScrapDiscount.toLocaleString()} Total Scrap Buyback Value</strong> <span style="font-size:0.8rem; color:#64748B; display:block; margin-top:2px;">(Will deduct instantly when you add items, or paid in cash on pickup!)</span>`;
+          scrapFeedback.innerHTML = `
+            <div class="scrap-rebate-row">
+              <span class="scrap-rebate-math">Recycling: ${this.scrapBatteryAh} Ah × NPR ${calcs.scrapRate}/Ah</span>
+              <span class="scrap-rebate-amount">NPR ${calcs.rawScrapDiscount.toLocaleString()}</span>
+            </div>
+            <div class="scrap-rebate-tag">✓ Total Scrap Buyback Value</div>
+            <div class="scrap-rebate-note">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Deducts instantly when items are added, or paid in spot cash on doorstep pickup!</span>
+            </div>
+          `;
         } else if (calcs.excessScrapRefund > 0) {
-          scrapFeedback.innerHTML = `✓ ${this.scrapBatteryAh} Ah × NPR ${calcs.scrapRate}/Ah = <strong>NPR ${calcs.rawScrapDiscount.toLocaleString()}</strong>: <strong style="color:var(--color-success);">-NPR ${calcs.scrapExchangeDeduction.toLocaleString()}</strong> applied (100% Bill Covered!) + <span style="color:#047857; font-weight:800; display:block; margin-top:2px;">💰 NPR ${calcs.excessScrapRefund.toLocaleString()} Extra Cash Refund paid to you on pickup</span>`;
+          scrapFeedback.innerHTML = `
+            <div class="scrap-rebate-row">
+              <span class="scrap-rebate-math">${this.scrapBatteryAh} Ah × NPR ${calcs.scrapRate}/Ah</span>
+              <span class="scrap-rebate-amount">-NPR ${calcs.scrapExchangeDeduction.toLocaleString()}</span>
+            </div>
+            <div class="scrap-rebate-tag">✓ 100% Order Bill Covered!</div>
+            <div class="scrap-rebate-excess">
+              💰 Extra NPR ${calcs.excessScrapRefund.toLocaleString()} cash refund paid directly to you on pickup.
+            </div>
+            <div class="scrap-rebate-note">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Free doorstep pickup of old battery by technician.</span>
+            </div>
+          `;
         } else {
-          scrapFeedback.innerHTML = `✓ ${this.scrapBatteryAh} Ah × NPR ${calcs.scrapRate}/Ah = <strong style="color:var(--color-success); font-size:0.95rem;">-NPR ${calcs.scrapExchangeDeduction.toLocaleString()} Instant Scrap Discount Applied!</strong>`;
+          scrapFeedback.innerHTML = `
+            <div class="scrap-rebate-row">
+              <span class="scrap-rebate-math">${this.scrapBatteryAh} Ah × NPR ${calcs.scrapRate}/Ah</span>
+              <span class="scrap-rebate-amount">-NPR ${calcs.scrapExchangeDeduction.toLocaleString()}</span>
+            </div>
+            <div class="scrap-rebate-tag">✓ Instant Cash Rebate Deducted from Order</div>
+            <div class="scrap-rebate-note">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Technician will collect old battery during free doorstep delivery.</span>
+            </div>
+          `;
         }
       } else if (this.exchangeScrapActive) {
         scrapFeedback.style.display = 'block';
-        scrapFeedback.innerHTML = `<span style="color:#64748B;">💡 Enter scrap battery capacity (e.g. 150, 200, 500, 1000+ Ah) to calculate instant cash discount.</span>`;
+        scrapFeedback.innerHTML = `<div class="scrap-rebate-prompt">💡 Select a battery size above or enter custom Ah to calculate your instant trade-in cash rebate.</div>`;
       } else {
         scrapFeedback.style.display = 'none';
       }
@@ -338,18 +398,33 @@ class CartSystem {
   }
 
   // Direct Navigation to Old Battery Trade-in / Exchange Section
-  navigateToScrapExchange() {
+  navigateToScrapExchange(product = null) {
     this.openDrawer();
     this.exchangeScrapActive = true;
-    const checkbox = document.getElementById('exchange-scrap-checkbox');
-    if (checkbox) checkbox.checked = true;
-    const scrapContainer = document.getElementById('scrap-calc-container');
-    if (scrapContainer) scrapContainer.style.display = 'block';
 
+    // Auto-detect or suggest Ah capacity based on product capacity
+    if (product && (!this.scrapBatteryAh || this.scrapBatteryAh === 0)) {
+      if (product.capacity) {
+        const match = String(product.capacity).match(/(\d+)\s*Ah/i);
+        if (match && match[1]) {
+          const cap = parseInt(match[1], 10);
+          if (cap > 0) {
+            this.scrapBatteryAh = cap;
+          }
+        }
+      }
+      if (!this.scrapBatteryAh) {
+        this.scrapBatteryAh = 150; // popular tall tubular default
+      }
+    } else if (!this.scrapBatteryAh || this.scrapBatteryAh === 0) {
+      this.scrapBatteryAh = 150;
+    }
+
+    this.saveCart();
     this.renderCartUI();
 
     setTimeout(() => {
-      const scrapCard = document.querySelector('.scrap-exchange-card');
+      const scrapCard = document.getElementById('scrap-exchange-card') || document.querySelector('.scrap-exchange-card');
       if (scrapCard) {
         scrapCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
         scrapCard.classList.add('scrap-exchange-highlight');
@@ -360,7 +435,7 @@ class CartSystem {
         ahInput.focus();
       }
       if (typeof showToast === 'function') {
-        showToast('Old Battery Trade-in activated! Enter capacity (Ah) for instant discount.', 'info');
+        showToast('♻️ Old Battery Trade-in activated! Select capacity to apply instant rebate.', 'info');
       }
     }, 120);
   }
@@ -905,115 +980,124 @@ class CartSystem {
     container.innerHTML = `
       <div class="invoice-card" id="printable-invoice">
         <div class="invoice-header-row">
-          <div>
-            <img src="assets/logo.png" alt="Exide Battery Wholesale" class="invoice-logo-img">
-            <h3 style="font-size:1.1rem; font-weight:800; color:var(--color-exide-blue);">EXIDE BATTERY WHOLESALE</h3>
-            <p style="font-size:0.8rem; color:#64748B;">AET Official Partner • The Power House</p>
-            <p style="font-size:0.8rem; color:#64748B;">${hqLocation}</p>
-            <p style="font-size:0.8rem; font-weight:700; color:#0F172A;">IRD VAT/PAN Registration: ${vatNum}</p>
-            <p style="font-size:0.8rem; color:#64748B;">Hotline: ${storePhone} | batterymartbtl@gmail.com</p>
+          <div class="invoice-brand-col">
+            <div class="invoice-brand-badge-group">
+              <img src="assets/logo.png" alt="Exide Battery Wholesale" class="invoice-logo-img">
+              <div>
+                <h3 class="invoice-brand-title">EXIDE BATTERY WHOLESALE</h3>
+                <p class="invoice-brand-sub">AET Official Partner • The Power House</p>
+              </div>
+            </div>
+            <p class="invoice-brand-detail">${hqLocation}</p>
+            <p class="invoice-brand-pan">IRD VAT/PAN Registration: <strong>${vatNum}</strong></p>
+            <p class="invoice-brand-detail">Hotline: ${storePhone} | batterymartbtl@gmail.com</p>
           </div>
-          <div style="text-align:right;">
-            <div style="display:inline-block; background:var(--color-exide-red); color:#fff; font-weight:800; padding:0.25rem 0.75rem; border-radius:4px; font-size:0.8rem; text-transform:uppercase;">
+          <div class="invoice-meta-col">
+            <div class="invoice-tax-badge">
               TAX INVOICE / भ्याट बिल
             </div>
-            <h2 style="font-size:1.25rem; font-weight:800; color:#0F172A; margin-top:0.5rem;">Order #${orderNum}</h2>
-            <p style="font-size:0.85rem; color:#64748B;">Invoice: <strong>${invNum}</strong></p>
-            <p style="font-size:0.8rem; color:#64748B;">Date: ${ordDate}</p>
-            <p style="font-size:0.85rem; font-weight:700; color:var(--color-success); margin-top:0.25rem;">Payment: ${order.paymentStatus || 'Verified & Confirmed'}</p>
+            <h2 class="invoice-order-title">Order #${orderNum}</h2>
+            <div class="invoice-meta-grid">
+              <span class="invoice-meta-item">Invoice: <strong>${invNum}</strong></span>
+              <span class="invoice-meta-item">Date: <strong>${ordDate}</strong></span>
+            </div>
+            <p class="invoice-payment-status">● Payment: ${order.paymentStatus || 'Verified & Confirmed'}</p>
           </div>
         </div>
 
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; background:#F8FAFC; padding:1.25rem; border-radius:8px; margin-bottom:1.5rem; border:1px solid #E2E8F0;">
-          <div>
-            <h4 style="font-size:0.85rem; text-transform:uppercase; color:#64748B; font-weight:700; margin-bottom:0.25rem;">Bill To / Customer</h4>
-            <div style="font-size:0.95rem; font-weight:800; color:#0F172A;">${cust.fullName || 'Valued Customer'}</div>
-            <div style="font-size:0.85rem; color:#334155;">📞 ${cust.phone || ''}</div>
-            <div style="font-size:0.85rem; color:#334155;">✉️ ${cust.email || ''}</div>
-            <div style="font-size:0.85rem; color:#64748B;">Buyer PAN: <strong>${cust.panNumber || 'N/A'}</strong></div>
+        <div class="invoice-parties-grid">
+          <div class="invoice-party-card">
+            <h4 class="invoice-party-heading">Bill To / Customer</h4>
+            <div class="invoice-party-name">${cust.fullName || 'Valued Customer'}</div>
+            <div class="invoice-party-line">📞 ${cust.phone || ''}</div>
+            <div class="invoice-party-line">✉️ ${cust.email || ''}</div>
+            <div class="invoice-party-line invoice-party-pan">Buyer PAN: <strong>${cust.panNumber || 'N/A'}</strong></div>
           </div>
-          <div>
-            <h4 style="font-size:0.85rem; text-transform:uppercase; color:#64748B; font-weight:700; margin-bottom:0.25rem;">Delivery Destination</h4>
-            <div style="font-size:0.9rem; font-weight:700; color:#0F172A;">${cust.deliveryAddress || cust.address || 'Kathmandu, Nepal'}, Ward ${cust.ward || '10'}</div>
-            <div style="font-size:0.85rem; color:#334155;">${cust.city || 'Kathmandu'}, ${cust.district || 'Kathmandu'}</div>
-            <div style="font-size:0.85rem; color:#64748B;">${cust.landmark ? 'Landmark: ' + cust.landmark : ''}</div>
-            <div style="font-size:0.85rem; font-weight:600; color:var(--color-exide-blue); margin-top:0.25rem;">📦 ${order.deliveryOption || cust.assignedRider || 'Standard Courier Express'} (${order.fittingService || 'Free Technician Fitting'})</div>
+          <div class="invoice-party-card">
+            <h4 class="invoice-party-heading">Delivery Destination</h4>
+            <div class="invoice-party-name">${cust.deliveryAddress || cust.address || 'Kathmandu, Nepal'}, Ward ${cust.ward || '10'}</div>
+            <div class="invoice-party-line">${cust.city || 'Kathmandu'}, ${cust.district || 'Kathmandu'}</div>
+            ${cust.landmark ? `<div class="invoice-party-line">Landmark: ${cust.landmark}</div>` : ''}
+            <div class="invoice-delivery-pill">📦 ${order.deliveryOption || cust.assignedRider || 'Standard Courier Express'} (${order.fittingService || 'Free Technician Fitting'})</div>
           </div>
         </div>
 
-        <table class="invoice-table">
-          <thead>
-            <tr>
-              <th>SN</th>
-              <th>Product Description & Capacity</th>
-              <th>SKU</th>
-              <th style="text-align:center;">Qty</th>
-              <th style="text-align:right;">Rate (NPR)</th>
-              <th style="text-align:right;">Amount (NPR)</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${items.map((item, idx) => `
+        <!-- Responsive Items Table Wrapper -->
+        <div class="invoice-table-wrapper">
+          <table class="invoice-table">
+            <thead>
               <tr>
-                <td>${idx + 1}</td>
-                <td>
-                  <strong>${item.name}</strong><br>
-                  <small style="color:#64748B;">Capacity: ${item.capacity || 'Standard'} | Warranty Card Attached</small>
-                </td>
-                <td><code style="background:#F1F5F9; padding:2px 6px; border-radius:4px;">${item.sku || item.id}</code></td>
-                <td style="text-align:center; font-weight:700;">${item.quantity}</td>
-                <td style="text-align:right;">${(item.price || 0).toLocaleString()}</td>
-                <td style="text-align:right; font-weight:700;">${((item.price || 0) * (item.quantity || 1)).toLocaleString()}</td>
+                <th class="col-sn">SN</th>
+                <th class="col-desc">Product Description & Capacity</th>
+                <th class="col-sku">SKU</th>
+                <th class="col-qty">Qty</th>
+                <th class="col-rate">Rate (NPR)</th>
+                <th class="col-amount">Amount (NPR)</th>
               </tr>
-            `).join('')}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              ${items.map((item, idx) => `
+                <tr>
+                  <td class="col-sn">${idx + 1}</td>
+                  <td class="col-desc">
+                    <strong class="invoice-item-name">${item.name}</strong>
+                    <div class="invoice-item-sub">Capacity: ${item.capacity || 'Standard'} | Official Warranty Attached</div>
+                  </td>
+                  <td class="col-sku"><code class="invoice-sku-badge">${item.sku || item.id}</code></td>
+                  <td class="col-qty">${item.quantity}</td>
+                  <td class="col-rate">${(item.price || 0).toLocaleString()}</td>
+                  <td class="col-amount">${((item.price || 0) * (item.quantity || 1)).toLocaleString()}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
 
-        <div style="display:flex; justify-content:flex-end;">
-          <div style="width:340px; display:flex; flex-direction:column; gap:0.35rem; font-size:0.9rem;">
-            <div style="display:flex; justify-content:space-between;">
-              <span style="color:#64748B;">Subtotal Amount:</span>
-              <strong>NPR ${rawSubtotal.toLocaleString()}</strong>
+        <div class="invoice-totals-wrapper">
+          <div class="invoice-totals-box">
+            <div class="invoice-total-row">
+              <span class="total-label">Subtotal Amount:</span>
+              <strong class="total-val">NPR ${rawSubtotal.toLocaleString()}</strong>
             </div>
             ${(scrapDeduction > 0 || scrapAh > 0) ? `
-            <div style="display:flex; justify-content:space-between; color:var(--color-success);">
+            <div class="invoice-total-row scrap-rebate">
               <span>Scrap Battery Trade-in (${scrapAh} Ah @ NPR ${scrapRate}/Ah):</span>
               <strong>- NPR ${scrapDeduction.toLocaleString()}</strong>
             </div>` : ''}
-            <div style="display:flex; justify-content:space-between;">
-              <span style="color:#64748B;">Delivery & Fitting:</span>
-              <strong>${deliveryFee === 0 ? 'FREE' : 'NPR ' + deliveryFee.toLocaleString()}</strong>
+            <div class="invoice-total-row">
+              <span class="total-label">Delivery & Fitting:</span>
+              <strong class="total-val">${deliveryFee === 0 ? 'FREE' : 'NPR ' + deliveryFee.toLocaleString()}</strong>
             </div>
-            <div style="display:flex; justify-content:space-between; border-top:1px solid #E2E8F0; padding-top:0.35rem; color:#64748B; font-size:0.8rem;">
+            <div class="invoice-total-row vat-row">
               <span>13% VAT Tax (Included):</span>
               <span>NPR ${vatAmount.toLocaleString()}</span>
             </div>
-            <div style="display:flex; justify-content:space-between; font-size:1.25rem; font-weight:800; border-top:2px solid var(--color-exide-red); padding-top:0.5rem; color:var(--color-exide-red);">
+            <div class="invoice-total-row grand-total-row">
               <span>Grand Total:</span>
               <span>NPR ${grandTotal.toLocaleString()}</span>
             </div>
           </div>
         </div>
 
-        <div style="margin-top:2rem; padding-top:1rem; border-top:1px dashed #CBD5E1; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
-          <div style="font-size:0.8rem; color:#64748B; max-width:480px;">
+        <div class="invoice-footer-row">
+          <div class="invoice-terms-text">
             <p><strong>Terms:</strong> 100% Genuine guaranteed with stamped warranty card. For claims or doorstep battery replacement service across Nepal, present this invoice.</p>
           </div>
-          <div style="display:flex; gap:0.6rem; flex-wrap:wrap; justify-content:flex-end;">
-            <button type="button" class="btn-primary-red btn-pdf-download" onclick="window.downloadVatBillPdf(window.cartSystem?.lastOrder || null)" style="padding:0.6rem 1.15rem; font-size:0.85rem; display:inline-flex; align-items:center; gap:0.4rem; background:#DC2626; color:#fff; border-radius:6px; font-weight:700;">
+          <div class="invoice-actions-bar">
+            <button type="button" class="btn-invoice-action btn-pdf-download" onclick="window.downloadVatBillPdf(window.cartSystem?.lastOrder || null)">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
-              <span>Download PDF Bill</span>
+              <span>Download PDF</span>
             </button>
-            <button type="button" class="btn-whatsapp" onclick="window.sendVatBillWhatsApp(window.cartSystem?.lastOrder || null)" style="padding:0.6rem 1.15rem; font-size:0.85rem; display:inline-flex; align-items:center; gap:0.4rem; background:#25D366; color:#fff; border-radius:6px; font-weight:700;">
+            <button type="button" class="btn-invoice-action btn-whatsapp" onclick="window.sendVatBillWhatsApp(window.cartSystem?.lastOrder || null)">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
-              <span>WhatsApp PDF & Bill</span>
+              <span>WhatsApp</span>
             </button>
-            <button type="button" class="btn-primary-red btn-print-invoice" onclick="window.printTaxInvoice(window.cartSystem?.lastOrder || null)" style="padding:0.6rem 1.15rem; font-size:0.85rem; display:inline-flex; align-items:center; gap:0.4rem; background:#1E293B; color:#fff; border-radius:6px; font-weight:700;">
+            <button type="button" class="btn-invoice-action btn-print-invoice" onclick="window.printTaxInvoice(window.cartSystem?.lastOrder || null)">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
-              <span>Print Tax Bill</span>
+              <span>Print Bill</span>
             </button>
-            <button type="button" class="btn-outline-white" onclick="window.cartSystem.closeCheckoutModal()" style="border:1.5px solid #CBD5E1; color:#0F172A; padding:0.6rem 1.15rem; font-size:0.85rem; border-radius:6px; font-weight:700;">
-              Done
+            <button type="button" class="btn-invoice-action btn-close-done" onclick="window.cartSystem.closeCheckoutModal()">
+              <span>Done</span>
             </button>
           </div>
         </div>

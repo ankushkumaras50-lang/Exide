@@ -21,6 +21,100 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ==========================================================================
+// CORE HELPERS & SMART SEARCH RELEVANCE ENGINE
+// ==========================================================================
+function escapeHtml(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+window.escapeHtml = escapeHtml;
+
+function getSearchRelevanceScore(product, query) {
+  if (!query || !product) return 0;
+  const q = query.trim().toLowerCase();
+  const qTokens = q.split(/\s+/).filter(Boolean);
+  if (qTokens.length === 0) return 0;
+
+  const sku = (product.sku || '').toLowerCase();
+  const name = (product.name || '').toLowerCase();
+  const brand = (product.brand || '').toLowerCase();
+  const capacity = (product.capacity || '').toLowerCase();
+  const warranty = (product.warranty || '').toLowerCase();
+  const type = (product.type || '').toLowerCase();
+  const desc = (product.description || '').toLowerCase();
+  const cats = Array.isArray(product.categories) ? product.categories.map(c => c.toLowerCase()).join(' ') : '';
+
+  let score = 0;
+
+  // Exact SKU / Model Match (highest priority - top relevance)
+  if (sku === q) score += 2000;
+  else if (sku.startsWith(q)) score += 1200;
+  else if (sku.includes(q)) score += 700;
+
+  // Exact Name Match
+  if (name === q) score += 1800;
+  else if (name.startsWith(q)) score += 1000;
+  else if (name.includes(q)) score += 600;
+
+  // Token matches across fields
+  let allTokensMatch = true;
+  for (const token of qTokens) {
+    let tokenMatched = false;
+    if (sku.includes(token)) { score += 400; tokenMatched = true; }
+    if (name.includes(token)) { score += 300; tokenMatched = true; }
+    if (capacity.includes(token)) { score += 280; tokenMatched = true; }
+    if (brand.includes(token)) { score += 200; tokenMatched = true; }
+    if (type.includes(token)) { score += 180; tokenMatched = true; }
+    if (cats.includes(token)) { score += 150; tokenMatched = true; }
+    if (warranty.includes(token)) { score += 120; tokenMatched = true; }
+    if (desc.includes(token)) { score += 60; tokenMatched = true; }
+
+    if (!tokenMatched) {
+      allTokensMatch = false;
+    }
+  }
+
+  // Bonus when all search tokens match
+  if (allTokensMatch && qTokens.length > 1) {
+    score += 500;
+  }
+
+  // In-stock availability bonus
+  if (score > 0 && product.stock > 0) {
+    score += 40;
+  }
+
+  return score;
+}
+window.getSearchRelevanceScore = getSearchRelevanceScore;
+
+function highlightSearchMatch(text, query) {
+  if (!text) return '';
+  if (!query || !query.trim()) return escapeHtml(text);
+  const qTokens = query.trim().split(/\s+/).filter(Boolean);
+  if (qTokens.length === 0) return escapeHtml(text);
+
+  let escaped = escapeHtml(text);
+  for (const token of qTokens) {
+    const escapedToken = token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`(${escapedToken})`, 'gi');
+    escaped = escaped.replace(regex, '<mark>$1</mark>');
+  }
+  return escaped;
+}
+window.highlightSearchMatch = highlightSearchMatch;
+
+// Expose handleAddToCart globally for direct search dropdown interactions
+window.quickAddToCart = function(productId, btnEl) {
+  handleAddToCart(productId, btnEl);
+};
+
+// ==========================================================================
 // 1. HERO TEXT ROTATOR
 // ==========================================================================
 function initHeroRotator() {
@@ -199,18 +293,13 @@ function renderProductsCatalog() {
   const searchQuery = (currentCatalogFilter.search || '').trim();
 
   let filtered = catalog.filter(product => {
-    // Comprehensive Search across name, sku, brand, capacity, warranty, type, description, categories
+    // Smart Search across SKU, model, name, brand, capacity, warranty, type, description, categories
     if (searchQuery) {
-      const q = searchQuery.toLowerCase();
-      const match = (product.name && product.name.toLowerCase().includes(q)) || 
-                    (product.sku && product.sku.toLowerCase().includes(q)) || 
-                    (product.brand && product.brand.toLowerCase().includes(q)) ||
-                    (product.capacity && product.capacity.toLowerCase().includes(q)) ||
-                    (product.warranty && product.warranty.toLowerCase().includes(q)) ||
-                    (product.type && product.type.toLowerCase().includes(q)) ||
-                    (product.description && product.description.toLowerCase().includes(q)) ||
-                    (product.categories && product.categories.some(c => c.toLowerCase().includes(q)));
-      if (!match) return false;
+      const score = getSearchRelevanceScore(product, searchQuery);
+      product._searchScore = score;
+      if (score <= 0) return false;
+    } else {
+      product._searchScore = 0;
     }
 
     // Category
@@ -241,8 +330,10 @@ function renderProductsCatalog() {
     return true;
   });
 
-  // Sorting
-  if (currentCatalogFilter.sort === 'price-low') {
+  // Sorting: When search is active and sort is 'featured' (default), place the most relevant searched items directly on top!
+  if (searchQuery && currentCatalogFilter.sort === 'featured') {
+    filtered.sort((a, b) => (b._searchScore || 0) - (a._searchScore || 0));
+  } else if (currentCatalogFilter.sort === 'price-low') {
     filtered.sort((a, b) => a.price - b.price);
   } else if (currentCatalogFilter.sort === 'price-high') {
     filtered.sort((a, b) => b.price - a.price);
@@ -258,14 +349,14 @@ function renderProductsCatalog() {
           <div class="search-active-info">
             <span class="search-active-badge">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-              <span>SEARCH RESULTS</span>
+              <span>SMART SEARCH RESULTS</span>
             </span>
-            <h3 class="search-active-query">Showing items matching: <strong>"${escapeHtml(searchQuery)}"</strong></h3>
-            <span class="search-active-count">${filtered.length} matching products found in catalog</span>
+            <h3 class="search-active-query">Searched items displayed on top: <strong>"${escapeHtml(searchQuery)}"</strong></h3>
+            <span class="search-active-count">${filtered.length} products found • Ranked by relevance</span>
           </div>
           <button type="button" class="btn-exit-search-mode" onclick="window.clearGlobalSearch()">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-            <span>Exit Search & Show All</span>
+            <span>Clear Search & Show All</span>
           </button>
         </div>
       `;
@@ -329,7 +420,11 @@ function renderProductsCatalog() {
           <div class="product-actions-row">
             <button class="btn-add-cart" id="btn-add-${product.id}" onclick="event.stopPropagation(); handleAddToCart('${product.id}', this)" ${product.stock <= 0 ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''} aria-label="Add ${product.name} to Cart">
               <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-              <span>${product.stock <= 0 ? 'Out of Stock' : 'Add to Cart'}</span>
+              <span>${product.stock <= 0 ? 'Out of Stock' : 'Add'}</span>
+            </button>
+            <button class="btn-buy-now-card" onclick="event.stopPropagation(); buyProductNow('${product.id}')" ${product.stock <= 0 ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''} aria-label="Buy ${product.name} Now with Old Battery Exchange" title="Buy Now & Choose Old Battery Exchange">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              <span>Buy Now</span>
             </button>
             <a href="https://wa.me/9779705997260?text=Hi%2C%20I%20am%20inquiring%20about%20${encodeURIComponent(product.name)}%20(SKU%3A%20${product.sku})%20priced%20at%20NPR%20${product.price}." target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" class="btn-whatsapp-card" title="Chat on WhatsApp" aria-label="WhatsApp Inquiry">
               <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
@@ -634,14 +729,20 @@ function buyProductNow(productId) {
     showToast('Product is currently out of stock.', 'error');
     return;
   }
-  window.cartSystem.addItem(productId, activeDetailQuantity);
+  const qty = typeof activeDetailQuantity === 'number' && activeDetailQuantity > 0 ? activeDetailQuantity : 1;
+  window.cartSystem.addItem(productId, qty);
   closeProductDetails(false);
+
+  // Directly navigate to choose old battery exchange in shopping cart drawer
   setTimeout(() => {
-    if (window.cartSystem) {
-      window.cartSystem.openCheckoutModal();
+    if (window.cartSystem && typeof window.cartSystem.navigateToScrapExchange === 'function') {
+      window.cartSystem.navigateToScrapExchange(product);
+    } else if (window.cartSystem) {
+      window.cartSystem.openDrawer();
     }
-  }, 120);
+  }, 100);
 }
+window.buyProductNow = buyProductNow;
 
 function copyProductShareLink(productId) {
   const shareUrl = `${window.location.origin}${window.location.pathname}?product=${encodeURIComponent(productId)}`;
@@ -1325,11 +1426,47 @@ function updateSearchModePinning(val) {
   }
 }
 
+const POPULAR_SEARCH_QUERIES = [
+  'Exide IMTT1500',
+  '150Ah Tall Tubular',
+  'Exide IT500',
+  'Car Battery 45Ah',
+  'Solar Hybrid PCU',
+  'Lithium LiFePO4',
+  'Old Battery Scrap'
+];
+
+window.confirmSearchToCatalog = function(overrideTerm) {
+  const headerSearchInput = document.getElementById('global-search-input');
+  const catalogSearchInput = document.getElementById('catalog-search-input');
+  const dropdown = document.getElementById('global-search-dropdown');
+  const term = overrideTerm !== undefined ? overrideTerm : (headerSearchInput ? headerSearchInput.value.trim() : '');
+
+  if (headerSearchInput) headerSearchInput.value = term;
+  if (catalogSearchInput) catalogSearchInput.value = term;
+  if (dropdown) dropdown.classList.remove('open');
+
+  currentCatalogFilter.search = term;
+  updateSearchModePinning(term);
+  renderProductsCatalog();
+
+  const productsSection = document.getElementById('products-section');
+  if (productsSection) {
+    const headerOffset = 80;
+    const elementPosition = productsSection.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+    window.scrollTo({ top: Math.max(0, offsetPosition), behavior: 'smooth' });
+  }
+};
+
 window.clearGlobalSearch = function() {
   const headerSearchInput = document.getElementById('global-search-input');
   const catalogSearchInput = document.getElementById('catalog-search-input');
+  const dropdown = document.getElementById('global-search-dropdown');
+
   if (headerSearchInput) headerSearchInput.value = '';
   if (catalogSearchInput) catalogSearchInput.value = '';
+  if (dropdown) dropdown.classList.remove('open');
 
   updateSearchModePinning('');
   currentCatalogFilter.search = '';
@@ -1341,19 +1478,134 @@ window.clearGlobalSearch = function() {
   }
 };
 
+function renderSmartSearchDropdown(val) {
+  const dropdown = document.getElementById('global-search-dropdown');
+  if (!dropdown) return;
+
+  const q = (val || '').trim();
+  const catalog = window.productsCatalog || [];
+
+  if (q.length === 0) {
+    // Show Popular Searches chips when search input is empty but active/focused
+    dropdown.innerHTML = `
+      <div class="search-dropdown-quick-section">
+        <div class="search-quick-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <span>Popular Searches in Nepal</span>
+        </div>
+        <div class="search-quick-chips">
+          ${POPULAR_SEARCH_QUERIES.map(item => `
+            <button type="button" class="search-quick-chip" onclick="window.confirmSearchToCatalog('${escapeHtml(item)}')">
+              <span>${escapeHtml(item)}</span>
+            </button>
+          `).join('')}
+        </div>
+      </div>
+    `;
+    dropdown.classList.add('open');
+    return;
+  }
+
+  // Score all catalog products and rank by highest relevance on top
+  const matches = [];
+  for (const product of catalog) {
+    const score = getSearchRelevanceScore(product, q);
+    if (score > 0) {
+      matches.push({ product, score });
+    }
+  }
+
+  // Sort with highest relevance score directly on top
+  matches.sort((a, b) => b.score - a.score);
+
+  if (matches.length === 0) {
+    dropdown.innerHTML = `
+      <div class="search-dropdown-empty">
+        <div style="font-size:1.8rem; margin-bottom:0.35rem;">🔍</div>
+        <h4 style="font-size:0.95rem; font-weight:800; color:#0F172A; margin-bottom:0.25rem;">No exact match for "${escapeHtml(q)}"</h4>
+        <p style="font-size:0.8rem; color:#64748B; margin-bottom:0.75rem;">Try searching by model (e.g. IMTT1500, IT500), capacity (150Ah), or vehicle type.</p>
+        <div class="search-quick-chips">
+          ${POPULAR_SEARCH_QUERIES.slice(0, 4).map(item => `
+            <button type="button" class="search-quick-chip" onclick="window.confirmSearchToCatalog('${escapeHtml(item)}')">
+              <span>${escapeHtml(item)}</span>
+            </button>
+          `).join('')}
+        </div>
+      </div>
+    `;
+    dropdown.classList.add('open');
+    return;
+  }
+
+  // Render top matching products directly in smart dropdown
+  const topMatches = matches.slice(0, 7);
+  dropdown.innerHTML = `
+    <div class="search-dropdown-header">
+      <span class="search-match-count">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        <span>Found <strong>${matches.length}</strong> matching products</span>
+      </span>
+      <span class="view-all-link" onclick="window.confirmSearchToCatalog()">View all on top ↗</span>
+    </div>
+
+    <div class="search-dropdown-list">
+      ${topMatches.map(({ product }) => {
+        const highlightedTitle = highlightSearchMatch(product.name, q);
+        const highlightedSku = highlightSearchMatch(product.sku, q);
+        const hasDiscount = product.originalPrice && product.originalPrice > product.price;
+
+        return `
+          <div class="search-dropdown-item" onclick="window.confirmSearchToCatalog(); navigateToProduct('${product.id}')" title="Click to view details for ${product.name}">
+            <img src="${product.image || 'assets/logo.png'}" alt="${product.name}" class="search-dropdown-thumb" loading="lazy" onerror="this.onerror=null; this.src='assets/logo.png';">
+            <div class="search-dropdown-info">
+              <div class="search-dropdown-title">${highlightedTitle}</div>
+              <div class="search-dropdown-meta">
+                <span class="search-dropdown-brand">${product.brand}</span>
+                <span class="search-dropdown-sku">Model: ${highlightedSku}</span>
+                ${product.capacity ? `<span class="search-dropdown-cap">${product.capacity}</span>` : ''}
+              </div>
+              <div class="search-dropdown-price-row">
+                <span class="search-dropdown-price">NPR ${product.price.toLocaleString()}</span>
+                ${hasDiscount ? `<span class="search-dropdown-orig-price">NPR ${product.originalPrice.toLocaleString()}</span>` : ''}
+                ${product.stock > 0 ? '<span class="search-stock-badge in-stock">● In Stock</span>' : '<span class="search-stock-badge out-stock">● Out of Stock</span>'}
+              </div>
+            </div>
+            <div class="search-dropdown-actions">
+              <button type="button" class="btn-search-quick-add" onclick="event.stopPropagation(); window.quickAddToCart('${product.id}', this)" ${product.stock <= 0 ? 'disabled style="opacity:0.4; cursor:not-allowed;"' : ''} title="Add directly to cart">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+                <span>+ Add</span>
+              </button>
+              <button type="button" class="btn-search-quick-buy" onclick="event.stopPropagation(); window.confirmSearchToCatalog(); window.buyProductNow('${product.id}')" ${product.stock <= 0 ? 'disabled style="opacity:0.4; cursor:not-allowed;"' : ''} title="Buy Now & Choose Old Battery Exchange">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                <span>Buy</span>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+
+    <div class="search-dropdown-footer" onclick="window.confirmSearchToCatalog()">
+      <span>Show all <strong>${matches.length}</strong> searched products on top of catalog</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+  `;
+  dropdown.classList.add('open');
+}
+
 function initGlobalSearch() {
   const headerSearchInput = document.getElementById('global-search-input');
   const clearBtn = document.getElementById('search-clear-btn');
+  const dropdown = document.getElementById('global-search-dropdown');
   if (!headerSearchInput) return;
 
   let debounceTimer = null;
 
-  // Keep search box pinned while typing or searching
+  // Real-time smart search on typing
   headerSearchInput.addEventListener('input', (e) => {
     clearTimeout(debounceTimer);
     const val = e.target.value;
 
-    // Pin header and activate search mode as soon as query is present
     updateSearchModePinning(val);
 
     debounceTimer = setTimeout(() => {
@@ -1363,54 +1615,42 @@ function initGlobalSearch() {
       if (catalogSearchInput && catalogSearchInput.value !== val) {
         catalogSearchInput.value = val;
       }
-      renderProductsCatalog();
 
-      if (q.length > 0) {
-        const productsSection = document.getElementById('products-section');
-        if (productsSection) {
-          const rect = productsSection.getBoundingClientRect();
-          if (rect.top > 250 || rect.bottom < 0) {
-            const topOffset = 85;
-            const elementPosition = rect.top;
-            const offsetPosition = elementPosition + window.pageYOffset - topOffset;
-            window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-          }
-        }
-      }
-    }, 220);
+      // Render live dropdown directly under search box
+      renderSmartSearchDropdown(val);
+
+      // Also update catalog and place searched items on top
+      renderProductsCatalog();
+    }, 120);
   });
 
+  // Show smart search quick suggestions on focus
   headerSearchInput.addEventListener('focus', () => {
+    renderSmartSearchDropdown(headerSearchInput.value);
     if (headerSearchInput.value.trim().length > 0) {
       updateSearchModePinning(headerSearchInput.value);
     }
   });
 
-  // Enter clicked: Immediately apply search, lock pinned state, and navigate to top of searched results
+  // Enter or key navigation
   headerSearchInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       clearTimeout(debounceTimer);
-      const val = headerSearchInput.value.trim();
-      currentCatalogFilter.search = val;
-      updateSearchModePinning(val);
-
-      const catalogSearchInput = document.getElementById('catalog-search-input');
-      if (catalogSearchInput) catalogSearchInput.value = val;
-
-      renderProductsCatalog();
-
-      const productsSection = document.getElementById('products-section');
-      if (productsSection) {
-        const topOffset = 85;
-        const elementPosition = productsSection.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - topOffset;
-        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-      }
+      window.confirmSearchToCatalog(headerSearchInput.value.trim());
+    } else if (e.key === 'Escape') {
+      if (dropdown) dropdown.classList.remove('open');
     }
   });
 
-  // Also sync changes from catalog-search-input back to headerSearchInput
+  // Close dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.search-input-wrapper')) {
+      if (dropdown) dropdown.classList.remove('open');
+    }
+  });
+
+  // Sync catalog-search-input back to headerSearchInput
   const catalogSearchInput = document.getElementById('catalog-search-input');
   if (catalogSearchInput) {
     catalogSearchInput.addEventListener('input', (e) => {

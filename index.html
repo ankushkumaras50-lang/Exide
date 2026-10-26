@@ -258,16 +258,22 @@
 
           <!-- Cart Button -->
           <button class="btn-header-action btn-cart-header" onclick="window.cartSystem.openDrawer()" aria-label="Open Shopping Cart">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-            <span>Cart</span>
+            <svg class="cart-icon-svg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="8" cy="21" r="1.5"></circle>
+              <circle cx="19" cy="21" r="1.5"></circle>
+              <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
+            </svg>
+            <span class="btn-cart-label">Cart</span>
             <span class="cart-counter-bubble" id="header-cart-count">0</span>
           </button>
 
           <!-- Mobile Hamburger Menu Button -->
-          <button class="mobile-menu-btn" id="mobile-menu-toggle-btn" onclick="window.toggleMobileDrawer()" aria-label="Toggle Mobile Navigation Menu">
-            <span class="hamburger-line"></span>
-            <span class="hamburger-line"></span>
-            <span class="hamburger-line"></span>
+          <button class="mobile-menu-btn" id="mobile-menu-toggle-btn" onclick="window.toggleMobileDrawer()" aria-label="Toggle Mobile Navigation Menu" title="Open Navigation Menu">
+            <span class="hamburger-box">
+              <span class="hamburger-line hamburger-line-1"></span>
+              <span class="hamburger-line hamburger-line-2"></span>
+              <span class="hamburger-line hamburger-line-3"></span>
+            </span>
           </button>
         </div>
       </div>
@@ -1134,36 +1140,82 @@
 
       <div class="cart-drawer-footer">
         <!-- Old Battery Trade-in Toggle & Dynamic Ampere-Hour Calculation -->
-        <div class="scrap-exchange-card">
-          <label class="exchange-scrap-toggle">
-            <input type="checkbox" id="exchange-scrap-checkbox" onchange="window.cartSystem.toggleScrapExchange(this.checked)">
-            <div>
-              <div class="exchange-text-main">♻️ Exchange Old Battery for Recycling?</div>
-              <div class="exchange-text-sub">Instant cash rebate calculated per Ampere-hour (Ah)</div>
+        <!-- Old Battery Trade-in & Dynamic Ah Recycling Valuation (Upgraded) -->
+        <div class="scrap-exchange-card" id="scrap-exchange-card">
+          <!-- Card Header with Modern Switch Toggle -->
+          <div class="scrap-toggle-header" onclick="window.cartSystem.toggleScrapExchange(!window.cartSystem.exchangeScrapActive)" role="button" tabindex="0" aria-label="Toggle Old Battery Exchange">
+            <div class="scrap-header-left">
+              <div class="scrap-icon-wrap">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="23 4 23 10 17 10"></polyline>
+                  <polyline points="1 20 1 14 7 14"></polyline>
+                  <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                </svg>
+              </div>
+              <div class="scrap-header-info">
+                <div class="scrap-header-title-row">
+                  <span class="scrap-title-text">Exchange Old Battery?</span>
+                  <span class="scrap-save-pill">Save up to Rs. 10,000+</span>
+                </div>
+                <p class="scrap-subtitle-text">
+                  Trade-in rebate: <strong class="scrap-rate-highlight">NPR <span id="scrap-rate-display">35</span> / Ah</strong> cash discount
+                </p>
+              </div>
             </div>
-          </label>
 
-          <!-- Dynamic Ah Input Box -->
-          <div id="scrap-calc-container" style="display:none; margin-top:0.75rem; background:#F8FAFC; border:1px solid #CBD5E1; border-radius:8px; padding:0.85rem;">
-            <div style="font-size:0.82rem; color:#334155; margin-bottom:0.4rem; font-weight:600;">
-              Enter scrap battery capacity in Ampere (Rate: <strong style="color:var(--color-exide-red);">NPR <span id="scrap-rate-display">35</span> / Ah</strong>):
+            <!-- Modern Animated Toggle Switch -->
+            <div class="scrap-switch-wrapper" onclick="event.stopPropagation()">
+              <input type="checkbox" id="exchange-scrap-checkbox" class="scrap-custom-checkbox" onchange="window.cartSystem.toggleScrapExchange(this.checked)" aria-label="Enable Old Battery Exchange Rebate">
+              <label for="exchange-scrap-checkbox" class="scrap-switch-label"></label>
             </div>
-            <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem; flex-wrap:wrap;">
-              <div style="display:flex; align-items:center; gap:0.25rem;">
-                <input type="number" id="scrap-ah-input" placeholder="e.g. 150" min="0" max="100000" step="5" class="scrap-ah-field" oninput="window.cartSystem.setScrapAh(this.value)" style="width:110px;">
-                <span style="font-weight:700; font-size:0.88rem; color:#0F172A;">Ah</span>
-              </div>
-              <div class="quick-ah-chips" style="display:flex; gap:4px; flex-wrap:wrap;">
-                <button type="button" class="btn-ah-pill" onclick="window.cartSystem.setScrapAh(100)">100Ah</button>
-                <button type="button" class="btn-ah-pill" onclick="window.cartSystem.setScrapAh(150)">150Ah</button>
-                <button type="button" class="btn-ah-pill" onclick="window.cartSystem.setScrapAh(200)">200Ah</button>
-                <button type="button" class="btn-ah-pill" onclick="window.cartSystem.setScrapAh(300)">300Ah</button>
-                <button type="button" class="btn-ah-pill" onclick="window.cartSystem.setScrapAh(500)">500Ah</button>
-                <button type="button" class="btn-ah-pill" onclick="window.cartSystem.setScrapAh(1000)">1,000Ah</button>
-                <button type="button" class="btn-ah-pill" onclick="window.cartSystem.setScrapAh(2000)">2,000Ah</button>
+          </div>
+
+          <!-- Dynamic Ah Calculator Panel (shown when active) -->
+          <div id="scrap-calc-container" class="scrap-calc-panel" style="display:none;">
+            <div class="scrap-panel-intro">
+              <span class="scrap-panel-label">Select or enter old battery capacity:</span>
+              <span class="scrap-doorstep-badge">🚚 Free Doorstep Pickup</span>
+            </div>
+
+            <!-- Quick Ah Capacity Preset Chips -->
+            <div class="scrap-ah-chips-grid" id="scrap-ah-chips-group">
+              <button type="button" class="btn-scrap-ah-chip" data-ah="20" onclick="window.cartSystem.setScrapAh(20)">
+                <span class="chip-ah">20 Ah</span>
+                <span class="chip-type">Bike/Scooter</span>
+              </button>
+              <button type="button" class="btn-scrap-ah-chip" data-ah="35" onclick="window.cartSystem.setScrapAh(35)">
+                <span class="chip-ah">35 Ah</span>
+                <span class="chip-type">Car/Taxi</span>
+              </button>
+              <button type="button" class="btn-scrap-ah-chip" data-ah="65" onclick="window.cartSystem.setScrapAh(65)">
+                <span class="chip-ah">65 Ah</span>
+                <span class="chip-type">SUV/Truck</span>
+              </button>
+              <button type="button" class="btn-scrap-ah-chip" data-ah="100" onclick="window.cartSystem.setScrapAh(100)">
+                <span class="chip-ah">100 Ah</span>
+                <span class="chip-type">Solar/Backup</span>
+              </button>
+              <button type="button" class="btn-scrap-ah-chip" data-ah="150" onclick="window.cartSystem.setScrapAh(150)">
+                <span class="chip-ah">150 Ah</span>
+                <span class="chip-type">Tubular Inverter</span>
+              </button>
+              <button type="button" class="btn-scrap-ah-chip" data-ah="200" onclick="window.cartSystem.setScrapAh(200)">
+                <span class="chip-ah">200 Ah</span>
+                <span class="chip-type">Heavy Inverter</span>
+              </button>
+            </div>
+
+            <!-- Custom Ah Input Field -->
+            <div class="scrap-custom-input-box">
+              <label for="scrap-ah-input" class="scrap-custom-label">Custom Capacity:</label>
+              <div class="scrap-input-field-wrap">
+                <input type="number" id="scrap-ah-input" placeholder="e.g. 150" min="0" max="100000" step="5" class="scrap-ah-input-control" oninput="window.cartSystem.setScrapAh(this.value)">
+                <span class="scrap-unit-badge">Ah</span>
               </div>
             </div>
-            <div id="scrap-discount-feedback" style="display:none;" class="scrap-feedback-pill">
+
+            <!-- Live Rebate Feedback Card -->
+            <div id="scrap-discount-feedback" class="scrap-rebate-card" style="display:none;">
               <!-- Dynamically populated via js/cart-checkout.js -->
             </div>
           </div>
@@ -3049,9 +3101,13 @@ Please arrange technician pickup and spot cash payment. Thank you!`;
       <span>Finder</span>
     </a>
 
-    <button type="button" class="mobile-nav-item mob-cart-trigger" id="mob-nav-cart" onclick="window.smoothNav(null); window.cartSystem.openDrawer();">
+    <button type="button" class="mobile-nav-item mob-cart-trigger" id="mob-nav-cart" onclick="window.smoothNav(null); window.cartSystem.openDrawer();" aria-label="Open Shopping Cart">
       <div class="mob-icon-wrap">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+        <svg class="mob-cart-svg" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="8" cy="21" r="1.5"></circle>
+          <circle cx="19" cy="21" r="1.5"></circle>
+          <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
+        </svg>
         <span class="mob-cart-badge" id="mob-bottom-cart-count">0</span>
       </div>
       <span>Cart</span>
