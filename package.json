@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node dev-server.js",
     "dev": "node dev-server.js",
-    "test": "node test/verify-system.js"
+    "test": "node test/verify-system.js && node test/test-auth-security.js && node test/test-erp-inventory.js && node test/test-erp-sales-purchases.js",
+    "seed:admin": "node scripts/seed-superadmin.js"
   },
   "keywords": [
     "exide",

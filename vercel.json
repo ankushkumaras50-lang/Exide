@@ -1,8 +1,11 @@
 {
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/erp", "destination": "/index.html" },
-    { "source": "/admin", "destination": "/index.html" },
+    { "source": "/api/auth/:path*", "destination": "/api/auth?__subpath=:path" },
+    { "source": "/api/erp/:path*", "destination": "/api/erp?__subpath=:path" },
+    { "source": "/erp", "destination": "/erp/index.html" },
+    { "source": "/erp/:path*", "destination": "/erp/index.html" },
+    { "source": "/admin", "destination": "/erp/index.html" },
     { "source": "/login", "destination": "/index.html" },
     { "source": "/portal", "destination": "/index.html" }
   ]

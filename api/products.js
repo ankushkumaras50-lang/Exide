@@ -1,6 +1,6 @@
 // Vercel Serverless Function: Products Catalog & Live Inventory Management
 // Exide Battery Wholesale & AET Official Partner
-const db = require('./db.js');
+const db = require('../lib/db.js');
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');

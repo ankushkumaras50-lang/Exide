@@ -87,6 +87,18 @@ const server = http.createServer(async (req, res) => {
         handlerPath = path.join(BASE_DIR, 'api', apiRelPath, 'index.js');
       }
 
+      if (!fs.existsSync(handlerPath)) {
+        if (apiRelPath.startsWith('auth/')) {
+          handlerPath = path.join(BASE_DIR, 'api', 'auth.js');
+          req.query = req.query || {};
+          if (!req.query.action) req.query.action = apiRelPath.replace(/^auth\//, '');
+        } else if (apiRelPath.startsWith('erp/')) {
+          handlerPath = path.join(BASE_DIR, 'api', 'erp.js');
+          req.query = req.query || {};
+          if (!req.query.module) req.query.module = apiRelPath.replace(/^erp\//, '');
+        }
+      }
+
       if (fs.existsSync(handlerPath)) {
         try {
           delete require.cache[require.resolve(handlerPath)];
@@ -116,12 +128,22 @@ const server = http.createServer(async (req, res) => {
 
   fs.stat(filePath, (err, stats) => {
     if (err || !stats.isFile()) {
-      // Fallback for cleanUrls (e.g. /product -> /product.html or /index.html)
+      // Check if it's a directory with an index.html (e.g. /erp/)
+      const dirIndex = path.join(filePath, 'index.html');
+      if (fs.existsSync(dirIndex)) {
+        serveFile(dirIndex, res);
+        return;
+      }
+
+      // Fallback for cleanUrls (e.g. /product -> /product.html)
       const htmlPath = filePath + '.html';
       if (fs.existsSync(htmlPath)) {
         serveFile(htmlPath, res);
+      } else if (pathname.startsWith('/erp') || pathname === '/admin') {
+        // Fallback for ERP sub-routes to erp/index.html
+        serveFile(path.join(BASE_DIR, 'erp', 'index.html'), res);
       } else {
-        // Fallback to index.html for SPA-style routing
+        // Fallback to index.html for SPA-style storefront routing
         serveFile(path.join(BASE_DIR, 'index.html'), res);
       }
       return;

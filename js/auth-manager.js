@@ -123,79 +123,11 @@ class AuthManager {
         localStorage.setItem(this.adminTokenKey, data.token);
         this.updateAuthUI();
         return { success: true, message: data.message || 'Login successful' };
-      } else if (res.status === 401 || res.status === 403) {
-        // If password was wrong on server, also check builtin fallback in case of salt mismatch
       }
+      return { success: false, message: data.message || 'Invalid administrator credentials. Access denied.' };
     } catch (err) {
-      console.warn('Admin API server unreachable, checking authorized built-in credentials:', err.message);
+      return { success: false, message: 'Unable to reach authentication server. Please check your network connection.' };
     }
-
-    // Resilient built-in staff authentication fallback (Offline & Static Mode)
-    const BUILTIN_STAFF = [
-      {
-        id: 'USER-SUPERADMIN-001',
-        username: 'admin@exidebattery.com.np',
-        email: 'admin@exidebattery.com.np',
-        password: 'NepalPowerHouse@2026',
-        name: 'Executive Super Administrator',
-        role: 'SuperAdmin',
-        permissions: ['*']
-      },
-      {
-        id: 'USER-MANAGER-001',
-        username: 'manager@exidebattery.com.np',
-        email: 'manager@exidebattery.com.np',
-        password: 'StoreManager@2026',
-        name: 'Kathmandu Store General Manager',
-        role: 'StoreManager',
-        permissions: ['inventory_read', 'inventory_write', 'orders_all', 'logistics_manage', 'reports_view']
-      },
-      {
-        id: 'USER-INVENTORY-001',
-        username: 'inventory@exidebattery.com.np',
-        email: 'inventory@exidebattery.com.np',
-        password: 'Inventory@2026',
-        name: 'Central Warehouse Stock Controller',
-        role: 'InventoryStaff',
-        permissions: ['inventory_read', 'inventory_write', 'serials_verify', 'batch_adjust']
-      },
-      {
-        id: 'USER-RIDER-001',
-        username: 'rider@exidebattery.com.np',
-        email: 'rider@exidebattery.com.np',
-        password: 'RiderNepal@2026',
-        name: 'Bikram Shrestha (Lead Rider)',
-        role: 'DeliveryRider',
-        permissions: ['deliveries_assigned', 'payment_collect', 'status_update']
-      }
-    ];
-
-    const matchStaff = BUILTIN_STAFF.find(s => 
-      (s.username.toLowerCase() === cleanUser || s.email.toLowerCase() === cleanUser) && 
-      s.password === cleanPass
-    );
-
-    if (matchStaff) {
-      const session = {
-        id: matchStaff.id,
-        username: matchStaff.username,
-        name: matchStaff.name,
-        role: matchStaff.role,
-        permissions: matchStaff.permissions,
-        token: 'local_jwt_' + Date.now(),
-        loggedInAt: Date.now(),
-        expiresAt: Date.now() + (remember ? 24 * 60 * 60 * 1000 : 2 * 60 * 60 * 1000)
-      };
-      localStorage.setItem(this.adminStorageKey, JSON.stringify(session));
-      localStorage.setItem(this.adminTokenKey, session.token);
-      this.updateAuthUI();
-      return { success: true, message: `Welcome back, ${matchStaff.name}!` };
-    }
-
-    return {
-      success: false,
-      message: 'Invalid administrator or staff credentials. Access denied.'
-    };
   }
 
   logoutAdmin(showNotification = true) {
@@ -479,10 +411,13 @@ class AuthManager {
     // Sync authenticated profile with backend API to generate signed JWT token
     let serverToken = 'google_jwt_' + Date.now();
     try {
-      const res = await fetch('/api/auth/customer?action=google-sync', {
+      const res = await fetch('/api/auth/google', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(googleUser)
+        body: JSON.stringify({
+          idToken: userData.idToken || null,
+          profile: googleUser
+        })
       });
       if (res.ok) {
         const data = await res.json();
@@ -494,7 +429,7 @@ class AuthManager {
         }
       }
     } catch (e) {
-      console.warn('Google server profile sync notice (using local persistent session):', e.message);
+      console.warn('Google server authentication notice:', e.message);
     }
 
     const accounts = this.getCustomerAccounts();
@@ -540,82 +475,107 @@ class AuthManager {
   async requestPhoneOtp(phone) {
     const cleanPhone = String(phone).replace(/\D/g, '');
     if (cleanPhone.length < 10) {
-      return { success: false, message: 'Please enter a valid 10-digit Nepal mobile number.' };
+      return { success: false, message: 'Please enter a valid 10-digit Nepal mobile number (e.g. 98XXXXXXXX).' };
     }
 
-    const generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
-    const otpSession = {
-      phone: cleanPhone,
-      otp: generatedOtp,
-      createdAt: Date.now(),
-      expiresAt: Date.now() + 5 * 60 * 1000
-    };
+    try {
+      const res = await fetch('/api/auth/otp?action=request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: cleanPhone })
+      });
+      const data = await res.json().catch(() => ({}));
 
-    sessionStorage.setItem('bm_exide_active_phone_otp', JSON.stringify(otpSession));
-    console.log(`📱 [Nepal SMS Gateway] OTP Code for +977-${cleanPhone}: ${generatedOtp}`);
-
-    return {
-      success: true,
-      message: `OTP sent to +977-${cleanPhone}`,
-      demoOtp: generatedOtp
-    };
+      if (res.ok && data.success) {
+        return {
+          success: true,
+          message: data.message || `OTP sent to +977-${cleanPhone}`,
+          demoOtp: data.testVerificationCode || null,
+          cooldownSeconds: data.cooldownSeconds || 60
+        };
+      }
+      return {
+        success: false,
+        message: data.message || 'Failed to send OTP verification code. Please try again.'
+      };
+    } catch (e) {
+      return {
+        success: false,
+        message: 'Network error connecting to SMS verification service.'
+      };
+    }
   }
 
   async verifyPhoneOtp(phone, enteredOtp) {
     const cleanPhone = String(phone).replace(/\D/g, '');
     const cleanOtp = String(enteredOtp).trim();
 
-    const storedStr = sessionStorage.getItem('bm_exide_active_phone_otp');
-    let isValid = false;
-
-    if (storedStr) {
-      try {
-        const stored = JSON.parse(storedStr);
-        if (stored.phone === cleanPhone && stored.otp === cleanOtp) {
-          if (Date.now() <= stored.expiresAt) {
-            isValid = true;
-          }
-        }
-      } catch(e) {}
+    if (!cleanPhone || !cleanOtp) {
+      return { success: false, message: 'Phone number and verification code are required.' };
     }
 
-    if (!isValid) {
-      return { success: false, message: 'Invalid or expired OTP verification code.' };
-    }
+    try {
+      const res = await fetch('/api/auth/otp?action=verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: cleanPhone, otp: cleanOtp })
+      });
+      const data = await res.json().catch(() => ({}));
 
-    sessionStorage.removeItem('bm_exide_active_phone_otp');
+      if (res.ok && data.success && data.customer) {
+        localStorage.setItem(this.customerStorageKey, JSON.stringify(data.customer));
+        if (data.token) localStorage.setItem(this.customerTokenKey, data.token);
 
-    const accounts = this.getCustomerAccounts();
-    let account = accounts.find(a => a.phone === cleanPhone);
+        this.updateAuthUI();
+        this.triggerCustomerAuthChanged();
 
-    if (!account) {
-      account = {
-        id: 'CUST-PH-' + Date.now().toString(36).toUpperCase(),
-        fullName: `Customer (${cleanPhone.slice(-4)})`,
-        phone: cleanPhone,
-        email: `${cleanPhone}@customer.exidebattery.com.np`,
-        district: 'Kathmandu',
-        address: 'Kathmandu, Nepal',
-        authProvider: 'phone_otp',
-        isPhoneVerified: true,
-        createdAt: new Date().toISOString()
+        if (window.notifyManager) window.notifyManager.sendLoginAlert(data.customer);
+        return { success: true, customer: data.customer };
+      }
+
+      return {
+        success: false,
+        message: data.message || 'Invalid or expired OTP verification code.'
       };
-      accounts.push(account);
-      this.saveCustomerAccounts(accounts);
-    } else {
-      account.isPhoneVerified = true;
-      this.saveCustomerAccounts(accounts);
+    } catch (e) {
+      return {
+        success: false,
+        message: 'Network error verifying OTP code.'
+      };
+    }
+  }
+
+  async linkPhoneToAccount(phone, enteredOtp) {
+    const cleanPhone = String(phone).replace(/\D/g, '');
+    const cleanOtp = String(enteredOtp).trim();
+    const token = localStorage.getItem(this.customerTokenKey);
+
+    if (!token) {
+      return { success: false, message: 'You must be signed in to link a mobile number.' };
     }
 
-    localStorage.setItem(this.customerStorageKey, JSON.stringify(account));
-    localStorage.setItem(this.customerTokenKey, 'phone_tok_' + Date.now());
-    this.updateAuthUI();
-    this.triggerCustomerAuthChanged();
+    try {
+      const res = await fetch('/api/auth/otp?action=link', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ phone: cleanPhone, otp: cleanOtp })
+      });
+      const data = await res.json().catch(() => ({}));
 
-    if (window.notifyManager) window.notifyManager.sendLoginAlert(account);
-    if (window.firebaseService) window.firebaseService.saveCustomer(account);
+      if (res.ok && data.success && data.customer) {
+        localStorage.setItem(this.customerStorageKey, JSON.stringify(data.customer));
+        if (data.token) localStorage.setItem(this.customerTokenKey, data.token);
+        this.updateAuthUI();
+        return { success: true, customer: data.customer, message: data.message };
+      }
 
-    return { success: true, customer: account };
+      return { success: false, message: data.message || 'Failed to link mobile number.' };
+    } catch (e) {
+      return { success: false, message: 'Network error during account linking.' };
+    }
   }
 
   async registerCustomer(customerData) {

@@ -1,11 +1,11 @@
 // Comprehensive System Verification Test Suite
 // Exide Battery Wholesale & AET Official Partner
 const http = require('http');
-const db = require('../api/db.js');
+const db = require('../lib/db.js');
 const ordersHandler = require('../api/orders.js');
 const productsHandler = require('../api/products.js');
-const adminLoginHandler = require('../api/auth/admin-login.js');
-const customerHandler = require('../api/auth/customer.js');
+const adminLoginHandler = require('../lib/auth/admin-login.js');
+const customerHandler = require('../lib/auth/customer.js');
 
 let passedTests = 0;
 let failedTests = 0;

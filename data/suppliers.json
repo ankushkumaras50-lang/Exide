@@ -1,0 +1,230 @@
+[
+  {
+    "id": "sup_exide_ind",
+    "name": "Exide Industries Ltd.",
+    "contactPerson": "Sanjeev Verma",
+    "email": "nepal.sales@exide.co.in",
+    "phone": "+977-1-4221199",
+    "pan": "301294821",
+    "address": "Birgunj Dry Port / Anamnagar Depot",
+    "city": "Kathmandu",
+    "country": "Nepal / India",
+    "paymentTerms": "Net 30",
+    "categories": [
+      "Automotive Batteries",
+      "Inverter Batteries",
+      "Tubular Cells"
+    ],
+    "status": "ACTIVE",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "sup_smarten",
+    "name": "Smarten Power Systems Pvt. Ltd.",
+    "contactPerson": "Amit Joshi",
+    "email": "nepal@smartenpowersystems.com",
+    "phone": "+977-1-5544332",
+    "pan": "302847192",
+    "address": "Patan Industrial Estate",
+    "city": "Lalitpur",
+    "country": "Nepal",
+    "paymentTerms": "Net 15",
+    "categories": [
+      "Solar PCU",
+      "Sine Wave Inverters",
+      "Solar Panels"
+    ],
+    "status": "ACTIVE",
+    "createdAt": "2026-01-05T00:00:00.000Z"
+  },
+  {
+    "id": "sup_livfast",
+    "name": "Livfast Batteries & Inverters Ltd.",
+    "contactPerson": "Rajesh Thapa",
+    "email": "supply@livfast.com.np",
+    "phone": "+977-1-4433221",
+    "pan": "300918234",
+    "address": "Balaju Industrial District",
+    "city": "Kathmandu",
+    "country": "Nepal",
+    "paymentTerms": "Immediate",
+    "categories": [
+      "Fast Charging Inverters",
+      "Tubular Batteries"
+    ],
+    "status": "ACTIVE",
+    "createdAt": "2026-01-10T00:00:00.000Z"
+  },
+  {
+    "id": "sup_sf_sonic",
+    "name": "SF Sonic Power Systems",
+    "contactPerson": "Manoj Sharma",
+    "email": "sales@sfsonic.com.np",
+    "phone": "+977-71-540112",
+    "pan": "304561829",
+    "address": "Butwal Commercial Hub",
+    "city": "Butwal",
+    "country": "Nepal",
+    "paymentTerms": "Net 30",
+    "categories": [
+      "Motorcycle Batteries",
+      "Heavy Commercial Batteries"
+    ],
+    "status": "ACTIVE",
+    "createdAt": "2026-01-12T00:00:00.000Z"
+  },
+  {
+    "id": "sup_eastman",
+    "name": "Eastman Solar & Tubular Cells",
+    "contactPerson": "Dinesh KC",
+    "email": "info@eastman.com.np",
+    "phone": "+977-1-4112233",
+    "pan": "305829104",
+    "address": "Teku Electrical Market",
+    "city": "Kathmandu",
+    "country": "Nepal",
+    "paymentTerms": "Net 15",
+    "categories": [
+      "Solar Deep Cycle Tubular",
+      "Gel Batteries"
+    ],
+    "status": "ACTIVE",
+    "createdAt": "2026-01-15T00:00:00.000Z"
+  },
+  {
+    "id": "sup_amaron_nepal_in_srxe",
+    "name": "Amaron Nepal Industrial Supply",
+    "contactPerson": "Bimal Pandey",
+    "email": "bimal@amaron.com.np",
+    "phone": "+977-1-4781290",
+    "pan": "306371795",
+    "address": "Balkumari, Lalitpur",
+    "city": "Lalitpur",
+    "country": "Nepal",
+    "paymentTerms": "Net 30",
+    "categories": [
+      "Battery Manufacturer"
+    ],
+    "status": "ACTIVE",
+    "createdAt": "2026-10-27T12:25:56.834Z"
+  },
+  {
+    "id": "sup_amaron_nepal_in_to71",
+    "name": "Amaron Nepal Industrial Supply",
+    "contactPerson": "Bimal Pandey",
+    "email": "bimal@amaron.com.np",
+    "phone": "+977-1-4781290",
+    "pan": "303612454",
+    "address": "Balkumari, Lalitpur",
+    "city": "Lalitpur",
+    "country": "Nepal",
+    "paymentTerms": "Net 30",
+    "categories": [
+      "Battery Manufacturer"
+    ],
+    "status": "ACTIVE",
+    "createdAt": "2026-10-27T12:26:38.653Z"
+  },
+  {
+    "id": "sup_amaron_nepal_in_0ams",
+    "name": "Amaron Nepal Industrial Supply",
+    "contactPerson": "Bimal Pandey",
+    "email": "bimal@amaron.com.np",
+    "phone": "+977-1-4781290",
+    "pan": "301938942",
+    "address": "Balkumari, Lalitpur",
+    "city": "Lalitpur",
+    "country": "Nepal",
+    "paymentTerms": "Net 30",
+    "categories": [
+      "Battery Manufacturer"
+    ],
+    "status": "ACTIVE",
+    "createdAt": "2026-10-27T12:31:47.668Z"
+  },
+  {
+    "id": "sup_amaron_nepal_in_2445",
+    "name": "Amaron Nepal Industrial Supply",
+    "contactPerson": "Bimal Pandey",
+    "email": "bimal@amaron.com.np",
+    "phone": "+977-1-4781290",
+    "pan": "302500144",
+    "address": "Balkumari, Lalitpur",
+    "city": "Lalitpur",
+    "country": "Nepal",
+    "paymentTerms": "Net 30",
+    "categories": [
+      "Battery Manufacturer"
+    ],
+    "status": "ACTIVE",
+    "createdAt": "2026-10-27T12:33:12.533Z"
+  },
+  {
+    "id": "sup_amaron_nepal_in_8tnn",
+    "name": "Amaron Nepal Industrial Supply",
+    "contactPerson": "Bimal Pandey",
+    "email": "bimal@amaron.com.np",
+    "phone": "+977-1-4781290",
+    "pan": "301340134",
+    "address": "Balkumari, Lalitpur",
+    "city": "Lalitpur",
+    "country": "Nepal",
+    "paymentTerms": "Net 30",
+    "categories": [
+      "Battery Manufacturer"
+    ],
+    "status": "ACTIVE",
+    "createdAt": "2026-10-27T12:38:25.571Z"
+  },
+  {
+    "id": "sup_amaron_nepal_in_c4zf",
+    "name": "Amaron Nepal Industrial Supply",
+    "contactPerson": "Bimal Pandey",
+    "email": "bimal@amaron.com.np",
+    "phone": "+977-1-4781290",
+    "pan": "306757683",
+    "address": "Balkumari, Lalitpur",
+    "city": "Lalitpur",
+    "country": "Nepal",
+    "paymentTerms": "Net 30",
+    "categories": [
+      "Battery Manufacturer"
+    ],
+    "status": "ACTIVE",
+    "createdAt": "2026-10-27T14:32:58.683Z"
+  },
+  {
+    "id": "sup_amaron_nepal_in_dtkf",
+    "name": "Amaron Nepal Industrial Supply",
+    "contactPerson": "Bimal Pandey",
+    "email": "bimal@amaron.com.np",
+    "phone": "+977-1-4781290",
+    "pan": "309262328",
+    "address": "Balkumari, Lalitpur",
+    "city": "Lalitpur",
+    "country": "Nepal",
+    "paymentTerms": "Net 30",
+    "categories": [
+      "Battery Manufacturer"
+    ],
+    "status": "ACTIVE",
+    "createdAt": "2026-10-27T16:26:15.663Z"
+  },
+  {
+    "id": "sup_amaron_nepal_in_jwiq",
+    "name": "Amaron Nepal Industrial Supply",
+    "contactPerson": "Bimal Pandey",
+    "email": "bimal@amaron.com.np",
+    "phone": "+977-1-4781290",
+    "pan": "303423382",
+    "address": "Balkumari, Lalitpur",
+    "city": "Lalitpur",
+    "country": "Nepal",
+    "paymentTerms": "Net 30",
+    "categories": [
+      "Battery Manufacturer"
+    ],
+    "status": "ACTIVE",
+    "createdAt": "2026-10-27T16:30:59.426Z"
+  }
+]

@@ -1,6 +1,6 @@
 // Vercel Serverless Function: Authoritative Orders Management & Nepal IRD Tax Invoicing
 // Exide Battery Wholesale & AET Official Partner
-const db = require('./db.js');
+const db = require('../lib/db.js');
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -302,6 +302,36 @@ module.exports = async (req, res) => {
 
       // Save order to persistent store
       db.saveOrder(orderRecord);
+
+      // Record scrap exchange in battery exchanges yard ledger if trade-in included
+      if (scrapDetails && scrapDetails.capacityAh > 0) {
+        try {
+          const client = require('../db/client.js');
+          const excNum = client.generateExchangeNumber();
+          const excRecord = {
+            id: `exc_${excNum.toLowerCase().replace(/[^a-z0-9]+/g, '_')}_${Date.now().toString(36).slice(-4)}`,
+            exchangeNumber: excNum,
+            customerName: customer.fullName.trim(),
+            customerPhone: cleanPhone,
+            oldBrand: scrapDetails.batteryBrand || 'Customer Trade-in',
+            batteryType: 'Inverter Lead Acid',
+            capacityAh: scrapDetails.capacityAh,
+            scrapRatePerAh: scrapDetails.ratePerAh || 35,
+            rebateAmount: scrapDetails.calculatedDiscount || scrapExchangeDeduction,
+            physicalCondition: scrapDetails.batteryCondition || 'INTACT',
+            dispositionStatus: 'HOLDING_YARD',
+            linkedOrderId: orderId,
+            receivedDate: new Date().toISOString(),
+            receivedBy: 'e-commerce-checkout',
+            createdAt: new Date().toISOString()
+          };
+          const exchanges = client.getExchanges();
+          exchanges.unshift(excRecord);
+          client.saveExchanges(exchanges);
+        } catch (e) {
+          console.warn('Failed to record scrap exchange in yard registry:', e.message);
+        }
+      }
 
       return res.status(201).json({
         success: true,
