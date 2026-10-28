@@ -631,11 +631,108 @@ const VEHICLE_DATABASE = {
   ]
 };
 
+
+// ============================================================================
+// SUPABASE REALTIME & CLOUD HYDRATION LAYER
+// ============================================================================
+if (typeof window !== 'undefined') {
+  window.productsCatalog = [...INITIAL_PRODUCTS];
+  window.PRODUCTS = window.productsCatalog;
+  window.BRANDS_DATA = BRANDS_LIST;
+  window.CATEGORIES_DATA = CATEGORIES_LIST;
+  window.NEPAL_LOCATIONS = NEPAL_LOCATIONS;
+  window.VEHICLE_DATABASE = VEHICLE_DATABASE;
+}
+
+/**
+ * Loads active products from Supabase and hydrates catalog
+ * @returns {Promise<Array>} List of product objects
+ */
+async function loadProductsFromSupabase() {
+  if (typeof window === 'undefined' || !window.supabaseClient) {
+    return (typeof window !== 'undefined' ? window.productsCatalog : INITIAL_PRODUCTS);
+  }
+
+  try {
+    const { data, error } = await window.supabaseClient
+      .from('products')
+      .select('*')
+      .eq('is_active', true)
+      .order('retail_price', { ascending: true });
+
+    if (error) {
+      console.warn('Supabase products fetch notification:', error.message);
+      return window.productsCatalog;
+    }
+
+    if (data && data.length > 0) {
+      const mapped = data.map(item => {
+        const fb = INITIAL_PRODUCTS.find(p => p.id === item.id || p.sku === item.sku) || {};
+        return {
+          id: item.id || fb.id,
+          sku: item.sku || fb.sku,
+          name: item.name || item.title || fb.name,
+          brand: item.brand || fb.brand,
+          brandSlug: (item.brand || fb.brand || 'exide').toLowerCase().replace(/[\s_]+/g, '-'),
+          brandColor: fb.brandColor || '#ED1C24',
+          categories: item.category_id ? [item.category_id] : (fb.categories || ['inverter-battery']),
+          price: Number(item.retail_price || item.price || fb.price || 0),
+          originalPrice: item.wholesale_price ? Number(item.wholesale_price) : fb.originalPrice,
+          discount: fb.discount || '',
+          image: item.image_url || fb.image || 'assets/images/default-battery.png',
+          featured: item.is_featured !== undefined ? Boolean(item.is_featured) : Boolean(fb.featured),
+          warranty: item.warranty || fb.warranty || ((item.warranty_months || 36) + ' Months Warranty'),
+          capacity: item.capacity || fb.capacity || ((item.capacity_ah || 150) + 'Ah'),
+          stock: item.stock !== undefined ? item.stock : (fb.stock || 20),
+          minStock: item.reorder_threshold !== undefined ? item.reorder_threshold : (fb.minStock || 5),
+          costPrice: Number(item.cost_price || fb.costPrice || 0),
+          rating: fb.rating || 4.9,
+          reviewsCount: fb.reviewsCount || 48,
+          shortDesc: item.short_desc || fb.shortDesc || '',
+          description: item.description || fb.description || '',
+          features: Array.isArray(item.features) ? item.features : (fb.features || []),
+          specs: (typeof item.specifications === 'object' && item.specifications) ? item.specifications : (fb.specs || {}),
+          serialNumbers: fb.serialNumbers || []
+        };
+      });
+
+      window.productsCatalog = mapped;
+      window.PRODUCTS = mapped;
+      console.log('✅ Loaded ' + mapped.length + ' live products from Supabase.');
+
+      if (typeof renderProductsCatalog === 'function') {
+        renderProductsCatalog();
+      } else if (typeof renderProducts === 'function') {
+        renderProducts(mapped);
+      }
+
+      window.dispatchEvent(new CustomEvent('products:loaded', { detail: mapped }));
+    }
+
+    return window.productsCatalog;
+  } catch (err) {
+    console.warn('Network error connecting to Supabase:', err.message);
+    return window.productsCatalog;
+  }
+}
+
+if (typeof window !== 'undefined') {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      loadProductsFromSupabase();
+    });
+  } else {
+    loadProductsFromSupabase();
+  }
+}
+
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     INITIAL_PRODUCTS,
+    BRANDS_LIST,
+    CATEGORIES_LIST,
     NEPAL_LOCATIONS,
-    VEHICLE_DATABASE
+    VEHICLE_DATABASE,
+    loadProductsFromSupabase
   };
 }
-

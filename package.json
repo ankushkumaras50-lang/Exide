@@ -6,8 +6,9 @@
   "scripts": {
     "start": "node dev-server.js",
     "dev": "node dev-server.js",
-    "test": "node test/verify-system.js && node test/test-auth-security.js && node test/test-erp-inventory.js && node test/test-erp-sales-purchases.js",
-    "seed:admin": "node scripts/seed-superadmin.js"
+    "test": "node test/verify-system.js && node test/test-auth-security.js && node test/test-erp-inventory.js && node test/test-erp-sales-purchases.js && node test/test-supabase-integration.js",
+    "seed:admin": "node scripts/seed-superadmin.js",
+    "seed:supabase": "node scripts/seed-supabase.js"
   },
   "keywords": [
     "exide",
@@ -20,5 +21,8 @@
     "vat-tax-invoice"
   ],
   "author": "Exide Battery Wholesale Nepal",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.118.0"
+  }
 }

@@ -5,6 +5,11 @@ const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 
+let supabaseSync = null;
+try {
+  supabaseSync = require('../lib/supabase-sync.js');
+} catch (e) {}
+
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const USERS_FILE = path.join(DATA_DIR, 'users.json');
 const PRODUCTS_FILE = path.join(DATA_DIR, 'products.json');
@@ -520,6 +525,12 @@ function executeStockMovement(productId, warehouseId, movementType, quantity, re
   // Write immutable movement log
   logAuditEvent(userId, movementType, 'stock_movement', prod.id, { previousStock: currentStock }, { newStock: newStock, quantity: qty, referenceType, referenceId, reason });
 
+  if (supabaseSync && typeof supabaseSync.syncStockMovementToSupabase === 'function') {
+    try {
+      supabaseSync.syncStockMovementToSupabase(prod.id, qty, movementType, referenceType, referenceId, reason);
+    } catch (e) {}
+  }
+
   return {
     productId: prod.id,
     sku: prod.sku,
@@ -537,7 +548,13 @@ function getOrders() {
 }
 
 function saveOrders(orders) {
-  return writeJson(ORDERS_FILE, orders);
+  const result = writeJson(ORDERS_FILE, orders);
+  if (result && supabaseSync && Array.isArray(orders) && orders.length > 0) {
+    try {
+      supabaseSync.syncOrderToSupabase(orders[0]);
+    } catch (e) {}
+  }
+  return result;
 }
 
 function findOrderById(orderIdOrInvoice) {
@@ -692,7 +709,13 @@ function getExchanges() {
 }
 
 function saveExchanges(exchanges) {
-  return writeJson(EXCHANGES_FILE, exchanges);
+  const result = writeJson(EXCHANGES_FILE, exchanges);
+  if (result && supabaseSync && Array.isArray(exchanges) && exchanges.length > 0) {
+    try {
+      supabaseSync.syncExchangeToSupabase(exchanges[0]);
+    } catch (e) {}
+  }
+  return result;
 }
 
 function findExchangeById(idOrNum) {
