@@ -2248,136 +2248,50 @@
   </div>
 
   <!-- ==========================================================================
-       17. CUSTOMER AUTHENTICATION MODAL (GOOGLE, PHONE OTP & SECURE ACCESS)
+       17. CUSTOMER AUTHENTICATION MODAL (GENUINE GOOGLE & MOBILE ACCESS)
        ========================================================================== -->
   <div class="modal-overlay" id="customer-auth-modal-overlay">
     <div class="auth-modal-content customer-auth-box">
+      <!-- Clean Brand Header -->
       <div class="auth-modal-header customer-auth-header">
-        <div style="display:flex; align-items:center; gap:0.65rem;">
-          <div class="cust-auth-avatar" style="width:38px; height:38px; border-radius:50%; background:#EFF6FF; display:flex; align-items:center; justify-content:center; color:#0047BA;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <div style="display:flex; align-items:center; gap:0.75rem;">
+          <div class="cust-auth-avatar">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ED1C24" stroke-width="2.2">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+            </svg>
           </div>
           <div>
-            <h3 class="auth-modal-title" style="color:#0F172A; margin:0; font-size:1.1rem; font-weight:800;">Customer Account Portal</h3>
-            <span style="font-size:0.75rem; color:#64748B;">Exide Battery Wholesale & Official Partner Nepal</span>
+            <h3 class="auth-modal-title">Sign in to Exide Wholesale</h3>
+            <span class="auth-modal-subtitle">Official Partner Nepal • Fast Warranty & Live Tracking</span>
           </div>
         </div>
-        <button type="button" class="auth-modal-close" onclick="window.authManager.closeCustomerLoginModal()" style="font-size:1.6rem; background:none; border:none; cursor:pointer; color:#64748B;">&times;</button>
+        <button type="button" class="auth-modal-close" onclick="window.authManager.closeCustomerLoginModal()" aria-label="Close modal">&times;</button>
       </div>
 
-      <!-- Auth Tabs Switcher -->
-      <div class="auth-tabs-strip">
-        <button type="button" class="auth-tab-btn active" id="tab-cust-phone" onclick="switchCustomerAuthTab('phone')">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><line x1="12" x2="12.01" y1="18" y2="18"/></svg>
-          <span>Phone OTP</span>
-        </button>
-        <button type="button" class="auth-tab-btn" id="tab-cust-google" onclick="switchCustomerAuthTab('google')">
-          <svg width="15" height="15" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
-          <span>Google</span>
-        </button>
-        <button type="button" class="auth-tab-btn" id="tab-cust-login" onclick="switchCustomerAuthTab('login')">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          <span>Password</span>
-        </button>
-        <button type="button" class="auth-tab-btn" id="tab-cust-register" onclick="switchCustomerAuthTab('register')">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
-          <span>Register</span>
-        </button>
-      </div>
-
-      <div class="auth-modal-body" style="padding:1.5rem;">
-        <!-- Google Fast Authentication Quick Trigger Button -->
-        <button type="button" class="btn-google-auth" id="btn-google-auth-login" onclick="window.authManager.loginWithGoogle()" style="width:100%; display:flex; align-items:center; justify-content:center; gap:0.75rem; background:#FFFFFF; color:#1F2937; border:1.5px solid #CBD5E1; border-radius:8px; padding:0.75rem; font-weight:700; font-size:0.92rem; box-shadow:0 1px 3px rgba(0,0,0,0.06); cursor:pointer; margin-bottom:1rem; transition:all 0.2s ease;">
-          <svg width="18" height="18" viewBox="0 0 24 24">
+      <div class="auth-modal-body customer-auth-body">
+        <!-- HERO GOOGLE LOGIN BUTTON (GENUINE SUPABASE OAUTH) -->
+        <button type="button" class="btn-google-continue" id="btn-google-auth-login" onclick="window.authManager.loginWithGoogle()" title="Sign in with your Google account">
+          <svg class="google-icon-svg" width="20" height="20" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
             <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
             <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
             <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
           </svg>
           <span id="btn-google-auth-login-text">Continue with Google</span>
+          <span class="google-instant-badge">Instant</span>
         </button>
 
-        <div id="auth-divider-line" style="display:flex; align-items:center; margin:1rem 0; color:#94A3B8; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.5px; font-weight:700;">
-          <span style="flex:1; height:1px; background:#E2E8F0;"></span>
-          <span style="padding:0 0.65rem;">Or Continue With</span>
-          <span style="flex:1; height:1px; background:#E2E8F0;"></span>
+        <!-- Clean Elegant Divider -->
+        <div class="auth-divider-clean">
+          <span>or sign in with mobile / email</span>
         </div>
 
-        <!-- Google Fast Authentication Panel View -->
-        <div id="customer-google-view" style="display:none; margin-bottom:1rem;">
-          <div class="google-auth-card" style="text-align:center; padding:1.25rem 1rem; border-radius:12px; background:#F8FAFC; border:1px solid #E2E8F0; margin-bottom:1rem;">
-            <div style="width:48px; height:48px; border-radius:50%; background:#FFFFFF; display:flex; align-items:center; justify-content:center; margin:0 auto 0.75rem; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
-              <svg width="26" height="26" viewBox="0 0 24 24">
-                <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
-                <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
-                <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
-                <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
-              </svg>
-            </div>
-            <h4 style="font-size:1.05rem; font-weight:800; color:#1E293B; margin-bottom:0.25rem;">Choose an account</h4>
-            <p style="font-size:0.8rem; color:#64748B; margin-bottom:0;">to continue to Exide Battery Wholesale</p>
-          </div>
-
-          <!-- 1-Click Google Account Chooser List -->
-          <div class="google-account-chooser" id="google-accounts-list">
-            <!-- Account 1: Ankush Kumar -->
-            <div class="google-account-row" onclick="handleGoogleFastAuthSubmit({ email: 'ankushkumaras50@gmail.com', fullName: 'Ankush Kumar', phone: '9705997260' })">
-              <div class="google-account-avatar" style="background:#0047BA;">A</div>
-              <div class="google-account-info">
-                <div class="google-account-name">Ankush Kumar</div>
-                <div class="google-account-email">ankushkumaras50@gmail.com</div>
-              </div>
-              <span class="google-account-badge">✓ 1-Click Login</span>
-            </div>
-
-            <!-- Dynamic Slot for previously remembered Google Account if different -->
-            <div id="google-quick-account-slot" style="display:none;"></div>
-
-            <!-- Option 3: Add / Enter another Gmail -->
-            <div class="google-account-row" onclick="window.toggleCustomGoogleInput()" style="background:#F8FAFC;">
-              <div class="google-account-avatar" style="background:#64748B; font-size:1.3rem;">+</div>
-              <div class="google-account-info">
-                <div class="google-account-name">Use another Google account</div>
-                <div class="google-account-email">Click to enter your Gmail address</div>
-              </div>
-              <span style="font-size:0.85rem; color:#64748B;">▾</span>
-            </div>
-          </div>
-
-          <!-- Fast Google Account Input Form (Expandable) -->
-          <form id="customer-google-form" style="display:none; margin-top:0.85rem;" onsubmit="event.preventDefault(); handleGoogleFastAuthSubmit();">
-            <div class="form-group" style="margin-bottom:0.85rem;">
-              <label class="form-label" style="font-weight:700; font-size:0.84rem; color:#1E293B;">Google Email Address *</label>
-              <input type="email" id="cust-google-email" class="form-input" placeholder="e.g. name@gmail.com" required style="font-size:0.92rem;">
-            </div>
-            <div class="form-group" style="margin-bottom:0.85rem;">
-              <label class="form-label" style="font-weight:700; font-size:0.84rem; color:#1E293B;">Full Name (As on Google)</label>
-              <input type="text" id="cust-google-fullname" class="form-input" placeholder="e.g. Ramesh Shrestha" style="font-size:0.92rem;">
-            </div>
-            <div class="form-group" style="margin-bottom:1rem;">
-              <label class="form-label" style="font-weight:700; font-size:0.84rem; color:#1E293B;">Nepal Mobile (+977) - Optional</label>
-              <div style="display:flex; gap:0.5rem;">
-                <span style="display:flex; align-items:center; padding:0 0.85rem; background:#F1F5F9; border:1.5px solid #CBD5E1; border-radius:8px; font-weight:700; font-size:0.88rem; color:#475569;">+977</span>
-                <input type="tel" id="cust-google-phone" class="form-input" placeholder="98XXXXXXXX" pattern="[0-9]{10}" maxlength="10" style="font-size:0.92rem; flex:1;">
-              </div>
-            </div>
-            <div id="cust-google-error-msg" class="auth-error-alert" style="display:none; background:#FEE2E2; border:1px solid #EF4444; color:#B91C1C; padding:0.6rem 0.8rem; border-radius:6px; font-size:0.82rem; font-weight:600; margin-bottom:1rem;"></div>
-            <button type="submit" id="btn-cust-google-submit" class="btn-google-action">
-              <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#fff" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#fff" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/></svg>
-              <span>Instant Sign-In with Google</span>
-            </button>
-          </form>
-        </div>
-
-        <!-- Phone OTP Form (Default Tab) -->
-        <form id="customer-phone-form" onsubmit="event.preventDefault(); handleCustomerPhoneOtpSubmit();">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
-            <label class="form-label" style="font-weight:700; font-size:0.84rem; color:#1E293B; margin:0;">Nepal Mobile Number (+977) *</label>
-            <button type="button" onclick="document.getElementById('cust-phone-input').value='9801234567'" style="background:none; border:none; color:#2563EB; font-size:0.75rem; cursor:pointer; font-weight:700;">Demo: 9801234567</button>
-          </div>
+        <!-- Clean Secondary Mobile OTP Form -->
+        <form id="customer-phone-form" class="auth-compact-form" onsubmit="event.preventDefault(); handleCustomerPhoneOtpSubmit();">
           <div class="form-group" style="margin-bottom:0.85rem;">
+            <label class="form-label" style="font-weight:700; font-size:0.82rem; color:#1E293B;">Nepal Mobile Number (+977)</label>
             <div style="display:flex; gap:0.5rem;">
-              <span style="display:flex; align-items:center; padding:0 0.85rem; background:#F1F5F9; border:1.5px solid #CBD5E1; border-radius:8px; font-weight:700; font-size:0.88rem; color:#475569;">+977</span>
+              <span class="phone-prefix-pill">+977</span>
               <input type="tel" id="cust-phone-input" class="form-input" placeholder="98XXXXXXXX" pattern="[0-9]{10}" maxlength="10" required style="font-size:0.92rem; flex:1;">
             </div>
           </div>
@@ -2385,92 +2299,57 @@
           <div id="phone-otp-code-group" style="display:none; margin-bottom:1rem;">
             <div id="phone-otp-banner-slot"></div>
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
-              <label class="form-label" style="font-weight:700; font-size:0.84rem; color:#1E293B; margin:0;">6-Digit OTP Code *</label>
-              <span id="phone-otp-timer" style="font-size:0.75rem; color:#2563EB; font-weight:700;">Code sent</span>
+              <label class="form-label" style="font-weight:700; font-size:0.82rem; color:#1E293B; margin:0;">6-Digit SMS Code</label>
+              <span id="phone-otp-timer" style="font-size:0.75rem; color:#0047BA; font-weight:700;">Code sent</span>
             </div>
-            <input type="text" id="cust-phone-otp-input" class="form-input" placeholder="Enter 6-digit SMS code" maxlength="6" style="font-size:1.1rem; letter-spacing:4px; text-align:center; font-weight:700;">
+            <input type="text" id="cust-phone-otp-input" class="form-input" placeholder="Enter 6-digit OTP" maxlength="6" style="font-size:1.15rem; letter-spacing:4px; text-align:center; font-weight:800;">
           </div>
 
-          <div id="cust-phone-error-msg" class="auth-error-alert" style="display:none; background:#FEE2E2; border:1px solid #EF4444; color:#B91C1C; padding:0.6rem 0.8rem; border-radius:6px; font-size:0.82rem; font-weight:600; margin-bottom:1rem;"></div>
+          <div id="cust-phone-error-msg" class="auth-error-alert" style="display:none;"></div>
 
-          <button type="submit" id="btn-cust-phone-action" class="btn btn-primary" style="width:100%; justify-content:center; padding:0.8rem; font-weight:800; font-size:0.95rem; border-radius:8px;">
-            Send SMS OTP
+          <button type="submit" id="btn-cust-phone-action" class="btn btn-primary btn-auth-submit">
+            <span>Send OTP SMS</span> ➔
           </button>
-        </form>
 
-        <!-- Customer Login Form -->
-        <form id="customer-login-form" style="display:none;" onsubmit="event.preventDefault(); handleCustomerLoginFormSubmit();">
-          <!-- Quick Verified Customer Account Fill -->
-          <div style="background:#F1F5F9; border:1px solid #CBD5E1; border-radius:8px; padding:0.65rem 0.85rem; margin-bottom:1rem; display:flex; justify-content:space-between; align-items:center;">
-            <div>
-              <strong style="font-size:0.8rem; color:#0F172A; display:block;">👤 Verified Customer Account:</strong>
-              <span style="font-size:0.75rem; color:#64748B;">Sunil Yadav (9809163454)</span>
-            </div>
-            <button type="button" onclick="fillCustomerCreds('9809163454', 'pass_3454')" style="background:#2563EB; color:#fff; border:none; padding:4px 10px; border-radius:5px; font-size:0.75rem; font-weight:700; cursor:pointer;">
-              1-Click Fill
+          <div style="text-align:center; margin-top:0.85rem;">
+            <button type="button" class="btn-auth-switch-mode" onclick="togglePasswordLoginForm()">
+              Sign in with Password instead
             </button>
           </div>
+        </form>
 
+        <!-- Clean Password Form (Toggled optionally) -->
+        <form id="customer-login-form" class="auth-compact-form" style="display:none;" onsubmit="event.preventDefault(); handleCustomerLoginFormSubmit();">
+          <div class="form-group" style="margin-bottom:0.85rem;">
+            <label class="form-label" style="font-weight:700; font-size:0.82rem; color:#1E293B;">Mobile Number or Email</label>
+            <input type="text" id="cust-login-identifier" class="form-input" placeholder="e.g. 98XXXXXXXX or you@gmail.com" required style="font-size:0.92rem;">
+          </div>
           <div class="form-group" style="margin-bottom:1rem;">
-            <label class="form-label" style="font-weight:700; font-size:0.84rem; color:#1E293B;">Nepal Mobile Number or Email *</label>
-            <input type="text" id="cust-login-identifier" class="form-input" placeholder="e.g. 98XXXXXXXX or your@email.com" required style="font-size:0.9rem;">
-          </div>
-          <div class="form-group" style="margin-bottom:1.25rem;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.25rem;">
-              <label class="form-label" style="font-weight:700; font-size:0.84rem; color:#1E293B; margin:0;">Password *</label>
-              <button type="button" onclick="togglePasswordVisibility('cust-login-password', this)" style="background:none; border:none; color:#2563EB; font-size:0.75rem; cursor:pointer; font-weight:700;">Show</button>
+              <label class="form-label" style="font-weight:700; font-size:0.82rem; color:#1E293B; margin:0;">Password</label>
+              <button type="button" onclick="togglePasswordVisibility('cust-login-password', this)" style="background:none; border:none; color:#0047BA; font-size:0.75rem; cursor:pointer; font-weight:700;">Show</button>
             </div>
-            <input type="password" id="cust-login-password" class="form-input" placeholder="Enter your password" required style="font-size:0.9rem;">
+            <input type="password" id="cust-login-password" class="form-input" placeholder="Enter your password" required style="font-size:0.92rem;">
           </div>
-          <div id="cust-login-error-msg" class="auth-error-alert" style="display:none; background:#FEE2E2; border:1px solid #EF4444; color:#B91C1C; padding:0.6rem 0.8rem; border-radius:6px; font-size:0.82rem; font-weight:600; margin-bottom:1rem;"></div>
-          <button type="submit" id="btn-cust-submit-login" class="btn btn-primary" style="width:100%; justify-content:center; padding:0.8rem; font-weight:800; font-size:0.95rem; border-radius:8px;">
-            Sign In to Account
+
+          <div id="cust-login-error-msg" class="auth-error-alert" style="display:none;"></div>
+
+          <button type="submit" id="btn-cust-submit-login" class="btn btn-primary btn-auth-submit">
+            <span>Sign In to Account</span> ➔
           </button>
+
+          <div style="text-align:center; margin-top:0.85rem;">
+            <button type="button" class="btn-auth-switch-mode" onclick="togglePasswordLoginForm()">
+              ← Back to Mobile OTP Login
+            </button>
+          </div>
         </form>
 
-        <!-- Customer Register Form -->
-        <form id="customer-register-form" style="display:none;" onsubmit="event.preventDefault(); handleCustomerRegisterFormSubmit();">
-          <div class="form-group" style="margin-bottom:0.85rem;">
-            <label class="form-label" style="font-weight:700; font-size:0.84rem; color:#1E293B;">Full Name *</label>
-            <input type="text" id="cust-reg-fullname" class="form-input" placeholder="e.g. Ramesh Shrestha" required style="font-size:0.9rem;">
-          </div>
-          <div class="form-grid-2" style="gap:0.75rem; margin-bottom:0.85rem;">
-            <div class="form-group">
-              <label class="form-label" style="font-weight:700; font-size:0.84rem; color:#1E293B;">Mobile (+977) *</label>
-              <input type="tel" id="cust-reg-phone" class="form-input" placeholder="98XXXXXXXX" required style="font-size:0.9rem;">
-            </div>
-            <div class="form-group">
-              <label class="form-label" style="font-weight:700; font-size:0.84rem; color:#1E293B;">Email (Optional)</label>
-              <input type="email" id="cust-reg-email" class="form-input" placeholder="name@domain.com" style="font-size:0.9rem;">
-            </div>
-          </div>
-          <div class="form-group" style="margin-bottom:0.85rem;">
-            <label class="form-label" style="font-weight:700; font-size:0.84rem; color:#1E293B;">Create Password *</label>
-            <input type="password" id="cust-reg-password" class="form-input" placeholder="At least 4 characters" required minlength="4" style="font-size:0.9rem;">
-          </div>
-          <div class="form-grid-2" style="gap:0.75rem; margin-bottom:1.25rem;">
-            <div class="form-group">
-              <label class="form-label" style="font-weight:700; font-size:0.84rem; color:#1E293B;">Delivery District</label>
-              <select id="cust-reg-district" class="form-select" style="font-size:0.85rem;">
-                <option value="Kathmandu" selected>Kathmandu</option>
-                <option value="Lalitpur">Lalitpur</option>
-                <option value="Bhaktapur">Bhaktapur</option>
-                <option value="Rupandehi">Rupandehi (Butwal/Bhairahawa)</option>
-                <option value="Kaski">Kaski (Pokhara)</option>
-                <option value="Chitwan">Chitwan (Bharatpur)</option>
-                <option value="Morang">Morang (Biratnagar)</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label" style="font-weight:700; font-size:0.84rem; color:#1E293B;">Street Address</label>
-              <input type="text" id="cust-reg-address" class="form-input" placeholder="e.g. Bijulibazar, Anamnagar" style="font-size:0.9rem;">
-            </div>
-          </div>
-          <div id="cust-reg-error-msg" class="auth-error-alert" style="display:none; background:#FEE2E2; border:1px solid #EF4444; color:#B91C1C; padding:0.6rem 0.8rem; border-radius:6px; font-size:0.82rem; font-weight:600; margin-bottom:1rem;"></div>
-          <button type="submit" id="btn-cust-submit-reg" class="btn btn-primary" style="width:100%; justify-content:center; padding:0.8rem; font-weight:800; font-size:0.95rem; border-radius:8px;">
-            Register & Sign In
-          </button>
-        </form>
+        <!-- Reassurance Footer -->
+        <div class="auth-secure-reassurance">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span>256-Bit SSL Secured • Authorized Exide Partner Nepal</span>
+        </div>
       </div>
     </div>
   </div>
@@ -2481,41 +2360,43 @@
   <div class="modal-overlay" id="customer-profile-modal-overlay">
     <div class="auth-modal-content customer-auth-box">
       <div class="auth-modal-header customer-auth-header">
-        <div style="display:flex; align-items:center; gap:0.65rem;">
-          <div class="cust-auth-avatar">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <div style="display:flex; align-items:center; gap:0.75rem;">
+          <div id="prof-header-avatar" class="cust-auth-avatar">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0047BA" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           </div>
           <div>
-            <h3 class="auth-modal-title" id="prof-name-val" style="color:#0F172A; margin:0; font-size:1.1rem; font-weight:800;">Customer Profile</h3>
-            <span style="font-size:0.75rem; color:#64748B;">Verified Exide Wholesale Customer</span>
+            <h3 class="auth-modal-title" id="prof-name-val">Customer Account</h3>
+            <span id="prof-badge-val" style="font-size:0.75rem; color:#059669; font-weight:700;">✓ Verified Customer</span>
           </div>
         </div>
-        <button type="button" class="auth-modal-close" onclick="window.authManager.closeCustomerProfileModal()" style="font-size:1.6rem; background:none; border:none; cursor:pointer; color:#64748B;">&times;</button>
+        <button type="button" class="auth-modal-close" onclick="window.authManager.closeCustomerProfileModal()" aria-label="Close modal">&times;</button>
       </div>
 
-      <div class="auth-modal-body" style="padding:1.5rem;">
-        <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:1rem; margin-bottom:1.25rem;">
-          <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem; font-size:0.85rem;">
+      <div class="auth-modal-body customer-auth-body">
+        <div id="prof-avatar-slot" style="display:flex; justify-content:center; margin-bottom:1rem;"></div>
+
+        <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:1.15rem; margin-bottom:1.25rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem; font-size:0.86rem;">
             <span style="color:#64748B;">Mobile Phone:</span>
             <strong id="prof-phone-val" style="color:#0F172A;">-</strong>
           </div>
-          <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem; font-size:0.85rem;">
-            <span style="color:#64748B;">Email:</span>
-            <strong id="prof-email-val" style="color:#0F172A;">-</strong>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem; font-size:0.86rem;">
+            <span style="color:#64748B;">Email Address:</span>
+            <strong id="prof-email-val" style="color:#0F172A; max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">-</strong>
           </div>
-          <div style="display:flex; justify-content:space-between; font-size:0.85rem;">
-            <span style="color:#64748B;">Default Address:</span>
-            <strong id="prof-address-val" style="color:#0F172A;">-</strong>
+          <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.86rem;">
+            <span style="color:#64748B;">Delivery Address:</span>
+            <strong id="prof-address-val" style="color:#0F172A; text-align:right; max-width:200px;">-</strong>
           </div>
         </div>
 
-        <div style="display:flex; gap:0.75rem;">
-          <button type="button" class="btn btn-outline-primary" onclick="window.authManager.closeCustomerProfileModal(); window.cartSystem.openCheckoutModal();" style="flex:1; justify-content:center; font-size:0.85rem; padding:0.65rem; display:inline-flex; align-items:center; gap:0.4rem;">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-            <span>View Cart / Checkout</span>
+        <div style="display:flex; flex-direction:column; gap:0.6rem;">
+          <button type="button" class="btn btn-primary" onclick="window.authManager.closeCustomerProfileModal(); window.cartSystem.openCheckoutModal();" style="width:100%; height:44px; justify-content:center; font-size:0.88rem; font-weight:700; border-radius:10px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+            <span>View Active Cart & Checkout</span>
           </button>
-          <button type="button" class="btn" onclick="window.authManager.logoutCustomer(); window.authManager.closeCustomerProfileModal();" style="background:#FEE2E2; color:#DC2626; border:1px solid #FCA5A5; font-size:0.85rem; padding:0.65rem 1rem; font-weight:700;">
-            Sign Out
+          <button type="button" class="btn" onclick="window.authManager.logoutCustomer(); window.authManager.closeCustomerProfileModal();" style="width:100%; height:42px; background:#FFF1F2; color:#E11D48; border:1.5px solid #FECDD3; font-size:0.88rem; font-weight:700; border-radius:10px; cursor:pointer;">
+            Sign Out of Account
           </button>
         </div>
       </div>
@@ -2536,6 +2417,25 @@
       }
     }
 
+    function togglePasswordLoginForm(forcePassword = null) {
+      const phoneForm = document.getElementById('customer-phone-form');
+      const loginForm = document.getElementById('customer-login-form');
+      if (!phoneForm || !loginForm) return;
+
+      const shouldShowPassword = forcePassword !== null ? forcePassword : (phoneForm.style.display !== 'none');
+      if (shouldShowPassword) {
+        phoneForm.style.display = 'none';
+        loginForm.style.display = 'block';
+        const input = document.getElementById('cust-login-identifier');
+        if (input) setTimeout(() => input.focus(), 60);
+      } else {
+        loginForm.style.display = 'none';
+        phoneForm.style.display = 'block';
+        const input = document.getElementById('cust-phone-input');
+        if (input) setTimeout(() => input.focus(), 60);
+      }
+    }
+
     // 1-Click Credential Fillers for Testing & ERP Access
     function fillAdminCreds(username, password, role) {
       const userInput = document.getElementById('admin-login-username');
@@ -2550,7 +2450,7 @@
     }
 
     function fillCustomerCreds(phone, password) {
-      switchCustomerAuthTab('login');
+      togglePasswordLoginForm(true);
       const idInput = document.getElementById('cust-login-identifier');
       const passInput = document.getElementById('cust-login-password');
       const errorBox = document.getElementById('cust-login-error-msg');
@@ -2738,145 +2638,18 @@ Please arrange technician pickup and spot cash payment. Thank you!`;
     }
 
     function switchCustomerAuthTab(tab) {
-      const tabPhone = document.getElementById('tab-cust-phone');
-      const tabGoogle = document.getElementById('tab-cust-google');
-      const tabLogin = document.getElementById('tab-cust-login');
-      const tabReg = document.getElementById('tab-cust-register');
-      const formPhone = document.getElementById('customer-phone-form');
-      const formGoogle = document.getElementById('customer-google-view');
-      const formLogin = document.getElementById('customer-login-form');
-      const formReg = document.getElementById('customer-register-form');
-      const btnGoogleQuick = document.getElementById('btn-google-auth-login');
-      const authDivider = document.getElementById('auth-divider-line');
-
-      [tabPhone, tabGoogle, tabLogin, tabReg].forEach(t => t?.classList.remove('active'));
-      if (formPhone) formPhone.style.display = 'none';
-      if (formGoogle) formGoogle.style.display = 'none';
-      if (formLogin) formLogin.style.display = 'none';
-      if (formReg) formReg.style.display = 'none';
-
-      if (tab === 'google') {
-        tabGoogle?.classList.add('active');
-        if (formGoogle) formGoogle.style.display = 'block';
-        if (btnGoogleQuick) btnGoogleQuick.style.display = 'none';
-        if (authDivider) authDivider.style.display = 'none';
-
-        // Check for remembered Google account if different from primary
-        const quickSlot = document.getElementById('google-quick-account-slot');
-        try {
-          const savedStr = localStorage.getItem('bm_saved_google_user');
-          if (savedStr && quickSlot) {
-            const saved = JSON.parse(savedStr);
-            if (saved && saved.email && saved.email.toLowerCase() !== 'ankushkumaras50@gmail.com') {
-              quickSlot.style.display = 'block';
-              quickSlot.innerHTML = `
-                <div class="google-account-row" onclick="handleGoogleFastAuthSubmit({ email: '${escapeHtml(saved.email)}', fullName: '${escapeHtml(saved.fullName || '')}', phone: '${escapeHtml(saved.phone || '')}' })">
-                  <div class="google-account-avatar" style="background:#2563EB;">${(saved.fullName || saved.email).charAt(0).toUpperCase()}</div>
-                  <div class="google-account-info">
-                    <div class="google-account-name">${escapeHtml(saved.fullName || saved.email.split('@')[0])}</div>
-                    <div class="google-account-email">${escapeHtml(saved.email)}</div>
-                  </div>
-                  <span class="google-account-badge">✓ 1-Click Login</span>
-                </div>
-              `;
-            } else if (quickSlot) {
-              quickSlot.style.display = 'none';
-            }
-          }
-        } catch (e) {}
+      if (tab === 'login' || tab === 'password') {
+        togglePasswordLoginForm(true);
       } else {
-        if (btnGoogleQuick) btnGoogleQuick.style.display = 'flex';
-        if (authDivider) authDivider.style.display = 'flex';
-
-        if (tab === 'phone') {
-          tabPhone?.classList.add('active');
-          if (formPhone) formPhone.style.display = 'block';
-        } else if (tab === 'login') {
-          tabLogin?.classList.add('active');
-          if (formLogin) formLogin.style.display = 'block';
-        } else {
-          tabReg?.classList.add('active');
-          if (formReg) formReg.style.display = 'block';
-        }
+        togglePasswordLoginForm(false);
       }
     }
 
-    window.toggleCustomGoogleInput = function() {
-      const form = document.getElementById('customer-google-form');
-      if (!form) return;
-      const isHidden = form.style.display === 'none' || !form.style.display;
-      form.style.display = isHidden ? 'block' : 'none';
-      if (isHidden) {
-        const emailInput = document.getElementById('cust-google-email');
-        if (emailInput) {
-          setTimeout(() => emailInput.focus(), 80);
-        }
-      }
-    };
-
     async function handleGoogleFastAuthSubmit(directUser = null) {
-      const emailInput = document.getElementById('cust-google-email');
-      const nameInput = document.getElementById('cust-google-fullname');
-      const phoneInput = document.getElementById('cust-google-phone');
-      const errorBox = document.getElementById('cust-google-error-msg');
-      const submitBtn = document.getElementById('btn-cust-google-submit');
-
-      if (errorBox) errorBox.style.display = 'none';
-
-      let email = directUser ? directUser.email : emailInput?.value?.trim();
-      let fullName = directUser ? directUser.fullName : nameInput?.value?.trim();
-      let phone = directUser ? directUser.phone : phoneInput?.value?.trim();
-
-      if (!email || !email.includes('@')) {
-        if (errorBox) {
-          errorBox.textContent = 'Please enter a valid Google email address.';
-          errorBox.style.display = 'block';
-        }
-        return;
+      if (directUser) {
+        return await window.authManager.loginWithGoogleFast(directUser);
       }
-
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = `
-          <svg class="spin-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
-          <span>Signing in with Google...</span>
-        `;
-      }
-
-      try {
-        const res = await window.authManager.loginWithGoogleFast({
-          email: email.toLowerCase(),
-          fullName: fullName || email.split('@')[0],
-          phone: phone ? phone.replace(/\D/g, '') : '',
-          authProvider: 'google'
-        });
-
-        if (res.success) {
-          if (typeof showToast === 'function') {
-            showToast(`Signed in with Google as ${res.customer.fullName}!`, 'success');
-          }
-          window.authManager.closeCustomerLoginModal();
-          if (window.cartSystem) window.cartSystem.syncCheckoutAuthUI();
-        } else {
-          if (errorBox) {
-            errorBox.textContent = res.message || 'Google authentication could not be completed.';
-            errorBox.style.display = 'block';
-          }
-        }
-      } catch (err) {
-        if (errorBox) {
-          errorBox.textContent = 'Google Sign-In error: ' + (err.message || 'Please try again.');
-          errorBox.style.display = 'block';
-        }
-      } finally {
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = `
-            <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#fff" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#fff" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/></svg>
-            <span>Instant Sign-In with Google</span>
-          `;
-        }
-      }
+      return await window.authManager.loginWithGoogle();
     }
 
     let phoneOtpSentState = false;
@@ -3113,7 +2886,7 @@ Please arrange technician pickup and spot cash payment. Thank you!`;
       <span>Cart</span>
     </button>
 
-    <button type="button" class="mobile-nav-item" id="mob-nav-account" onclick="window.smoothNav(null); window.authManager.openCustomerLoginModal();">
+    <button type="button" class="mobile-nav-item" id="mob-nav-account" onclick="window.smoothNav(null); window.authManager.openCustomerPortal();" aria-label="Customer Account">
       <div class="mob-icon-wrap">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       </div>

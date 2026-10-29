@@ -6075,6 +6075,252 @@ body.search-mode-active {
   opacity: 0.7;
 }
 
+/* ==========================================================================
+   GENUINE SUPABASE GOOGLE AUTH & CLEAN CUSTOMER PORTAL UI/UX
+   ========================================================================== */
+.customer-auth-box {
+  width: 100%;
+  max-width: 440px;
+  background: #FFFFFF;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25), 0 0 0 1px rgba(15, 23, 42, 0.05);
+}
+
+.customer-auth-header {
+  padding: 1.25rem 1.5rem;
+  background: #FFFFFF;
+  border-bottom: 1px solid #F1F5F9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.customer-auth-header .cust-auth-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: #FEF2F2;
+  border: 1px solid #FEE2E2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.customer-auth-header .auth-modal-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #0F172A;
+  margin: 0;
+  line-height: 1.25;
+}
+
+.customer-auth-header .auth-modal-subtitle {
+  font-size: 0.76rem;
+  color: #64748B;
+  display: block;
+  margin-top: 2px;
+}
+
+.customer-auth-body {
+  padding: 1.5rem;
+}
+
+/* Hero Google Button */
+.btn-google-continue {
+  width: 100%;
+  height: 48px;
+  border-radius: 10px;
+  background: #FFFFFF;
+  border: 1.5px solid #E2E8F0;
+  color: #1E293B;
+  font-size: 0.94rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  position: relative;
+}
+
+.btn-google-continue:hover {
+  background: #F8FAFC;
+  border-color: #CBD5E1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+.btn-google-continue:active {
+  transform: translateY(0);
+  background: #F1F5F9;
+}
+
+.btn-google-continue:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.google-icon-svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.google-instant-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  background: #EFF6FF;
+  color: #2563EB;
+  border: 1px solid #BFDBFE;
+  padding: 2px 7px;
+  border-radius: 20px;
+  letter-spacing: 0.2px;
+}
+
+/* Clean Divider */
+.auth-divider-clean {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1.25rem 0 1.15rem;
+  color: #94A3B8;
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.auth-divider-clean::before,
+.auth-divider-clean::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.auth-divider-clean span {
+  padding: 0 0.85rem;
+}
+
+/* Secondary Compact Forms */
+.auth-compact-form .form-label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #334155;
+  margin-bottom: 0.35rem;
+}
+
+.phone-prefix-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #F8FAFC;
+  border: 1.5px solid #CBD5E1;
+  border-radius: 8px;
+  padding: 0 0.85rem;
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: #475569;
+  user-select: none;
+}
+
+.btn-auth-submit {
+  width: 100%;
+  height: 44px;
+  border-radius: 10px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #ED1C24 0%, #C81016 100%);
+  color: #FFFFFF;
+  border: none;
+  box-shadow: 0 4px 12px rgba(237, 28, 36, 0.25);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-auth-submit:hover {
+  background: linear-gradient(135deg, #FF1E26 0%, #B90D13 100%);
+  box-shadow: 0 6px 16px rgba(237, 28, 36, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-auth-submit:active {
+  transform: translateY(0);
+}
+
+.btn-auth-switch-mode {
+  background: none;
+  border: none;
+  color: #0047BA;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.3rem 0.5rem;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+
+.btn-auth-switch-mode:hover {
+  color: #002D7A;
+  text-decoration: underline;
+}
+
+.auth-secure-reassurance {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  margin-top: 1.25rem;
+  padding-top: 0.85rem;
+  border-top: 1px dashed #E2E8F0;
+  font-size: 0.74rem;
+  color: #64748B;
+  font-weight: 500;
+}
+
+/* Customer Avatars & Verified Indicators */
+.cust-avatar-img {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid #3B82F6;
+  flex-shrink: 0;
+}
+
+.cust-avatar-badge {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0047BA, #2563EB);
+  color: #FFFFFF;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.cust-verified-dot {
+  color: #10B981;
+  font-size: 0.65rem;
+  margin: 0 1px;
+}
+
+.cust-auth-pill-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Guarded Admin Pill States */
 .btn-admin-pill.admin-active-state {
   background: #064E3B !important;

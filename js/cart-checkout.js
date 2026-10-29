@@ -488,16 +488,23 @@ class CartSystem {
       if (districtInput && customer.district) districtInput.value = customer.district;
       if (addressInput && customer.address) addressInput.value = customer.address;
 
+      const isGoogle = customer.authProvider === 'google';
+      const initial = (customer.fullName || 'C').charAt(0).toUpperCase();
+      const avatarHtml = customer.photoURL
+        ? `<img src="${customer.photoURL}" alt="${customer.fullName}" style="width:36px; height:36px; border-radius:50%; object-fit:cover; border:2px solid #3B82F6;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" /><div style="display:none; width:36px; height:36px; border-radius:50%; background:#10B981; color:#fff; align-items:center; justify-content:center; font-weight:800; font-size:0.95rem;">✓</div>`
+        : `<div style="width:36px; height:36px; border-radius:50%; background:${isGoogle ? '#2563EB' : '#10B981'}; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:0.95rem;">${isGoogle ? initial : '✓'}</div>`;
+
       authBox.innerHTML = `
-        <div class="checkout-cust-auth-badge" style="background:#ECFDF5; border:1.5px solid #10B981; border-radius:10px; padding:0.85rem 1rem; margin-bottom:1.25rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
-          <div style="display:flex; align-items:center; gap:0.6rem;">
-            <div style="width:34px; height:34px; border-radius:50%; background:#10B981; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:0.95rem;">✓</div>
+        <div class="checkout-cust-auth-badge" style="background:${isGoogle ? '#EFF6FF' : '#ECFDF5'}; border:1.5px solid ${isGoogle ? '#93C5FD' : '#10B981'}; border-radius:10px; padding:0.85rem 1rem; margin-bottom:1.25rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+          <div style="display:flex; align-items:center; gap:0.65rem;">
+            ${avatarHtml}
             <div>
-              <div style="font-weight:800; font-size:0.92rem; color:#065F46;">
-                Signed in as: ${customer.fullName || 'Valued Customer'}
+              <div style="font-weight:800; font-size:0.92rem; color:${isGoogle ? '#1E40AF' : '#065F46'}; display:flex; align-items:center; gap:0.35rem;">
+                <span>Signed in as: ${customer.fullName || 'Customer'}</span>
+                ${isGoogle ? '<span style="font-size:0.72rem; background:#DBEAFE; color:#1D4ED8; padding:1px 6px; border-radius:10px; font-weight:700;">Google</span>' : ''}
               </div>
-              <div style="font-size:0.78rem; color:#047857;">
-                Mobile: ${customer.phone || ''} • Details verified for warranty and delivery
+              <div style="font-size:0.78rem; color:${isGoogle ? '#3B82F6' : '#047857'};">
+                ${customer.email ? customer.email + ' • ' : ''}${customer.phone ? 'Mobile: +977-' + customer.phone : 'Official Nepal Warranty Verified'}
               </div>
             </div>
           </div>

@@ -177,6 +177,35 @@ async function runSupabaseTests() {
     assert(res !== undefined, 'syncOrderToSupabase returned undefined');
   });
 
+  // 6. Supabase Google OAuth & Customer Auth UI/UX
+  console.log('\n🔐 6. Supabase Google OAuth & Customer Auth UI/UX:');
+  const authManagerJs = fs.readFileSync(path.join(ROOT_DIR, 'js', 'auth-manager.js'), 'utf8');
+
+  test('Supabase client script configures auth session detection in URL', () => {
+    const clientJs = fs.readFileSync(path.join(ROOT_DIR, 'js', 'supabase-client.js'), 'utf8');
+    assert(clientJs.includes('detectSessionInUrl: true'), 'detectSessionInUrl must be enabled');
+    assert(clientJs.includes('autoRefreshToken: true'), 'autoRefreshToken must be enabled');
+    assert(clientJs.includes('persistSession: true'), 'persistSession must be enabled');
+  });
+
+  test('auth-manager.js defines initSupabaseGoogleAuth and session sync', () => {
+    assert(authManagerJs.includes('initSupabaseGoogleAuth()'), 'initSupabaseGoogleAuth missing');
+    assert(authManagerJs.includes('syncSupabaseUserToCustomerSession('), 'syncSupabaseUserToCustomerSession missing');
+    assert(authManagerJs.includes('signInWithOAuth'), 'signInWithOAuth invocation missing');
+    assert(authManagerJs.includes("provider: 'google'"), "Google provider specification missing");
+  });
+
+  test('auth-manager.js synchronizes profile directly to Supabase profiles table', () => {
+    assert(authManagerJs.includes(".from('profiles').upsert"), 'Supabase profiles upsert missing in auth-manager');
+  });
+
+  test('index.html contains hero Continue with Google button and clean customer UI', () => {
+    assert(indexHtml.includes('btn-google-continue'), 'Hero btn-google-continue missing in index.html');
+    assert(indexHtml.includes('Continue with Google'), 'Continue with Google text missing');
+    assert(indexHtml.includes('togglePasswordLoginForm'), 'togglePasswordLoginForm function missing');
+    assert(!indexHtml.includes('Ankush Kumar (ankushkumaras50@gmail.com)'), 'Messy demo fillers still present in index.html');
+  });
+
   console.log('\n======================================================');
   console.log(`📊 SUPABASE TEST RUNNER SUMMARY:`);
   console.log(`   Passed: ${passed}`);

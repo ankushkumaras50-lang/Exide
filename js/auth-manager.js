@@ -52,11 +52,146 @@ class AuthManager {
       setTimeout(() => this.openCustomerLoginModal(), 450);
     }
 
+    // Initialize Supabase Google OAuth detection and session listener
+    this.initSupabaseGoogleAuth();
+
     // Attach listener to update UI on DOM ready
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', () => this.updateAuthUI());
     } else {
       setTimeout(() => this.updateAuthUI(), 100);
+    }
+  }
+
+  // ==========================================================================
+  // SUPABASE REAL-TIME GOOGLE AUTHENTICATION & SESSION SYNC
+  // ==========================================================================
+  initSupabaseGoogleAuth() {
+    if (typeof window === 'undefined') return;
+
+    const checkAndBind = () => {
+      const client = window.supabaseClient;
+      if (!client || !client.auth) return false;
+
+      // 1. Listen for real-time auth events (OAuth redirect login, token refresh, logout)
+      try {
+        client.auth.onAuthStateChange(async (event, session) => {
+          if ((event === 'SIGNED_IN' || event === 'USER_UPDATED' || event === 'TOKEN_REFRESHED') && session && session.user) {
+            this.syncSupabaseUserToCustomerSession(session.user, session.access_token);
+          } else if (event === 'SIGNED_OUT') {
+            const current = this.getCurrentCustomer();
+            if (current && current.authProvider === 'google') {
+              this.logoutCustomer(false);
+            }
+          }
+        });
+      } catch (err) {
+        console.warn('Supabase auth state listener warning:', err.message);
+      }
+
+      // 2. Check existing session on load (handles return from Google OAuth redirect)
+      try {
+        client.auth.getSession().then(({ data, error }) => {
+          if (error) {
+            console.warn('Supabase getSession notice:', error.message);
+            return;
+          }
+          if (data && data.session && data.session.user) {
+            this.syncSupabaseUserToCustomerSession(data.session.user, data.session.access_token);
+          }
+        }).catch(err => {
+          console.warn('Supabase getSession catch:', err.message);
+        });
+      } catch (e) {}
+
+      // 3. Clean OAuth hash fragment from browser URL if present (#access_token=...&refresh_token=...)
+      if (typeof window !== 'undefined' && window.location.hash) {
+        const hash = window.location.hash;
+        if (hash.includes('access_token=') || hash.includes('refresh_token=') || hash.includes('error_description=')) {
+          try {
+            window.history.replaceState(null, document.title, window.location.pathname + window.location.search);
+          } catch (e) {}
+        }
+      }
+
+      return true;
+    };
+
+    if (!checkAndBind()) {
+      if (document.readyState === 'loading') {
+        window.addEventListener('DOMContentLoaded', () => setTimeout(checkAndBind, 150));
+      } else {
+        setTimeout(checkAndBind, 200);
+      }
+    }
+  }
+
+  syncSupabaseUserToCustomerSession(user, accessToken) {
+    if (!user || !user.email) return;
+
+    const meta = user.user_metadata || {};
+    const fullName = (meta.full_name || meta.name || user.email.split('@')[0] || 'Customer').trim();
+    const photoURL = meta.avatar_url || meta.picture || '';
+    const phone = user.phone || meta.phone || '';
+
+    const customerObj = {
+      id: user.id || ('GOOGLE-' + Date.now().toString(36).toUpperCase()),
+      fullName: fullName,
+      email: user.email.toLowerCase().trim(),
+      phone: phone ? String(phone).replace(/\D/g, '').slice(-10) : '',
+      photoURL: photoURL,
+      googleUid: user.id,
+      authProvider: 'google',
+      isEmailVerified: true,
+      district: meta.district || 'Kathmandu',
+      address: meta.address || 'Kathmandu, Nepal'
+    };
+
+    // Store in localStorage customer session
+    localStorage.setItem(this.customerStorageKey, JSON.stringify(customerObj));
+    if (accessToken) {
+      localStorage.setItem(this.customerTokenKey, accessToken);
+    }
+
+    // Sync to accounts list for offline caching
+    const accounts = this.getCustomerAccounts();
+    const existingIdx = accounts.findIndex(a => 
+      (a.email && a.email.toLowerCase() === customerObj.email) ||
+      (customerObj.phone && a.phone && a.phone === customerObj.phone)
+    );
+    if (existingIdx >= 0) {
+      accounts[existingIdx] = Object.assign({}, accounts[existingIdx], customerObj);
+    } else {
+      accounts.push(customerObj);
+    }
+    this.saveCustomerAccounts(accounts);
+
+    // Asynchronously upsert profile to Supabase 'profiles' table
+    if (window.supabaseClient && typeof window.supabaseClient.from === 'function') {
+      window.supabaseClient.from('profiles').upsert({
+        id: user.id,
+        email: customerObj.email,
+        full_name: customerObj.fullName,
+        avatar_url: customerObj.photoURL || null,
+        phone: customerObj.phone || null,
+        auth_provider: 'google',
+        is_email_verified: true,
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'id' }).then(({ error }) => {
+        if (error) console.warn('Supabase profiles sync note:', error.message);
+        else console.log('✅ Supabase profile synchronized for:', customerObj.email);
+      }).catch(e => {
+        console.warn('Supabase profiles upsert catch:', e.message);
+      });
+    }
+
+    // Update UI & notify system
+    this.closeCustomerLoginModal();
+    this.updateAuthUI();
+    this.triggerCustomerAuthChanged();
+
+    if (window.cartSystem) {
+      try { window.cartSystem.syncCheckoutAuthUI(); } catch (e) {}
     }
   }
 
@@ -323,80 +458,78 @@ class AuthManager {
   }
 
   // ==========================================================================
-  // GOOGLE FAST & VERIFIED AUTHENTICATION
+  // GENUINE SUPABASE GOOGLE OAUTH AUTHENTICATION
   // ==========================================================================
   async loginWithGoogle(presetUser = null) {
     if (presetUser && presetUser.email) {
       return await this.loginWithGoogleFast(presetUser);
     }
 
-    // 1. Try Google Identity Services (GIS) if available with configured client ID
-    if (typeof window !== 'undefined' && window.google && window.google.accounts && window.google.accounts.id) {
+    const submitBtn = document.getElementById('btn-google-auth-login');
+    const btnText = document.getElementById('btn-google-auth-login-text');
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      if (btnText) btnText.textContent = 'Redirecting to Google...';
+    }
+
+    // 1. Genuine Supabase Google OAuth Execution
+    if (typeof window !== 'undefined' && window.supabaseClient && window.supabaseClient.auth) {
       try {
-        const clientId = window.GOOGLE_CLIENT_ID || document.querySelector('meta[name="google-signin-client_id"]')?.content;
-        if (clientId) {
-          window.google.accounts.id.initialize({
-            client_id: clientId,
-            callback: async (response) => {
-              if (response && response.credential) {
-                try {
-                  const base64Url = response.credential.split('.')[1];
-                  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-                  const payload = JSON.parse(decodeURIComponent(escape(window.atob(base64))));
-                  await this.loginWithGoogleFast({
-                    email: payload.email,
-                    fullName: payload.name || payload.email.split('@')[0],
-                    photoURL: payload.picture || '',
-                    googleUid: payload.sub || ''
-                  });
-                } catch (e) {
-                  console.warn('GIS token decode note:', e);
-                }
-              }
+        const redirectUrl = window.location.origin + window.location.pathname;
+        console.log(`Initiating Supabase Google OAuth with redirect: ${redirectUrl}`);
+
+        const { data, error } = await window.supabaseClient.auth.signInWithOAuth({
+          provider: 'google',
+          options: {
+            redirectTo: redirectUrl,
+            queryParams: {
+              prompt: 'select_account'
             }
-          });
-          window.google.accounts.id.prompt();
+          }
+        });
+
+        if (error) {
+          console.error('Supabase Google OAuth error:', error);
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            if (btnText) btnText.textContent = 'Continue with Google';
+          }
+          if (typeof showToast === 'function') {
+            showToast('Google Sign-In: ' + error.message, 'error');
+          }
+          return { success: false, message: error.message };
         }
+
+        if (data && data.url) {
+          window.location.href = data.url;
+        }
+        return { success: true };
       } catch (err) {
-        console.warn('Google Identity Services notice:', err);
+        console.error('Google sign-in exception:', err);
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          if (btnText) btnText.textContent = 'Continue with Google';
+        }
+        if (typeof showToast === 'function') {
+          showToast('Failed to start Google sign-in. Check network connection.', 'error');
+        }
+        return { success: false, message: err.message };
       }
     }
 
-    // 2. Open / Switch to Google Sign-In Tab in Customer Modal
-    if (typeof switchCustomerAuthTab === 'function') {
-      switchCustomerAuthTab('google');
-    }
-
-    // 3. If modal is not open, open it
-    const modal = document.getElementById('customer-auth-modal-overlay');
-    if (modal && !modal.classList.contains('open')) {
-      this.openCustomerLoginModal();
-      if (typeof switchCustomerAuthTab === 'function') {
-        switchCustomerAuthTab('google');
-      }
-    }
-
-    return { success: true, message: 'Google Sign-In ready' };
+    // 2. Fallback if Supabase client not loaded yet
+    this.openCustomerLoginModal();
+    return { success: false, message: 'Supabase client is initializing. Please try again.' };
   }
 
-  // 1-Click Direct Google Account Selection
-  async selectGoogleAccount(email = 'ankushkumaras50@gmail.com', name = 'Ankush Kumar', phone = '9705997260') {
-    return await this.loginWithGoogleFast({
-      email: email,
-      fullName: name,
-      phone: phone,
-      authProvider: 'google'
-    });
-  }
-
-  // Fast verified Google sync with backend JWT session creation
+  // Fast verified Google sync with backend JWT session creation (direct profile input)
   async loginWithGoogleFast(userData) {
     if (!userData || !userData.email || !userData.email.includes('@')) {
       return { success: false, message: 'A valid Google email address is required.' };
     }
 
     let googleUser = {
-      id: 'GOOGLE-' + Date.now().toString(36).toUpperCase(),
+      id: userData.id || ('GOOGLE-' + Date.now().toString(36).toUpperCase()),
       fullName: (userData.fullName || userData.email.split('@')[0]).trim(),
       email: userData.email.trim().toLowerCase(),
       phone: userData.phone ? String(userData.phone).replace(/\D/g, '').slice(-10) : '',
@@ -433,7 +566,10 @@ class AuthManager {
     }
 
     const accounts = this.getCustomerAccounts();
-    const existingIndex = accounts.findIndex(a => (googleUser.email && a.email === googleUser.email) || (googleUser.phone && a.phone === googleUser.phone));
+    const existingIndex = accounts.findIndex(a => 
+      (googleUser.email && a.email && a.email.toLowerCase() === googleUser.email.toLowerCase()) || 
+      (googleUser.phone && a.phone && a.phone === googleUser.phone)
+    );
     if (existingIndex >= 0) {
       accounts[existingIndex] = Object.assign({}, accounts[existingIndex], googleUser);
       googleUser = accounts[existingIndex];
@@ -442,16 +578,9 @@ class AuthManager {
     }
     this.saveCustomerAccounts(accounts);
 
-    // Save session & Remember Google User for fast 1-click re-login
+    // Save session
     localStorage.setItem(this.customerStorageKey, JSON.stringify(googleUser));
     localStorage.setItem(this.customerTokenKey, serverToken);
-    try {
-      localStorage.setItem('bm_saved_google_user', JSON.stringify({
-        email: googleUser.email,
-        fullName: googleUser.fullName,
-        phone: googleUser.phone
-      }));
-    } catch(e) {}
 
     this.updateAuthUI();
     this.triggerCustomerAuthChanged();
@@ -770,6 +899,11 @@ class AuthManager {
   }
 
   logoutCustomer(showToastMsg = true) {
+    if (typeof window !== 'undefined' && window.supabaseClient && window.supabaseClient.auth) {
+      try {
+        window.supabaseClient.auth.signOut().catch(() => {});
+      } catch (e) {}
+    }
     localStorage.removeItem(this.customerStorageKey);
     localStorage.removeItem(this.customerTokenKey);
     this.updateAuthUI();
@@ -777,6 +911,14 @@ class AuthManager {
 
     if (showToastMsg && typeof showToast === 'function') {
       showToast('Logged out of customer account successfully', 'info');
+    }
+  }
+
+  openCustomerPortal() {
+    if (this.isCustomerLoggedIn()) {
+      this.openCustomerProfileModal();
+    } else {
+      this.openCustomerLoginModal();
     }
   }
 
@@ -828,17 +970,27 @@ class AuthManager {
     custContainers.forEach(wrap => {
       if (customer) {
         const firstName = customer.fullName ? customer.fullName.split(' ')[0] : 'My Account';
+        const initial = (firstName || 'C').charAt(0).toUpperCase();
+        const avatarHtml = customer.photoURL
+          ? `<img src="${customer.photoURL}" alt="${customer.fullName}" class="cust-avatar-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex';" /><span class="cust-avatar-badge" style="display:none;">${initial}</span>`
+          : `<span class="cust-avatar-badge">${initial}</span>`;
+
         wrap.innerHTML = `
-          <div class="customer-logged-pill" onclick="window.authManager.openCustomerProfileModal()">
-            <span class="cust-avatar-icon">👤</span>
+          <div class="customer-logged-pill" onclick="window.authManager.openCustomerProfileModal()" title="View Account: ${customer.fullName || ''}">
+            ${avatarHtml}
             <span class="cust-name-text">${firstName}</span>
+            <span class="cust-verified-dot" title="Verified Customer">●</span>
             <span class="cust-dropdown-arrow">▾</span>
           </div>
         `;
       } else {
         wrap.innerHTML = `
-          <button class="btn-customer-login-pill" onclick="window.authManager.openCustomerLoginModal()">
-            <span>👤</span>
+          <button class="btn-customer-login-pill" onclick="window.authManager.openCustomerLoginModal()" title="Sign in to your customer account">
+            <span class="cust-auth-pill-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+            </span>
             <span>Sign In</span>
           </button>
         `;
@@ -879,14 +1031,19 @@ class AuthManager {
     const drawerUserBox = document.getElementById('drawer-user-status');
     if (drawerUserBox) {
       if (customer) {
+        const initial = (customer.fullName || 'C').charAt(0).toUpperCase();
+        const drawerAvatarHtml = customer.photoURL
+          ? `<img src="${customer.photoURL}" alt="${customer.fullName}" class="cust-avatar-img" style="width:40px; height:40px; border-radius:50%; object-fit:cover; border:2px solid #3B82F6;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" /><div class="cust-avatar-badge" style="display:none; width:40px; height:40px; font-size:1.1rem;">${initial}</div>`
+          : `<div class="cust-avatar-badge" style="width:40px; height:40px; font-size:1.1rem;">${initial}</div>`;
+
         drawerUserBox.innerHTML = `
           <div class="drawer-user-box logged-in">
-            <div class="drawer-user-avatar" style="display:flex; align-items:center; justify-content:center; background:#EFF6FF; color:#0047BA; border-radius:50%; width:36px; height:36px;">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <div class="drawer-user-avatar-wrap">
+              ${drawerAvatarHtml}
             </div>
             <div class="drawer-user-meta">
-              <div class="drawer-user-name">${customer.fullName || 'Valued Customer'}</div>
-              <div class="drawer-user-contact">${customer.phone || customer.email || ''}</div>
+              <div class="drawer-user-name" style="font-weight:700; color:#0F172A;">${customer.fullName || 'Valued Customer'}</div>
+              <div class="drawer-user-contact" style="font-size:0.75rem; color:#64748B;">${customer.email || customer.phone || 'Verified Customer'}</div>
             </div>
             <button type="button" class="btn-drawer-signout" onclick="window.authManager.logoutCustomer(); window.toggleMobileDrawer(false);">
               Sign Out
@@ -898,20 +1055,19 @@ class AuthManager {
           <div class="drawer-user-box logged-out">
             <div class="drawer-user-greeting">
               <strong>Welcome to Exide Nepal!</strong>
-              <span>Sign in to track orders, save batteries & get wholesale rates</span>
+              <span>Sign in for express checkout, order tracking & wholesale pricing</span>
             </div>
-            <button type="button" class="btn-drawer-signin" onclick="window.toggleMobileDrawer(false); window.authManager.openCustomerLoginModal();" style="display:flex; align-items:center; justify-content:center; gap:0.5rem; width:100%; height:40px; border-radius:8px; font-weight:700;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              <span>Sign In / Register</span>
-            </button>
-            <button type="button" class="btn-drawer-google-quick" onclick="window.toggleMobileDrawer(false); window.authManager.loginWithGoogle();" style="display:flex; align-items:center; justify-content:center; gap:0.55rem; width:100%; height:40px; border-radius:8px; font-weight:700; background:#FFFFFF; color:#1F2937; border:1.5px solid #CBD5E1; margin-top:0.45rem; cursor:pointer; font-size:0.86rem; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
-              <svg width="16" height="16" viewBox="0 0 24 24">
+            <button type="button" class="btn-drawer-google-hero" onclick="window.toggleMobileDrawer(false); window.authManager.loginWithGoogle();" style="display:flex; align-items:center; justify-content:center; gap:0.6rem; width:100%; height:44px; border-radius:10px; font-weight:700; background:#FFFFFF; color:#1E293B; border:1.5px solid #E2E8F0; margin-top:0.6rem; cursor:pointer; font-size:0.88rem; box-shadow:0 1px 3px rgba(0,0,0,0.06);">
+              <svg width="18" height="18" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
                 <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
                 <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
                 <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
               </svg>
               <span>Continue with Google</span>
+            </button>
+            <button type="button" class="btn-drawer-signin" onclick="window.toggleMobileDrawer(false); window.authManager.openCustomerLoginModal();" style="display:flex; align-items:center; justify-content:center; gap:0.5rem; width:100%; height:38px; border-radius:10px; font-weight:700; background:#F8FAFC; border:1px solid #CBD5E1; color:#334155; margin-top:0.4rem; font-size:0.82rem; cursor:pointer;">
+              <span>Mobile OTP / Password Sign In</span>
             </button>
           </div>
         `;
@@ -927,10 +1083,47 @@ class AuthManager {
     }
     const modal = document.getElementById('customer-profile-modal-overlay');
     if (modal) {
-      document.getElementById('prof-name-val').textContent = cust.fullName || 'Customer';
-      document.getElementById('prof-phone-val').textContent = cust.phone || '';
-      document.getElementById('prof-email-val').textContent = cust.email || '';
-      document.getElementById('prof-address-val').textContent = `${cust.address || ''}, ${cust.district || ''}`;
+      const nameVal = document.getElementById('prof-name-val');
+      const badgeVal = document.getElementById('prof-badge-val');
+      const phoneVal = document.getElementById('prof-phone-val');
+      const emailVal = document.getElementById('prof-email-val');
+      const addressVal = document.getElementById('prof-address-val');
+      const avatarSlot = document.getElementById('prof-avatar-slot');
+
+      if (nameVal) nameVal.textContent = cust.fullName || 'Customer';
+      if (phoneVal) phoneVal.textContent = cust.phone ? `+977-${cust.phone}` : 'Not linked (Optional)';
+      if (emailVal) emailVal.textContent = cust.email || 'Google Account';
+      if (addressVal) addressVal.textContent = `${cust.address || 'Kathmandu'}, ${cust.district || 'Nepal'}`;
+
+      if (badgeVal) {
+        if (cust.authProvider === 'google') {
+          badgeVal.innerHTML = `<span style="display:inline-flex; align-items:center; gap:4px; color:#2563EB; font-weight:700;"><svg width="12" height="12" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg> Verified Google Account</span>`;
+        } else {
+          badgeVal.innerHTML = `<span style="color:#059669; font-weight:700;">✓ Verified Nepal Customer</span>`;
+        }
+      }
+
+      if (avatarSlot) {
+        const initial = (cust.fullName || 'C').charAt(0).toUpperCase();
+        if (cust.photoURL) {
+          avatarSlot.innerHTML = `
+            <div style="position:relative; width:68px; height:68px;">
+              <img src="${cust.photoURL}" alt="${cust.fullName}" style="width:68px; height:68px; border-radius:50%; object-fit:cover; border:2.5px solid #3B82F6; box-shadow:0 4px 12px rgba(59,130,246,0.2);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+              <div style="display:none; width:68px; height:68px; border-radius:50%; background:linear-gradient(135deg,#0047BA,#2563EB); color:#fff; align-items:center; justify-content:center; font-size:1.6rem; font-weight:800;">${initial}</div>
+              <span style="position:absolute; bottom:0; right:0; width:20px; height:20px; border-radius:50%; background:#fff; border:1px solid #E2E8F0; display:flex; align-items:center; justify-content:center; box-shadow:0 1px 3px rgba(0,0,0,0.15);">
+                <svg width="12" height="12" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
+              </span>
+            </div>
+          `;
+        } else {
+          avatarSlot.innerHTML = `
+            <div style="width:68px; height:68px; border-radius:50%; background:linear-gradient(135deg,#0047BA,#2563EB); color:#fff; display:flex; align-items:center; justify-content:center; font-size:1.6rem; font-weight:800; box-shadow:0 4px 12px rgba(0,71,186,0.2);">
+              ${initial}
+            </div>
+          `;
+        }
+      }
+
       modal.classList.add('open');
     }
   }

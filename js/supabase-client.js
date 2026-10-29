@@ -8,9 +8,16 @@ let supabaseClient = null;
 
 if (typeof window !== 'undefined') {
   if (typeof supabase !== 'undefined' && supabase.createClient) {
-    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true,
+        storage: window.localStorage
+      }
+    });
     window.supabaseClient = supabaseClient;
-    console.log("✅ Supabase client initialized successfully.");
+    console.log("✅ Supabase client initialized with auth session detection.");
   } else {
     console.warn("⚠️ Supabase SDK library not yet detected. Make sure supabase-js script is included before supabase-client.js.");
   }
