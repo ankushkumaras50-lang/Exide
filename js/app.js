@@ -795,6 +795,36 @@ function renderProductDetailPage(product) {
     .filter(p => p.id !== product.id && (p.brandSlug === product.brandSlug || p.categories.some(c => product.categories.includes(c))))
     .slice(0, 3);
 
+  // Complimentary Nepal Power Services (Only displayed if enabled)
+  const servicesList = (Array.isArray(product.complimentaryServices) && product.complimentaryServices.length > 0)
+    ? product.complimentaryServices.filter(Boolean)
+    : [];
+
+  const servicesHtml = servicesList.length > 0 ? `
+    <div class="product-complimentary-services-card">
+      <div class="complimentary-header">
+        <span class="complimentary-icon">⚡</span>
+        <strong class="complimentary-title">Complimentary Nepal Power Services Included:</strong>
+      </div>
+      <div class="complimentary-items-grid">
+        ${servicesList.map(svc => `
+          <div class="complimentary-item-row">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.8"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>${escapeHtml(svc)}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  ` : '';
+
+  // Short description (Only displayed if present)
+  const shortDescText = (product.shortDesc && product.shortDesc.trim() !== '') ? product.shortDesc.trim() : '';
+  const shortDescHtml = shortDescText ? `
+    <div style="background:#F8FAFC; border-left:4px solid var(--color-exide-blue); padding:0.75rem 1rem; border-radius:0 6px 6px 0; font-size:0.88rem; color:#334155; margin-bottom:1.25rem; line-height:1.5;">
+      ${escapeHtml(shortDescText)}
+    </div>
+  ` : '';
+
   contentBox.innerHTML = `
     <div class="quickview-scroll-wrapper">
       <div class="quickview-grid">
@@ -822,7 +852,7 @@ function renderProductDetailPage(product) {
         <!-- Right: Product Info, Actions & Buying -->
         <div>
           <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem; flex-wrap:wrap;">
-            <span class="product-brand-badge" style="background:${product.brandColor}15; color:${product.brandColor}; border:1px solid ${product.brandColor}30;">
+            <span class="product-brand-badge" style="background:${product.brandColor || '#ED1C24'}15; color:${product.brandColor || '#ED1C24'}; border:1px solid ${product.brandColor || '#ED1C24'}30;">
               AET Official Partner • ${product.brand} Genuine
             </span>
             <span style="font-size:0.75rem; font-weight:700; color:var(--color-success); background:var(--color-success-bg); padding:2px 8px; border-radius:4px;">
@@ -849,17 +879,15 @@ function renderProductDetailPage(product) {
                 NPR ${product.originalPrice.toLocaleString()}
               </span>
               <span class="product-discount-badge" style="position:static;">
-                ${product.discount}
+                ${product.discount || 'Special'}
               </span>
             ` : ''}
           </div>
 
-          <!-- Short Description -->
-          <div style="background:#F8FAFC; border-left:4px solid var(--color-exide-blue); padding:0.75rem 1rem; border-radius:0 6px 6px 0; font-size:0.88rem; color:#334155; margin-bottom:1.25rem; line-height:1.5;">
-            ${product.shortDesc || product.description}
-          </div>
+          <!-- Short Description (Only displayed if filled) -->
+          ${shortDescHtml}
 
-          <!-- Tagged Compatible Vehicles (for Automotive / Car Batteries) -->
+          <!-- Tagged Compatible Vehicles (Only displayed if filled) -->
           ${((product.compatibleVehicles && product.compatibleVehicles.length) || (product.specs && product.specs['Compatible Vehicles'])) ? `
             <div style="background:#EFF6FF; border:1px solid #BFDBFE; border-radius:8px; padding:0.75rem 1rem; margin-bottom:1.25rem;">
               <div style="font-size:0.8rem; font-weight:800; color:#1D4ED8; margin-bottom:0.4rem; display:flex; align-items:center; gap:0.4rem;">
@@ -867,7 +895,7 @@ function renderProductDetailPage(product) {
               </div>
               <div style="display:flex; flex-wrap:wrap; gap:0.4rem;">
                 ${(product.compatibleVehicles || (product.specs['Compatible Vehicles'] || '').split(',').map(s=>s.trim())).filter(Boolean).map(veh => `
-                  <span style="background:#FFFFFF; color:#1E40AF; border:1px solid #93C5FD; font-size:0.75rem; font-weight:700; padding:2px 8px; border-radius:4px; box-shadow:0 1px 2px rgba(0,0,0,0.05);">${veh}</span>
+                  <span style="background:#FFFFFF; color:#1E40AF; border:1px solid #93C5FD; font-size:0.75rem; font-weight:700; padding:2px 8px; border-radius:4px; box-shadow:0 1px 2px rgba(0,0,0,0.05);">${escapeHtml(veh)}</span>
                 `).join('')}
               </div>
             </div>
@@ -925,29 +953,38 @@ function renderProductDetailPage(product) {
               <span>Doorstep Claim at Any Nepal Outlet</span>
             </div>
           </div>
+
+          <!-- Complimentary Nepal Power Services (Conditional) -->
+          ${servicesHtml}
         </div>
       </div>
 
-      <!-- Detailed Description & Highlights -->
+      <!-- Detailed Description & Highlights (Only displayed if filled) -->
+      ${((product.description && product.description.trim() !== '') || specsList) ? `
       <div style="margin-top:2rem; padding-top:1.5rem; border-top:1px solid #E2E8F0;">
-        <h3 style="font-size:1.15rem; font-weight:800; color:#0F172A; margin-bottom:0.75rem;">Product Overview & In-Depth Details</h3>
-        <div class="product-description-body" style="font-size:0.92rem; color:#475569; line-height:1.7; margin-bottom:1.25rem;">
-          ${product.description}
-        </div>
+        ${(product.description && product.description.trim() !== '') ? `
+          <h3 style="font-size:1.15rem; font-weight:800; color:#0F172A; margin-bottom:0.75rem;">Product Overview & In-Depth Details</h3>
+          <div class="product-description-body" style="font-size:0.92rem; color:#475569; line-height:1.7; margin-bottom:1.25rem;">
+            ${product.description}
+          </div>
+        ` : ''}
 
-        ${product.features && product.features.length ? `
+        ${(product.features && product.features.length) ? `
           <h4 style="font-size:0.95rem; font-weight:800; color:#0F172A; margin-bottom:0.5rem;">Key Engineering Advantages:</h4>
           <ul style="list-style:disc; margin-left:1.5rem; color:#475569; font-size:0.9rem; line-height:1.7; margin-bottom:1.5rem;">
-            ${product.features.map(f => `<li>${f}</li>`).join('')}
+            ${product.features.map(f => `<li>${escapeHtml(f)}</li>`).join('')}
           </ul>
         ` : ''}
 
-        <!-- Technical Specifications Table -->
-        <h3 style="font-size:1.15rem; font-weight:800; color:#0F172A; margin-bottom:0.75rem;">Official Technical Specifications</h3>
-        <table class="specs-full-table">
-          <tbody>${specsList}</tbody>
-        </table>
+        ${specsList ? `
+          <!-- Technical Specifications Table -->
+          <h3 style="font-size:1.15rem; font-weight:800; color:#0F172A; margin-bottom:0.75rem;">Official Technical Specifications</h3>
+          <table class="specs-full-table">
+            <tbody>${specsList}</tbody>
+          </table>
+        ` : ''}
       </div>
+      ` : ''}
 
       <!-- Related Products Section (Fully Scrollable & Interactive) -->
       ${related.length > 0 ? `

@@ -2353,19 +2353,15 @@
            VIEW 1: MAIN CUSTOMER ACCOUNT DASHBOARD (MATCHING USER REFERENCE)
            ==================================================================== -->
       <div id="prof-view-dashboard" class="prof-view-screen active">
-        <!-- 1. Top Vibrant Gradient Hero Section -->
+        <!-- 1. Top Vibrant Gradient Hero Section (Matching Left Screen of Reference Image) -->
         <div class="prof-gradient-hero">
-          <!-- Top Bar: Wholesale Badge & Actions -->
+          <!-- Top Bar: Settings Gear Icon & Close Modal -->
           <div class="prof-hero-top-bar">
-            <span class="prof-store-badge">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              <span>Exide Official Partner • Nepal</span>
-            </span>
             <div class="prof-hero-actions">
               <button type="button" class="prof-icon-btn" onclick="window.authManager.openCustomerSettingsView()" title="Settings" aria-label="Settings">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <circle cx="12" cy="12" r="3"></circle>
-                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
                 </svg>
               </button>
               <button type="button" class="prof-icon-btn close" onclick="window.authManager.closeCustomerProfileModal()" title="Close" aria-label="Close">&times;</button>
@@ -2377,27 +2373,29 @@
             <div id="prof-hero-avatar-slot" class="prof-avatar-wrap"></div>
             <div class="prof-user-meta">
               <div class="prof-name-title-wrap">
-                <h3 id="prof-hero-name" class="prof-user-name">My Account</h3>
+                <h3 id="prof-hero-name" class="prof-user-name">Ahmed Hammad</h3>
+              </div>
+              <div style="margin-top: 4px;">
                 <span id="prof-vip-badge" class="prof-vip-pill">👑 VIP Center</span>
               </div>
-              <div id="prof-hero-contact" class="prof-user-contact">Verified Customer</div>
+              <div id="prof-hero-contact" class="prof-user-contact" style="display:none;"></div>
             </div>
           </div>
 
-          <!-- 3-Pill Counter Bar (Matching Reference Image) -->
+          <!-- 3-Pill Counter Bar (Matching Reference Image: Wishlist | Coupons | Points) -->
           <div class="prof-counter-bar">
             <div class="prof-counter-pill" onclick="window.authManager.scrollToProducts('wishlist')">
-              <span class="prof-counter-num" id="prof-count-wishlist">0</span>
+              <span class="prof-counter-num" id="prof-count-wishlist">5</span>
               <span class="prof-counter-lbl">Wishlist</span>
             </div>
             <div class="prof-counter-divider"></div>
             <div class="prof-counter-pill" onclick="showToast('Active Discount Voucher: EXIDE1000 applied on wholesale batteries!', 'success')">
-              <span class="prof-counter-num" id="prof-count-coupons">1</span>
+              <span class="prof-counter-num" id="prof-count-coupons">10</span>
               <span class="prof-counter-lbl">Coupons</span>
             </div>
             <div class="prof-counter-divider"></div>
-            <div class="prof-counter-pill" onclick="showToast('Scrap Exchange Points: Trade in old batteries for up to NPR 175,000 rebate credit!', 'info')">
-              <span class="prof-counter-num" id="prof-count-points">0</span>
+            <div class="prof-counter-pill" onclick="showToast('Scrap Exchange Points: Trade in old batteries for spot cash rebate!', 'info')">
+              <span class="prof-counter-num" id="prof-count-points">55</span>
               <span class="prof-counter-lbl">Points</span>
             </div>
           </div>
@@ -2405,7 +2403,171 @@
 
         <!-- Scrollable Dashboard Content -->
         <div class="prof-scrollable-body">
-          <!-- 1. Dedicated Live Cart Section (Real-Time Cart Synchronization) -->
+          <!-- 1. "My Orders" Section (Matching Reference Image) -->
+          <div class="prof-card-section">
+            <div class="prof-section-header">
+              <h4 class="prof-section-title">My Orders</h4>
+              <button type="button" class="prof-link-all" onclick="window.authManager.openCustomerTab('orders')">View All &gt;</button>
+            </div>
+
+            <!-- 5 Order Status Filter Icons Strip (Matching Reference Image) -->
+            <div class="prof-order-status-strip">
+              <button type="button" class="prof-status-item" onclick="window.authManager.filterOrdersByStatus('pending')">
+                <div class="prof-status-icon-wrap">
+                  <span class="prof-status-badge-count" id="count-status-pending">0</span>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                  </svg>
+                </div>
+                <span class="prof-status-label">Pending</span>
+              </button>
+
+              <button type="button" class="prof-status-item" onclick="window.authManager.filterOrdersByStatus('processing')">
+                <div class="prof-status-icon-wrap">
+                  <span class="prof-status-badge-count" id="count-status-processing">0</span>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <rect x="4" y="6" width="16" height="14" rx="2"></rect>
+                    <path d="M8 3v3"></path>
+                    <path d="M16 3v3"></path>
+                    <path d="M9 13a3 3 0 0 0 6 0"></path>
+                    <path d="M15 11l2 2-2 2"></path>
+                  </svg>
+                </div>
+                <span class="prof-status-label">Processing</span>
+              </button>
+
+              <button type="button" class="prof-status-item" onclick="window.authManager.filterOrdersByStatus('shipped')">
+                <div class="prof-status-icon-wrap">
+                  <span class="prof-status-badge-count" id="count-status-shipped">0</span>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <rect x="1" y="3" width="15" height="13"></rect>
+                    <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                    <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                    <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                  </svg>
+                </div>
+                <span class="prof-status-label">Shipped</span>
+              </button>
+
+              <button type="button" class="prof-status-item" onclick="window.authManager.filterOrdersByStatus('review')">
+                <div class="prof-status-icon-wrap">
+                  <span class="prof-status-badge-count" id="count-status-review">0</span>
+                  <span class="prof-status-badge-count" id="count-status-delivered" style="display:none;">0</span>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    <line x1="8" y1="9" x2="16" y2="9"></line>
+                    <line x1="8" y1="13" x2="14" y2="13"></line>
+                  </svg>
+                </div>
+                <span class="prof-status-label">Review</span>
+              </button>
+
+              <button type="button" class="prof-status-item" onclick="window.authManager.filterOrdersByStatus('preorder')">
+                <div class="prof-status-icon-wrap">
+                  <span class="prof-status-badge-count" id="count-status-preorder">0</span>
+                  <span class="prof-status-badge-count" id="count-status-warranty" style="display:none;">0</span>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <circle cx="12" cy="14" r="8"></circle>
+                    <line x1="12" y1="10" x2="12" y2="14"></line>
+                    <line x1="12" y1="14" x2="15" y2="16"></line>
+                    <path d="M12 2v4"></path>
+                    <path d="M10 2h4"></path>
+                  </svg>
+                </div>
+                <span class="prof-status-label">Preorder</span>
+              </button>
+            </div>
+
+            <!-- Active Orders List / Tracker Preview -->
+            <div id="prof-active-orders-container" class="prof-orders-preview-list">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- 2. "Services" Quick Action 4-Grid (Matching Reference Image) -->
+          <div class="prof-card-section">
+            <h4 class="prof-section-title" style="margin-bottom:0.85rem;">Services</h4>
+            <div class="prof-services-grid-4">
+              <!-- 1. Browsing History -->
+              <button type="button" class="prof-service-item" onclick="window.authManager.scrollToProducts('history')">
+                <div class="prof-service-icon-red">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2">
+                    <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <polyline points="12 11 12 12 13 13"></polyline>
+                  </svg>
+                </div>
+                <span class="prof-service-name">Browsing History</span>
+              </button>
+
+              <!-- 2. Address -->
+              <button type="button" class="prof-service-item" onclick="window.authManager.openCustomerTab('address')">
+                <div class="prof-service-icon-red">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                </div>
+                <span class="prof-service-name">Address</span>
+              </button>
+
+              <!-- 3. Support -->
+              <button type="button" class="prof-service-item" onclick="window.authManager.openWhatsAppSupport()">
+                <div class="prof-service-icon-red">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2">
+                    <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                    <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                  </svg>
+                </div>
+                <span class="prof-service-name">Support</span>
+              </button>
+
+              <!-- 4. About Us -->
+              <button type="button" class="prof-service-item" onclick="window.authManager.openAboutUsModal()">
+                <div class="prof-service-icon-red">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                  </svg>
+                </div>
+                <span class="prof-service-name">About Us</span>
+              </button>
+            </div>
+
+            <!-- Additional E-Commerce Essentials Bar -->
+            <div class="prof-services-sub-row">
+              <button type="button" class="prof-service-sub-pill" onclick="window.authManager.openCustomerTab('payments')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                <span>Saved Payment Methods</span>
+              </button>
+              <button type="button" class="prof-service-sub-pill" onclick="window.authManager.openCustomerTab('vehicle')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                <span>Vehicle Setup</span>
+              </button>
+              <button type="button" class="prof-service-sub-pill" onclick="window.authManager.openCustomerTab('business')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                <span>Business / PAN</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 3. "Hot Sale" / Recommended Products (Matching Reference Image) -->
+          <div class="prof-card-section" style="margin-bottom:0.95rem;">
+            <div class="prof-section-header">
+              <h4 class="prof-section-title">Hot Sale</h4>
+              <span style="font-size:0.75rem; color:#64748B;">Wholesale Direct Nepal</span>
+            </div>
+            <div class="prof-hotsale-grid" id="prof-hotsale-grid-slot">
+              <!-- Rendered via auth-manager.js with 1-click Quickview and Wishlist Heart -->
+            </div>
+          </div>
+
+          <!-- 4. Dedicated Live Cart Section (Real-Time Cart Synchronization) -->
           <div class="prof-card-section prof-cart-hub-card" id="prof-cart-hub-section">
             <div class="prof-section-header">
               <div style="display:flex; align-items:center; gap:0.5rem;">
@@ -2418,121 +2580,50 @@
               <!-- Dynamically populated in real-time from window.cartManager -->
             </div>
           </div>
+        </div>
 
-          <!-- 2. "My Orders" Section (Matching Reference Image) -->
-          <div class="prof-card-section">
-            <div class="prof-section-header">
-              <h4 class="prof-section-title">My Orders</h4>
-              <button type="button" class="prof-link-all" onclick="window.authManager.openCustomerTab('orders')">View All &gt;</button>
+        <!-- 5. App-Style Bottom Dock Navigation Bar (Matching Left Screen of Reference Image) -->
+        <div class="prof-bottom-dock">
+          <button type="button" class="prof-dock-item" onclick="window.authManager.closeCustomerProfileModal(); window.scrollTo({top:0, behavior:'smooth'});">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            <span>Home</span>
+          </button>
+          <button type="button" class="prof-dock-item" onclick="window.authManager.closeCustomerProfileModal(); window.smoothNav('#deals-section');">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+              <line x1="7" y1="7" x2="7.01" y2="7"></line>
+            </svg>
+            <span>Deals</span>
+          </button>
+          <button type="button" class="prof-dock-item" onclick="window.authManager.closeCustomerProfileModal(); window.smoothNav('#products-section');">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+            <span>Categories</span>
+          </button>
+          <button type="button" class="prof-dock-item" onclick="window.authManager.closeCustomerProfileModal(); if(window.cartManager) window.cartManager.openCartDrawer();">
+            <div style="position:relative; display:inline-flex;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="9" cy="21" r="1"></circle>
+                <circle cx="20" cy="21" r="1"></circle>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+              </svg>
+              <span class="prof-dock-badge" id="prof-dock-cart-count">0</span>
             </div>
-
-            <!-- 5 Order Status Filter Icons Strip (Matching Reference Image) -->
-            <div class="prof-order-status-strip">
-              <button type="button" class="prof-status-item" onclick="window.authManager.filterOrdersByStatus('pending')">
-                <div class="prof-status-icon-wrap">
-                  <span class="prof-status-badge-count" id="count-status-pending">0</span>
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-                </div>
-                <span class="prof-status-label">Pending</span>
-              </button>
-
-              <button type="button" class="prof-status-item" onclick="window.authManager.filterOrdersByStatus('processing')">
-                <div class="prof-status-icon-wrap">
-                  <span class="prof-status-badge-count" id="count-status-processing">0</span>
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-                </div>
-                <span class="prof-status-label">Processing</span>
-              </button>
-
-              <button type="button" class="prof-status-item" onclick="window.authManager.filterOrdersByStatus('shipped')">
-                <div class="prof-status-icon-wrap">
-                  <span class="prof-status-badge-count" id="count-status-shipped">0</span>
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
-                </div>
-                <span class="prof-status-label">Shipped</span>
-              </button>
-
-              <button type="button" class="prof-status-item" onclick="window.authManager.filterOrdersByStatus('delivered')">
-                <div class="prof-status-icon-wrap">
-                  <span class="prof-status-badge-count" id="count-status-delivered">0</span>
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path><line x1="9" y1="10" x2="15" y2="10"></line></svg>
-                </div>
-                <span class="prof-status-label">Delivered</span>
-              </button>
-
-              <button type="button" class="prof-status-item" onclick="window.authManager.filterOrdersByStatus('warranty')">
-                <div class="prof-status-icon-wrap">
-                  <span class="prof-status-badge-count" id="count-status-warranty">0</span>
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                </div>
-                <span class="prof-status-label">Warranty</span>
-              </button>
-            </div>
-
-            <!-- Active Orders List / Tracker Preview -->
-            <div id="prof-active-orders-container" class="prof-orders-preview-list">
-              <!-- Dynamically populated -->
-            </div>
-          </div>
-
-          <!-- 3. "Services" Quick Action Grid (Matching Reference Image) -->
-          <div class="prof-card-section">
-            <h4 class="prof-section-title" style="margin-bottom:0.75rem;">Services</h4>
-            <div class="prof-services-grid">
-              <button type="button" class="prof-service-item" onclick="window.authManager.scrollToProducts('history')">
-                <div class="prof-service-icon">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                </div>
-                <span class="prof-service-name">Browsing History</span>
-              </button>
-
-              <button type="button" class="prof-service-item" onclick="window.authManager.openCustomerTab('address')">
-                <div class="prof-service-icon">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                </div>
-                <span class="prof-service-name">Address Book</span>
-              </button>
-
-              <button type="button" class="prof-service-item" onclick="window.authManager.openCustomerTab('payments')">
-                <div class="prof-service-icon">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-                </div>
-                <span class="prof-service-name">Payment Methods</span>
-              </button>
-
-              <button type="button" class="prof-service-item" onclick="window.authManager.openWhatsAppSupport()">
-                <div class="prof-service-icon">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                </div>
-                <span class="prof-service-name">Support</span>
-              </button>
-
-              <button type="button" class="prof-service-item" onclick="window.authManager.openCustomerTab('vehicle')">
-                <div class="prof-service-icon">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-                </div>
-                <span class="prof-service-name">Vehicle Setup</span>
-              </button>
-
-              <button type="button" class="prof-service-item" onclick="window.authManager.openCustomerTab('business')">
-                <div class="prof-service-icon">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                </div>
-                <span class="prof-service-name">Business / PAN</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- 4. "Hot Sale" / Recommended Products (Matching Reference Image) -->
-          <div class="prof-card-section" style="margin-bottom:1.5rem;">
-            <div class="prof-section-header">
-              <h4 class="prof-section-title">Hot Sale Batteries</h4>
-              <span style="font-size:0.75rem; color:#64748B;">Wholesale Direct Nepal</span>
-            </div>
-            <div class="prof-hotsale-grid" id="prof-hotsale-grid-slot">
-              <!-- Rendered via auth-manager.js with 1-click Add to Cart -->
-            </div>
-          </div>
+            <span>Cart</span>
+          </button>
+          <button type="button" class="prof-dock-item active" onclick="window.authManager.backToCustomerDashboard();">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+            <span>Account</span>
+          </button>
         </div>
       </div>
 
@@ -2548,93 +2639,77 @@
           <button type="button" class="prof-icon-btn close" onclick="window.authManager.closeCustomerProfileModal()" aria-label="Close">&times;</button>
         </div>
 
-        <div class="prof-settings-list">
-          <div class="prof-settings-row" onclick="window.authManager.openCustomerTab('personal')">
-            <div class="prof-settings-row-left">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              <span class="prof-settings-label">Account & Contact Info</span>
+        <div class="prof-settings-body" style="padding:1rem; overflow-y:auto; flex:1;">
+          <!-- Group 1 (Matching Right Screen of Reference Image) -->
+          <div class="prof-settings-group-card">
+            <div class="prof-settings-row" onclick="window.authManager.openCustomerTab('personal')">
+              <span class="prof-settings-label">Account Settings</span>
+              <span class="prof-settings-arrow">&gt;</span>
             </div>
-            <span class="prof-settings-arrow">&gt;</span>
+
+            <div class="prof-settings-row" onclick="window.authManager.openCustomerTab('address')">
+              <span class="prof-settings-label">Address Book</span>
+              <span class="prof-settings-arrow">&gt;</span>
+            </div>
+
+            <div class="prof-settings-row" onclick="window.authManager.openCustomerTab('regional')">
+              <span class="prof-settings-label">Country</span>
+              <span class="prof-settings-val">Nepal &gt;</span>
+            </div>
+
+            <div class="prof-settings-row" onclick="window.authManager.openCustomerTab('regional')">
+              <span class="prof-settings-label">Currency</span>
+              <span class="prof-settings-val">NPR &gt;</span>
+            </div>
+
+            <div class="prof-settings-row" onclick="window.authManager.openCustomerTab('regional')">
+              <span class="prof-settings-label">Language</span>
+              <span class="prof-settings-val">English &gt;</span>
+            </div>
           </div>
 
-          <div class="prof-settings-row" onclick="window.authManager.openCustomerTab('address')">
-            <div class="prof-settings-row-left">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              <span class="prof-settings-label">Address Book (Nepal Delivery)</span>
-            </div>
-            <span class="prof-settings-arrow">&gt;</span>
-          </div>
-
-          <div class="prof-settings-row" onclick="window.authManager.openCustomerTab('payments')">
-            <div class="prof-settings-row-left">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-              <span class="prof-settings-label">Saved Payment Methods</span>
-            </div>
-            <span class="prof-settings-arrow">&gt;</span>
-          </div>
-
-          <div class="prof-settings-row" onclick="window.authManager.openCustomerTab('notifications')">
-            <div class="prof-settings-row-left">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <!-- Group 2 (Matching Right Screen of Reference Image) -->
+          <div class="prof-settings-group-card">
+            <div class="prof-settings-row" onclick="window.authManager.openCustomerTab('notifications')">
               <span class="prof-settings-label">Notification Settings</span>
+              <span class="prof-settings-arrow">&gt;</span>
             </div>
-            <span class="prof-settings-arrow">&gt;</span>
-          </div>
 
-          <div class="prof-settings-row" onclick="window.authManager.openCustomerTab('vehicle')">
-            <div class="prof-settings-row-left">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+            <div class="prof-settings-row" onclick="window.authManager.openCustomerTab('policies')">
+              <span class="prof-settings-label">Privacy Policy</span>
+              <span class="prof-settings-arrow">&gt;</span>
+            </div>
+
+            <div class="prof-settings-row" onclick="window.authManager.openCustomerTab('payments')">
+              <span class="prof-settings-label">Payment Methods & Wallet</span>
+              <span class="prof-settings-arrow">&gt;</span>
+            </div>
+
+            <div class="prof-settings-row" onclick="window.authManager.openCustomerTab('vehicle')">
               <span class="prof-settings-label">Vehicle & Inverter Setup</span>
+              <span class="prof-settings-arrow">&gt;</span>
             </div>
-            <span class="prof-settings-arrow">&gt;</span>
-          </div>
 
-          <div class="prof-settings-row" onclick="window.authManager.openCustomerTab('business')">
-            <div class="prof-settings-row-left">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <div class="prof-settings-row" onclick="window.authManager.openCustomerTab('business')">
               <span class="prof-settings-label">Business PAN & Tax Invoices</span>
+              <span class="prof-settings-arrow">&gt;</span>
             </div>
-            <span class="prof-settings-arrow">&gt;</span>
           </div>
 
-          <div class="prof-settings-row" onclick="window.authManager.openCustomerTab('regional')">
-            <div class="prof-settings-row-left">
-              <span style="font-size:1.1rem;">🇳🇵</span>
-              <span class="prof-settings-label">Country & Currency</span>
-            </div>
-            <span class="prof-settings-val">Nepal (NPR रू) &gt;</span>
-          </div>
-
-          <div class="prof-settings-row" onclick="window.authManager.openCustomerTab('regional')">
-            <div class="prof-settings-row-left">
-              <span style="font-size:1.1rem;">🌐</span>
-              <span class="prof-settings-label">Language / भाषा</span>
-            </div>
-            <span class="prof-settings-val">English / नेपाली &gt;</span>
-          </div>
-
-          <div class="prof-settings-row" onclick="window.authManager.openCustomerTab('security')">
-            <div class="prof-settings-row-left">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <!-- Group 3 (Security & Credentials) -->
+          <div class="prof-settings-group-card">
+            <div class="prof-settings-row" onclick="window.authManager.openCustomerTab('security')">
               <span class="prof-settings-label">Security & Connected Logins</span>
+              <span class="prof-settings-arrow">&gt;</span>
             </div>
-            <span class="prof-settings-arrow">&gt;</span>
           </div>
 
-          <div class="prof-settings-row" onclick="window.authManager.openCustomerTab('policies')">
-            <div class="prof-settings-row-left">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-              <span class="prof-settings-label">Warranty Terms & Policies</span>
-            </div>
-            <span class="prof-settings-arrow">&gt;</span>
+          <!-- Prominent Red "Log Out" Button (Matching Reference Image) -->
+          <div style="padding:0.75rem 0 1.5rem 0;">
+            <button type="button" class="btn-prof-logout-hero" onclick="window.authManager.logoutCustomer(); window.authManager.closeCustomerProfileModal();">
+              Log Out
+            </button>
           </div>
-        </div>
-
-        <!-- Prominent Red "Log Out" Button (Matching Reference Image) -->
-        <div style="padding:1.5rem 1.25rem;">
-          <button type="button" class="btn-prof-logout-hero" onclick="window.authManager.logoutCustomer(); window.authManager.closeCustomerProfileModal();">
-            Log Out
-          </button>
         </div>
       </div>
 

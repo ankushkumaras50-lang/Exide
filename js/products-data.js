@@ -43,6 +43,11 @@ const INITIAL_PRODUCTS = [
       "Terminal Type": "L-Type Heavy Lead Terminals",
       "Recommended Inverter": "900VA - 1500VA Pure Sinewave"
     },
+    complimentaryServices: [
+      "Free Battery Terminal Greasing (Prevents sulfur buildup)",
+      "Free Inverter Charging Voltage Calibration Check",
+      "Free Official Stamped Warranty Card Verification"
+    ],
     serialNumbers: ["EX-IM-982101", "EX-IM-982102", "EX-IM-982103", "EX-IM-982104"]
   },
   {
@@ -85,6 +90,11 @@ const INITIAL_PRODUCTS = [
       "Terminal Type": "Heavy Duty Threaded Lead",
       "Recommended Inverter": "1100VA - 2500VA"
     },
+    complimentaryServices: [
+      "Free Battery Terminal Greasing (Prevents sulfur buildup)",
+      "Free Inverter Charging Voltage Calibration Check",
+      "Free Official Stamped Warranty Card Verification"
+    ],
     serialNumbers: ["EX-IM-200101", "EX-IM-200102", "EX-IM-200103"]
   },
   {

@@ -12,12 +12,15 @@
       this.productsData = [];
       this.inventoryData = [];
       this.metricsData = null;
+      this.currentEditingImages = [];
+      this.currentTheme = 'slate';
 
       this.init();
     }
 
     async init() {
       this.bindGlobalEvents();
+      this.setTheme(localStorage.getItem('bm_exide_erp_theme') || 'slate');
       const isAuthenticated = await this.verifySession();
       if (isAuthenticated) {
         this.renderAppShell();
@@ -29,6 +32,14 @@
 
     bindGlobalEvents() {
       window.addEventListener('popstate', () => this.handleRouteFromUrl());
+    }
+
+    setTheme(themeName) {
+      this.currentTheme = themeName || 'slate';
+      document.documentElement.setAttribute('data-theme', this.currentTheme);
+      localStorage.setItem('bm_exide_erp_theme', this.currentTheme);
+      const sel = document.getElementById('erp-theme-select');
+      if (sel) sel.value = this.currentTheme;
     }
 
     // ------------------------------------------------------------------------
@@ -642,93 +653,682 @@
     openProductModal(productId = null) {
       const prod = productId ? this.productsData.find(p => p.id === productId) : null;
       const modal = document.getElementById('erp-modal-overlay');
+      const modalBox = modal ? modal.querySelector('.erp-modal') : null;
       const title = document.getElementById('erp-modal-title');
       const body = document.getElementById('erp-modal-body');
       if (!modal || !title || !body) return;
 
-      title.textContent = prod ? `Edit Product SKU: ${prod.sku}` : 'Add New SKU to Inventory';
+      if (modalBox) {
+        modalBox.classList.add('erp-modal-xl');
+      }
+
+      title.innerHTML = `
+        <div style="display:flex; align-items:center; gap:0.65rem;">
+          <span style="font-size:1.35rem;">${prod ? '✏️' : '📦'}</span>
+          <div>
+            <div style="font-size:1.15rem; font-weight:800; color:var(--erp-dark);">
+              ${prod ? `Edit Product SKU: ${prod.sku}` : 'Add New Battery / Inverter SKU'}
+            </div>
+            <div style="font-size:0.75rem; color:var(--erp-muted); font-weight:500;">
+              Configure detailed specifications, multi-image gallery, rich description, and Nepal power warranty perks.
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Initialize editing images array
+      if (prod && Array.isArray(prod.images) && prod.images.length > 0) {
+        this.currentEditingImages = [...prod.images];
+      } else if (prod && prod.image) {
+        this.currentEditingImages = [prod.image];
+      } else {
+        this.currentEditingImages = [];
+      }
+
+      // Read existing specs & services
+      const pSpecs = (prod && typeof prod.specs === 'object' && prod.specs) ? prod.specs : {};
+      const pServices = (prod && Array.isArray(prod.complimentaryServices)) ? prod.complimentaryServices : [
+        'Free Battery Terminal Greasing (Prevents sulfur buildup)',
+        'Free Inverter Charging Voltage Calibration Check',
+        'Free Official Stamped Warranty Card Verification'
+      ];
+
+      const pFeatures = (prod && Array.isArray(prod.features)) ? prod.features.join('\n') : '';
+      const pVehicles = (prod && Array.isArray(prod.compatibleVehicles))
+        ? prod.compatibleVehicles.join(', ')
+        : (pSpecs['Compatible Vehicles'] || '');
 
       body.innerHTML = `
         <form id="erp-product-form" onsubmit="event.preventDefault(); window.erpApp.submitProductForm('${prod ? prod.id : ''}');">
-          <div class="erp-form-grid">
-            <div class="erp-form-group">
-              <label class="erp-form-label">SKU Code *</label>
-              <input type="text" id="erp-sku-input" class="erp-input" style="width:100%; text-transform:uppercase;" value="${prod ? prod.sku : ''}" placeholder="e.g. EX-IMTT1500" required ${prod ? 'readonly' : ''}>
-            </div>
-            <div class="erp-form-group">
-              <label class="erp-form-label">Brand *</label>
-              <select id="erp-brand-input" class="erp-select" style="width:100%;">
-                <option value="Exide" ${prod && prod.brand === 'Exide' ? 'selected' : ''}>Exide</option>
-                <option value="Smarten" ${prod && prod.brand === 'Smarten' ? 'selected' : ''}>Smarten</option>
-                <option value="Livfast" ${prod && prod.brand === 'Livfast' ? 'selected' : ''}>Livfast</option>
-                <option value="SF Sonic" ${prod && prod.brand === 'SF Sonic' ? 'selected' : ''}>SF Sonic</option>
-                <option value="Eastman" ${prod && prod.brand === 'Eastman' ? 'selected' : ''}>Eastman</option>
-                <option value="Genus" ${prod && prod.brand === 'Genus' ? 'selected' : ''}>Genus</option>
-              </select>
+          <!-- Modular Tabs Navigation Strip -->
+          <div class="erp-sku-tabs">
+            <button type="button" class="erp-sku-tab-btn active" data-tab="basic" onclick="window.erpApp.switchSkuTab('basic')">
+              📌 1. Basic Info
+            </button>
+            <button type="button" class="erp-sku-tab-btn" data-tab="pricing" onclick="window.erpApp.switchSkuTab('pricing')">
+              💰 2. Pricing & Commercials
+            </button>
+            <button type="button" class="erp-sku-tab-btn" data-tab="specs" onclick="window.erpApp.switchSkuTab('specs')">
+              ⚙️ 3. Technical Specs
+            </button>
+            <button type="button" class="erp-sku-tab-btn" data-tab="warranty" onclick="window.erpApp.switchSkuTab('warranty')">
+              🛡️ 4. Warranty & Services
+            </button>
+            <button type="button" class="erp-sku-tab-btn" data-tab="gallery" onclick="window.erpApp.switchSkuTab('gallery')">
+              🖼️ 5. Multi-Images & Media
+            </button>
+            <button type="button" class="erp-sku-tab-btn" data-tab="description" onclick="window.erpApp.switchSkuTab('description')">
+              📝 6. Rich Description
+            </button>
+          </div>
+
+          <!-- TAB 1: BASIC INFO & CLASSIFICATION -->
+          <div class="erp-sku-tab-pane active" id="erp-tab-basic">
+            <div class="erp-form-section-card">
+              <div class="erp-form-section-title">🏷️ Core Identification & Brand</div>
+              <div class="erp-form-section-sub">Required identifiers to list this battery in the wholesale master catalog.</div>
+
+              <div class="erp-form-grid" style="margin-bottom:1rem;">
+                <div class="erp-form-group">
+                  <label class="erp-form-label">SKU Code * (Unique Identification)</label>
+                  <input type="text" id="erp-sku-input" class="erp-input" style="width:100%; text-transform:uppercase; font-weight:800; color:#003399;" value="${prod ? prod.sku : ''}" placeholder="e.g. EX-IMTT1500" required ${prod ? 'readonly style="background:var(--erp-surface-alt);"' : ''}>
+                  <small style="color:var(--erp-muted); font-size:0.74rem;">Unique barcode/SKU registered in inventory.</small>
+                </div>
+                <div class="erp-form-group">
+                  <label class="erp-form-label">Manufacturer Brand *</label>
+                  <select id="erp-brand-input" class="erp-select" style="width:100%; font-weight:700;">
+                    <option value="Exide" ${prod && prod.brand === 'Exide' ? 'selected' : ''}>Exide (AET Official Partner)</option>
+                    <option value="Smarten" ${prod && prod.brand === 'Smarten' ? 'selected' : ''}>Smarten Power Systems</option>
+                    <option value="Livfast" ${prod && prod.brand === 'Livfast' ? 'selected' : ''}>Livfast Fast Charge</option>
+                    <option value="SF Sonic" ${prod && prod.brand === 'SF Sonic' ? 'selected' : ''}>SF Sonic Power</option>
+                    <option value="Eastman" ${prod && prod.brand === 'Eastman' ? 'selected' : ''}>Eastman Heavy Duty</option>
+                    <option value="Genus" ${prod && prod.brand === 'Genus' ? 'selected' : ''}>Genus Inverter</option>
+                    <option value="Luminous" ${prod && prod.brand === 'Luminous' ? 'selected' : ''}>Luminous Power Technologies</option>
+                    <option value="Okaya" ${prod && prod.brand === 'Okaya' ? 'selected' : ''}>Okaya Power</option>
+                    <option value="Amaron" ${prod && prod.brand === 'Amaron' ? 'selected' : ''}>Amaron Hi-Life</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="erp-form-group" style="margin-bottom:1rem;">
+                <label class="erp-form-label">Full Product Name / Title *</label>
+                <input type="text" id="erp-name-input" class="erp-input" style="width:100%; font-weight:700;" value="${prod ? prod.name : ''}" placeholder="e.g. Exide 150 Ah Invamaster Tall Tubular Inverter Battery - IMTT1500" required>
+              </div>
+
+              <div class="erp-form-grid">
+                <div class="erp-form-group">
+                  <label class="erp-form-label">Primary Product Category</label>
+                  <select id="erp-category-input" class="erp-select" style="width:100%;">
+                    <option value="inverter-battery" ${prod && prod.categories && prod.categories.includes('inverter-battery') ? 'selected' : ''}>Inverter Battery (Home/Office)</option>
+                    <option value="automotive-car" ${prod && prod.categories && prod.categories.includes('automotive-car') ? 'selected' : ''}>Automotive Car & SUV Battery</option>
+                    <option value="motorcycle-bike" ${prod && prod.categories && prod.categories.includes('motorcycle-bike') ? 'selected' : ''}>Motorcycle & Scooter Battery</option>
+                    <option value="solar-tubular" ${prod && prod.categories && prod.categories.includes('solar-tubular') ? 'selected' : ''}>Solar Deep Cycle Tubular</option>
+                    <option value="commercial-heavy" ${prod && prod.categories && prod.categories.includes('commercial-heavy') ? 'selected' : ''}>Commercial Heavy Duty (Truck/Bus)</option>
+                    <option value="inverter-ups" ${prod && prod.categories && prod.categories.includes('inverter-ups') ? 'selected' : ''}>Home Inverter & Pure Sinewave UPS</option>
+                    <option value="solar-panel" ${prod && prod.categories && prod.categories.includes('solar-panel') ? 'selected' : ''}>Solar Photovoltaic Panel</option>
+                    <option value="ev-rickshaw" ${prod && prod.categories && prod.categories.includes('ev-rickshaw') ? 'selected' : ''}>E-Rickshaw & EV Traction Battery</option>
+                  </select>
+                </div>
+                <div class="erp-form-group">
+                  <label class="erp-form-label">Application Sub-Type</label>
+                  <input type="text" id="erp-app-type-input" class="erp-input" style="width:100%;" value="${prod ? (prod.specs?.Application || '') : ''}" placeholder="e.g. Residential UPS / Heavy Commercial">
+                </div>
+              </div>
+
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-top:0.75rem; padding:0.75rem 1rem; background:var(--erp-surface-alt); border-radius:8px; border:1px solid var(--erp-border);">
+                <div>
+                  <strong style="font-size:0.86rem; color:var(--erp-dark); display:block;">Storefront Visibility & Highlights</strong>
+                  <span style="font-size:0.75rem; color:var(--erp-muted);">Control whether this SKU is publicly orderable by consumers.</span>
+                </div>
+                <div style="display:flex; gap:1.25rem; align-items:center;">
+                  <label style="display:flex; align-items:center; gap:0.45rem; cursor:pointer; font-size:0.82rem; font-weight:700;">
+                    <input type="checkbox" id="erp-featured-input" ${prod && prod.featured ? 'checked' : ''} style="width:16px; height:16px; accent-color:#ED1C24;">
+                    <span>★ Featured in Hot Sales</span>
+                  </label>
+                  <select id="erp-active-input" class="erp-select" style="height:32px; font-size:0.78rem; font-weight:700;">
+                    <option value="active" ${!prod || prod.isActive !== false ? 'selected' : ''}>🟢 Active (Public)</option>
+                    <option value="inactive" ${prod && prod.isActive === false ? 'selected' : ''}>🔴 Inactive (Draft)</option>
+                  </select>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="erp-form-group">
-            <label class="erp-form-label">Product Name / Title *</label>
-            <input type="text" id="erp-name-input" class="erp-input" style="width:100%;" value="${prod ? prod.name : ''}" placeholder="e.g. Exide 150 Ah Invamaster Tall Tubular Battery" required>
+          <!-- TAB 2: PRICING, TAX & COMMERCIALS -->
+          <div class="erp-sku-tab-pane" id="erp-tab-pricing">
+            <div class="erp-form-section-card">
+              <div class="erp-form-section-title">💰 Price Setup, IRD VAT & Trade-In Rebates</div>
+              <div class="erp-form-section-sub">All currency calculations are grounded in Nepalese Rupees (NPR / रू).</div>
+
+              <div class="erp-form-grid" style="margin-bottom:1rem;">
+                <div class="erp-form-group">
+                  <label class="erp-form-label">Retail Selling Price (NPR) *</label>
+                  <div style="display:flex; align-items:center; gap:0.5rem;">
+                    <span style="font-weight:800; font-size:1.05rem; color:var(--erp-primary);">NPR</span>
+                    <input type="number" id="erp-price-input" class="erp-input" style="width:100%; font-size:1.1rem; font-weight:800; color:var(--erp-primary);" value="${prod ? prod.price : ''}" placeholder="34000" min="0" required>
+                  </div>
+                  <small style="color:var(--erp-muted); font-size:0.74rem;">The actual customer invoice price on storefront.</small>
+                </div>
+                <div class="erp-form-group">
+                  <label class="erp-form-label">MRP (Maximum Retail Price in NPR)</label>
+                  <div style="display:flex; align-items:center; gap:0.5rem;">
+                    <span style="font-weight:700; color:var(--erp-muted);">NPR</span>
+                    <input type="number" id="erp-mrp-input" class="erp-input" style="width:100%;" value="${prod ? (prod.originalPrice || prod.mrp || '') : ''}" placeholder="36000" min="0">
+                  </div>
+                  <small style="color:var(--erp-muted); font-size:0.74rem;">Displays strike-through discount comparison on card.</small>
+                </div>
+              </div>
+
+              <div class="erp-form-grid" style="margin-bottom:1rem;">
+                <div class="erp-form-group">
+                  <label class="erp-form-label">Landed Cost Price (NPR)</label>
+                  <div style="display:flex; align-items:center; gap:0.5rem;">
+                    <span style="font-weight:700; color:var(--erp-muted);">NPR</span>
+                    <input type="number" id="erp-cost-input" class="erp-input" style="width:100%;" value="${prod ? (prod.costPrice || '') : ''}" placeholder="27500" min="0">
+                  </div>
+                  <small style="color:var(--erp-muted); font-size:0.74rem;">Confidential inward purchase price for gross profit calculations.</small>
+                </div>
+                <div class="erp-form-group">
+                  <label class="erp-form-label">Wholesale / Dealer Price (NPR)</label>
+                  <div style="display:flex; align-items:center; gap:0.5rem;">
+                    <span style="font-weight:700; color:var(--erp-muted);">NPR</span>
+                    <input type="number" id="erp-wholesale-input" class="erp-input" style="width:100%;" value="${prod ? (prod.wholesalePrice || '') : ''}" placeholder="30500" min="0">
+                  </div>
+                  <small style="color:var(--erp-muted); font-size:0.74rem;">Applied automatically for VIP business accounts.</small>
+                </div>
+              </div>
+
+              <div class="erp-form-grid" style="margin-bottom:1rem;">
+                <div class="erp-form-group">
+                  <label class="erp-form-label">Nepal IRD VAT Rate (%)</label>
+                  <select id="erp-vat-input" class="erp-select" style="width:100%;">
+                    <option value="13" ${!prod || prod.vatRate === 13 || prod.vatRate === undefined ? 'selected' : ''}>13.00% Standard Nepal Statutory VAT</option>
+                    <option value="0" ${prod && prod.vatRate === 0 ? 'selected' : ''}>0.00% Tax Exempt (Solar Special Classification)</option>
+                  </select>
+                </div>
+                <div class="erp-form-group">
+                  <label class="erp-form-label">Scrap Trade-In Battery Equivalent (Ah)</label>
+                  <div style="display:flex; align-items:center; gap:0.5rem;">
+                    <input type="number" id="erp-scrap-ah-input" class="erp-input" style="width:120px; font-weight:700;" value="${prod ? (prod.scrapAh || parseFloat(prod.capacity) || 150) : 150}" min="0">
+                    <span style="font-size:0.85rem; font-weight:700; color:var(--erp-dark);">Ah capacity</span>
+                  </div>
+                  <small style="color:var(--erp-muted); font-size:0.74rem;">Default scrap trade-in size suggested in customer cart.</small>
+                </div>
+              </div>
+
+              <div class="erp-form-grid">
+                <div class="erp-form-group">
+                  <label class="erp-form-label">${prod ? 'Physical Stock Units' : 'Opening Stock Units *'}</label>
+                  <input type="number" id="erp-stock-input" class="erp-input" style="width:100%; font-weight:800;" value="${prod ? (prod.stock || 0) : 10}" ${prod ? 'readonly style="background:var(--erp-surface-alt);"' : ''}>
+                  <small style="color:var(--erp-muted); font-size:0.74rem;">${prod ? 'Use "Adjust Stock" on dashboard to change physical ledger balance.' : 'Initial units recorded in opening stock balance.'}</small>
+                </div>
+                <div class="erp-form-group">
+                  <label class="erp-form-label">Low Stock Warning Threshold</label>
+                  <input type="number" id="erp-minstock-input" class="erp-input" style="width:100%; font-weight:700; color:#D97706;" value="${prod ? (prod.minStock || 5) : 5}" min="1">
+                  <small style="color:var(--erp-muted); font-size:0.74rem;">Triggers low stock warnings when inventory drops below this.</small>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div class="erp-form-grid">
-            <div class="erp-form-group">
-              <label class="erp-form-label">Capacity Specification</label>
-              <input type="text" id="erp-capacity-input" class="erp-input" style="width:100%;" value="${prod ? prod.capacity : ''}" placeholder="e.g. 150Ah - 12V">
-            </div>
-            <div class="erp-form-group">
-              <label class="erp-form-label">Warranty Details</label>
-              <input type="text" id="erp-warranty-input" class="erp-input" style="width:100%;" value="${prod ? prod.warranty : '36 Months Warranty'}">
+          <!-- TAB 3: TECHNICAL SPECIFICATIONS & FITMENT -->
+          <div class="erp-sku-tab-pane" id="erp-tab-specs">
+            <div class="erp-form-section-card">
+              <div class="erp-form-section-title">⚙️ Battery Engineering Ratings & Dimensions</div>
+              <div class="erp-form-section-sub">Any fields left empty will be automatically omitted from the customer product page.</div>
+
+              <div class="erp-form-grid" style="margin-bottom:1rem;">
+                <div class="erp-form-group">
+                  <label class="erp-form-label">Battery Capacity</label>
+                  <input type="text" id="erp-capacity-input" class="erp-input" style="width:100%;" value="${prod ? (prod.capacity || '') : ''}" placeholder="e.g. 150Ah @ C20 or 44Ah">
+                </div>
+                <div class="erp-form-group">
+                  <label class="erp-form-label">Nominal Operating Voltage</label>
+                  <input type="text" id="erp-voltage-input" class="erp-input" style="width:100%;" value="${prod ? (pSpecs['Nominal Voltage'] || '12 V') : '12 V'}" placeholder="e.g. 12 V / 24 V">
+                </div>
+              </div>
+
+              <div class="erp-form-grid" style="margin-bottom:1rem;">
+                <div class="erp-form-group">
+                  <label class="erp-form-label">Cold Cranking Amps (CCA)</label>
+                  <input type="text" id="erp-cca-input" class="erp-input" style="width:100%;" value="${prod ? (pSpecs['Cold Cranking Amps (CCA)'] || '') : ''}" placeholder="e.g. 550 CCA (for Car / Starter batteries)">
+                </div>
+                <div class="erp-form-group">
+                  <label class="erp-form-label">Internal Plate Technology</label>
+                  <select id="erp-tech-input" class="erp-select" style="width:100%;">
+                    <option value="">-- Select or Optional --</option>
+                    <option value="Tall Tubular Lead-Acid" ${pSpecs['Technology'] === 'Tall Tubular Lead-Acid' || (prod && prod.categories && prod.categories.includes('inverter-battery')) ? 'selected' : ''}>Tall Tubular Lead-Acid (Deep Cycle)</option>
+                    <option value="Short Tubular Deep Cycle" ${pSpecs['Technology'] === 'Short Tubular Deep Cycle' ? 'selected' : ''}>Short Tubular Deep Cycle</option>
+                    <option value="SMF / VRLA Maintenance-Free" ${pSpecs['Technology'] === 'SMF / VRLA Maintenance-Free' ? 'selected' : ''}>SMF / VRLA Maintenance-Free</option>
+                    <option value="AGM Premium Start-Stop" ${pSpecs['Technology'] === 'AGM Premium Start-Stop' ? 'selected' : ''}>AGM Premium Start-Stop</option>
+                    <option value="Gel Electrolyte Solar Deep Cycle" ${pSpecs['Technology'] === 'Gel Electrolyte Solar Deep Cycle' ? 'selected' : ''}>Gel Electrolyte Solar Deep Cycle</option>
+                    <option value="Lithium Iron Phosphate (LiFePO4)" ${pSpecs['Technology'] === 'Lithium Iron Phosphate (LiFePO4)' ? 'selected' : ''}>Lithium Iron Phosphate (LiFePO4)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="erp-form-grid" style="margin-bottom:1rem;">
+                <div class="erp-form-group">
+                  <label class="erp-form-label">Terminal Layout & Type</label>
+                  <input type="text" id="erp-terminal-input" class="erp-input" style="width:100%;" value="${prod ? (pSpecs['Terminal Type'] || '') : ''}" placeholder="e.g. L-Type Heavy Lead / Standard Post Right +">
+                </div>
+                <div class="erp-form-group">
+                  <label class="erp-form-label">Dimensions (L × W × H in mm)</label>
+                  <input type="text" id="erp-dimensions-input" class="erp-input" style="width:100%;" value="${prod ? (pSpecs['Dimensions (L x W x H)'] || '') : ''}" placeholder="e.g. 535 x 215 x 480 mm">
+                </div>
+              </div>
+
+              <div class="erp-form-grid">
+                <div class="erp-form-group">
+                  <label class="erp-form-label">Filled Gross Weight (kg)</label>
+                  <input type="text" id="erp-weight-input" class="erp-input" style="width:100%;" value="${prod ? (pSpecs['Gross Weight'] || '') : ''}" placeholder="e.g. 58.1 kg">
+                </div>
+                <div class="erp-form-group">
+                  <label class="erp-form-label">Compatible Vehicles / Models (Automotive)</label>
+                  <input type="text" id="erp-vehicles-input" class="erp-input" style="width:100%;" value="${pVehicles}" placeholder="e.g. Toyota Hilux, Mahindra Scorpio, Hyundai Creta">
+                  <small style="color:var(--erp-muted); font-size:0.74rem;">Comma-separated vehicle model names.</small>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="erp-form-grid">
-            <div class="erp-form-group">
-              <label class="erp-form-label">Retail Selling Price (NPR) *</label>
-              <input type="number" id="erp-price-input" class="erp-input" style="width:100%;" value="${prod ? prod.price : ''}" placeholder="34000" required>
-            </div>
-            <div class="erp-form-group">
-              <label class="erp-form-label">Landed Cost Price (NPR)</label>
-              <input type="number" id="erp-cost-input" class="erp-input" style="width:100%;" value="${prod ? (prod.costPrice || '') : ''}" placeholder="27500">
+          <!-- TAB 4: WARRANTY & COMPLIMENTARY SERVICES -->
+          <div class="erp-sku-tab-pane" id="erp-tab-warranty">
+            <div class="erp-form-section-card">
+              <div class="erp-form-section-title">🛡️ Nepal Warranty Coverage Breakdown</div>
+              <div class="erp-form-section-sub">Official authorized partner physical warranty card details.</div>
+
+              <div class="erp-form-grid" style="margin-bottom:1rem;">
+                <div class="erp-form-group">
+                  <label class="erp-form-label">Total Official Warranty Duration</label>
+                  <input type="text" id="erp-warranty-input" class="erp-input" style="width:100%; font-weight:700;" value="${prod ? prod.warranty : '36 Months (24M Replacement + 12M Pro-Rata)'}" placeholder="e.g. 36 Months Warranty">
+                </div>
+                <div class="erp-form-group">
+                  <label class="erp-form-label">Free Replacement Guarantee Period</label>
+                  <input type="text" id="erp-warranty-free-input" class="erp-input" style="width:100%;" value="${prod ? (prod.warrantyFree || '24 Months Free Replacement') : '24 Months Free Replacement'}" placeholder="e.g. 24 Months Free Replacement">
+                </div>
+              </div>
+
+              <div class="erp-form-group" style="margin-bottom:1.5rem;">
+                <label class="erp-form-label">Pro-Rata Warranty Period</label>
+                <input type="text" id="erp-warranty-prorata-input" class="erp-input" style="width:100%;" value="${prod ? (prod.warrantyProRata || '12 Months Pro-Rata') : '12 Months Pro-Rata'}" placeholder="e.g. 12 Months Pro-Rata">
+              </div>
+
+              <!-- Complimentary Nepal Power Services Checkboxes -->
+              <div style="border-top:1.5px solid var(--erp-border); padding-top:1.25rem;">
+                <div class="erp-form-section-title" style="color:#059669;">
+                  ⚡ Complimentary Nepal Power Services Included
+                </div>
+                <div class="erp-form-section-sub">
+                  Check all complimentary benefits provided with this SKU. Checked services will display prominently in a verified service box on the product detail page.
+                </div>
+
+                <div class="erp-services-grid">
+                  <label class="erp-service-checkbox-card ${pServices.some(s => s.includes('Terminal Greasing')) ? 'checked' : ''}">
+                    <input type="checkbox" id="svc-terminal-greasing" class="erp-service-check" ${pServices.some(s => s.includes('Terminal Greasing')) ? 'checked' : ''} onchange="this.closest('.erp-service-checkbox-card').classList.toggle('checked', this.checked)">
+                    <div class="erp-service-meta">
+                      <strong>Free Battery Terminal Greasing (Prevents sulfur buildup)</strong>
+                      <span>Specially formulated anti-corrosion petroleum grease applied to lead terminals during doorstep installation.</span>
+                    </div>
+                  </label>
+
+                  <label class="erp-service-checkbox-card ${pServices.some(s => s.includes('Voltage Calibration')) ? 'checked' : ''}">
+                    <input type="checkbox" id="svc-voltage-calibration" class="erp-service-check" ${pServices.some(s => s.includes('Voltage Calibration')) ? 'checked' : ''} onchange="this.closest('.erp-service-checkbox-card').classList.toggle('checked', this.checked)">
+                    <div class="erp-service-meta">
+                      <strong>Free Inverter Charging Voltage Calibration Check</strong>
+                      <span>Technician inspects float voltage (13.8V) and boost charging cutoff (14.4V) to maximize tubular battery lifespan.</span>
+                    </div>
+                  </label>
+
+                  <label class="erp-service-checkbox-card ${pServices.some(s => s.includes('Warranty Card')) ? 'checked' : ''}">
+                    <input type="checkbox" id="svc-warranty-card" class="erp-service-check" ${pServices.some(s => s.includes('Warranty Card')) ? 'checked' : ''} onchange="this.closest('.erp-service-checkbox-card').classList.toggle('checked', this.checked)">
+                    <div class="erp-service-meta">
+                      <strong>Free Official Stamped Warranty Card Verification</strong>
+                      <span>Official AET Partner Nepal physical ink stamp and barcode serial logging in central IRD warranty database.</span>
+                    </div>
+                  </label>
+
+                  <label class="erp-service-checkbox-card ${pServices.some(s => s.includes('Cold Cranking')) ? 'checked' : ''}">
+                    <input type="checkbox" id="svc-doorstep-testing" class="erp-service-check" ${pServices.some(s => s.includes('Cold Cranking')) ? 'checked' : ''} onchange="this.closest('.erp-service-checkbox-card').classList.toggle('checked', this.checked)">
+                    <div class="erp-service-meta">
+                      <strong>Free Doorstep Cold Cranking Amps (CCA) Inspection</strong>
+                      <span>Digital battery conductance meter diagnostic test verifying factory full charge before customer handover.</span>
+                    </div>
+                  </label>
+
+                  <label class="erp-service-checkbox-card ${pServices.some(s => s.includes('Scrap Battery')) ? 'checked' : ''}">
+                    <input type="checkbox" id="svc-scrap-collection" class="erp-service-check" ${pServices.some(s => s.includes('Scrap Battery')) ? 'checked' : ''} onchange="this.closest('.erp-service-checkbox-card').classList.toggle('checked', this.checked)">
+                    <div class="erp-service-meta">
+                      <strong>Free Scrap Battery Doorstep Collection with Spot Cash Rebate</strong>
+                      <span>Old depleted battery safely loaded onto technician dispatch van with instant cash rebate or invoice credit.</span>
+                    </div>
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="erp-form-grid">
-            <div class="erp-form-group">
-              <label class="erp-form-label">${prod ? 'Current Stock' : 'Opening Stock Quantity'}</label>
-              <input type="number" id="erp-stock-input" class="erp-input" style="width:100%;" value="${prod ? prod.stock : '10'}" ${prod ? 'readonly style="background:#F1F5F9;"' : ''}>
-            </div>
-            <div class="erp-form-group">
-              <label class="erp-form-label">Min Stock Threshold Alert</label>
-              <input type="number" id="erp-minstock-input" class="erp-input" style="width:100%;" value="${prod ? (prod.minStock || 5) : '5'}">
+          <!-- TAB 5: MULTI-IMAGES & MEDIA GALLERY -->
+          <div class="erp-sku-tab-pane" id="erp-tab-gallery">
+            <div class="erp-form-section-card">
+              <div class="erp-form-section-title">🖼️ Product Photo Gallery & Direct Image Links</div>
+              <div class="erp-form-section-sub">
+                Upload multiple high-resolution images or add external image URLs. The primary cover image will display on catalog cards; all images will appear in customer interactive zoom gallery.
+              </div>
+
+              <!-- Upload Dropzone -->
+              <div class="erp-img-dropzone" onclick="document.getElementById('erp-sku-file-input').click()" ondragover="event.preventDefault(); this.classList.add('dragover');" ondragleave="this.classList.remove('dragover');" ondrop="event.preventDefault(); this.classList.remove('dragover'); window.erpApp.handleSkuImageUpload(event.dataTransfer.files);">
+                <input type="file" id="erp-sku-file-input" multiple accept="image/*" style="display:none;" onchange="window.erpApp.handleSkuImageUpload(this.files)">
+                <div style="font-size:2rem; margin-bottom:0.35rem;">📸</div>
+                <strong style="color:var(--erp-dark); font-size:0.92rem; display:block; margin-bottom:0.25rem;">Click to Upload Multiple Photos or Drag & Drop Here</strong>
+                <span style="font-size:0.76rem; color:var(--erp-muted);">Supports PNG, JPG, WEBP, SVG • Multi-select enabled</span>
+              </div>
+
+              <!-- Add Image by Direct Link -->
+              <div style="margin-bottom:1.25rem;">
+                <label class="erp-form-label">Or Add Image by Direct Web Link / URL</label>
+                <div class="erp-img-url-bar">
+                  <input type="url" id="erp-sku-img-url" class="erp-input" style="flex:1;" placeholder="https://example.com/images/exide-battery-front.jpg">
+                  <button type="button" class="erp-btn erp-btn-secondary" onclick="window.erpApp.addSkuImageByUrl()">+ Add Link</button>
+                </div>
+              </div>
+
+              <!-- Attached Images Grid -->
+              <div style="border-top:1px solid var(--erp-border); padding-top:1rem;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+                  <span style="font-size:0.85rem; font-weight:800; color:var(--erp-dark);">Attached Photos Gallery</span>
+                  <span style="font-size:0.75rem; color:var(--erp-muted);">Click "Set as Primary" to change cover image</span>
+                </div>
+                <div class="erp-gallery-grid" id="erp-sku-gallery-grid">
+                  <!-- Dynamically populated via renderSkuGallery() -->
+                </div>
+              </div>
             </div>
           </div>
 
-          <div style="display:flex; justify-content:flex-end; gap:0.75rem; margin-top:1.5rem;">
-            <button type="button" class="erp-btn erp-btn-secondary" onclick="document.getElementById('erp-modal-overlay').classList.remove('open')">Cancel</button>
-            <button type="submit" class="erp-btn erp-btn-primary">Save Product Entry</button>
+          <!-- TAB 6: RICH DESCRIPTION & BULLET ADVANTAGES -->
+          <div class="erp-sku-tab-pane" id="erp-tab-description">
+            <div class="erp-form-section-card">
+              <div class="erp-form-section-title">📝 Product Overview & Rich Description Formatting</div>
+              <div class="erp-form-section-sub">
+                Edit product marketing copy, technical bullet points, and highlighted features with bold, italic, custom font sizes, lists, and media embedding.
+              </div>
+
+              <div class="erp-form-group" style="margin-bottom:1.25rem;">
+                <label class="erp-form-label">Short Summary (Headline Teaser - Optional)</label>
+                <input type="text" id="erp-shortdesc-input" class="erp-input" style="width:100%;" value="${prod ? (prod.shortDesc || '') : ''}" placeholder="e.g. Heavy-duty tubular plate battery engineered for deep cyclic discharges and frequent power cuts in Nepal.">
+                <small style="color:var(--erp-muted); font-size:0.74rem;">If left empty, will be omitted cleanly.</small>
+              </div>
+
+              <!-- Rich Text Formatting Toolbar & Editor -->
+              <div class="erp-form-group" style="margin-bottom:1.25rem;">
+                <label class="erp-form-label">Detailed Product Description & In-Depth Overview</label>
+                <div class="erp-editor-toolbar">
+                  <button type="button" class="erp-editor-btn" onclick="window.erpApp.formatEditor('bold')" title="Bold"><b>B</b></button>
+                  <button type="button" class="erp-editor-btn" onclick="window.erpApp.formatEditor('italic')" title="Italic"><i>I</i></button>
+                  <button type="button" class="erp-editor-btn" onclick="window.erpApp.formatEditor('underline')" title="Underline"><u>U</u></button>
+                  <button type="button" class="erp-editor-btn" onclick="window.erpApp.formatEditor('strikeThrough')" title="Strikethrough"><s>S</s></button>
+
+                  <span style="width:1px; height:18px; background:var(--erp-border); margin:0 4px;"></span>
+
+                  <select class="erp-editor-select" onchange="window.erpApp.formatEditor('fontSize', this.value); this.selectedIndex=0;" title="Font Size">
+                    <option value="" disabled selected>Size</option>
+                    <option value="2">Small (12px)</option>
+                    <option value="3">Normal (14px)</option>
+                    <option value="4">Subheading (18px)</option>
+                    <option value="5">Heading (22px)</option>
+                  </select>
+
+                  <select class="erp-editor-select" onchange="window.erpApp.formatEditor('formatBlock', this.value); this.selectedIndex=0;" title="Block Style">
+                    <option value="" disabled selected>Style</option>
+                    <option value="<p>">Paragraph</option>
+                    <option value="<h3>">Heading 3</option>
+                    <option value="<h4>">Heading 4</option>
+                    <option value="<blockquote>">Quote</option>
+                  </select>
+
+                  <span style="width:1px; height:18px; background:var(--erp-border); margin:0 4px;"></span>
+
+                  <button type="button" class="erp-editor-btn" onclick="window.erpApp.formatEditor('insertUnorderedList')" title="Bullet List">•≡</button>
+                  <button type="button" class="erp-editor-btn" onclick="window.erpApp.formatEditor('insertOrderedList')" title="Numbered List">1≡</button>
+
+                  <span style="width:1px; height:18px; background:var(--erp-border); margin:0 4px;"></span>
+
+                  <button type="button" class="erp-editor-btn" onclick="window.erpApp.insertEditorLink()" title="Insert Link">🔗</button>
+                  <button type="button" class="erp-editor-btn" onclick="window.erpApp.insertEditorMedia()" title="Embed Image / Media">🖼️</button>
+                  <button type="button" class="erp-editor-btn" onclick="window.erpApp.formatEditor('removeFormat')" title="Clear Formatting">🧹</button>
+                </div>
+
+                <div id="erp-sku-desc-editor" class="erp-sku-rich-editor" contenteditable="true" placeholder="Enter comprehensive product overview, battery chemistry, cycles, discharge rates, and warranty conditions...">${prod ? (prod.description || '') : ''}</div>
+              </div>
+
+              <!-- Key Engineering Features / Bullet Points -->
+              <div class="erp-form-group">
+                <label class="erp-form-label">Key Engineering Advantages (1 bullet feature per line)</label>
+                <textarea id="erp-features-input" class="erp-input" style="width:100%; height:90px; padding:8px 10px; font-family:monospace; font-size:0.82rem; line-height:1.5;" placeholder="Higher backups with minimal plate degradation&#10;Superior recovery from deep discharge cycles&#10;Special tubular technology requires lower topping-up frequency">${pFeatures}</textarea>
+                <small style="color:var(--erp-muted); font-size:0.74rem;">Each line becomes a bullet point under "Key Engineering Advantages" on the product detail modal.</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Action Buttons Strip -->
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:1.5rem; padding-top:1rem; border-top:1.5px solid var(--erp-border); flex-wrap:wrap; gap:1rem;">
+            <div style="font-size:0.76rem; color:var(--erp-muted);">
+              Fields with <strong>*</strong> are required. Empty optional specs are omitted automatically from public view.
+            </div>
+            <div style="display:flex; gap:0.75rem;">
+              <button type="button" class="erp-btn erp-btn-secondary" onclick="document.getElementById('erp-modal-overlay').classList.remove('open')">Cancel</button>
+              <button type="submit" id="erp-sku-submit-btn" class="erp-btn erp-btn-primary" style="padding:0 1.75rem;">
+                💾 ${prod ? 'Update Product SKU' : 'Create & Save Product SKU'}
+              </button>
+            </div>
           </div>
         </form>
       `;
 
+      // Render the gallery grid with initial images
+      this.renderSkuGallery();
+
       modal.classList.add('open');
+    }
+
+    switchSkuTab(tabId) {
+      document.querySelectorAll('.erp-sku-tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-tab') === tabId);
+      });
+      document.querySelectorAll('.erp-sku-tab-pane').forEach(pane => {
+        pane.classList.toggle('active', pane.id === `erp-tab-${tabId}`);
+      });
+    }
+
+    formatEditor(command, value = null) {
+      const editor = document.getElementById('erp-sku-desc-editor');
+      if (editor) editor.focus();
+      document.execCommand(command, false, value);
+    }
+
+    insertEditorLink() {
+      const url = prompt('Enter link URL (e.g. https://exidebattery.com.np):');
+      if (url) {
+        this.formatEditor('createLink', url);
+      }
+    }
+
+    insertEditorMedia() {
+      const choice = prompt('Enter direct image URL to embed, or type "upload" to choose a file:', 'https://');
+      if (!choice) return;
+      if (choice.toLowerCase() === 'upload') {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+        input.onchange = (e) => {
+          const file = e.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = (re) => {
+              this.formatEditor('insertImage', re.target.result);
+            };
+            reader.readAsDataURL(file);
+          }
+        };
+        input.click();
+      } else if (choice.trim() !== '') {
+        this.formatEditor('insertImage', choice.trim());
+      }
+    }
+
+    handleSkuImageUpload(files) {
+      if (!files || !files.length) return;
+      Array.from(files).forEach(file => {
+        if (!file.type.startsWith('image/')) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.currentEditingImages.push(e.target.result);
+          this.renderSkuGallery();
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    addSkuImageByUrl() {
+      const input = document.getElementById('erp-sku-img-url');
+      const url = input?.value?.trim();
+      if (!url) return;
+      this.currentEditingImages.push(url);
+      if (input) input.value = '';
+      this.renderSkuGallery();
+    }
+
+    setPrimarySkuImage(index) {
+      if (index <= 0 || index >= this.currentEditingImages.length) return;
+      const item = this.currentEditingImages.splice(index, 1)[0];
+      this.currentEditingImages.unshift(item);
+      this.renderSkuGallery();
+    }
+
+    removeSkuImage(index) {
+      this.currentEditingImages.splice(index, 1);
+      this.renderSkuGallery();
+    }
+
+    renderSkuGallery() {
+      const container = document.getElementById('erp-sku-gallery-grid');
+      if (!container) return;
+      if (!this.currentEditingImages || this.currentEditingImages.length === 0) {
+        container.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align:center; padding:1.5rem; color:var(--erp-muted); font-size:0.82rem; border:1px dashed var(--erp-border); border-radius:8px;">
+            No photos added yet. Upload files or paste direct image URLs above.
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = this.currentEditingImages.map((imgUrl, idx) => `
+        <div class="erp-gallery-card ${idx === 0 ? 'is-primary' : ''}">
+          <img src="${imgUrl}" alt="Product Photo ${idx + 1}" class="erp-gallery-thumb" onerror="this.src='/assets/logo.png'">
+          ${idx === 0 ? '<span class="erp-primary-badge">★ Primary</span>' : ''}
+          <div class="erp-gallery-actions">
+            <button type="button" class="erp-gallery-btn" onclick="window.erpApp.removeSkuImage(${idx})" title="Remove photo">&times;</button>
+          </div>
+          ${idx > 0 ? `<button type="button" class="erp-make-primary-btn" onclick="window.erpApp.setPrimarySkuImage(${idx})">Set as Primary</button>` : ''}
+        </div>
+      `).join('');
     }
 
     async submitProductForm(productId) {
       const sku = document.getElementById('erp-sku-input')?.value.trim();
       const name = document.getElementById('erp-name-input')?.value.trim();
       const brand = document.getElementById('erp-brand-input')?.value;
-      const capacity = document.getElementById('erp-capacity-input')?.value.trim();
-      const warranty = document.getElementById('erp-warranty-input')?.value.trim();
       const price = document.getElementById('erp-price-input')?.value;
+
+      if (!sku || !name || !brand || !price) {
+        alert('Please fill in required fields: SKU Code, Product Title, Brand, and Retail Price.');
+        this.switchSkuTab('basic');
+        return;
+      }
+
+      // Collect all modular options
+      const category = document.getElementById('erp-category-input')?.value || 'inverter-battery';
+      const appType = document.getElementById('erp-app-type-input')?.value.trim() || '';
+      const isActive = document.getElementById('erp-active-input')?.value !== 'inactive';
+      const isFeatured = document.getElementById('erp-featured-input')?.checked ?? false;
+
+      const mrp = document.getElementById('erp-mrp-input')?.value;
       const costPrice = document.getElementById('erp-cost-input')?.value;
+      const wholesalePrice = document.getElementById('erp-wholesale-input')?.value;
+      const vatRate = document.getElementById('erp-vat-input')?.value;
+      const scrapRebateEligible = true;
+      const scrapAh = document.getElementById('erp-scrap-ah-input')?.value;
+
+      const capacity = document.getElementById('erp-capacity-input')?.value.trim() || '';
+      const voltage = document.getElementById('erp-voltage-input')?.value.trim() || '';
+      const cca = document.getElementById('erp-cca-input')?.value.trim() || '';
+      const technology = document.getElementById('erp-tech-input')?.value.trim() || '';
+      const terminalLayout = document.getElementById('erp-terminal-input')?.value.trim() || '';
+      const dimensions = document.getElementById('erp-dimensions-input')?.value.trim() || '';
+      const weight = document.getElementById('erp-weight-input')?.value.trim() || '';
+      const vehiclesRaw = document.getElementById('erp-vehicles-input')?.value || '';
+      const compatibleVehicles = vehiclesRaw.split(',').map(s => s.trim()).filter(Boolean);
+
+      const warranty = document.getElementById('erp-warranty-input')?.value.trim() || '';
+      const warrantyFree = document.getElementById('erp-warranty-free-input')?.value.trim() || '';
+      const warrantyProRata = document.getElementById('erp-warranty-prorata-input')?.value.trim() || '';
+
+      // Complimentary Nepal Power Services (Only checked ones)
+      const complimentaryServices = [];
+      if (document.getElementById('svc-terminal-greasing')?.checked) {
+        complimentaryServices.push('Free Battery Terminal Greasing (Prevents sulfur buildup)');
+      }
+      if (document.getElementById('svc-voltage-calibration')?.checked) {
+        complimentaryServices.push('Free Inverter Charging Voltage Calibration Check');
+      }
+      if (document.getElementById('svc-warranty-card')?.checked) {
+        complimentaryServices.push('Free Official Stamped Warranty Card Verification');
+      }
+      if (document.getElementById('svc-doorstep-testing')?.checked) {
+        complimentaryServices.push('Free Doorstep Cold Cranking Amps (CCA) Inspection');
+      }
+      if (document.getElementById('svc-scrap-collection')?.checked) {
+        complimentaryServices.push('Free Scrap Battery Doorstep Collection with Spot Cash Rebate');
+      }
+
+      // Stock
       const stock = document.getElementById('erp-stock-input')?.value;
       const minStock = document.getElementById('erp-minstock-input')?.value;
 
+      // Images
+      const images = (this.currentEditingImages && this.currentEditingImages.length > 0)
+        ? this.currentEditingImages
+        : ['assets/logo.png'];
+      const image = images[0];
+
+      // Description & Features
+      const shortDesc = document.getElementById('erp-shortdesc-input')?.value.trim() || '';
+      const description = document.getElementById('erp-sku-desc-editor')?.innerHTML?.trim() || '';
+      const featuresRaw = document.getElementById('erp-features-input')?.value || '';
+      const features = featuresRaw.split('\n').map(s => s.trim()).filter(Boolean);
+
+      // Specs Object (only include filled specs)
+      const specs = {};
+      if (brand) specs['Brand'] = brand;
+      if (capacity) specs['Capacity'] = capacity;
+      if (voltage) specs['Nominal Voltage'] = voltage;
+      if (cca) specs['Cold Cranking Amps (CCA)'] = cca;
+      if (technology) specs['Technology'] = technology;
+      if (terminalLayout) specs['Terminal Type'] = terminalLayout;
+      if (dimensions) specs['Dimensions (L x W x H)'] = dimensions;
+      if (weight) specs['Gross Weight'] = weight;
+      if (appType) specs['Application'] = appType;
+      if (compatibleVehicles.length > 0) specs['Compatible Vehicles'] = compatibleVehicles.join(', ');
+
       const token = localStorage.getItem(this.tokenKey);
       const isEdit = !!productId;
+
+      const submitBtn = document.getElementById('erp-sku-submit-btn');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Saving SKU...';
+      }
 
       try {
         const res = await fetch('/api/erp/products', {
@@ -739,19 +1339,61 @@
           },
           body: JSON.stringify({
             id: productId,
-            sku, name, brand, capacity, warranty, price, costPrice, stock, minStock
+            sku, name, brand, category, categories: [category],
+            capacity, voltage, cca, technology, terminalLayout, dimensions, weight,
+            compatibleVehicles,
+            price: parseFloat(price) || 0,
+            mrp: mrp ? parseFloat(mrp) : undefined,
+            costPrice: costPrice ? parseFloat(costPrice) : undefined,
+            wholesalePrice: wholesalePrice ? parseFloat(wholesalePrice) : undefined,
+            vatRate: vatRate !== undefined ? parseFloat(vatRate) : 13,
+            scrapRebateEligible,
+            scrapAh: scrapAh ? parseFloat(scrapAh) : undefined,
+            stock: parseInt(stock, 10) || 0,
+            minStock: parseInt(minStock, 10) || 5,
+            warranty, warrantyFree, warrantyProRata,
+            complimentaryServices,
+            image, images,
+            shortDesc, description, features,
+            specs,
+            featured: isFeatured,
+            isActive
           })
         });
         const data = await res.json();
         if (data.success) {
-          alert(data.message || 'Product saved successfully!');
+          alert(data.message || `Product SKU "${sku}" saved successfully! ✓`);
           document.getElementById('erp-modal-overlay')?.classList.remove('open');
+
+          if (data.product) {
+            if (isEdit) {
+              const idx = this.productsData.findIndex(p => p.id === data.product.id || p.sku === data.product.sku);
+              if (idx !== -1) this.productsData[idx] = data.product;
+            } else {
+              this.productsData.unshift(data.product);
+            }
+            if (window.productsCatalog) {
+              if (isEdit) {
+                const cIdx = window.productsCatalog.findIndex(p => p.id === data.product.id || p.sku === data.product.sku);
+                if (cIdx !== -1) window.productsCatalog[cIdx] = data.product;
+              } else {
+                window.productsCatalog.unshift(data.product);
+              }
+              if (window.renderProductsCatalog) window.renderProductsCatalog();
+            }
+          }
+
           this.renderProductsView(document.getElementById('erp-main-view'));
         } else {
           alert('Error: ' + (data.message || 'Failed to save product SKU.'));
         }
       } catch (e) {
         alert('Network error: ' + e.message);
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = isEdit ? '💾 Update Product SKU' : '💾 Create & Save Product SKU';
+        }
       }
     }
 
@@ -760,6 +1402,7 @@
       const title = document.getElementById('erp-modal-title');
       const body = document.getElementById('erp-modal-body');
       if (!modal || !title || !body) return;
+      modal.querySelector('.erp-modal')?.classList.remove('erp-modal-xl');
 
       title.textContent = 'Atomic Stock Adjustment & Ledger Movement';
 
@@ -933,6 +1576,7 @@
       const title = document.getElementById('erp-modal-title');
       const body = document.getElementById('erp-modal-body');
       if (!modal || !title || !body) return;
+      modal.querySelector('.erp-modal')?.classList.remove('erp-modal-xl');
 
       title.textContent = 'Create Commercial Purchase Order (PO)';
 
@@ -1235,6 +1879,7 @@
       const title = document.getElementById('erp-modal-title');
       const body = document.getElementById('erp-modal-body');
       if (!modal || !title || !body) return;
+      modal.querySelector('.erp-modal')?.classList.remove('erp-modal-xl');
 
       title.textContent = 'Issue Official Nepal IRD VAT 13% Tax Invoice';
       const token = localStorage.getItem(this.tokenKey);
@@ -1568,6 +2213,7 @@
       const title = document.getElementById('erp-modal-title');
       const body = document.getElementById('erp-modal-body');
       if (!modal || !title || !body) return;
+      modal.querySelector('.erp-modal')?.classList.remove('erp-modal-xl');
 
       title.textContent = 'Direct Scrap Battery Buyback / Walk-In Trade-In';
 
@@ -2392,6 +3038,15 @@
               </div>
               <div class="erp-topbar-actions">
                 <span class="erp-badge-live">● Live Store Sync (Bijulibazar)</span>
+                <div class="erp-theme-picker">
+                  <span style="font-size:0.72rem; color:var(--erp-muted); font-weight:700;">Theme:</span>
+                  <select id="erp-theme-select" class="erp-theme-select" onchange="window.erpApp.setTheme(this.value)">
+                    <option value="slate" ${this.currentTheme === 'slate' ? 'selected' : ''}>👔 Slate</option>
+                    <option value="obsidian" ${this.currentTheme === 'obsidian' ? 'selected' : ''}>🌑 Obsidian</option>
+                    <option value="navy" ${this.currentTheme === 'navy' ? 'selected' : ''}>⚓ Royal Navy</option>
+                    <option value="emerald" ${this.currentTheme === 'emerald' ? 'selected' : ''}>🌲 Emerald</option>
+                  </select>
+                </div>
                 <span style="font-size:0.8rem; color:#64748B;">Asia/Kathmandu (NPR)</span>
               </div>
             </header>

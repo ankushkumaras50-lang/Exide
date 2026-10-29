@@ -33,6 +33,59 @@
   --erp-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
   --erp-shadow-lg: 0 16px 32px -4px rgba(15, 23, 42, 0.12), 0 6px 12px -2px rgba(15, 23, 42, 0.06);
   --erp-shadow-modal: 0 25px 60px -15px rgba(15, 23, 42, 0.35), 0 0 0 1px rgba(15, 23, 42, 0.08);
+  --erp-topbar-bg: rgba(255, 255, 255, 0.88);
+}
+
+/* ==========================================================================
+   ERP THEMES: SLATE (DEFAULT) | OBSIDIAN DARK | ROYAL NAVY | EMERALD WAREHOUSE
+   ========================================================================== */
+[data-theme="obsidian"] {
+  --erp-bg: #0B0F19;
+  --erp-surface: #111726;
+  --erp-surface-alt: #161F33;
+  --erp-sidebar: #060911;
+  --erp-border: #1E293B;
+  --erp-border-hover: #334155;
+  --erp-text: #F1F5F9;
+  --erp-dark: #F8FAFC;
+  --erp-muted: #94A3B8;
+  --erp-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  --erp-shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.65);
+  --erp-topbar-bg: rgba(17, 23, 38, 0.92);
+}
+
+[data-theme="navy"] {
+  --erp-bg: #071326;
+  --erp-surface: #0E203C;
+  --erp-surface-alt: #142B4E;
+  --erp-sidebar: #050D1A;
+  --erp-border: #1C355B;
+  --erp-border-hover: #2B4E80;
+  --erp-text: #F0F6FC;
+  --erp-dark: #FFFFFF;
+  --erp-muted: #8CA4C6;
+  --erp-primary: #FF3B30;
+  --erp-navy: #38BDF8;
+  --erp-shadow: 0 4px 14px rgba(5, 13, 26, 0.5);
+  --erp-shadow-lg: 0 16px 36px rgba(5, 13, 26, 0.7);
+  --erp-topbar-bg: rgba(14, 32, 60, 0.92);
+}
+
+[data-theme="emerald"] {
+  --erp-bg: #061914;
+  --erp-surface: #0B2B23;
+  --erp-surface-alt: #123C31;
+  --erp-sidebar: #04120E;
+  --erp-border: #194F40;
+  --erp-border-hover: #266E5A;
+  --erp-text: #ECFDF5;
+  --erp-dark: #FFFFFF;
+  --erp-muted: #6EE7B7;
+  --erp-primary: #10B981;
+  --erp-navy: #059669;
+  --erp-shadow: 0 4px 14px rgba(4, 18, 14, 0.5);
+  --erp-shadow-lg: 0 16px 36px rgba(4, 18, 14, 0.7);
+  --erp-topbar-bg: rgba(11, 43, 35, 0.92);
 }
 
 * {
@@ -213,7 +266,7 @@ body {
 }
 
 .erp-topbar {
-  background: rgba(255, 255, 255, 0.88);
+  background: var(--erp-topbar-bg, rgba(255, 255, 255, 0.88));
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--erp-border);
@@ -226,6 +279,27 @@ body {
   top: 0;
   z-index: 90;
   box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
+}
+
+.erp-theme-picker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--erp-surface);
+  border: 1px solid var(--erp-border);
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  box-shadow: var(--erp-shadow-xs);
+}
+
+.erp-theme-select {
+  border: none;
+  background: transparent;
+  color: var(--erp-text);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  outline: none;
 }
 
 .erp-page-title {
@@ -577,7 +651,9 @@ body {
 }
 
 .erp-modal {
-  background: #FFFFFF;
+  background: var(--erp-surface);
+  color: var(--erp-text);
+  border: 1px solid var(--erp-border);
   border-radius: var(--erp-radius-xl);
   box-shadow: var(--erp-shadow-modal);
   width: 100%;
@@ -585,6 +661,10 @@ body {
   max-height: 90vh;
   overflow-y: auto;
   animation: erpModalScaleIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.erp-modal.erp-modal-xl {
+  max-width: 1040px;
 }
 
 @keyframes erpModalScaleIn {
@@ -604,7 +684,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #FAFAFC;
+  background: var(--erp-surface-alt);
 }
 
 .erp-modal-title {
@@ -654,6 +734,342 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
+}
+
+/* --------------------------------------------------------------------------
+   SKU EDITOR: TABS, RICH TEXT DESCRIPTION, MULTI-IMAGE GALLERY & SERVICES
+   -------------------------------------------------------------------------- */
+.erp-sku-tabs {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--erp-surface-alt);
+  border: 1px solid var(--erp-border);
+  border-radius: var(--erp-radius);
+  padding: 0.35rem;
+  margin-bottom: 1.35rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.erp-sku-tab-btn {
+  padding: 0.55rem 0.95rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: var(--erp-radius-sm);
+  border: none;
+  background: transparent;
+  color: var(--erp-muted);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.erp-sku-tab-btn:hover {
+  color: var(--erp-text);
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.erp-sku-tab-btn.active {
+  background: var(--erp-surface);
+  color: var(--erp-primary);
+  box-shadow: var(--erp-shadow-xs);
+  font-weight: 800;
+}
+
+.erp-sku-tab-pane {
+  display: none;
+  animation: erpFadeIn 0.2s ease forwards;
+}
+
+.erp-sku-tab-pane.active {
+  display: block;
+}
+
+@keyframes erpFadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.erp-form-section-card {
+  background: var(--erp-surface);
+  border: 1.5px solid var(--erp-border);
+  border-radius: var(--erp-radius);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  box-shadow: var(--erp-shadow-xs);
+}
+
+.erp-form-section-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--erp-dark);
+  margin-bottom: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.erp-form-section-sub {
+  font-size: 0.78rem;
+  color: var(--erp-muted);
+  margin-bottom: 1rem;
+}
+
+/* Rich Text Formatting Toolbar */
+.erp-editor-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 6px 8px;
+  background: var(--erp-surface-alt);
+  border: 1.5px solid var(--erp-border);
+  border-bottom: none;
+  border-radius: var(--erp-radius-sm) var(--erp-radius-sm) 0 0;
+}
+
+.erp-editor-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  border: 1px solid var(--erp-border);
+  background: var(--erp-surface);
+  color: var(--erp-text);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.erp-editor-btn:hover {
+  background: var(--erp-primary-glow);
+  border-color: var(--erp-primary);
+  color: var(--erp-primary);
+}
+
+.erp-editor-select {
+  height: 30px;
+  padding: 0 6px;
+  border-radius: 4px;
+  border: 1px solid var(--erp-border);
+  background: var(--erp-surface);
+  color: var(--erp-text);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+}
+
+.erp-editor-color {
+  width: 30px;
+  height: 30px;
+  padding: 2px;
+  border-radius: 4px;
+  border: 1px solid var(--erp-border);
+  background: var(--erp-surface);
+  cursor: pointer;
+}
+
+.erp-sku-rich-editor {
+  min-height: 180px;
+  max-height: 340px;
+  overflow-y: auto;
+  padding: 12px 14px;
+  border: 1.5px solid var(--erp-border);
+  border-radius: 0 0 var(--erp-radius-sm) var(--erp-radius-sm);
+  background: var(--erp-surface);
+  color: var(--erp-text);
+  font-size: 14px;
+  line-height: 1.6;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.erp-sku-rich-editor:focus {
+  border-color: var(--erp-navy);
+  box-shadow: 0 0 0 3px rgba(0, 51, 153, 0.12);
+}
+
+.erp-sku-rich-editor:empty:before {
+  content: attr(placeholder);
+  color: var(--erp-muted);
+  pointer-events: none;
+  display: block;
+}
+
+/* Multi-Images & Media Gallery */
+.erp-img-dropzone {
+  border: 2px dashed var(--erp-border-hover);
+  border-radius: var(--erp-radius);
+  padding: 1.5rem;
+  text-align: center;
+  background: var(--erp-surface-alt);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.erp-img-dropzone:hover,
+.erp-img-dropzone.dragover {
+  border-color: var(--erp-primary);
+  background: var(--erp-primary-glow);
+}
+
+.erp-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 0.85rem;
+  margin-top: 0.75rem;
+}
+
+.erp-gallery-card {
+  position: relative;
+  border-radius: var(--erp-radius);
+  border: 2px solid var(--erp-border);
+  overflow: hidden;
+  background: var(--erp-surface);
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.erp-gallery-card.is-primary {
+  border-color: var(--erp-primary);
+  box-shadow: 0 0 0 3px var(--erp-primary-glow);
+}
+
+.erp-gallery-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 6px;
+}
+
+.erp-primary-badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  background: var(--erp-primary);
+  color: #FFFFFF;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.erp-gallery-actions {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: flex;
+  gap: 4px;
+  z-index: 2;
+}
+
+.erp-gallery-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: none;
+  background: rgba(15, 23, 42, 0.75);
+  color: #FFFFFF;
+  cursor: pointer;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  transition: background 0.15s;
+}
+
+.erp-gallery-btn:hover {
+  background: var(--erp-danger);
+}
+
+.erp-make-primary-btn {
+  position: absolute;
+  bottom: 6px;
+  left: 6px;
+  right: 6px;
+  background: rgba(15, 23, 42, 0.85);
+  color: #FFFFFF;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 2;
+}
+
+.erp-gallery-card:hover .erp-make-primary-btn {
+  opacity: 1;
+}
+
+/* Complimentary Services Checkbox Cards */
+.erp-services-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.erp-service-checkbox-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 0.85rem 1.15rem;
+  border: 1.5px solid var(--erp-border);
+  border-radius: var(--erp-radius);
+  background: var(--erp-surface);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.erp-service-checkbox-card:hover {
+  border-color: var(--erp-primary);
+  background: var(--erp-surface-alt);
+}
+
+.erp-service-checkbox-card.checked {
+  border-color: #10B981;
+  background: rgba(16, 185, 129, 0.08);
+}
+
+.erp-service-check {
+  width: 18px;
+  height: 18px;
+  accent-color: #10B981;
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+.erp-service-meta strong {
+  display: block;
+  font-size: 0.86rem;
+  color: var(--erp-dark);
+  margin-bottom: 2px;
+}
+
+.erp-service-meta span {
+  display: block;
+  font-size: 0.76rem;
+  color: var(--erp-muted);
+  line-height: 1.4;
 }
 
 /* --------------------------------------------------------------------------
