@@ -104,9 +104,28 @@ class AuthManager {
         });
       } catch (e) {}
 
-      // 3. Clean OAuth hash fragment from browser URL if present (#access_token=...&refresh_token=...)
-      if (typeof window !== 'undefined' && window.location.hash) {
-        const hash = window.location.hash;
+      // 3. Clean OAuth hash fragment and check for returned OAuth errors
+      if (typeof window !== 'undefined') {
+        const hash = window.location.hash || '';
+        const search = window.location.search || '';
+
+        // Check if Google or Supabase returned an error
+        const urlParams = new URLSearchParams(search);
+        const hashParams = new URLSearchParams(hash.replace(/^#/, ''));
+        const errDesc = urlParams.get('error_description') || hashParams.get('error_description') || urlParams.get('error') || hashParams.get('error');
+
+        if (errDesc) {
+          console.warn('OAuth redirect notice:', errDesc);
+          if (typeof showToast === 'function') {
+            const cleanErr = decodeURIComponent(errDesc).replace(/\+/g, ' ');
+            if (cleanErr.includes('redirect_uri_mismatch')) {
+              showToast('Google OAuth: redirect_uri_mismatch. Add Supabase callback URL to Google Cloud Console.', 'error', 8000);
+            } else {
+              showToast('Sign-In notice: ' + cleanErr, 'warning', 6000);
+            }
+          }
+        }
+
         if (hash.includes('access_token=') || hash.includes('refresh_token=') || hash.includes('error_description=')) {
           try {
             window.history.replaceState(null, document.title, window.location.pathname + window.location.search);
@@ -472,11 +491,25 @@ class AuthManager {
       if (btnText) btnText.textContent = 'Redirecting to Google...';
     }
 
+    if (typeof window !== 'undefined' && window.location.protocol === 'file:') {
+      if (typeof showToast === 'function') {
+        showToast('Google OAuth cannot run from file://. Please open via http://localhost:3000 or your live site.', 'warning', 6000);
+      }
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        if (btnText) btnText.textContent = 'Continue with Google';
+      }
+      return { success: false, message: 'Google OAuth cannot run from file://' };
+    }
+
     // 1. Genuine Supabase Google OAuth Execution
     if (typeof window !== 'undefined' && window.supabaseClient && window.supabaseClient.auth) {
       try {
-        const redirectUrl = window.location.origin + window.location.pathname;
-        console.log(`Initiating Supabase Google OAuth with redirect: ${redirectUrl}`);
+        let redirectUrl = window.location.origin + window.location.pathname;
+        if (!redirectUrl.startsWith('http://') && !redirectUrl.startsWith('https://')) {
+          redirectUrl = 'http://localhost:3000/';
+        }
+        console.log(`Initiating Supabase Google OAuth with client redirect: ${redirectUrl}`);
 
         const { data, error } = await window.supabaseClient.auth.signInWithOAuth({
           provider: 'google',
