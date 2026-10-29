@@ -389,6 +389,10 @@ class CartSystem {
     if (deliveryFeeEl) {
       deliveryFeeEl.textContent = calcs.finalDelivery === 0 ? 'FREE (Nepal Express)' : `NPR ${calcs.finalDelivery}`;
     }
+
+    if (window.authManager && typeof window.authManager.renderProfileCartSummary === 'function') {
+      window.authManager.renderProfileCartSummary();
+    }
   }
 
   openDrawer() {

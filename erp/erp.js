@@ -1995,21 +1995,314 @@
     }
 
     renderSettingsView(c) {
+      let savedSettings = {};
+      try {
+        savedSettings = JSON.parse(localStorage.getItem('bm_exide_erp_settings') || '{}');
+      } catch (e) {
+        savedSettings = {};
+      }
+
+      const s = {
+        businessName: savedSettings.businessName || 'Exide Battery Wholesale (AET Official Partner)',
+        vatNumber: savedSettings.vatNumber || '609823412',
+        headOffice: savedSettings.headOffice || 'Bijulibazar, opposite Sunrise City Home, Kathmandu, Nepal',
+        storePhone: savedSettings.storePhone || '+977 9705997260',
+        storeEmail: savedSettings.storeEmail || 'batterymartbtl@gmail.com',
+        operatingHours: savedSettings.operatingHours || '8:00 AM - 8:00 PM (Daily)',
+        scrapRatePerAh: savedSettings.scrapRatePerAh !== undefined ? savedSettings.scrapRatePerAh : 35,
+        vatRate: savedSettings.vatRate !== undefined ? savedSettings.vatRate : 13,
+        freeDeliveryThreshold: savedSettings.freeDeliveryThreshold !== undefined ? savedSettings.freeDeliveryThreshold : 0,
+        wholesaleDiscount: savedSettings.wholesaleDiscount !== undefined ? savedSettings.wholesaleDiscount : 5,
+        deliveryWindow: savedSettings.deliveryWindow || '2-4 Hours (Kathmandu Express)',
+        dispatchHub: savedSettings.dispatchHub || 'Bijulibazar Central Service Depot',
+        doorstepTesting: savedSettings.doorstepTesting !== undefined ? savedSettings.doorstepTesting : true,
+        scrapPickup: savedSettings.scrapPickup !== undefined ? savedSettings.scrapPickup : true,
+        smsAlerts: savedSettings.smsAlerts !== undefined ? savedSettings.smsAlerts : true,
+        whatsappAlerts: savedSettings.whatsappAlerts !== undefined ? savedSettings.whatsappAlerts : true,
+        minStockAlert: savedSettings.minStockAlert !== undefined ? savedSettings.minStockAlert : 5
+      };
+
       c.innerHTML = `
-        <div class="erp-card">
-          <div class="erp-card-header"><span class="erp-card-title">⚙️ Exide Wholesale Store & Tax Settings</span></div>
-          <div class="erp-card-body">
-            <div style="line-height:1.8; color:#334155;">
-              <p><strong>Business:</strong> Exide Battery Wholesale (AET Official Partner)</p>
-              <p><strong>Seller IRD VAT / PAN:</strong> 609823412</p>
-              <p><strong>Head Office:</strong> Bijulibazar, opposite Sunrise City Home, Kathmandu, Nepal</p>
-              <p><strong>Direct Hotline / WhatsApp:</strong> +977 9705997260</p>
-              <p><strong>Scrap Battery Buyback Rate:</strong> NPR 35.00 / Ampere-hour (Ah)</p>
-              <p><strong>Official VAT Rate:</strong> 13.00%</p>
+        <div style="max-width: 1080px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem;">
+          <!-- Top Bar Header with Actions -->
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--erp-dark); margin: 0 0 0.25rem 0;">
+                ⚙️ Store Configuration & Operations Settings
+              </h2>
+              <p style="font-size: 0.84rem; color: var(--erp-muted); margin: 0;">
+                Manage business registration, IRD VAT, scrap trade-in calculations, dispatch logistics, and live alerts.
+              </p>
+            </div>
+            <div style="display: flex; gap: 0.65rem; flex-wrap: wrap;">
+              <button type="button" class="erp-btn erp-btn-secondary" onclick="window.erpApp.exportProductsCSV()">
+                📥 Export Stock Master
+              </button>
+              <button type="button" class="erp-btn erp-btn-secondary" onclick="window.erpApp.exportSalesOrdersCSV()">
+                📄 Export Sales Ledger
+              </button>
+              <button type="button" class="erp-btn erp-btn-primary" onclick="document.getElementById('erp-settings-form').requestSubmit()">
+                💾 Save All Settings
+              </button>
             </div>
           </div>
+
+          <form id="erp-settings-form" onsubmit="event.preventDefault(); window.erpApp.saveSettingsFromForm();">
+            <!-- 1. General Business & Legal Identification -->
+            <div class="erp-card" style="margin-bottom: 1.5rem;">
+              <div class="erp-card-header">
+                <span class="erp-card-title">🏢 1. General Business Profile & Nepal IRD Tax</span>
+              </div>
+              <div class="erp-card-body">
+                <div class="erp-form-grid" style="margin-bottom: 1rem;">
+                  <div class="erp-form-group">
+                    <label class="erp-form-label">Registered Legal Name / Trade Entity *</label>
+                    <input type="text" id="erp-cfg-bizname" class="erp-input" style="width:100%;" value="${s.businessName}" required />
+                    <small style="color:var(--erp-muted); font-size:0.75rem; display:block; margin-top:4px;">Printed on official IRD tax invoices and digital receipts.</small>
+                  </div>
+                  <div class="erp-form-group">
+                    <label class="erp-form-label">Nepal IRD VAT / PAN Registration *</label>
+                    <input type="text" id="erp-cfg-vat" class="erp-input" style="width:100%; font-weight:700; color:#003399;" value="${s.vatNumber}" required />
+                    <small style="color:var(--erp-muted); font-size:0.75rem; display:block; margin-top:4px;">Official 9-digit Inland Revenue Department taxpayer identifier.</small>
+                  </div>
+                </div>
+
+                <div class="erp-form-group" style="margin-bottom: 1rem;">
+                  <label class="erp-form-label">Central Warehouse / Head Office Location *</label>
+                  <input type="text" id="erp-cfg-hq" class="erp-input" style="width:100%;" value="${s.headOffice}" required />
+                </div>
+
+                <div class="erp-form-grid">
+                  <div class="erp-form-group">
+                    <label class="erp-form-label">Customer Support Hotline / WhatsApp *</label>
+                    <input type="text" id="erp-cfg-phone" class="erp-input" style="width:100%; font-weight:700;" value="${s.storePhone}" required />
+                  </div>
+                  <div class="erp-form-group">
+                    <label class="erp-form-label">Official Invoicing & Support Email</label>
+                    <input type="email" id="erp-cfg-email" class="erp-input" style="width:100%;" value="${s.storeEmail}" required />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. Pricing, Tax & Trade-In Rebates -->
+            <div class="erp-card" style="margin-bottom: 1.5rem;">
+              <div class="erp-card-header">
+                <span class="erp-card-title">💰 2. Pricing Engine, Tax Rates & Scrap Battery Buyback</span>
+              </div>
+              <div class="erp-card-body">
+                <div class="erp-form-grid" style="margin-bottom: 1rem;">
+                  <div class="erp-form-group">
+                    <label class="erp-form-label">♻️ Scrap Battery Buyback Rate (NPR per Ah) *</label>
+                    <div style="display:flex; align-items:center; gap:0.5rem;">
+                      <input type="number" id="erp-cfg-scraprate" class="erp-input" style="width:140px; font-weight:800; color:#ED1C24; font-size:1.1rem;" value="${s.scrapRatePerAh}" min="5" max="100" step="0.5" required />
+                      <span style="font-weight:700; color:var(--erp-dark);">NPR / Ah</span>
+                    </div>
+                    <small style="color:var(--erp-muted); font-size:0.75rem; display:block; margin-top:4px;">
+                      Deducted automatically during cart checkout (e.g. 150Ah × NPR ${s.scrapRatePerAh} = NPR ${(150 * s.scrapRatePerAh).toLocaleString()} trade-in discount).
+                    </small>
+                  </div>
+
+                  <div class="erp-form-group">
+                    <label class="erp-form-label">🏛️ Nepal Value-Added Tax (VAT Rate %) *</label>
+                    <div style="display:flex; align-items:center; gap:0.5rem;">
+                      <input type="number" id="erp-cfg-vatrate" class="erp-input" style="width:140px; font-weight:800; font-size:1.1rem;" value="${s.vatRate}" min="0" max="30" step="0.5" required />
+                      <span style="font-weight:700; color:var(--erp-dark);">%</span>
+                    </div>
+                    <small style="color:var(--erp-muted); font-size:0.75rem; display:block; margin-top:4px;">
+                      Official standard statutory VAT rate applied to taxable sales invoices.
+                    </small>
+                  </div>
+                </div>
+
+                <div class="erp-form-grid">
+                  <div class="erp-form-group">
+                    <label class="erp-form-label">🚚 Free Kathmandu Valley Delivery Minimum Order</label>
+                    <div style="display:flex; align-items:center; gap:0.5rem;">
+                      <input type="number" id="erp-cfg-freedelivery" class="erp-input" style="width:140px; font-weight:700;" value="${s.freeDeliveryThreshold}" min="0" step="500" />
+                      <span style="font-weight:700; color:var(--erp-dark);">NPR (0 = Always Free)</span>
+                    </div>
+                  </div>
+
+                  <div class="erp-form-group">
+                    <label class="erp-form-label">👑 Wholesale Partner Volume Discount (%)</label>
+                    <div style="display:flex; align-items:center; gap:0.5rem;">
+                      <input type="number" id="erp-cfg-wsdiscount" class="erp-input" style="width:140px; font-weight:700;" value="${s.wholesaleDiscount}" min="0" max="50" step="1" />
+                      <span style="font-weight:700; color:var(--erp-dark);">% Extra Discount</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. Logistics, Dispatch Hub & Doorstep Services -->
+            <div class="erp-card" style="margin-bottom: 1.5rem;">
+              <div class="erp-card-header">
+                <span class="erp-card-title">🚚 3. Dispatch Logistics & Field Technician Services</span>
+              </div>
+              <div class="erp-card-body">
+                <div class="erp-form-grid" style="margin-bottom: 1.25rem;">
+                  <div class="erp-form-group">
+                    <label class="erp-form-label">Central Dispatch Depot Location</label>
+                    <input type="text" id="erp-cfg-hub" class="erp-input" style="width:100%;" value="${s.dispatchHub}" />
+                  </div>
+                  <div class="erp-form-group">
+                    <label class="erp-form-label">Express Delivery Fulfillment Window</label>
+                    <input type="text" id="erp-cfg-window" class="erp-input" style="width:100%;" value="${s.deliveryWindow}" />
+                  </div>
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:0.85rem; padding:1rem; background:#F8FAFC; border-radius:10px; border:1px solid #E2E8F0;">
+                  <label style="display:flex; align-items:center; gap:0.75rem; cursor:pointer; font-size:0.88rem; font-weight:700; color:var(--erp-dark);">
+                    <input type="checkbox" id="erp-cfg-doorstep-test" ${s.doorstepTesting ? 'checked' : ''} style="width:18px; height:18px; accent-color:#003399;" />
+                    <span>⚡ Free Doorstep Voltage & Cold Cranking Amps (CCA) Inspection by Technician</span>
+                  </label>
+                  <label style="display:flex; align-items:center; gap:0.75rem; cursor:pointer; font-size:0.88rem; font-weight:700; color:var(--erp-dark);">
+                    <input type="checkbox" id="erp-cfg-scrap-pickup" ${s.scrapPickup ? 'checked' : ''} style="width:18px; height:18px; accent-color:#003399;" />
+                    <span>♻️ Delivery Crew Doorstep Collection of Old Scrap Battery with Spot Cash Rebate</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4. Operational Alerts & Inventory Thresholds -->
+            <div class="erp-card" style="margin-bottom: 1.5rem;">
+              <div class="erp-card-header">
+                <span class="erp-card-title">🔔 4. Operational Alerts & Low-Stock Safeguards</span>
+              </div>
+              <div class="erp-card-body">
+                <div class="erp-form-grid" style="margin-bottom: 1.25rem;">
+                  <div class="erp-form-group">
+                    <label class="erp-form-label">⚠️ Global Minimum Reorder Alert Threshold</label>
+                    <div style="display:flex; align-items:center; gap:0.5rem;">
+                      <input type="number" id="erp-cfg-minstock" class="erp-input" style="width:140px; font-weight:800; color:#D97706; font-size:1.05rem;" value="${s.minStockAlert}" min="1" max="50" />
+                      <span style="font-weight:700; color:var(--erp-dark);">Units remaining</span>
+                    </div>
+                    <small style="color:var(--erp-muted); font-size:0.75rem; display:block; margin-top:4px;">
+                      Triggers instant warning badges on executive dashboard and stock ledger when depleted.
+                    </small>
+                  </div>
+                  <div class="erp-form-group">
+                    <label class="erp-form-label">Operating Hours for Storefront</label>
+                    <input type="text" id="erp-cfg-hours" class="erp-input" style="width:100%;" value="${s.operatingHours}" />
+                  </div>
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:0.85rem; padding:1rem; background:#F8FAFC; border-radius:10px; border:1px solid #E2E8F0;">
+                  <label style="display:flex; align-items:center; gap:0.75rem; cursor:pointer; font-size:0.88rem; font-weight:700; color:var(--erp-dark);">
+                    <input type="checkbox" id="erp-cfg-whatsapp" ${s.whatsappAlerts ? 'checked' : ''} style="width:18px; height:18px; accent-color:#059669;" />
+                    <span>💬 WhatsApp Order Dispatch Alerts & Digital Receipt links to Customers</span>
+                  </label>
+                  <label style="display:flex; align-items:center; gap:0.75rem; cursor:pointer; font-size:0.88rem; font-weight:700; color:var(--erp-dark);">
+                    <input type="checkbox" id="erp-cfg-sms" ${s.smsAlerts ? 'checked' : ''} style="width:18px; height:18px; accent-color:#003399;" />
+                    <span>📱 SMS Out-For-Delivery Alerts with Technician Contact Info</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Save Bar at Bottom -->
+            <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1rem; margin-bottom: 2rem;">
+              <button type="button" class="erp-btn erp-btn-secondary" onclick="window.erpApp.resetSettingsToDefaults()">
+                ↺ Reset Defaults
+              </button>
+              <button type="submit" class="erp-btn erp-btn-primary" style="height:44px; padding:0 1.75rem;">
+                💾 Save Store Settings
+              </button>
+            </div>
+          </form>
         </div>
       `;
+    }
+
+    saveSettingsFromForm() {
+      const settings = {
+        businessName: document.getElementById('erp-cfg-bizname')?.value.trim() || 'Exide Battery Wholesale (AET Official Partner)',
+        vatNumber: document.getElementById('erp-cfg-vat')?.value.trim() || '609823412',
+        headOffice: document.getElementById('erp-cfg-hq')?.value.trim() || 'Bijulibazar, Kathmandu',
+        storePhone: document.getElementById('erp-cfg-phone')?.value.trim() || '+977 9705997260',
+        storeEmail: document.getElementById('erp-cfg-email')?.value.trim() || 'batterymartbtl@gmail.com',
+        scrapRatePerAh: Number(document.getElementById('erp-cfg-scraprate')?.value) || 35,
+        vatRate: Number(document.getElementById('erp-cfg-vatrate')?.value) || 13,
+        freeDeliveryThreshold: Number(document.getElementById('erp-cfg-freedelivery')?.value) || 0,
+        wholesaleDiscount: Number(document.getElementById('erp-cfg-wsdiscount')?.value) || 5,
+        dispatchHub: document.getElementById('erp-cfg-hub')?.value.trim() || 'Bijulibazar Central Service Depot',
+        deliveryWindow: document.getElementById('erp-cfg-window')?.value.trim() || '2-4 Hours (Kathmandu Express)',
+        operatingHours: document.getElementById('erp-cfg-hours')?.value.trim() || '8:00 AM - 8:00 PM (Daily)',
+        doorstepTesting: document.getElementById('erp-cfg-doorstep-test')?.checked ?? true,
+        scrapPickup: document.getElementById('erp-cfg-scrap-pickup')?.checked ?? true,
+        minStockAlert: Number(document.getElementById('erp-cfg-minstock')?.value) || 5,
+        whatsappAlerts: document.getElementById('erp-cfg-whatsapp')?.checked ?? true,
+        smsAlerts: document.getElementById('erp-cfg-sms')?.checked ?? true
+      };
+
+      localStorage.setItem('bm_exide_erp_settings', JSON.stringify(settings));
+
+      if (window.stockManager && typeof window.stockManager.updateSettings === 'function') {
+        window.stockManager.updateSettings({
+          scrapRatePerAh: settings.scrapRatePerAh,
+          storePhone: settings.storePhone,
+          storeEmail: settings.storeEmail,
+          headOffice: settings.headOffice,
+          vatNumber: settings.vatNumber
+        });
+      }
+
+      alert('ERP Store & Operations settings updated successfully! ✓');
+    }
+
+    resetSettingsToDefaults() {
+      if (!confirm('Reset all ERP store parameters to official factory defaults?')) return;
+      localStorage.removeItem('bm_exide_erp_settings');
+      this.renderSettingsView(document.getElementById('erp-main-view'));
+      alert('Settings reset to official Exide factory defaults.');
+    }
+
+    async exportSalesOrdersCSV() {
+      let orders = [];
+      try {
+        const token = localStorage.getItem(this.tokenKey);
+        const res = await fetch('/api/erp/sales', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        orders = data.orders || [];
+      } catch (e) {
+        orders = [];
+      }
+
+      if (!orders || orders.length === 0) {
+        try {
+          orders = JSON.parse(localStorage.getItem('exide_orders') || '[]');
+        } catch (e) {
+          orders = [];
+        }
+      }
+
+      if (orders.length === 0) {
+        alert('No sales orders recorded yet to export.');
+        return;
+      }
+
+      let csv = 'Order ID,Customer Name,Phone,Date,Status,Payment Method,Grand Total (NPR)\\n';
+      orders.forEach(o => {
+        const custName = (o.customer?.name || o.customerName || 'Customer').replace(/"/g, '""');
+        const phone = o.customer?.phone || o.customerPhone || '';
+        const date = o.createdAt ? new Date(o.createdAt).toLocaleDateString('en-GB') : '';
+        const status = o.status || 'CONFIRMED';
+        const payment = o.paymentMethod || 'Cash on Delivery';
+        const total = o.pricing?.grandTotal || o.total || o.grandTotal || 0;
+        csv += `"${o.id}","${custName}","${phone}","${date}","${status}","${payment}",${total}\\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `Exide_Sales_Ledger_${new Date().toISOString().slice(0, 10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
 
     renderUsersView(c) {

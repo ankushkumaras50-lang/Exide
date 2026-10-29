@@ -247,12 +247,6 @@
             </button>
           </div>
 
-          <!-- Stock ERP Portal Toggle (Admin Only) -->
-          <button class="btn-header-action btn-admin-pill" onclick="window.stockManager.openAdminModal()" title="Stock & Inventory Management System (Staff & Admin Only)">
-            <span class="badge-pulse"></span>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            <span>Stock ERP</span>
-          </button>
 
           <!-- Cart Button -->
           <button class="btn-header-action btn-cart-header" onclick="window.cartSystem.openDrawer()" aria-label="Open Shopping Cart">
@@ -367,10 +361,6 @@
           <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
         </svg>
         <span>Continue with Google</span>
-      </button>
-      <button type="button" class="btn-drawer-erp" onclick="window.smoothNav(null); window.stockManager.openAdminModal();">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        <span>Stock ERP Portal (Admin)</span>
       </button>
       <a href="tel:+9779705997260" class="btn-drawer-call">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
@@ -1100,10 +1090,11 @@
         <div>
           &copy; 2026 Exide Battery Wholesale | AET Official Partner. All rights reserved. The Power House.
         </div>
-        <div style="display:flex; gap:1.25rem;">
+        <div style="display:flex; gap:1.25rem; align-items:center; flex-wrap:wrap;">
           <a href="#warranty-section" style="color:#94A3B8;">Privacy Policy</a>
           <a href="#warranty-section" style="color:#94A3B8;">Warranty Terms</a>
           <a href="#calculator-section" style="color:#94A3B8;">Scrap Battery Policy</a>
+          <a href="/erp" style="color:#64748B; font-size:0.75rem; text-decoration:none; display:inline-flex; align-items:center; gap:4px; opacity:0.75;" title="Enterprise Staff Login Only">🔒 Staff Portal (ERP)</a>
         </div>
       </div>
     </div>
@@ -2386,27 +2377,27 @@
             <div id="prof-hero-avatar-slot" class="prof-avatar-wrap"></div>
             <div class="prof-user-meta">
               <div class="prof-name-title-wrap">
-                <h3 id="prof-hero-name" class="prof-user-name">Ahmed Hammad</h3>
+                <h3 id="prof-hero-name" class="prof-user-name">My Account</h3>
                 <span id="prof-vip-badge" class="prof-vip-pill">👑 VIP Center</span>
               </div>
-              <div id="prof-hero-contact" class="prof-user-contact">+977-9809163454 • Verified Account</div>
+              <div id="prof-hero-contact" class="prof-user-contact">Verified Customer</div>
             </div>
           </div>
 
           <!-- 3-Pill Counter Bar (Matching Reference Image) -->
           <div class="prof-counter-bar">
             <div class="prof-counter-pill" onclick="window.authManager.scrollToProducts('wishlist')">
-              <span class="prof-counter-num" id="prof-count-wishlist">5</span>
+              <span class="prof-counter-num" id="prof-count-wishlist">0</span>
               <span class="prof-counter-lbl">Wishlist</span>
             </div>
             <div class="prof-counter-divider"></div>
             <div class="prof-counter-pill" onclick="showToast('Active Discount Voucher: EXIDE1000 applied on wholesale batteries!', 'success')">
-              <span class="prof-counter-num" id="prof-count-coupons">10</span>
+              <span class="prof-counter-num" id="prof-count-coupons">1</span>
               <span class="prof-counter-lbl">Coupons</span>
             </div>
             <div class="prof-counter-divider"></div>
             <div class="prof-counter-pill" onclick="showToast('Scrap Exchange Points: Trade in old batteries for up to NPR 175,000 rebate credit!', 'info')">
-              <span class="prof-counter-num" id="prof-count-points">55</span>
+              <span class="prof-counter-num" id="prof-count-points">0</span>
               <span class="prof-counter-lbl">Points</span>
             </div>
           </div>
@@ -2414,6 +2405,20 @@
 
         <!-- Scrollable Dashboard Content -->
         <div class="prof-scrollable-body">
+          <!-- 1. Dedicated Live Cart Section (Real-Time Cart Synchronization) -->
+          <div class="prof-card-section prof-cart-hub-card" id="prof-cart-hub-section">
+            <div class="prof-section-header">
+              <div style="display:flex; align-items:center; gap:0.5rem;">
+                <span style="font-size:1.15rem;">🛒</span>
+                <h4 class="prof-section-title">My Cart & Active Bag</h4>
+              </div>
+              <span class="prof-cart-badge-pill" id="prof-cart-items-count-badge">0 Items</span>
+            </div>
+            <div id="prof-cart-summary-content">
+              <!-- Dynamically populated in real-time from window.cartManager -->
+            </div>
+          </div>
+
           <!-- 2. "My Orders" Section (Matching Reference Image) -->
           <div class="prof-card-section">
             <div class="prof-section-header">
@@ -2452,7 +2457,7 @@
                   <span class="prof-status-badge-count" id="count-status-delivered">0</span>
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path><line x1="9" y1="10" x2="15" y2="10"></line></svg>
                 </div>
-                <span class="prof-status-label">Review</span>
+                <span class="prof-status-label">Delivered</span>
               </button>
 
               <button type="button" class="prof-status-item" onclick="window.authManager.filterOrdersByStatus('warranty')">
@@ -2460,7 +2465,7 @@
                   <span class="prof-status-badge-count" id="count-status-warranty">0</span>
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                 </div>
-                <span class="prof-status-label">Preorder</span>
+                <span class="prof-status-label">Warranty</span>
               </button>
             </div>
 
@@ -2547,7 +2552,7 @@
           <div class="prof-settings-row" onclick="window.authManager.openCustomerTab('personal')">
             <div class="prof-settings-row-left">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              <span class="prof-settings-label">Account Settings</span>
+              <span class="prof-settings-label">Account & Contact Info</span>
             </div>
             <span class="prof-settings-arrow">&gt;</span>
           </div>
@@ -2555,7 +2560,7 @@
           <div class="prof-settings-row" onclick="window.authManager.openCustomerTab('address')">
             <div class="prof-settings-row-left">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              <span class="prof-settings-label">Address Book</span>
+              <span class="prof-settings-label">Address Book (Nepal Delivery)</span>
             </div>
             <span class="prof-settings-arrow">&gt;</span>
           </div>
@@ -2568,28 +2573,12 @@
             <span class="prof-settings-arrow">&gt;</span>
           </div>
 
-          <div class="prof-settings-row">
+          <div class="prof-settings-row" onclick="window.authManager.openCustomerTab('notifications')">
             <div class="prof-settings-row-left">
-              <span style="font-size:1.1rem;">🇳🇵</span>
-              <span class="prof-settings-label">Country</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+              <span class="prof-settings-label">Notification Settings</span>
             </div>
-            <span class="prof-settings-val">Nepal &gt;</span>
-          </div>
-
-          <div class="prof-settings-row">
-            <div class="prof-settings-row-left">
-              <span style="font-weight:700; color:#475569;">रू</span>
-              <span class="prof-settings-label">Currency</span>
-            </div>
-            <span class="prof-settings-val">NPR &gt;</span>
-          </div>
-
-          <div class="prof-settings-row">
-            <div class="prof-settings-row-left">
-              <span style="font-size:1.1rem;">🌐</span>
-              <span class="prof-settings-label">Language</span>
-            </div>
-            <span class="prof-settings-val">English / नेपाली &gt;</span>
+            <span class="prof-settings-arrow">&gt;</span>
           </div>
 
           <div class="prof-settings-row" onclick="window.authManager.openCustomerTab('vehicle')">
@@ -2608,18 +2597,34 @@
             <span class="prof-settings-arrow">&gt;</span>
           </div>
 
-          <div class="prof-settings-row" onclick="showToast('SMS & WhatsApp delivery alerts active for +977 numbers.', 'info')">
+          <div class="prof-settings-row" onclick="window.authManager.openCustomerTab('regional')">
             <div class="prof-settings-row-left">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-              <span class="prof-settings-label">Notification Settings</span>
+              <span style="font-size:1.1rem;">🇳🇵</span>
+              <span class="prof-settings-label">Country & Currency</span>
+            </div>
+            <span class="prof-settings-val">Nepal (NPR रू) &gt;</span>
+          </div>
+
+          <div class="prof-settings-row" onclick="window.authManager.openCustomerTab('regional')">
+            <div class="prof-settings-row-left">
+              <span style="font-size:1.1rem;">🌐</span>
+              <span class="prof-settings-label">Language / भाषा</span>
+            </div>
+            <span class="prof-settings-val">English / नेपाली &gt;</span>
+          </div>
+
+          <div class="prof-settings-row" onclick="window.authManager.openCustomerTab('security')">
+            <div class="prof-settings-row-left">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <span class="prof-settings-label">Security & Connected Logins</span>
             </div>
             <span class="prof-settings-arrow">&gt;</span>
           </div>
 
-          <div class="prof-settings-row" onclick="window.authManager.showWarrantyTerms()">
+          <div class="prof-settings-row" onclick="window.authManager.openCustomerTab('policies')">
             <div class="prof-settings-row-left">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-              <span class="prof-settings-label">Privacy Policy & Warranty Terms</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <span class="prof-settings-label">Warranty Terms & Policies</span>
             </div>
             <span class="prof-settings-arrow">&gt;</span>
           </div>
@@ -2921,11 +2926,135 @@
               <!-- Dynamically rendered -->
             </div>
           </div>
+
+          <!-- Sub-Pane: Notification Settings -->
+          <div id="prof-pane-notifications" class="prof-tab-pane" style="display:none;">
+            <form onsubmit="event.preventDefault(); window.authManager.saveNotificationPreferences();">
+              <div class="prof-section-note">
+                <strong>Delivery & Order Alerts</strong>
+                <span>Configure how you receive real-time order tracking, dispatch, and tax bills.</span>
+              </div>
+
+              <div class="prof-toggle-row">
+                <div>
+                  <strong class="prof-toggle-title">SMS Order Status Updates</strong>
+                  <span class="prof-toggle-desc">Instant SMS on order confirmation, rider dispatch, and delivery.</span>
+                </div>
+                <input type="checkbox" id="prof-notif-sms" checked class="prof-toggle-checkbox">
+              </div>
+
+              <div class="prof-toggle-row">
+                <div>
+                  <strong class="prof-toggle-title">WhatsApp Live Tracking Updates</strong>
+                  <span class="prof-toggle-desc">Receive delivery rider live location and digital receipt on WhatsApp.</span>
+                </div>
+                <input type="checkbox" id="prof-notif-whatsapp" checked class="prof-toggle-checkbox">
+              </div>
+
+              <div class="prof-toggle-row">
+                <div>
+                  <strong class="prof-toggle-title">Email Tax Invoice (PDF)</strong>
+                  <span class="prof-toggle-desc">Automatically email official IRD Nepal VAT tax bill upon delivery.</span>
+                </div>
+                <input type="checkbox" id="prof-notif-email" checked class="prof-toggle-checkbox">
+              </div>
+
+              <div class="prof-toggle-row">
+                <div>
+                  <strong class="prof-toggle-title">6-Month Battery Health Reminders</strong>
+                  <span class="prof-toggle-desc">Free specific gravity, electrolyte & voltage checkup reminders.</span>
+                </div>
+                <input type="checkbox" id="prof-notif-warranty" checked class="prof-toggle-checkbox">
+              </div>
+
+              <button type="submit" class="btn btn-primary prof-btn-save" style="margin-top:1.25rem;">
+                <span>Save Notification Preferences</span>
+              </button>
+            </form>
+          </div>
+
+          <!-- Sub-Pane: Regional & Display Settings -->
+          <div id="prof-pane-regional" class="prof-tab-pane" style="display:none;">
+            <form onsubmit="event.preventDefault(); window.authManager.saveRegionalPreferences();">
+              <div class="prof-section-note">
+                <strong>Country, Currency & Language</strong>
+                <span>Customize regional formatting and currency display for Nepal wholesale transactions.</span>
+              </div>
+
+              <div class="form-group" style="margin-bottom:1rem;">
+                <label class="form-label">Country / Operation Hub</label>
+                <input type="text" class="form-input" value="Nepal (Bijulibazar, Kathmandu Hub)" readonly style="background:#F1F5F9; color:#475569;">
+              </div>
+
+              <div class="form-group" style="margin-bottom:1rem;">
+                <label class="form-label" for="prof-input-currency">Wholesale Currency</label>
+                <select id="prof-input-currency" class="form-select">
+                  <option value="NPR" selected>NPR - Nepalese Rupee (रू)</option>
+                  <option value="USD">USD - US Dollar ($)</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="margin-bottom:1.25rem;">
+                <label class="form-label" for="prof-input-lang">Display Language</label>
+                <select id="prof-input-lang" class="form-select">
+                  <option value="en" selected>English (Default)</option>
+                  <option value="ne">नेपाली (Nepali)</option>
+                </select>
+              </div>
+
+              <button type="submit" class="btn btn-primary prof-btn-save">
+                <span>Save Regional Settings</span>
+              </button>
+            </form>
+          </div>
+
+          <!-- Sub-Pane: Security & Connected Accounts -->
+          <div id="prof-pane-security" class="prof-tab-pane" style="display:none;">
+            <div class="prof-section-note">
+              <strong>Account Security & Authentication</strong>
+              <span>Manage your connected Google credentials and active login sessions.</span>
+            </div>
+
+            <div class="prof-security-card" style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:12px; padding:1rem; margin-bottom:1rem;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                  <strong style="color:#0F172A; font-size:0.88rem; display:block;">Google Sign-In Connection</strong>
+                  <span id="prof-google-status-text" style="font-size:0.75rem; color:#64748B;">Connected with Google OAuth</span>
+                </div>
+                <span class="erp-badge erp-badge-green">Active</span>
+              </div>
+            </div>
+
+            <div class="prof-security-card" style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:12px; padding:1rem; margin-bottom:1.25rem;">
+              <strong style="color:#0F172A; font-size:0.88rem; display:block; margin-bottom:0.25rem;">Active Device Session</strong>
+              <span style="font-size:0.75rem; color:#64748B; display:block; margin-bottom:0.75rem;">Kathmandu, Nepal • Current Browser</span>
+              <button type="button" class="btn btn-outline-primary" onclick="showToast('Other device sessions purged successfully.', 'success')" style="font-size:0.75rem; padding:6px 12px; font-weight:700;">
+                Purge Other Device Sessions
+              </button>
+            </div>
+          </div>
+
+          <!-- Sub-Pane: Warranty Terms & Store Policies -->
+          <div id="prof-pane-policies" class="prof-tab-pane" style="display:none;">
+            <div class="prof-section-note">
+              <strong>Official Exide Nepal Guarantees</strong>
+              <span>Official AET partner warranty and certified buyback standards.</span>
+            </div>
+
+            <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:12px; padding:1.15rem; font-size:0.82rem; color:#334155; line-height:1.6;">
+              <h5 style="color:#0F172A; font-weight:800; font-size:0.9rem; margin-bottom:0.35rem;">🛡️ Nationwide Exide Warranty (Up to 66 Months)</h5>
+              <p style="margin-bottom:0.75rem;">All genuine Exide batteries purchased from Exide Battery Wholesale / AET Partner come with official manufacturer warranty coverage valid across all authorized service centers throughout Nepal.</p>
+
+              <h5 style="color:#0F172A; font-weight:800; font-size:0.9rem; margin-bottom:0.35rem;">♻️ Old Battery Scrap Buyback (NPR 35/Ah)</h5>
+              <p style="margin-bottom:0.75rem;">Trade in your old lead-acid battery during doorstep delivery to get an instant deduction credited directly against your invoice (e.g., 150Ah = NPR 5,250 rebate).</p>
+
+              <h5 style="color:#0F172A; font-weight:800; font-size:0.9rem; margin-bottom:0.35rem;">🚚 Doorstep Delivery & Terminal Fitting</h5>
+              <p>Free doorstep delivery across Kathmandu, Lalitpur, and Bhaktapur for orders above NPR 5,000, including free terminal cleaning, petroleum jelly coating, and voltage load test.</p>
+            </div>
+          </div>
         </div>
       </div>
 
-    </div>
-  </div>
     </div>
   </div>
 

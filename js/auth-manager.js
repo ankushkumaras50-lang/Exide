@@ -1164,7 +1164,7 @@ class AuthManager {
     if (payments) payments.style.display = 'none';
     if (subforms) subforms.style.display = 'block';
 
-    const subPanes = ['personal', 'address', 'vehicle', 'business', 'orders'];
+    const subPanes = ['personal', 'address', 'vehicle', 'business', 'orders', 'notifications', 'regional', 'security', 'policies'];
     subPanes.forEach(p => {
       const el = document.getElementById(`prof-pane-${p}`);
       if (el) el.style.display = (p === tabName) ? 'block' : 'none';
@@ -1173,11 +1173,15 @@ class AuthManager {
     const titleEl = document.getElementById('prof-subform-title');
     if (titleEl) {
       const titles = {
-        personal: 'Account Settings',
+        personal: 'Account & Contact Info',
         address: 'Delivery Address Book',
         vehicle: 'Vehicle & Inverter Setup',
         business: 'Business PAN & Tax Billing',
-        orders: 'Order History & Invoices'
+        orders: 'Order History & Invoices',
+        notifications: 'Order & Delivery Notifications',
+        regional: 'Country, Currency & Language',
+        security: 'Security & Connected Logins',
+        policies: 'Warranty Terms & Policies'
       };
       titleEl.textContent = titles[tabName] || 'Edit Details';
     }
@@ -1233,7 +1237,7 @@ class AuthManager {
       }
     }
 
-    // 2. Metrics & Orders Computation
+    // 2. Metrics & Orders Computation (Strictly Real-Time Data, No Demo)
     let allOrders = [];
     try {
       allOrders = JSON.parse(localStorage.getItem('exide_orders') || '[]');
@@ -1241,11 +1245,18 @@ class AuthManager {
       allOrders = [];
     }
 
+    const cleanCustPhone = cust.phone ? String(cust.phone).replace(/\D/g, '').slice(-10) : '';
+    const cleanCustEmail = cust.email ? String(cust.email).toLowerCase().trim() : '';
+
     const myOrders = allOrders.filter(ord => {
       if (!ord) return false;
-      if (cust.id && ord.customerId === cust.id) return true;
-      if (cust.phone && ord.customerPhone && String(ord.customerPhone).includes(cust.phone)) return true;
-      if (cust.email && ord.customerEmail && ord.customerEmail.toLowerCase() === cust.email.toLowerCase()) return true;
+      const ordPhone = (ord.customerPhone || ord.customer?.phone || ord.phone) ? String(ord.customerPhone || ord.customer?.phone || ord.phone).replace(/\D/g, '').slice(-10) : '';
+      const ordEmail = (ord.customerEmail || ord.customer?.email || ord.email) ? String(ord.customerEmail || ord.customer?.email || ord.email).toLowerCase().trim() : '';
+      const ordCustId = ord.customerId || ord.customer?.id || ord.userId;
+
+      if (cust.id && ordCustId && ordCustId === cust.id) return true;
+      if (cleanCustPhone && ordPhone && (ordPhone === cleanCustPhone || ordPhone.endsWith(cleanCustPhone) || cleanCustPhone.endsWith(ordPhone))) return true;
+      if (cleanCustEmail && ordEmail && ordEmail === cleanCustEmail) return true;
       return false;
     });
 
@@ -1279,8 +1290,49 @@ class AuthManager {
     setBadgeCount('count-status-delivered', deliveredCount);
     setBadgeCount('count-status-warranty', warrantyCount);
 
+    // Synchronize Real Wishlist Count
+    try {
+      const wishlist = JSON.parse(localStorage.getItem('exide_wishlist') || '[]');
+      const countWishlistEl = document.getElementById('prof-count-wishlist');
+      if (countWishlistEl) countWishlistEl.textContent = wishlist.length || 0;
+    } catch (e) {}
+
+    // Synchronize Coupons Count (1 available wholesale discount coupon)
+    const countCouponsEl = document.getElementById('prof-count-coupons');
+    if (countCouponsEl) countCouponsEl.textContent = '1';
+
+    // Synchronize Real Reward Points (1 point per NPR 1,000 spent on actual completed orders)
+    const totalSpent = myOrders.reduce((sum, o) => sum + (Number(o.total || o.grandTotal) || 0), 0);
+    const rewardPoints = Math.floor(totalSpent / 1000);
+    const countPointsEl = document.getElementById('prof-count-points');
+    if (countPointsEl) countPointsEl.textContent = rewardPoints;
+
+    // Render Live Cart Details Inside Profile
+    this.renderProfileCartSummary();
+
     // Render Preview of Active Orders in Dashboard
     this.renderActiveOrdersPreview(myOrders);
+
+    // Asynchronously pull from Supabase if connected
+    if (window.supabaseClient && (cleanCustEmail || cleanCustPhone)) {
+      window.supabaseClient
+        .from('orders')
+        .select('*')
+        .or(`customer_email.eq.${cleanCustEmail},customer_phone.eq.${cleanCustPhone}`)
+        .then(({ data, error }) => {
+          if (!error && Array.isArray(data) && data.length > 0) {
+            // Update orders if fresh records returned
+            let localList = [];
+            try { localList = JSON.parse(localStorage.getItem('exide_orders') || '[]'); } catch (e) {}
+            data.forEach(so => {
+              if (!localList.some(lo => lo.id === so.id || lo.orderId === so.id)) {
+                localList.push(so);
+              }
+            });
+            localStorage.setItem('exide_orders', JSON.stringify(localList));
+          }
+        }).catch(() => {});
+    }
 
     // 3. Populate Editable Form Inputs
     const setVal = (id, val) => {
@@ -1318,10 +1370,13 @@ class AuthManager {
 
     if (!orders || orders.length === 0) {
       container.innerHTML = `
-        <div class="prof-orders-empty-card">
-          <div style="font-size:1.75rem; margin-bottom:0.25rem;">📦</div>
-          <strong style="color:#1E293B; font-size:0.86rem; display:block;">No Active Deliveries</strong>
-          <span style="font-size:0.75rem; color:#64748B;">Orders placed will appear here with live Kathmandu delivery tracking & tax invoices.</span>
+        <div class="prof-no-orders-clean">
+          <div class="prof-no-orders-icon">📦</div>
+          <strong style="color:#1E293B; font-size:0.88rem; display:block; margin-bottom:0.25rem;">No Active Orders Placed</strong>
+          <span style="font-size:0.78rem; color:#64748B; display:block; margin-bottom:0.85rem;">When you order genuine Exide batteries with free delivery in Kathmandu, your real-time tracking, warranty cards, and IRD tax invoices will show here.</span>
+          <button type="button" class="btn btn-primary" onclick="window.authManager.closeCustomerProfileModal(); window.smoothNav('#products-section');" style="font-size:0.8rem; padding:6px 16px; font-weight:700; border-radius:8px;">
+            Shop Batteries Now ➔
+          </button>
         </div>
       `;
       return;
@@ -1329,7 +1384,7 @@ class AuthManager {
 
     const latest = orders.slice(0, 3);
     const html = latest.map(ord => {
-      const ordId = ord.id || ord.orderId || 'EXD-' + Math.floor(100000 + Math.random() * 900000);
+      const ordId = ord.id || ord.orderId || ('ORD-' + (ord.createdAt ? new Date(ord.createdAt).getTime().toString().slice(-6) : 'REF'));
       const total = (Number(ord.total) || Number(ord.grandTotal) || 0).toLocaleString('en-IN');
       const date = ord.createdAt ? new Date(ord.createdAt).toLocaleDateString('en-GB') : 'Recent';
       const status = ord.status || 'CONFIRMED';
@@ -1348,10 +1403,10 @@ class AuthManager {
             <div class="prof-order-amount">Rs. ${total}</div>
             <div class="prof-order-actions-row">
               <button type="button" class="btn-prof-track-order" onclick="window.authManager.openOrderTracker('${ordId}')">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
                 <span>Track Order</span>
               </button>
-              <button type="button" class="btn-prof-invoice" onclick="if(window.cartSystem && window.cartSystem.showOrderDetailsModal){ window.cartSystem.showOrderDetailsModal('${ordId}'); } else { window.open('https://wa.me/9779809163454?text=Invoice%20Inquiry%20Order%20${ordId}', '_blank'); }">
+              <button type="button" class="btn-prof-invoice" onclick="if(window.cartSystem && window.cartSystem.showOrderDetailsModal){ window.cartSystem.showOrderDetailsModal('${ordId}'); } else { window.open('https://wa.me/9779705997260?text=Invoice%20Inquiry%20Order%20${ordId}', '_blank'); }">
                 Invoice
               </button>
             </div>
@@ -1372,11 +1427,18 @@ class AuthManager {
     }
 
     const cust = this.getCurrentCustomer();
+    const cleanCustPhone = cust?.phone ? String(cust.phone).replace(/\D/g, '').slice(-10) : '';
+    const cleanCustEmail = cust?.email ? String(cust.email).toLowerCase().trim() : '';
+
     const myOrders = allOrders.filter(ord => {
       if (!ord) return false;
-      if (cust && cust.id && ord.customerId === cust.id) return true;
-      if (cust && cust.phone && ord.customerPhone && String(ord.customerPhone).includes(cust.phone)) return true;
-      if (cust && cust.email && ord.customerEmail && ord.customerEmail.toLowerCase() === cust.email.toLowerCase()) return true;
+      const ordPhone = (ord.customerPhone || ord.customer?.phone || ord.phone) ? String(ord.customerPhone || ord.customer?.phone || ord.phone).replace(/\D/g, '').slice(-10) : '';
+      const ordEmail = (ord.customerEmail || ord.customer?.email || ord.email) ? String(ord.customerEmail || ord.customer?.email || ord.email).toLowerCase().trim() : '';
+      const ordCustId = ord.customerId || ord.customer?.id || ord.userId;
+
+      if (cust && cust.id && ordCustId === cust.id) return true;
+      if (cleanCustPhone && ordPhone && (ordPhone === cleanCustPhone || ordPhone.endsWith(cleanCustPhone) || cleanCustPhone.endsWith(ordPhone))) return true;
+      if (cleanCustEmail && ordEmail && ordEmail === cleanCustEmail) return true;
       return false;
     });
 
@@ -1395,11 +1457,11 @@ class AuthManager {
     if (container) {
       if (filtered.length === 0) {
         container.innerHTML = `
-          <div class="prof-orders-empty-card" style="padding:2rem;">
-            <div style="font-size:2rem; margin-bottom:0.5rem;">🔍</div>
-            <strong>No ${statusKey.toUpperCase()} Orders Found</strong>
-            <p style="font-size:0.8rem; color:#64748B; margin-top:0.25rem;">You currently have no orders matching this stage.</p>
-            <button type="button" class="btn btn-primary" onclick="window.authManager.openCustomerTab('orders')" style="margin-top:0.75rem; font-size:0.8rem; padding:0.4rem 0.9rem;">View All Orders</button>
+          <div class="prof-no-orders-clean">
+            <div class="prof-no-orders-icon">🔍</div>
+            <strong style="color:#0F172A; font-size:0.95rem; display:block; margin-bottom:0.25rem;">No ${statusKey.toUpperCase()} Orders Found</strong>
+            <p style="font-size:0.8rem; color:#64748B; margin-bottom:0.85rem;">You currently have no orders matching this stage.</p>
+            <button type="button" class="btn btn-outline-primary" onclick="window.authManager.openCustomerTab('orders')" style="font-size:0.8rem; padding:6px 14px; font-weight:700;">View All Orders</button>
           </div>
         `;
       } else {
@@ -1417,11 +1479,18 @@ class AuthManager {
     }
 
     const cust = this.getCurrentCustomer();
+    const cleanCustPhone = cust?.phone ? String(cust.phone).replace(/\D/g, '').slice(-10) : '';
+    const cleanCustEmail = cust?.email ? String(cust.email).toLowerCase().trim() : '';
+
     const myOrders = allOrders.filter(ord => {
       if (!ord) return false;
-      if (cust && cust.id && ord.customerId === cust.id) return true;
-      if (cust && cust.phone && ord.customerPhone && String(ord.customerPhone).includes(cust.phone)) return true;
-      if (cust && cust.email && ord.customerEmail && ord.customerEmail.toLowerCase() === cust.email.toLowerCase()) return true;
+      const ordPhone = (ord.customerPhone || ord.customer?.phone || ord.phone) ? String(ord.customerPhone || ord.customer?.phone || ord.phone).replace(/\D/g, '').slice(-10) : '';
+      const ordEmail = (ord.customerEmail || ord.customer?.email || ord.email) ? String(ord.customerEmail || ord.customer?.email || ord.email).toLowerCase().trim() : '';
+      const ordCustId = ord.customerId || ord.customer?.id || ord.userId;
+
+      if (cust && cust.id && ordCustId === cust.id) return true;
+      if (cleanCustPhone && ordPhone && (ordPhone === cleanCustPhone || ordPhone.endsWith(cleanCustPhone) || cleanCustPhone.endsWith(ordPhone))) return true;
+      if (cleanCustEmail && ordEmail && ordEmail === cleanCustEmail) return true;
       return false;
     });
 
@@ -1434,16 +1503,19 @@ class AuthManager {
   buildOrdersTableHtml(orders) {
     if (!orders || orders.length === 0) {
       return `
-        <div class="prof-orders-empty-card" style="padding:2rem;">
-          <div style="font-size:2rem; margin-bottom:0.4rem;">📦</div>
-          <strong>No Orders Recorded Yet</strong>
-          <p style="font-size:0.8rem; color:#64748B;">Once you checkout with Exide batteries, your delivery records, VAT bills, and live tracking will appear here.</p>
+        <div class="prof-no-orders-clean">
+          <div class="prof-no-orders-icon">📋</div>
+          <strong style="color:#0F172A; font-size:0.95rem; display:block; margin-bottom:0.25rem;">No Order History Recorded</strong>
+          <p style="font-size:0.8rem; color:#64748B; margin-bottom:0.85rem;">All genuine battery orders will be recorded here with official Nepal IRD tax invoices and live Kathmandu delivery status.</p>
+          <button type="button" class="btn btn-primary" onclick="window.authManager.closeCustomerProfileModal(); window.smoothNav('#products-section');" style="font-size:0.8rem; padding:6px 16px; font-weight:700; border-radius:8px;">
+            Explore Battery Catalog ➔
+          </button>
         </div>
       `;
     }
 
     const rows = orders.map(ord => {
-      const ordId = ord.id || ord.orderId || 'EXD-' + Math.floor(100000 + Math.random() * 900000);
+      const ordId = ord.id || ord.orderId || ('ORD-' + (ord.createdAt ? new Date(ord.createdAt).getTime().toString().slice(-6) : 'REF'));
       const total = (Number(ord.total) || Number(ord.grandTotal) || 0).toLocaleString('en-IN');
       const date = ord.createdAt ? new Date(ord.createdAt).toLocaleDateString('en-GB') : 'Recent';
       const status = ord.status || 'CONFIRMED';
@@ -1461,7 +1533,7 @@ class AuthManager {
             <button type="button" class="btn btn-outline-primary" onclick="window.authManager.openOrderTracker('${ordId}')" style="font-size:0.75rem; padding:4px 8px; font-weight:700; margin-right:4px;">
               Track
             </button>
-            <button type="button" class="btn btn-primary-red" onclick="if(window.cartSystem && window.cartSystem.showOrderDetailsModal){ window.cartSystem.showOrderDetailsModal('${ordId}'); } else { window.open('https://wa.me/9779809163454?text=Invoice%20Inquiry%20Order%20${ordId}', '_blank'); }" style="font-size:0.75rem; padding:4px 8px; font-weight:700;">
+            <button type="button" class="btn btn-primary-red" onclick="if(window.cartSystem && window.cartSystem.showOrderDetailsModal){ window.cartSystem.showOrderDetailsModal('${ordId}'); } else { window.open('https://wa.me/9779705997260?text=Invoice%20Inquiry%20Order%20${ordId}', '_blank'); }" style="font-size:0.75rem; padding:4px 8px; font-weight:700;">
               Invoice
             </button>
           </td>
@@ -1490,7 +1562,7 @@ class AuthManager {
   }
 
   // ==========================================================================
-  // LIVE ORDER TRACKING (STEP-BY-STEP PROGRESS TRACKER)
+  // LIVE ORDER TRACKING (REAL-TIME PROGRESS TIMELINE)
   // ==========================================================================
   openOrderTracker(orderId) {
     const dash = document.getElementById('prof-view-dashboard');
@@ -1512,15 +1584,23 @@ class AuthManager {
       allOrders = [];
     }
 
-    const order = allOrders.find(o => (o.id === orderId || o.orderId === orderId)) || {
-      id: orderId,
-      status: 'DISPATCHED',
-      createdAt: new Date().toISOString(),
-      grandTotal: 18500,
-      customerName: this.getCurrentCustomer()?.fullName || 'Valued Customer',
-      customerPhone: this.getCurrentCustomer()?.phone || '9809163454',
-      address: 'New Baneshwor, Kathmandu'
-    };
+    const order = allOrders.find(o => (o.id === orderId || o.orderId === orderId));
+    const content = document.getElementById('prof-order-tracker-content');
+    if (!content) return;
+
+    if (!order) {
+      content.innerHTML = `
+        <div style="padding:2.5rem 1.25rem; text-align:center;">
+          <div style="font-size:2.5rem; margin-bottom:0.5rem;">📦</div>
+          <strong style="font-size:1.05rem; color:#0F172A; display:block; margin-bottom:0.35rem;">Order #${orderId} Not Found</strong>
+          <p style="font-size:0.82rem; color:#64748B; margin-bottom:1.25rem;">This order is not present in your active account records.</p>
+          <button type="button" class="btn btn-outline-primary" onclick="window.authManager.backToCustomerDashboard()" style="font-size:0.82rem; padding:6px 16px; font-weight:700;">
+            ← Return to Dashboard
+          </button>
+        </div>
+      `;
+      return;
+    }
 
     const status = String(order.status || 'CONFIRMED').toUpperCase();
     let stepActive = 2; // Default to Confirmed & Processing
@@ -1529,11 +1609,14 @@ class AuthManager {
     else if (status.includes('SHIP') || status.includes('DISPATCH') || status.includes('TRANSIT')) stepActive = 3;
     else if (status.includes('DELIVER') || status.includes('COMPLETE')) stepActive = 4;
 
-    const content = document.getElementById('prof-order-tracker-content');
-    if (!content) return;
-
     const totalNpr = (Number(order.total) || Number(order.grandTotal) || 0).toLocaleString('en-IN');
-    const dateFormatted = order.createdAt ? new Date(order.createdAt).toLocaleString('en-GB') : 'Today';
+    const dateFormatted = order.createdAt ? new Date(order.createdAt).toLocaleString('en-GB') : 'Recent';
+    const riderName = order.dispatchRider?.name || 'Kathmandu Express Dispatch Team';
+    const riderPhone = order.dispatchRider?.phone || '9705997260';
+
+    const itemsSummary = (order.items && order.items.length > 0)
+      ? order.items.map(i => `${i.name || i.productName || 'Battery'} (×${i.quantity || 1})`).join(', ')
+      : 'Genuine Exide Battery System';
 
     content.innerHTML = `
       <div style="padding:1.25rem;">
@@ -1543,6 +1626,7 @@ class AuthManager {
             <div>
               <span class="prof-order-id-tag" style="font-size:0.9rem;">Order #${order.id || orderId}</span>
               <div style="font-size:0.75rem; color:#64748B; margin-top:2px;">Placed on: ${dateFormatted}</div>
+              <div style="font-size:0.8rem; color:#0F172A; font-weight:700; margin-top:4px;">${itemsSummary}</div>
             </div>
             <div style="text-align:right;">
               <span style="font-size:0.74rem; color:#64748B; display:block;">Grand Total</span>
@@ -1551,7 +1635,7 @@ class AuthManager {
           </div>
         </div>
 
-        <!-- Flipkart/Amazon Style Visual Step Timeline -->
+        <!-- 4-Step Flipkart-Style Delivery Progress Tracker -->
         <div class="prof-step-tracker">
           <div class="prof-step-item ${stepActive >= 1 ? 'completed' : ''}">
             <div class="prof-step-bullet">✓</div>
@@ -1573,7 +1657,7 @@ class AuthManager {
             <div class="prof-step-bullet">${stepActive > 3 ? '✓' : '3'}</div>
             <div class="prof-step-info">
               <strong>Out for Delivery & Installation</strong>
-              <span>Kathmandu Express Van: Doorstep fitting & old battery buyback</span>
+              <span>Express technician dispatched for doorstep fitting & old battery buyback</span>
             </div>
           </div>
 
@@ -1591,18 +1675,18 @@ class AuthManager {
           <div style="display:flex; align-items:center; gap:0.75rem;">
             <div class="prof-driver-avatar">🚚</div>
             <div>
-              <strong style="font-size:0.88rem; color:#0F172A; display:block;">Kathmandu Express Dispatch Team</strong>
-              <span style="font-size:0.75rem; color:#64748B;">Lead Technician: Sunil Shrestha (+977-9809163454)</span>
+              <strong style="font-size:0.88rem; color:#0F172A; display:block;">${riderName}</strong>
+              <span style="font-size:0.75rem; color:#64748B;">Official Exide Service Hotline: +977 ${riderPhone}</span>
             </div>
           </div>
-          <button type="button" class="btn btn-outline-primary" onclick="window.open('tel:9809163454')" style="font-size:0.75rem; padding:5px 10px; font-weight:700;">
-            Call Driver
+          <button type="button" class="btn btn-outline-primary" onclick="window.open('tel:${riderPhone}')" style="font-size:0.75rem; padding:5px 10px; font-weight:700;">
+            Call Support
           </button>
         </div>
 
         <!-- Action Buttons -->
         <div style="display:flex; gap:0.65rem; margin-top:1.25rem; flex-wrap:wrap;">
-          <button type="button" class="btn btn-primary" onclick="window.open('https://wa.me/9779809163454?text=Hi%20Exide%20Nepal,%20tracking%20Order%20${order.id || orderId}', '_blank')" style="flex:1; height:44px; font-weight:700; display:inline-flex; align-items:center; justify-content:center; gap:0.5rem;">
+          <button type="button" class="btn btn-primary" onclick="window.open('https://wa.me/9779705997260?text=Hi%20Exide%20Nepal,%20tracking%20Order%20${order.id || orderId}', '_blank')" style="flex:1; height:44px; font-weight:700; display:inline-flex; align-items:center; justify-content:center; gap:0.5rem;">
             <span>💬 Track via WhatsApp</span>
           </button>
           <button type="button" class="btn btn-primary-red" onclick="if(window.cartSystem && window.cartSystem.showOrderDetailsModal){ window.cartSystem.showOrderDetailsModal('${order.id || orderId}'); } else { showToast('Generating official IRD invoice...', 'info'); }" style="flex:1; height:44px; font-weight:700; display:inline-flex; align-items:center; justify-content:center; gap:0.5rem;">
@@ -1611,6 +1695,111 @@ class AuthManager {
         </div>
       </div>
     `;
+  }
+
+  // ==========================================================================
+  // REAL-TIME CART DETAILS & PROFILE SYNCHRONIZATION
+  // ==========================================================================
+  renderProfileCartSummary() {
+    const container = document.getElementById('prof-cart-summary-content');
+    const countBadge = document.getElementById('prof-cart-items-count-badge');
+    if (!container) return;
+
+    const cart = (window.cartSystem && window.cartSystem.items) || (window.cartManager && window.cartManager.items) || JSON.parse(localStorage.getItem('bm_exide_cart') || '[]');
+    const totalCount = cart.reduce((acc, it) => acc + (Number(it.quantity) || 1), 0);
+
+    if (countBadge) {
+      countBadge.textContent = totalCount === 1 ? '1 Item' : `${totalCount} Items`;
+      countBadge.style.display = 'inline-block';
+    }
+
+    if (!cart || cart.length === 0) {
+      container.innerHTML = `
+        <div class="prof-cart-empty-box">
+          <div style="font-size:1.75rem; margin-bottom:0.35rem;">🛒</div>
+          <strong style="color:#1E293B; font-size:0.86rem; display:block;">Your Shopping Cart is Empty</strong>
+          <span style="font-size:0.75rem; color:#64748B; display:block; margin-bottom:0.75rem;">Explore top Exide car, inverter & solar batteries with doorstep delivery in Kathmandu.</span>
+          <button type="button" class="btn btn-outline-primary" onclick="window.authManager.closeCustomerProfileModal(); window.smoothNav('#products-section');" style="font-size:0.78rem; padding:6px 14px; font-weight:700; border-radius:8px;">
+            + Browse Batteries & Add to Cart
+          </button>
+        </div>
+      `;
+      return;
+    }
+
+    let rawSubtotal = 0;
+    cart.forEach(i => {
+      rawSubtotal += (Number(i.price) || 0) * (Number(i.quantity) || 1);
+    });
+
+    const previewItems = cart.slice(0, 3);
+    const itemsHtml = previewItems.map(item => `
+      <div class="prof-cart-preview-row">
+        <img src="${item.image || 'assets/logo.png'}" alt="${item.name}" class="prof-cart-preview-thumb" onerror="this.src='assets/logo.png';" />
+        <div class="prof-cart-preview-meta">
+          <strong class="prof-cart-preview-title">${item.name}</strong>
+          <span class="prof-cart-preview-detail">Qty: ${item.quantity} × NPR ${(Number(item.price) || 0).toLocaleString('en-IN')}</span>
+        </div>
+        <div class="prof-cart-preview-price">
+          NPR ${((Number(item.price) || 0) * (Number(item.quantity) || 1)).toLocaleString('en-IN')}
+        </div>
+      </div>
+    `).join('');
+
+    const moreItemsText = cart.length > 3 ? `<div style="font-size:0.75rem; color:#64748B; text-align:center; padding:4px 0;">+ ${cart.length - 3} more item(s) in cart</div>` : '';
+
+    container.innerHTML = `
+      <div class="prof-cart-preview-list">
+        ${itemsHtml}
+        ${moreItemsText}
+      </div>
+      <div class="prof-cart-action-bar">
+        <div class="prof-cart-total-wrap">
+          <span class="prof-cart-total-lbl">Cart Total:</span>
+          <strong class="prof-cart-total-val">NPR ${rawSubtotal.toLocaleString('en-IN')}</strong>
+        </div>
+        <div class="prof-cart-btn-group">
+          <button type="button" class="btn-prof-cart-outline" onclick="window.authManager.closeCustomerProfileModal(); if(window.cartSystem){ window.cartSystem.openDrawer(); } else if(window.cartManager){ window.cartManager.openDrawer(); }">
+            View Cart
+          </button>
+          <button type="button" class="btn-prof-cart-checkout" onclick="window.authManager.closeCustomerProfileModal(); if(window.cartSystem){ window.cartSystem.openCheckoutModal(); } else if(window.cartManager){ window.cartManager.openCheckoutModal(); }">
+            Checkout Now ➔
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  saveNotificationPreferences() {
+    const cust = this.getCurrentCustomer();
+    if (!cust) return;
+
+    cust.notifications = {
+      sms: document.getElementById('prof-notif-sms')?.checked ?? true,
+      whatsapp: document.getElementById('prof-notif-whatsapp')?.checked ?? true,
+      email: document.getElementById('prof-notif-email')?.checked ?? true,
+      warranty: document.getElementById('prof-notif-warranty')?.checked ?? true
+    };
+
+    localStorage.setItem(this.customerStorageKey, JSON.stringify(cust));
+    if (typeof showToast === 'function') {
+      showToast('Notification preferences saved successfully! ✓', 'success');
+    }
+  }
+
+  saveRegionalPreferences() {
+    const cust = this.getCurrentCustomer();
+    if (!cust) return;
+
+    cust.regional = {
+      currency: document.getElementById('prof-input-currency')?.value || 'NPR',
+      language: document.getElementById('prof-input-lang')?.value || 'en'
+    };
+
+    localStorage.setItem(this.customerStorageKey, JSON.stringify(cust));
+    if (typeof showToast === 'function') {
+      showToast('Regional preferences saved! Display set to NPR (रू).', 'success');
+    }
   }
 
   // ==========================================================================
