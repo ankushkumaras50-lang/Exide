@@ -6338,6 +6338,334 @@ body.search-mode-active {
   font-weight: 800;
 }
 
+/* ==========================================================================
+   CUSTOMER PROFILE & ACCOUNT MANAGEMENT PORTAL
+   ========================================================================== */
+.customer-profile-modal-box {
+  width: 100%;
+  max-width: 680px;
+  max-height: 90vh;
+  background: #FFFFFF;
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25), 0 0 0 1px rgba(15, 23, 42, 0.06);
+}
+
+.customer-profile-header {
+  padding: 1.15rem 1.5rem;
+  background: #FFFFFF;
+  border-bottom: 1px solid #F1F5F9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.prof-tabs-strip {
+  display: flex;
+  align-items: center;
+  background: #F8FAFC;
+  border-bottom: 1px solid #E2E8F0;
+  padding: 0.35rem 0.75rem 0;
+  gap: 0.35rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  flex-shrink: 0;
+}
+
+.prof-tabs-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.prof-tab-btn {
+  border: none;
+  background: transparent;
+  padding: 0.65rem 0.95rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #64748B;
+  border-bottom: 2.5px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  white-space: nowrap;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 6px 6px 0 0;
+}
+
+.prof-tab-btn:hover {
+  color: #0047BA;
+  background: rgba(0, 71, 186, 0.04);
+}
+
+.prof-tab-btn.active {
+  color: #0047BA;
+  border-bottom-color: #0047BA;
+  font-weight: 700;
+  background: #FFFFFF;
+}
+
+.customer-profile-body {
+  padding: 1.5rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* Tab 1: Hero & Overview */
+.prof-hero-card {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.prof-avatar-hero {
+  flex-shrink: 0;
+}
+
+.prof-hero-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.prof-hero-name {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #0F172A;
+  line-height: 1.2;
+}
+
+.prof-hero-sub {
+  font-size: 0.82rem;
+  color: #64748B;
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.prof-badges-row {
+  display: flex;
+  gap: 0.45rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.prof-tag-pill {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: #EFF6FF;
+  color: #2563EB;
+  border: 1px solid #BFDBFE;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Stats 3-Col Grid */
+.prof-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.prof-stat-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 0.85rem 0.75rem;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.prof-stat-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #64748B;
+  letter-spacing: 0.3px;
+}
+
+.prof-stat-value {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #0F172A;
+  margin-top: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Snapshots Grid */
+.prof-snapshot-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.prof-snapshot-card {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 0.95rem 1rem;
+}
+
+/* 2-Column Responsive Form Grids */
+.prof-2col-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.85rem;
+}
+
+/* Informative Section Notes */
+.prof-section-note {
+  background: #EFF6FF;
+  border-left: 3.5px solid #2563EB;
+  border-radius: 0 8px 8px 0;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.8rem;
+  color: #1E3A8A;
+}
+
+.prof-section-note strong {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.prof-section-note span {
+  display: block;
+  color: #3B82F6;
+  line-height: 1.4;
+}
+
+/* Profile Save Button */
+.prof-btn-save {
+  width: 100%;
+  height: 44px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+  box-shadow: 0 2px 6px rgba(0, 71, 186, 0.2);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.prof-btn-save:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 71, 186, 0.3);
+}
+
+/* Footer Bottom Actions */
+.prof-footer-actions {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #E2E8F0;
+  display: flex;
+  gap: 0.75rem;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.prof-footer-actions button {
+  height: 42px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  border-radius: 10px;
+}
+
+.prof-btn-signout {
+  background: #FFF1F2;
+  color: #E11D48;
+  border: 1.5px solid #FECDD3;
+  padding: 0 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.prof-btn-signout:hover {
+  background: #FFE4E6;
+  border-color: #FDA4AF;
+}
+
+/* Orders List Inside Profile */
+.prof-orders-empty {
+  text-align: center;
+  padding: 1.75rem 1rem;
+  background: #F8FAFC;
+  border: 1.5px dashed #CBD5E1;
+  border-radius: 12px;
+}
+
+.prof-orders-table-wrap {
+  overflow-x: auto;
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+}
+
+@media (max-width: 640px) {
+  .customer-profile-modal-box {
+    max-width: 95vw;
+    max-height: 94vh;
+    margin: 0.5rem;
+    border-radius: 16px;
+  }
+  .customer-profile-body {
+    padding: 1rem;
+  }
+  .prof-hero-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.85rem;
+  }
+  .prof-hero-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .prof-badges-row {
+    justify-content: center;
+  }
+  .prof-stats-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  .prof-snapshot-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  .prof-2col-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  .prof-footer-actions {
+    flex-direction: column;
+  }
+  .prof-footer-actions button {
+    width: 100%;
+  }
+}
+
 /* Media Gallery in Stock ERP Modal */
 .product-media-gallery-container {
   display: grid;

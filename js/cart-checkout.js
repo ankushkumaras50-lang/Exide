@@ -476,17 +476,29 @@ class CartSystem {
     const nameInput = document.getElementById('chk-fullname');
     const phoneInput = document.getElementById('chk-phone');
     const emailInput = document.getElementById('chk-email');
+    const panInput = document.getElementById('chk-buyer-pan');
+    const provinceInput = document.getElementById('chk-province');
     const districtInput = document.getElementById('chk-district');
+    const cityInput = document.getElementById('chk-city');
+    const wardInput = document.getElementById('chk-ward');
     const addressInput = document.getElementById('chk-address');
+    const landmarkInput = document.getElementById('chk-landmark');
+    const notesInput = document.getElementById('chk-notes');
 
     if (customer) {
-      if (nameInput) nameInput.value = customer.fullName || '';
-      if (phoneInput) phoneInput.value = customer.phone || '';
+      if (nameInput && customer.fullName) nameInput.value = customer.fullName;
+      if (phoneInput && customer.phone) phoneInput.value = customer.phone;
       if (emailInput && customer.email && !customer.email.includes('@customer.exidebattery.com.np')) {
         emailInput.value = customer.email;
       }
+      if (panInput && customer.panNumber) panInput.value = customer.panNumber;
+      if (provinceInput && customer.province) provinceInput.value = customer.province;
       if (districtInput && customer.district) districtInput.value = customer.district;
+      if (cityInput && customer.city) cityInput.value = customer.city;
+      if (wardInput && customer.ward) wardInput.value = customer.ward;
       if (addressInput && customer.address) addressInput.value = customer.address;
+      if (landmarkInput && customer.landmark) landmarkInput.value = customer.landmark;
+      if (notesInput && customer.deliveryNotes) notesInput.value = customer.deliveryNotes;
 
       const isGoogle = customer.authProvider === 'google';
       const initial = (customer.fullName || 'C').charAt(0).toUpperCase();

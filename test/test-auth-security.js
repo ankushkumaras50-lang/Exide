@@ -2,6 +2,7 @@
 // Exide Battery Wholesale & AET Official Partner
 const googleHandler = require('../lib/auth/google.js');
 const otpHandler = require('../lib/auth/otp.js');
+const customerHandler = require('../lib/auth/customer.js');
 const staffHandler = require('../lib/auth/staff.js');
 const sessionHandler = require('../lib/auth/session.js');
 const adminLoginHandler = require('../lib/auth/admin-login.js');
@@ -235,6 +236,46 @@ async function runAuthSecurityTests() {
 
   assert(authInviteRes.statusCode === 201, 'SuperAdmin successfully creates staff invitation (HTTP 201)');
   assert(authInviteRes.data && authInviteRes.data.invitation && authInviteRes.data.invitation.role === 'inventory_manager', 'Invitation issued with role = inventory_manager');
+
+  // ==========================================================================
+  // 6. CUSTOMER PROFILE MANAGEMENT & E-COMMERCE PREFERENCES SYNC
+  // ==========================================================================
+  console.log('\n👤 6. Customer Profile Management & E-Commerce Preferences Sync:');
+
+  // 6A. Update Customer Profile with Address, Vehicle, and Business PAN
+  const profileUpdateReq = {
+    method: 'POST',
+    headers: { authorization: `Bearer ${customerToken}` },
+    body: {
+      action: 'update-profile',
+      fullName: 'Sunil Kumar Yadav',
+      alternatePhone: '9841000000',
+      province: 'Bagmati Province',
+      district: 'Kathmandu',
+      city: 'Kathmandu Metro',
+      ward: '10',
+      address: 'New Baneshwor, Tole-4',
+      landmark: 'Near Everest Hotel',
+      deliveryNotes: 'Please call before arrival',
+      vehicleType: 'car',
+      vehicleModel: 'Hyundai Creta 1.5 Diesel',
+      batteryAh: '65Ah',
+      companyName: 'Yadav Logistics & Auto Pvt. Ltd.',
+      panNumber: '601928374'
+    }
+  };
+  const profileUpdateRes = mockRes();
+  await customerHandler(profileUpdateReq, profileUpdateRes);
+
+  assert(profileUpdateRes.statusCode === 200, 'Profile update returns HTTP 200');
+  assert(profileUpdateRes.data && profileUpdateRes.data.success === true, 'Profile update reports success = true');
+  assert(profileUpdateRes.data.customer && profileUpdateRes.data.customer.fullName === 'Sunil Kumar Yadav', 'Updated full name saved');
+  assert(profileUpdateRes.data.customer.province === 'Bagmati Province', 'Delivery province saved');
+  assert(profileUpdateRes.data.customer.ward === '10', 'Nepal Ward number saved');
+  assert(profileUpdateRes.data.customer.landmark === 'Near Everest Hotel', 'Notable delivery landmark saved');
+  assert(profileUpdateRes.data.customer.vehicleModel === 'Hyundai Creta 1.5 Diesel', 'Vehicle model preference saved');
+  assert(profileUpdateRes.data.customer.panNumber === '601928374', 'Nepal IRD buyer PAN saved');
+  assert(profileUpdateRes.data.token && typeof profileUpdateRes.data.token === 'string', 'Profile update issues refreshed session JWT');
 
   // Summary
   console.log('\n======================================================');

@@ -2353,11 +2353,12 @@
   </div>
 
   <!-- ==========================================================================
-       18. CUSTOMER PROFILE MODAL
+       18. CUSTOMER PROFILE & ACCOUNT MANAGEMENT PORTAL
        ========================================================================== -->
   <div class="modal-overlay" id="customer-profile-modal-overlay">
-    <div class="auth-modal-content customer-auth-box">
-      <div class="auth-modal-header customer-auth-header">
+    <div class="auth-modal-content customer-profile-modal-box">
+      <!-- Profile Header -->
+      <div class="auth-modal-header customer-profile-header">
         <div style="display:flex; align-items:center; gap:0.75rem;">
           <div id="prof-header-avatar" class="cust-auth-avatar">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0047BA" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -2370,30 +2371,289 @@
         <button type="button" class="auth-modal-close" onclick="window.authManager.closeCustomerProfileModal()" aria-label="Close modal">&times;</button>
       </div>
 
-      <div class="auth-modal-body customer-auth-body">
-        <div id="prof-avatar-slot" style="display:flex; justify-content:center; margin-bottom:1rem;"></div>
+      <!-- Modern Profile Navigation Tabs -->
+      <div class="prof-tabs-strip">
+        <button type="button" class="prof-tab-btn active" id="btn-prof-tab-overview" onclick="switchCustomerProfileTab('overview')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <span>Overview & Orders</span>
+        </button>
+        <button type="button" class="prof-tab-btn" id="btn-prof-tab-personal" onclick="switchCustomerProfileTab('personal')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>Personal Info</span>
+        </button>
+        <button type="button" class="prof-tab-btn" id="btn-prof-tab-address" onclick="switchCustomerProfileTab('address')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>Delivery Address</span>
+        </button>
+        <button type="button" class="prof-tab-btn" id="btn-prof-tab-vehicle" onclick="switchCustomerProfileTab('vehicle')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          <span>Vehicle & Setup</span>
+        </button>
+        <button type="button" class="prof-tab-btn" id="btn-prof-tab-business" onclick="switchCustomerProfileTab('business')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          <span>Business & PAN</span>
+        </button>
+      </div>
 
-        <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:1.15rem; margin-bottom:1.25rem;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem; font-size:0.86rem;">
-            <span style="color:#64748B;">Mobile Phone:</span>
-            <strong id="prof-phone-val" style="color:#0F172A;">-</strong>
+      <div class="auth-modal-body customer-profile-body">
+        <!-- TAB 1: OVERVIEW & ORDERS -->
+        <div id="prof-pane-overview" class="prof-tab-pane active">
+          <!-- Overview Hero Card -->
+          <div class="prof-hero-card">
+            <div id="prof-avatar-slot" class="prof-avatar-hero"></div>
+            <div class="prof-hero-meta">
+              <h4 id="prof-overview-name" class="prof-hero-name">-</h4>
+              <div id="prof-overview-email" class="prof-hero-sub">-</div>
+              <div class="prof-badges-row">
+                <span id="prof-auth-provider-badge" class="prof-tag-pill">Authenticated</span>
+                <span id="prof-phone-badge" class="prof-tag-pill">+977 Phone</span>
+              </div>
+            </div>
           </div>
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem; font-size:0.86rem;">
-            <span style="color:#64748B;">Email Address:</span>
-            <strong id="prof-email-val" style="color:#0F172A; max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">-</strong>
+
+          <!-- Quick Stat Cards -->
+          <div class="prof-stats-grid">
+            <div class="prof-stat-box">
+              <div class="prof-stat-num" id="prof-stat-orders-count">0</div>
+              <div class="prof-stat-label">Past Orders</div>
+            </div>
+            <div class="prof-stat-box">
+              <div class="prof-stat-num" id="prof-stat-warranty-count">Active</div>
+              <div class="prof-stat-label">Warranty Support</div>
+            </div>
+            <div class="prof-stat-box">
+              <div class="prof-stat-num" id="prof-stat-vehicle-label">Standard</div>
+              <div class="prof-stat-label">Battery Match</div>
+            </div>
           </div>
-          <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.86rem;">
-            <span style="color:#64748B;">Delivery Address:</span>
-            <strong id="prof-address-val" style="color:#0F172A; text-align:right; max-width:200px;">-</strong>
+
+          <!-- Quick Details Snapshot Cards -->
+          <div class="prof-snapshot-grid">
+            <div class="prof-snapshot-card">
+              <div class="prof-snapshot-header">
+                <strong>📍 Primary Delivery Address</strong>
+                <button type="button" class="prof-link-btn" onclick="switchCustomerProfileTab('address')">Edit Address</button>
+              </div>
+              <p id="prof-snapshot-address" class="prof-snapshot-text">No delivery address saved yet.</p>
+            </div>
+
+            <div class="prof-snapshot-card">
+              <div class="prof-snapshot-header">
+                <strong>🚗 My Power & Vehicle Setup</strong>
+                <button type="button" class="prof-link-btn" onclick="switchCustomerProfileTab('vehicle')">Configure</button>
+              </div>
+              <p id="prof-snapshot-vehicle" class="prof-snapshot-text">No vehicle or inverter registered.</p>
+            </div>
+          </div>
+
+          <!-- Recent Orders Strip -->
+          <div class="prof-orders-section">
+            <div class="prof-section-title-row">
+              <h5 class="prof-section-title">Recent Orders & Tax Invoices</h5>
+              <button type="button" class="prof-link-btn" onclick="window.authManager.closeCustomerProfileModal(); window.cartSystem.openCheckoutModal();">Active Cart &rarr;</button>
+            </div>
+            <div id="prof-orders-list-slot" class="prof-orders-list">
+              <div class="prof-orders-empty">
+                <span>📦 No recent orders found in this browser session.</span>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div style="display:flex; flex-direction:column; gap:0.6rem;">
-          <button type="button" class="btn btn-primary" onclick="window.authManager.closeCustomerProfileModal(); window.cartSystem.openCheckoutModal();" style="width:100%; height:44px; justify-content:center; font-size:0.88rem; font-weight:700; border-radius:10px;">
+        <!-- TAB 2: PERSONAL & CONTACT -->
+        <div id="prof-pane-personal" class="prof-tab-pane" style="display:none;">
+          <form id="prof-form-personal" onsubmit="event.preventDefault(); window.authManager.saveCustomerProfile();">
+            <div class="prof-section-note">
+              <strong>Personal & Emergency Details</strong>
+              <span>Used for official warranty certificates and doorstep delivery dispatch.</span>
+            </div>
+
+            <div class="form-group" style="margin-bottom:1rem;">
+              <label class="form-label" for="prof-input-fullname">Full Name *</label>
+              <input type="text" id="prof-input-fullname" class="form-input" placeholder="e.g. Ramesh Shrestha" required>
+            </div>
+
+            <div class="prof-2col-grid">
+              <div class="form-group" style="margin-bottom:1rem;">
+                <label class="form-label" for="prof-input-phone">Primary Nepal Mobile (+977) *</label>
+                <div style="display:flex; gap:0.4rem;">
+                  <span class="phone-prefix-pill">+977</span>
+                  <input type="tel" id="prof-input-phone" class="form-input" placeholder="98XXXXXXXX" pattern="[0-9]{10}" maxlength="10" required>
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-bottom:1rem;">
+                <label class="form-label" for="prof-input-alt-phone">Alternate / Emergency Contact (Optional)</label>
+                <div style="display:flex; gap:0.4rem;">
+                  <span class="phone-prefix-pill">+977</span>
+                  <input type="tel" id="prof-input-alt-phone" class="form-input" placeholder="Secondary mobile / Landline" maxlength="10">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom:1rem;">
+              <label class="form-label" for="prof-input-email">Email Address</label>
+              <input type="email" id="prof-input-email" class="form-input" placeholder="name@domain.com">
+              <span id="prof-email-note" style="font-size:0.75rem; color:#64748B; margin-top:3px; display:block;">Official digital tax invoices and warranty backup will be sent here.</span>
+            </div>
+
+            <button type="submit" class="btn btn-primary prof-btn-save">
+              <span>Save Personal Information</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- TAB 3: DELIVERY ADDRESS -->
+        <div id="prof-pane-address" class="prof-tab-pane" style="display:none;">
+          <form id="prof-form-address" onsubmit="event.preventDefault(); window.authManager.saveCustomerProfile();">
+            <div class="prof-section-note">
+              <strong>Default Delivery Destination</strong>
+              <span>Fast same-day delivery across Kathmandu Valley and express dispatch across Nepal.</span>
+            </div>
+
+            <div class="prof-2col-grid">
+              <div class="form-group" style="margin-bottom:1rem;">
+                <label class="form-label" for="prof-input-province">Province *</label>
+                <select id="prof-input-province" class="form-select">
+                  <option value="Bagmati">Bagmati Province</option>
+                  <option value="Koshi">Koshi Province (Province 1)</option>
+                  <option value="Madhesh">Madhesh Province (Province 2)</option>
+                  <option value="Gandaki">Gandaki Province</option>
+                  <option value="Lumbini">Lumbini Province</option>
+                  <option value="Karnali">Karnali Province</option>
+                  <option value="Sudurpashchim">Sudurpashchim Province</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="margin-bottom:1rem;">
+                <label class="form-label" for="prof-input-district">District *</label>
+                <input type="text" id="prof-input-district" class="form-input" placeholder="e.g. Kathmandu, Lalitpur, Chitwan" required>
+              </div>
+            </div>
+
+            <div class="prof-2col-grid">
+              <div class="form-group" style="margin-bottom:1rem;">
+                <label class="form-label" for="prof-input-city">Municipality / City *</label>
+                <input type="text" id="prof-input-city" class="form-input" placeholder="e.g. Kathmandu Metro, Pokhara" required>
+              </div>
+
+              <div class="form-group" style="margin-bottom:1rem;">
+                <label class="form-label" for="prof-input-ward">Ward Number *</label>
+                <input type="text" id="prof-input-ward" class="form-input" placeholder="e.g. 10 or 4" required>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom:1rem;">
+              <label class="form-label" for="prof-input-address">Street / Tole / Area Address *</label>
+              <input type="text" id="prof-input-address" class="form-input" placeholder="e.g. Bijulibazar, Anamnagar Road" required>
+            </div>
+
+            <div class="form-group" style="margin-bottom:1rem;">
+              <label class="form-label" for="prof-input-landmark">Notable Landmark (Helps delivery rider)</label>
+              <input type="text" id="prof-input-landmark" class="form-input" placeholder="e.g. Opposite Krishna Tower, Near Kalanki Chowk">
+            </div>
+
+            <div class="form-group" style="margin-bottom:1.2rem;">
+              <label class="form-label" for="prof-input-delivery-notes">Delivery Instructions / Preferred Time Slot</label>
+              <textarea id="prof-input-delivery-notes" class="form-textarea" rows="2" placeholder="e.g. Please deliver between 10am-1pm, call 15 mins prior."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary prof-btn-save">
+              <span>Save Delivery Address</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- TAB 4: VEHICLE & APPLICATION SETUP -->
+        <div id="prof-pane-vehicle" class="prof-tab-pane" style="display:none;">
+          <form id="prof-form-vehicle" onsubmit="event.preventDefault(); window.authManager.saveCustomerProfile();">
+            <div class="prof-section-note">
+              <strong>Vehicle & Inverter Power Application</strong>
+              <span>Pre-register your vehicle or home inverter for 1-click battery compatibility and warranty assurance.</span>
+            </div>
+
+            <div class="prof-2col-grid">
+              <div class="form-group" style="margin-bottom:1rem;">
+                <label class="form-label" for="prof-input-vehicle-type">Primary Application Type</label>
+                <select id="prof-input-vehicle-type" class="form-select">
+                  <option value="Car / SUV">Car / SUV / Jeep</option>
+                  <option value="Bike / Scooter">Motorcycle / Scooter</option>
+                  <option value="Home Inverter / Solar">Home Inverter & Solar UPS</option>
+                  <option value="Commercial Truck / Bus">Commercial Truck / Bus</option>
+                  <option value="Tractor / Construction">Tractor / Heavy Equipment</option>
+                  <option value="E-Rickshaw">Electric Rickshaw / EV</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="margin-bottom:1rem;">
+                <label class="form-label" for="prof-input-vehicle-model">Brand & Model Name</label>
+                <input type="text" id="prof-input-vehicle-model" class="form-input" placeholder="e.g. Hyundai Creta 1.5, Swift, Pulsar 220, 1500VA Inverter">
+              </div>
+            </div>
+
+            <div class="prof-2col-grid">
+              <div class="form-group" style="margin-bottom:1rem;">
+                <label class="form-label" for="prof-input-battery-ah">Installed / Required Battery Ah</label>
+                <select id="prof-input-battery-ah" class="form-select">
+                  <option value="">Select Capacity (Ah)</option>
+                  <option value="35Ah">35 Ah (Small Cars / Hatchbacks)</option>
+                  <option value="45Ah">45 Ah (Sedans / Compact SUVs)</option>
+                  <option value="65Ah">65 Ah (Mid SUVs / Diesel)</option>
+                  <option value="100Ah">100 Ah (Heavy SUVs / Commercial)</option>
+                  <option value="150Ah">150 Ah (Home Inverter Standard)</option>
+                  <option value="180Ah">180 Ah (High Backup Inverter)</option>
+                  <option value="200Ah">200 Ah (Heavy Duty Solar UPS)</option>
+                  <option value="5Ah">5 Ah (Bikes / Scooters)</option>
+                  <option value="9Ah">9 Ah (High Performance Bikes)</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="margin-bottom:1rem;">
+                <label class="form-label">Battery Match Finder</label>
+                <button type="button" class="btn btn-outline-primary" onclick="window.authManager.findBatteriesForMyVehicle()" style="width:100%; height:42px; font-size:0.84rem; font-weight:700;">
+                  🔍 Find Compatible Batteries
+                </button>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary prof-btn-save">
+              <span>Save Vehicle & Power Setup</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- TAB 5: BUSINESS & WHOLESALE TAX INFO -->
+        <div id="prof-pane-business" class="prof-tab-pane" style="display:none;">
+          <form id="prof-form-business" onsubmit="event.preventDefault(); window.authManager.saveCustomerProfile();">
+            <div class="prof-section-note">
+              <strong>Business & Wholesale Billing (Nepal IRD VAT)</strong>
+              <span>Enter your registered company PAN/VAT number to automatically issue official tax bills for your business.</span>
+            </div>
+
+            <div class="form-group" style="margin-bottom:1rem;">
+              <label class="form-label" for="prof-input-company-name">Company / Workshop / Garage Name</label>
+              <input type="text" id="prof-input-company-name" class="form-input" placeholder="e.g. Shrestha Auto Workshop Pvt. Ltd.">
+            </div>
+
+            <div class="form-group" style="margin-bottom:1rem;">
+              <label class="form-label" for="prof-input-buyer-pan">Nepal Buyer PAN / VAT Number (9 Digits)</label>
+              <input type="text" id="prof-input-buyer-pan" class="form-input" placeholder="e.g. 601928374" pattern="[0-9]{9}" maxlength="9">
+              <span style="font-size:0.75rem; color:#64748B; margin-top:3px; display:block;">Verified with Nepal Inland Revenue Department (IRD) billing standards.</span>
+            </div>
+
+            <button type="submit" class="btn btn-primary prof-btn-save">
+              <span>Save Business & Tax Details</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Bottom Actions Footer -->
+        <div class="prof-footer-actions">
+          <button type="button" class="btn btn-primary-red" onclick="window.authManager.closeCustomerProfileModal(); window.cartSystem.openCheckoutModal();">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-            <span>View Active Cart & Checkout</span>
+            <span>Proceed to Checkout</span>
           </button>
-          <button type="button" class="btn" onclick="window.authManager.logoutCustomer(); window.authManager.closeCustomerProfileModal();" style="width:100%; height:42px; background:#FFF1F2; color:#E11D48; border:1.5px solid #FECDD3; font-size:0.88rem; font-weight:700; border-radius:10px; cursor:pointer;">
+          <button type="button" class="btn prof-btn-signout" onclick="window.authManager.logoutCustomer(); window.authManager.closeCustomerProfileModal();">
             Sign Out of Account
           </button>
         </div>
@@ -2431,6 +2691,12 @@
         phoneForm.style.display = 'block';
         const input = document.getElementById('cust-phone-input');
         if (input) setTimeout(() => input.focus(), 60);
+      }
+    }
+
+    function switchCustomerProfileTab(tab) {
+      if (window.authManager && typeof window.authManager.switchCustomerProfileTab === 'function') {
+        window.authManager.switchCustomerProfileTab(tab);
       }
     }
 

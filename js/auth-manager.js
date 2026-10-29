@@ -1108,6 +1108,417 @@ class AuthManager {
     }
   }
 
+  // ==========================================================================
+  // CUSTOMER PROFILE & ACCOUNT PORTAL MANAGEMENT
+  // ==========================================================================
+  switchCustomerProfileTab(tabName) {
+    const validTabs = ['overview', 'personal', 'address', 'vehicle', 'business'];
+    const activeTab = validTabs.includes(tabName) ? tabName : 'overview';
+
+    // Update Tab Buttons
+    validTabs.forEach(t => {
+      const btn = document.getElementById(`btn-prof-tab-${t}`);
+      if (btn) {
+        if (t === activeTab) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      }
+    });
+
+    // Update Tab Panes
+    validTabs.forEach(t => {
+      const pane = document.getElementById(`prof-pane-${t}`);
+      if (pane) {
+        if (t === activeTab) {
+          pane.style.display = 'block';
+          pane.classList.add('active');
+        } else {
+          pane.style.display = 'none';
+          pane.classList.remove('active');
+        }
+      }
+    });
+  }
+
+  populateCustomerProfileData(cust) {
+    cust = cust || this.getCurrentCustomer();
+    if (!cust) return;
+
+    // 1. Header & Hero Meta
+    const nameVal = document.getElementById('prof-name-val');
+    const badgeVal = document.getElementById('prof-badge-val');
+    const phoneVal = document.getElementById('prof-phone-val');
+    const emailVal = document.getElementById('prof-email-val');
+    const addressVal = document.getElementById('prof-address-val');
+    const avatarSlot = document.getElementById('prof-avatar-slot');
+
+    const heroName = document.getElementById('prof-overview-name');
+    const heroEmail = document.getElementById('prof-overview-email');
+    const authProviderBadge = document.getElementById('prof-auth-provider-badge');
+    const phoneBadge = document.getElementById('prof-phone-badge');
+
+    if (nameVal) nameVal.textContent = cust.fullName || 'Valued Customer';
+    if (heroName) heroName.textContent = cust.fullName || 'Valued Customer';
+    if (phoneVal) phoneVal.textContent = cust.phone ? `+977-${cust.phone}` : 'Not linked (Optional)';
+    if (emailVal) emailVal.textContent = cust.email || 'Customer Account';
+    if (heroEmail) heroEmail.textContent = cust.email || (cust.phone ? `+977-${cust.phone}` : 'Customer Account');
+
+    if (cust.authProvider === 'google') {
+      const googleHtml = `<span style="display:inline-flex; align-items:center; gap:4px; color:#2563EB; font-weight:700;"><svg width="12" height="12" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg> Google Account</span>`;
+      if (badgeVal) badgeVal.innerHTML = googleHtml;
+      if (authProviderBadge) authProviderBadge.innerHTML = googleHtml;
+    } else {
+      const verifiedHtml = `<span style="color:#059669; font-weight:700;">✓ Verified Nepal Account</span>`;
+      if (badgeVal) badgeVal.innerHTML = verifiedHtml;
+      if (authProviderBadge) authProviderBadge.innerHTML = verifiedHtml;
+    }
+
+    if (phoneBadge) {
+      phoneBadge.textContent = cust.phone ? `+977-${cust.phone}` : 'Phone Unlinked';
+    }
+
+    if (avatarSlot) {
+      const initial = (cust.fullName || 'C').charAt(0).toUpperCase();
+      if (cust.photoURL) {
+        avatarSlot.innerHTML = `
+          <div style="position:relative; width:64px; height:64px;">
+            <img src="${cust.photoURL}" alt="${cust.fullName}" style="width:64px; height:64px; border-radius:50%; object-fit:cover; border:2.5px solid #3B82F6; box-shadow:0 4px 12px rgba(59,130,246,0.25);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div style="display:none; width:64px; height:64px; border-radius:50%; background:linear-gradient(135deg,#0047BA,#2563EB); color:#fff; align-items:center; justify-content:center; font-size:1.5rem; font-weight:800;">${initial}</div>
+            <span style="position:absolute; bottom:-2px; right:-2px; width:20px; height:20px; border-radius:50%; background:#fff; border:1px solid #E2E8F0; display:flex; align-items:center; justify-content:center; box-shadow:0 1px 3px rgba(0,0,0,0.15);">
+              <svg width="12" height="12" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
+            </span>
+          </div>
+        `;
+      } else {
+        avatarSlot.innerHTML = `
+          <div style="width:64px; height:64px; border-radius:50%; background:linear-gradient(135deg,#0047BA,#2563EB); color:#fff; display:flex; align-items:center; justify-content:center; font-size:1.5rem; font-weight:800; box-shadow:0 4px 12px rgba(0,71,186,0.25);">
+            ${initial}
+          </div>
+        `;
+      }
+    }
+
+    // 2. Metrics & Order History
+    let allOrders = [];
+    try {
+      allOrders = JSON.parse(localStorage.getItem('exide_orders') || '[]');
+    } catch (e) {
+      allOrders = [];
+    }
+
+    const myOrders = allOrders.filter(ord => {
+      if (!ord) return false;
+      if (cust.id && ord.customerId === cust.id) return true;
+      if (cust.phone && ord.customerPhone && String(ord.customerPhone).includes(cust.phone)) return true;
+      if (cust.email && ord.customerEmail && ord.customerEmail.toLowerCase() === cust.email.toLowerCase()) return true;
+      return false;
+    });
+
+    const statOrders = document.getElementById('prof-stat-orders');
+    const statSpent = document.getElementById('prof-stat-spent');
+    const statVehicle = document.getElementById('prof-stat-vehicle');
+
+    if (statOrders) statOrders.textContent = `${myOrders.length} Orders`;
+    const totalSpent = myOrders.reduce((sum, o) => sum + (Number(o.total) || Number(o.grandTotal) || 0), 0);
+    if (statSpent) statSpent.textContent = `Rs. ${totalSpent.toLocaleString('en-IN')}`;
+
+    const vehicleSummary = [cust.vehicleType, cust.vehicleModel].filter(Boolean).join(' ') || (cust.batteryAh ? cust.batteryAh : 'Setup Required');
+    if (statVehicle) statVehicle.textContent = vehicleSummary;
+
+    // 3. Address & PAN Snapshots
+    const snapAddress = document.getElementById('prof-snap-address');
+    const snapPan = document.getElementById('prof-snap-pan');
+
+    const addressParts = [
+      cust.address,
+      cust.ward ? `Ward-${cust.ward}` : '',
+      cust.city,
+      cust.district,
+      cust.province
+    ].filter(Boolean);
+
+    const fullAddress = addressParts.length > 0 ? addressParts.join(', ') : 'No delivery address saved yet';
+    if (snapAddress) snapAddress.textContent = fullAddress;
+    if (addressVal) addressVal.textContent = fullAddress;
+
+    if (snapPan) {
+      if (cust.panNumber) {
+        snapPan.textContent = `PAN: ${cust.panNumber} ${cust.companyName ? '• ' + cust.companyName : ''}`;
+      } else {
+        snapPan.textContent = 'Personal Customer (Standard Consumer Invoice)';
+      }
+    }
+
+    // 4. Render Orders List in Tab 1
+    const ordersListSlot = document.getElementById('prof-orders-list');
+    if (ordersListSlot) {
+      if (myOrders.length === 0) {
+        ordersListSlot.innerHTML = `
+          <div class="prof-orders-empty">
+            <div style="font-size:2rem; margin-bottom:0.4rem;">📦</div>
+            <p style="font-weight:700; color:#1E293B; margin-bottom:0.25rem;">No Orders Placed Yet</p>
+            <span style="font-size:0.8rem; color:#64748B;">Once you checkout with Exide batteries, your delivery tracking, tax invoices, and warranty records will appear here.</span>
+          </div>
+        `;
+      } else {
+        const rowsHtml = myOrders.slice(0, 5).map(ord => {
+          const ordId = ord.id || ord.orderId || 'ORD-' + Math.floor(Math.random() * 90000 + 10000);
+          const ordDate = ord.createdAt ? new Date(ord.createdAt).toLocaleDateString('en-GB') : 'Recent';
+          const ordTotal = (Number(ord.total) || Number(ord.grandTotal) || 0).toLocaleString('en-IN');
+          const status = ord.status || 'CONFIRMED';
+          const isPending = status.toUpperCase().includes('PENDING');
+          const isCompleted = status.toUpperCase().includes('DELIVER') || status.toUpperCase().includes('COMPLETE') || status.toUpperCase().includes('PAID');
+
+          const statusBadge = isCompleted
+            ? `<span style="background:#ECFDF5; color:#065F46; border:1px solid #A7F3D0; font-size:0.72rem; padding:2px 7px; border-radius:12px; font-weight:700;">${status}</span>`
+            : isPending
+            ? `<span style="background:#FFFBEB; color:#92400E; border:1px solid #FDE68A; font-size:0.72rem; padding:2px 7px; border-radius:12px; font-weight:700;">${status}</span>`
+            : `<span style="background:#EFF6FF; color:#1E40AF; border:1px solid #BFDBFE; font-size:0.72rem; padding:2px 7px; border-radius:12px; font-weight:700;">${status}</span>`;
+
+          return `
+            <tr style="border-bottom:1px solid #F1F5F9; font-size:0.82rem;">
+              <td style="padding:0.6rem 0.5rem; font-weight:700; color:#0047BA;">#${ordId}</td>
+              <td style="padding:0.6rem 0.5rem; color:#64748B;">${ordDate}</td>
+              <td style="padding:0.6rem 0.5rem; font-weight:700; color:#0F172A;">Rs. ${ordTotal}</td>
+              <td style="padding:0.6rem 0.5rem;">${statusBadge}</td>
+              <td style="padding:0.6rem 0.5rem; text-align:right;">
+                <button type="button" class="btn btn-outline-primary" onclick="if(window.cartSystem && window.cartSystem.showOrderDetailsModal){ window.cartSystem.showOrderDetailsModal('${ordId}'); } else { window.open('https://wa.me/9779809163454?text=Inquiry%20regarding%20Order%20${ordId}', '_blank'); }" style="font-size:0.75rem; padding:3px 8px; border-radius:6px; font-weight:700;">
+                  Invoice
+                </button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+
+        ordersListSlot.innerHTML = `
+          <div class="prof-orders-table-wrap">
+            <table class="prof-orders-table" style="width:100%; border-collapse:collapse; text-align:left;">
+              <thead>
+                <tr style="background:#F8FAFC; border-bottom:1.5px solid #E2E8F0; font-size:0.75rem; color:#475569; text-transform:uppercase; letter-spacing:0.5px;">
+                  <th style="padding:0.5rem;">Order</th>
+                  <th style="padding:0.5rem;">Date</th>
+                  <th style="padding:0.5rem;">Total</th>
+                  <th style="padding:0.5rem;">Status</th>
+                  <th style="padding:0.5rem; text-align:right;">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${rowsHtml}
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+    }
+
+    // 5. Populate Form Inputs (Personal, Address, Vehicle, Business)
+    const setVal = (id, val) => {
+      const el = document.getElementById(id);
+      if (el) el.value = val || '';
+    };
+
+    setVal('prof-input-fullname', cust.fullName);
+    setVal('prof-input-phone', cust.phone);
+    setVal('prof-input-alt-phone', cust.alternatePhone);
+    setVal('prof-input-email', cust.email);
+
+    setVal('prof-input-province', cust.province);
+    setVal('prof-input-district', cust.district);
+    setVal('prof-input-city', cust.city);
+    setVal('prof-input-ward', cust.ward);
+    setVal('prof-input-address', cust.address);
+    setVal('prof-input-landmark', cust.landmark);
+    setVal('prof-input-delivery-notes', cust.deliveryNotes);
+
+    setVal('prof-input-vehicle-type', cust.vehicleType);
+    setVal('prof-input-vehicle-model', cust.vehicleModel);
+    setVal('prof-input-battery-ah', cust.batteryAh);
+
+    setVal('prof-input-company-name', cust.companyName);
+    setVal('prof-input-buyer-pan', cust.panNumber);
+  }
+
+  async saveCustomerProfile() {
+    const cust = this.getCurrentCustomer();
+    if (!cust) {
+      if (typeof showToast === 'function') showToast('Please sign in to update your profile.', 'warning');
+      return;
+    }
+
+    const getVal = (id) => {
+      const el = document.getElementById(id);
+      return el ? el.value.trim() : '';
+    };
+
+    const fullName = getVal('prof-input-fullname');
+    const phone = getVal('prof-input-phone');
+    const alternatePhone = getVal('prof-input-alt-phone');
+    const email = getVal('prof-input-email');
+
+    const province = document.getElementById('prof-input-province')?.value || '';
+    const district = getVal('prof-input-district');
+    const city = getVal('prof-input-city');
+    const ward = getVal('prof-input-ward');
+    const address = getVal('prof-input-address');
+    const landmark = getVal('prof-input-landmark');
+    const deliveryNotes = getVal('prof-input-delivery-notes');
+
+    const vehicleType = document.getElementById('prof-input-vehicle-type')?.value || '';
+    const vehicleModel = getVal('prof-input-vehicle-model');
+    const batteryAh = document.getElementById('prof-input-battery-ah')?.value || '';
+
+    const companyName = getVal('prof-input-company-name');
+    const panNumber = getVal('prof-input-buyer-pan');
+
+    if (!fullName) {
+      if (typeof showToast === 'function') showToast('Full Name cannot be empty.', 'warning');
+      return;
+    }
+
+    const cleanPhone = phone ? phone.replace(/\D/g, '').slice(-10) : '';
+    const cleanAltPhone = alternatePhone ? alternatePhone.replace(/\D/g, '').slice(-10) : '';
+
+    if (panNumber && !/^\d{9}$/.test(panNumber)) {
+      if (typeof showToast === 'function') showToast('Buyer PAN must be a valid 9-digit number according to Nepal IRD.', 'warning');
+      return;
+    }
+
+    // Merge into current customer session
+    cust.fullName = fullName;
+    if (cleanPhone) cust.phone = cleanPhone;
+    cust.alternatePhone = cleanAltPhone;
+    if (email) cust.email = email;
+    cust.province = province;
+    cust.district = district;
+    cust.city = city;
+    cust.ward = ward;
+    cust.address = address;
+    cust.landmark = landmark;
+    cust.deliveryNotes = deliveryNotes;
+    cust.vehicleType = vehicleType;
+    cust.vehicleModel = vehicleModel;
+    cust.batteryAh = batteryAh;
+    cust.companyName = companyName;
+    cust.panNumber = panNumber;
+    cust.updatedAt = new Date().toISOString();
+
+    // 1. Local Storage Persistence
+    localStorage.setItem(this.customerStorageKey, JSON.stringify(cust));
+
+    // 2. Offline Accounts Store Sync
+    const accounts = this.getCustomerAccounts();
+    const idx = accounts.findIndex(a => a.id === cust.id || (cust.phone && a.phone === cust.phone) || (cust.email && a.email === cust.email));
+    if (idx >= 0) {
+      accounts[idx] = { ...accounts[idx], ...cust };
+    } else {
+      accounts.push(cust);
+    }
+    this.saveCustomerAccounts(accounts);
+
+    // 3. Dispatch to Serverless Backend API
+    const token = localStorage.getItem(this.customerTokenKey);
+    try {
+      const res = await fetch('/api/auth/customer', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+        },
+        body: JSON.stringify({
+          action: 'update-profile',
+          id: cust.id,
+          token,
+          fullName: cust.fullName,
+          phone: cust.phone,
+          alternatePhone: cust.alternatePhone,
+          email: cust.email,
+          province: cust.province,
+          district: cust.district,
+          city: cust.city,
+          ward: cust.ward,
+          address: cust.address,
+          landmark: cust.landmark,
+          deliveryNotes: cust.deliveryNotes,
+          vehicleType: cust.vehicleType,
+          vehicleModel: cust.vehicleModel,
+          batteryAh: cust.batteryAh,
+          companyName: cust.companyName,
+          panNumber: cust.panNumber
+        })
+      });
+      const data = await res.json().catch(() => ({}));
+      if (data && data.token) {
+        localStorage.setItem(this.customerTokenKey, data.token);
+      }
+    } catch (e) {
+      console.warn('Customer profile API background sync:', e.message);
+    }
+
+    // 4. Supabase Profiles Table Upsert
+    if (typeof window !== 'undefined' && window.supabaseClient && cust.id) {
+      try {
+        window.supabaseClient.from('profiles').upsert({
+          id: cust.id,
+          full_name: cust.fullName,
+          phone: cust.phone,
+          email: cust.email,
+          province: cust.province,
+          district: cust.district,
+          city: cust.city,
+          ward: cust.ward,
+          address: cust.address,
+          delivery_notes: cust.deliveryNotes,
+          updated_at: new Date().toISOString()
+        }).catch(err => console.warn('Supabase profile sync note:', err));
+      } catch (e) {}
+    }
+
+    // 5. Update UI & Checkout
+    this.updateAuthUI();
+    this.triggerCustomerAuthChanged();
+    if (window.cartSystem && typeof window.cartSystem.syncCheckoutAuthUI === 'function') {
+      window.cartSystem.syncCheckoutAuthUI();
+    }
+    this.populateCustomerProfileData(cust);
+
+    if (typeof showToast === 'function') {
+      showToast('Profile updated successfully! ✓ Preferences and address saved.', 'success');
+    }
+  }
+
+  findBatteriesForMyVehicle() {
+    const vType = document.getElementById('prof-input-vehicle-type')?.value;
+    this.closeCustomerProfileModal();
+
+    const finderSection = document.getElementById('finder-section') || 
+                          document.getElementById('battery-finder-section') || 
+                          document.getElementById('products') || 
+                          document.getElementById('products-section');
+    if (finderSection) {
+      finderSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    if (vType) {
+      const selectElem = document.getElementById('finder-vehicle-type') || 
+                         document.getElementById('filter-category') ||
+                         document.querySelector(`[data-category="${vType}"]`);
+      if (selectElem) {
+        if (selectElem.tagName === 'SELECT') {
+          selectElem.value = vType;
+          selectElem.dispatchEvent(new Event('change'));
+        } else if (typeof selectElem.click === 'function') {
+          selectElem.click();
+        }
+      }
+    }
+
+    if (typeof showToast === 'function') {
+      showToast(`Showing matching batteries for ${vType ? vType.toUpperCase() : 'your vehicle'}!`, 'info');
+    }
+  }
+
   openCustomerProfileModal() {
     const cust = this.getCurrentCustomer();
     if (!cust) {
@@ -1116,47 +1527,8 @@ class AuthManager {
     }
     const modal = document.getElementById('customer-profile-modal-overlay');
     if (modal) {
-      const nameVal = document.getElementById('prof-name-val');
-      const badgeVal = document.getElementById('prof-badge-val');
-      const phoneVal = document.getElementById('prof-phone-val');
-      const emailVal = document.getElementById('prof-email-val');
-      const addressVal = document.getElementById('prof-address-val');
-      const avatarSlot = document.getElementById('prof-avatar-slot');
-
-      if (nameVal) nameVal.textContent = cust.fullName || 'Customer';
-      if (phoneVal) phoneVal.textContent = cust.phone ? `+977-${cust.phone}` : 'Not linked (Optional)';
-      if (emailVal) emailVal.textContent = cust.email || 'Google Account';
-      if (addressVal) addressVal.textContent = `${cust.address || 'Kathmandu'}, ${cust.district || 'Nepal'}`;
-
-      if (badgeVal) {
-        if (cust.authProvider === 'google') {
-          badgeVal.innerHTML = `<span style="display:inline-flex; align-items:center; gap:4px; color:#2563EB; font-weight:700;"><svg width="12" height="12" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg> Verified Google Account</span>`;
-        } else {
-          badgeVal.innerHTML = `<span style="color:#059669; font-weight:700;">✓ Verified Nepal Customer</span>`;
-        }
-      }
-
-      if (avatarSlot) {
-        const initial = (cust.fullName || 'C').charAt(0).toUpperCase();
-        if (cust.photoURL) {
-          avatarSlot.innerHTML = `
-            <div style="position:relative; width:68px; height:68px;">
-              <img src="${cust.photoURL}" alt="${cust.fullName}" style="width:68px; height:68px; border-radius:50%; object-fit:cover; border:2.5px solid #3B82F6; box-shadow:0 4px 12px rgba(59,130,246,0.2);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-              <div style="display:none; width:68px; height:68px; border-radius:50%; background:linear-gradient(135deg,#0047BA,#2563EB); color:#fff; align-items:center; justify-content:center; font-size:1.6rem; font-weight:800;">${initial}</div>
-              <span style="position:absolute; bottom:0; right:0; width:20px; height:20px; border-radius:50%; background:#fff; border:1px solid #E2E8F0; display:flex; align-items:center; justify-content:center; box-shadow:0 1px 3px rgba(0,0,0,0.15);">
-                <svg width="12" height="12" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
-              </span>
-            </div>
-          `;
-        } else {
-          avatarSlot.innerHTML = `
-            <div style="width:68px; height:68px; border-radius:50%; background:linear-gradient(135deg,#0047BA,#2563EB); color:#fff; display:flex; align-items:center; justify-content:center; font-size:1.6rem; font-weight:800; box-shadow:0 4px 12px rgba(0,71,186,0.2);">
-              ${initial}
-            </div>
-          `;
-        }
-      }
-
+      this.populateCustomerProfileData(cust);
+      this.switchCustomerProfileTab('overview');
       modal.classList.add('open');
     }
   }
