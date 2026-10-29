@@ -1109,37 +1109,86 @@ class AuthManager {
   }
 
   // ==========================================================================
-  // CUSTOMER PROFILE & ACCOUNT PORTAL MANAGEMENT
+  // CUSTOMER PROFILE & ACCOUNT PORTAL MANAGEMENT (FLIPKART-STYLE DESIGN)
   // ==========================================================================
+  openCustomerSettingsView() {
+    const dash = document.getElementById('prof-view-dashboard');
+    const settings = document.getElementById('prof-view-settings');
+    const subforms = document.getElementById('prof-view-subforms');
+    const tracking = document.getElementById('prof-view-order-tracking');
+    const payments = document.getElementById('prof-view-payments');
+
+    if (dash) dash.style.display = 'none';
+    if (subforms) subforms.style.display = 'none';
+    if (tracking) tracking.style.display = 'none';
+    if (payments) payments.style.display = 'none';
+    if (settings) settings.style.display = 'block';
+  }
+
+  backToCustomerDashboard() {
+    const dash = document.getElementById('prof-view-dashboard');
+    const settings = document.getElementById('prof-view-settings');
+    const subforms = document.getElementById('prof-view-subforms');
+    const tracking = document.getElementById('prof-view-order-tracking');
+    const payments = document.getElementById('prof-view-payments');
+
+    if (settings) settings.style.display = 'none';
+    if (subforms) subforms.style.display = 'none';
+    if (tracking) tracking.style.display = 'none';
+    if (payments) payments.style.display = 'none';
+    if (dash) dash.style.display = 'block';
+
+    this.populateCustomerProfileData();
+  }
+
+  openCustomerTab(tabName) {
+    const dash = document.getElementById('prof-view-dashboard');
+    const settings = document.getElementById('prof-view-settings');
+    const subforms = document.getElementById('prof-view-subforms');
+    const tracking = document.getElementById('prof-view-order-tracking');
+    const payments = document.getElementById('prof-view-payments');
+
+    if (dash) dash.style.display = 'none';
+    if (settings) settings.style.display = 'none';
+    if (tracking) tracking.style.display = 'none';
+
+    if (tabName === 'payments') {
+      if (subforms) subforms.style.display = 'none';
+      if (payments) {
+        payments.style.display = 'block';
+        this.renderSavedPaymentMethods();
+      }
+      return;
+    }
+
+    if (payments) payments.style.display = 'none';
+    if (subforms) subforms.style.display = 'block';
+
+    const subPanes = ['personal', 'address', 'vehicle', 'business', 'orders'];
+    subPanes.forEach(p => {
+      const el = document.getElementById(`prof-pane-${p}`);
+      if (el) el.style.display = (p === tabName) ? 'block' : 'none';
+    });
+
+    const titleEl = document.getElementById('prof-subform-title');
+    if (titleEl) {
+      const titles = {
+        personal: 'Account Settings',
+        address: 'Delivery Address Book',
+        vehicle: 'Vehicle & Inverter Setup',
+        business: 'Business PAN & Tax Billing',
+        orders: 'Order History & Invoices'
+      };
+      titleEl.textContent = titles[tabName] || 'Edit Details';
+    }
+
+    if (tabName === 'orders') {
+      this.renderFullOrderHistory();
+    }
+  }
+
   switchCustomerProfileTab(tabName) {
-    const validTabs = ['overview', 'personal', 'address', 'vehicle', 'business'];
-    const activeTab = validTabs.includes(tabName) ? tabName : 'overview';
-
-    // Update Tab Buttons
-    validTabs.forEach(t => {
-      const btn = document.getElementById(`btn-prof-tab-${t}`);
-      if (btn) {
-        if (t === activeTab) {
-          btn.classList.add('active');
-        } else {
-          btn.classList.remove('active');
-        }
-      }
-    });
-
-    // Update Tab Panes
-    validTabs.forEach(t => {
-      const pane = document.getElementById(`prof-pane-${t}`);
-      if (pane) {
-        if (t === activeTab) {
-          pane.style.display = 'block';
-          pane.classList.add('active');
-        } else {
-          pane.style.display = 'none';
-          pane.classList.remove('active');
-        }
-      }
-    });
+    this.openCustomerTab(tabName);
   }
 
   populateCustomerProfileData(cust) {
@@ -1147,60 +1196,44 @@ class AuthManager {
     if (!cust) return;
 
     // 1. Header & Hero Meta
-    const nameVal = document.getElementById('prof-name-val');
-    const badgeVal = document.getElementById('prof-badge-val');
-    const phoneVal = document.getElementById('prof-phone-val');
-    const emailVal = document.getElementById('prof-email-val');
-    const addressVal = document.getElementById('prof-address-val');
-    const avatarSlot = document.getElementById('prof-avatar-slot');
+    const heroName = document.getElementById('prof-hero-name');
+    const heroContact = document.getElementById('prof-hero-contact');
+    const avatarSlot = document.getElementById('prof-hero-avatar-slot');
+    const vipBadge = document.getElementById('prof-vip-badge');
 
-    const heroName = document.getElementById('prof-overview-name');
-    const heroEmail = document.getElementById('prof-overview-email');
-    const authProviderBadge = document.getElementById('prof-auth-provider-badge');
-    const phoneBadge = document.getElementById('prof-phone-badge');
+    const displayName = cust.fullName || 'Valued Customer';
+    if (heroName) heroName.textContent = displayName;
 
-    if (nameVal) nameVal.textContent = cust.fullName || 'Valued Customer';
-    if (heroName) heroName.textContent = cust.fullName || 'Valued Customer';
-    if (phoneVal) phoneVal.textContent = cust.phone ? `+977-${cust.phone}` : 'Not linked (Optional)';
-    if (emailVal) emailVal.textContent = cust.email || 'Customer Account';
-    if (heroEmail) heroEmail.textContent = cust.email || (cust.phone ? `+977-${cust.phone}` : 'Customer Account');
-
-    if (cust.authProvider === 'google') {
-      const googleHtml = `<span style="display:inline-flex; align-items:center; gap:4px; color:#2563EB; font-weight:700;"><svg width="12" height="12" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg> Google Account</span>`;
-      if (badgeVal) badgeVal.innerHTML = googleHtml;
-      if (authProviderBadge) authProviderBadge.innerHTML = googleHtml;
-    } else {
-      const verifiedHtml = `<span style="color:#059669; font-weight:700;">✓ Verified Nepal Account</span>`;
-      if (badgeVal) badgeVal.innerHTML = verifiedHtml;
-      if (authProviderBadge) authProviderBadge.innerHTML = verifiedHtml;
+    if (heroContact) {
+      const contactParts = [];
+      if (cust.phone) contactParts.push(`+977-${cust.phone}`);
+      if (cust.authProvider === 'google') contactParts.push('Google Verified');
+      else if (cust.isPhoneVerified) contactParts.push('OTP Verified');
+      else contactParts.push(cust.email || 'Customer Account');
+      heroContact.textContent = contactParts.join(' • ');
     }
 
-    if (phoneBadge) {
-      phoneBadge.textContent = cust.phone ? `+977-${cust.phone}` : 'Phone Unlinked';
-    }
-
-    if (avatarSlot) {
-      const initial = (cust.fullName || 'C').charAt(0).toUpperCase();
-      if (cust.photoURL) {
-        avatarSlot.innerHTML = `
-          <div style="position:relative; width:64px; height:64px;">
-            <img src="${cust.photoURL}" alt="${cust.fullName}" style="width:64px; height:64px; border-radius:50%; object-fit:cover; border:2.5px solid #3B82F6; box-shadow:0 4px 12px rgba(59,130,246,0.25);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-            <div style="display:none; width:64px; height:64px; border-radius:50%; background:linear-gradient(135deg,#0047BA,#2563EB); color:#fff; align-items:center; justify-content:center; font-size:1.5rem; font-weight:800;">${initial}</div>
-            <span style="position:absolute; bottom:-2px; right:-2px; width:20px; height:20px; border-radius:50%; background:#fff; border:1px solid #E2E8F0; display:flex; align-items:center; justify-content:center; box-shadow:0 1px 3px rgba(0,0,0,0.15);">
-              <svg width="12" height="12" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
-            </span>
-          </div>
-        `;
+    if (vipBadge) {
+      if (cust.authProvider === 'google' || cust.panNumber) {
+        vipBadge.innerHTML = '👑 VIP Wholesale Partner';
       } else {
-        avatarSlot.innerHTML = `
-          <div style="width:64px; height:64px; border-radius:50%; background:linear-gradient(135deg,#0047BA,#2563EB); color:#fff; display:flex; align-items:center; justify-content:center; font-size:1.5rem; font-weight:800; box-shadow:0 4px 12px rgba(0,71,186,0.25);">
-            ${initial}
-          </div>
-        `;
+        vipBadge.innerHTML = '⚡ Verified Member';
       }
     }
 
-    // 2. Metrics & Order History
+    if (avatarSlot) {
+      const initial = (displayName || 'C').charAt(0).toUpperCase();
+      if (cust.photoURL) {
+        avatarSlot.innerHTML = `
+          <img src="${cust.photoURL}" alt="${displayName}" class="prof-hero-avatar-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+          <div class="prof-hero-avatar-fallback" style="display:none;">${initial}</div>
+        `;
+      } else {
+        avatarSlot.innerHTML = `<div class="prof-hero-avatar-fallback">${initial}</div>`;
+      }
+    }
+
+    // 2. Metrics & Orders Computation
     let allOrders = [];
     try {
       allOrders = JSON.parse(localStorage.getItem('exide_orders') || '[]');
@@ -1216,104 +1249,40 @@ class AuthManager {
       return false;
     });
 
-    const statOrders = document.getElementById('prof-stat-orders');
-    const statSpent = document.getElementById('prof-stat-spent');
-    const statVehicle = document.getElementById('prof-stat-vehicle');
+    // Count by statuses for the 5 icons in "My Orders"
+    let pendingCount = 0;
+    let processingCount = 0;
+    let shippedCount = 0;
+    let deliveredCount = 0;
+    let warrantyCount = 0;
 
-    if (statOrders) statOrders.textContent = `${myOrders.length} Orders`;
-    const totalSpent = myOrders.reduce((sum, o) => sum + (Number(o.total) || Number(o.grandTotal) || 0), 0);
-    if (statSpent) statSpent.textContent = `Rs. ${totalSpent.toLocaleString('en-IN')}`;
+    myOrders.forEach(o => {
+      const st = String(o.status || '').toLowerCase();
+      if (st.includes('pending') || st.includes('unpaid')) pendingCount++;
+      else if (st.includes('process') || st.includes('confirm') || st.includes('package')) processingCount++;
+      else if (st.includes('ship') || st.includes('dispatch') || st.includes('transit')) shippedCount++;
+      else if (st.includes('deliver') || st.includes('complete') || st.includes('paid')) deliveredCount++;
+      else warrantyCount++;
+    });
 
-    const vehicleSummary = [cust.vehicleType, cust.vehicleModel].filter(Boolean).join(' ') || (cust.batteryAh ? cust.batteryAh : 'Setup Required');
-    if (statVehicle) statVehicle.textContent = vehicleSummary;
-
-    // 3. Address & PAN Snapshots
-    const snapAddress = document.getElementById('prof-snap-address');
-    const snapPan = document.getElementById('prof-snap-pan');
-
-    const addressParts = [
-      cust.address,
-      cust.ward ? `Ward-${cust.ward}` : '',
-      cust.city,
-      cust.district,
-      cust.province
-    ].filter(Boolean);
-
-    const fullAddress = addressParts.length > 0 ? addressParts.join(', ') : 'No delivery address saved yet';
-    if (snapAddress) snapAddress.textContent = fullAddress;
-    if (addressVal) addressVal.textContent = fullAddress;
-
-    if (snapPan) {
-      if (cust.panNumber) {
-        snapPan.textContent = `PAN: ${cust.panNumber} ${cust.companyName ? '• ' + cust.companyName : ''}`;
-      } else {
-        snapPan.textContent = 'Personal Customer (Standard Consumer Invoice)';
+    const setBadgeCount = (id, count) => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.textContent = count;
+        el.style.display = count > 0 ? 'inline-flex' : 'none';
       }
-    }
+    };
 
-    // 4. Render Orders List in Tab 1
-    const ordersListSlot = document.getElementById('prof-orders-list');
-    if (ordersListSlot) {
-      if (myOrders.length === 0) {
-        ordersListSlot.innerHTML = `
-          <div class="prof-orders-empty">
-            <div style="font-size:2rem; margin-bottom:0.4rem;">📦</div>
-            <p style="font-weight:700; color:#1E293B; margin-bottom:0.25rem;">No Orders Placed Yet</p>
-            <span style="font-size:0.8rem; color:#64748B;">Once you checkout with Exide batteries, your delivery tracking, tax invoices, and warranty records will appear here.</span>
-          </div>
-        `;
-      } else {
-        const rowsHtml = myOrders.slice(0, 5).map(ord => {
-          const ordId = ord.id || ord.orderId || 'ORD-' + Math.floor(Math.random() * 90000 + 10000);
-          const ordDate = ord.createdAt ? new Date(ord.createdAt).toLocaleDateString('en-GB') : 'Recent';
-          const ordTotal = (Number(ord.total) || Number(ord.grandTotal) || 0).toLocaleString('en-IN');
-          const status = ord.status || 'CONFIRMED';
-          const isPending = status.toUpperCase().includes('PENDING');
-          const isCompleted = status.toUpperCase().includes('DELIVER') || status.toUpperCase().includes('COMPLETE') || status.toUpperCase().includes('PAID');
+    setBadgeCount('count-status-pending', pendingCount);
+    setBadgeCount('count-status-processing', processingCount);
+    setBadgeCount('count-status-shipped', shippedCount);
+    setBadgeCount('count-status-delivered', deliveredCount);
+    setBadgeCount('count-status-warranty', warrantyCount);
 
-          const statusBadge = isCompleted
-            ? `<span style="background:#ECFDF5; color:#065F46; border:1px solid #A7F3D0; font-size:0.72rem; padding:2px 7px; border-radius:12px; font-weight:700;">${status}</span>`
-            : isPending
-            ? `<span style="background:#FFFBEB; color:#92400E; border:1px solid #FDE68A; font-size:0.72rem; padding:2px 7px; border-radius:12px; font-weight:700;">${status}</span>`
-            : `<span style="background:#EFF6FF; color:#1E40AF; border:1px solid #BFDBFE; font-size:0.72rem; padding:2px 7px; border-radius:12px; font-weight:700;">${status}</span>`;
+    // Render Preview of Active Orders in Dashboard
+    this.renderActiveOrdersPreview(myOrders);
 
-          return `
-            <tr style="border-bottom:1px solid #F1F5F9; font-size:0.82rem;">
-              <td style="padding:0.6rem 0.5rem; font-weight:700; color:#0047BA;">#${ordId}</td>
-              <td style="padding:0.6rem 0.5rem; color:#64748B;">${ordDate}</td>
-              <td style="padding:0.6rem 0.5rem; font-weight:700; color:#0F172A;">Rs. ${ordTotal}</td>
-              <td style="padding:0.6rem 0.5rem;">${statusBadge}</td>
-              <td style="padding:0.6rem 0.5rem; text-align:right;">
-                <button type="button" class="btn btn-outline-primary" onclick="if(window.cartSystem && window.cartSystem.showOrderDetailsModal){ window.cartSystem.showOrderDetailsModal('${ordId}'); } else { window.open('https://wa.me/9779809163454?text=Inquiry%20regarding%20Order%20${ordId}', '_blank'); }" style="font-size:0.75rem; padding:3px 8px; border-radius:6px; font-weight:700;">
-                  Invoice
-                </button>
-              </td>
-            </tr>
-          `;
-        }).join('');
-
-        ordersListSlot.innerHTML = `
-          <div class="prof-orders-table-wrap">
-            <table class="prof-orders-table" style="width:100%; border-collapse:collapse; text-align:left;">
-              <thead>
-                <tr style="background:#F8FAFC; border-bottom:1.5px solid #E2E8F0; font-size:0.75rem; color:#475569; text-transform:uppercase; letter-spacing:0.5px;">
-                  <th style="padding:0.5rem;">Order</th>
-                  <th style="padding:0.5rem;">Date</th>
-                  <th style="padding:0.5rem;">Total</th>
-                  <th style="padding:0.5rem;">Status</th>
-                  <th style="padding:0.5rem; text-align:right;">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${rowsHtml}
-              </tbody>
-            </table>
-          </div>
-        `;
-      }
-    }
-
-    // 5. Populate Form Inputs (Personal, Address, Vehicle, Business)
+    // 3. Populate Editable Form Inputs
     const setVal = (id, val) => {
       const el = document.getElementById(id);
       if (el) el.value = val || '';
@@ -1324,7 +1293,7 @@ class AuthManager {
     setVal('prof-input-alt-phone', cust.alternatePhone);
     setVal('prof-input-email', cust.email);
 
-    setVal('prof-input-province', cust.province);
+    setVal('prof-input-province', cust.province || 'Bagmati');
     setVal('prof-input-district', cust.district);
     setVal('prof-input-city', cust.city);
     setVal('prof-input-ward', cust.ward);
@@ -1338,6 +1307,580 @@ class AuthManager {
 
     setVal('prof-input-company-name', cust.companyName);
     setVal('prof-input-buyer-pan', cust.panNumber);
+
+    // 4. Render Recommended / Hot Sale Batteries
+    this.renderHotSaleBatteries();
+  }
+
+  renderActiveOrdersPreview(orders) {
+    const container = document.getElementById('prof-active-orders-container');
+    if (!container) return;
+
+    if (!orders || orders.length === 0) {
+      container.innerHTML = `
+        <div class="prof-orders-empty-card">
+          <div style="font-size:1.75rem; margin-bottom:0.25rem;">📦</div>
+          <strong style="color:#1E293B; font-size:0.86rem; display:block;">No Active Deliveries</strong>
+          <span style="font-size:0.75rem; color:#64748B;">Orders placed will appear here with live Kathmandu delivery tracking & tax invoices.</span>
+        </div>
+      `;
+      return;
+    }
+
+    const latest = orders.slice(0, 3);
+    const html = latest.map(ord => {
+      const ordId = ord.id || ord.orderId || 'EXD-' + Math.floor(100000 + Math.random() * 900000);
+      const total = (Number(ord.total) || Number(ord.grandTotal) || 0).toLocaleString('en-IN');
+      const date = ord.createdAt ? new Date(ord.createdAt).toLocaleDateString('en-GB') : 'Recent';
+      const status = ord.status || 'CONFIRMED';
+      const isDelivered = status.toLowerCase().includes('deliver') || status.toLowerCase().includes('complete');
+
+      return `
+        <div class="prof-order-preview-card">
+          <div class="prof-order-card-header">
+            <div>
+              <span class="prof-order-id-tag">#${ordId}</span>
+              <span class="prof-order-date">${date}</span>
+            </div>
+            <span class="prof-order-status-badge ${isDelivered ? 'green' : 'blue'}">${status}</span>
+          </div>
+          <div class="prof-order-card-body">
+            <div class="prof-order-amount">Rs. ${total}</div>
+            <div class="prof-order-actions-row">
+              <button type="button" class="btn-prof-track-order" onclick="window.authManager.openOrderTracker('${ordId}')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                <span>Track Order</span>
+              </button>
+              <button type="button" class="btn-prof-invoice" onclick="if(window.cartSystem && window.cartSystem.showOrderDetailsModal){ window.cartSystem.showOrderDetailsModal('${ordId}'); } else { window.open('https://wa.me/9779809163454?text=Invoice%20Inquiry%20Order%20${ordId}', '_blank'); }">
+                Invoice
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    container.innerHTML = html;
+  }
+
+  filterOrdersByStatus(statusKey) {
+    let allOrders = [];
+    try {
+      allOrders = JSON.parse(localStorage.getItem('exide_orders') || '[]');
+    } catch (e) {
+      allOrders = [];
+    }
+
+    const cust = this.getCurrentCustomer();
+    const myOrders = allOrders.filter(ord => {
+      if (!ord) return false;
+      if (cust && cust.id && ord.customerId === cust.id) return true;
+      if (cust && cust.phone && ord.customerPhone && String(ord.customerPhone).includes(cust.phone)) return true;
+      if (cust && cust.email && ord.customerEmail && ord.customerEmail.toLowerCase() === cust.email.toLowerCase()) return true;
+      return false;
+    });
+
+    const filtered = myOrders.filter(o => {
+      const st = String(o.status || '').toLowerCase();
+      if (statusKey === 'pending') return st.includes('pending') || st.includes('unpaid');
+      if (statusKey === 'processing') return st.includes('process') || st.includes('confirm');
+      if (statusKey === 'shipped') return st.includes('ship') || st.includes('transit') || st.includes('dispatch');
+      if (statusKey === 'delivered') return st.includes('deliver') || st.includes('complete');
+      if (statusKey === 'warranty') return st.includes('warranty') || st.includes('scrap') || st.includes('exchange');
+      return true;
+    });
+
+    this.openCustomerTab('orders');
+    const container = document.getElementById('prof-full-orders-list-slot');
+    if (container) {
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="prof-orders-empty-card" style="padding:2rem;">
+            <div style="font-size:2rem; margin-bottom:0.5rem;">🔍</div>
+            <strong>No ${statusKey.toUpperCase()} Orders Found</strong>
+            <p style="font-size:0.8rem; color:#64748B; margin-top:0.25rem;">You currently have no orders matching this stage.</p>
+            <button type="button" class="btn btn-primary" onclick="window.authManager.openCustomerTab('orders')" style="margin-top:0.75rem; font-size:0.8rem; padding:0.4rem 0.9rem;">View All Orders</button>
+          </div>
+        `;
+      } else {
+        container.innerHTML = this.buildOrdersTableHtml(filtered);
+      }
+    }
+  }
+
+  renderFullOrderHistory() {
+    let allOrders = [];
+    try {
+      allOrders = JSON.parse(localStorage.getItem('exide_orders') || '[]');
+    } catch (e) {
+      allOrders = [];
+    }
+
+    const cust = this.getCurrentCustomer();
+    const myOrders = allOrders.filter(ord => {
+      if (!ord) return false;
+      if (cust && cust.id && ord.customerId === cust.id) return true;
+      if (cust && cust.phone && ord.customerPhone && String(ord.customerPhone).includes(cust.phone)) return true;
+      if (cust && cust.email && ord.customerEmail && ord.customerEmail.toLowerCase() === cust.email.toLowerCase()) return true;
+      return false;
+    });
+
+    const container = document.getElementById('prof-full-orders-list-slot');
+    if (container) {
+      container.innerHTML = this.buildOrdersTableHtml(myOrders);
+    }
+  }
+
+  buildOrdersTableHtml(orders) {
+    if (!orders || orders.length === 0) {
+      return `
+        <div class="prof-orders-empty-card" style="padding:2rem;">
+          <div style="font-size:2rem; margin-bottom:0.4rem;">📦</div>
+          <strong>No Orders Recorded Yet</strong>
+          <p style="font-size:0.8rem; color:#64748B;">Once you checkout with Exide batteries, your delivery records, VAT bills, and live tracking will appear here.</p>
+        </div>
+      `;
+    }
+
+    const rows = orders.map(ord => {
+      const ordId = ord.id || ord.orderId || 'EXD-' + Math.floor(100000 + Math.random() * 900000);
+      const total = (Number(ord.total) || Number(ord.grandTotal) || 0).toLocaleString('en-IN');
+      const date = ord.createdAt ? new Date(ord.createdAt).toLocaleDateString('en-GB') : 'Recent';
+      const status = ord.status || 'CONFIRMED';
+      const isDelivered = status.toLowerCase().includes('deliver') || status.toLowerCase().includes('complete');
+
+      return `
+        <tr style="border-bottom:1px solid #F1F5F9; font-size:0.82rem;">
+          <td style="padding:0.75rem 0.5rem; font-weight:700; color:#0047BA;">#${ordId}</td>
+          <td style="padding:0.75rem 0.5rem; color:#64748B;">${date}</td>
+          <td style="padding:0.75rem 0.5rem; font-weight:800; color:#0F172A;">Rs. ${total}</td>
+          <td style="padding:0.75rem 0.5rem;">
+            <span class="prof-order-status-badge ${isDelivered ? 'green' : 'blue'}">${status}</span>
+          </td>
+          <td style="padding:0.75rem 0.5rem; text-align:right;">
+            <button type="button" class="btn btn-outline-primary" onclick="window.authManager.openOrderTracker('${ordId}')" style="font-size:0.75rem; padding:4px 8px; font-weight:700; margin-right:4px;">
+              Track
+            </button>
+            <button type="button" class="btn btn-primary-red" onclick="if(window.cartSystem && window.cartSystem.showOrderDetailsModal){ window.cartSystem.showOrderDetailsModal('${ordId}'); } else { window.open('https://wa.me/9779809163454?text=Invoice%20Inquiry%20Order%20${ordId}', '_blank'); }" style="font-size:0.75rem; padding:4px 8px; font-weight:700;">
+              Invoice
+            </button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+
+    return `
+      <div class="prof-orders-table-wrap">
+        <table class="prof-orders-table" style="width:100%; border-collapse:collapse;">
+          <thead>
+            <tr style="background:#F8FAFC; border-bottom:1.5px solid #E2E8F0; font-size:0.74rem; color:#475569; text-transform:uppercase;">
+              <th style="padding:0.6rem 0.5rem; text-align:left;">Order ID</th>
+              <th style="padding:0.6rem 0.5rem; text-align:left;">Date</th>
+              <th style="padding:0.6rem 0.5rem; text-align:left;">Total</th>
+              <th style="padding:0.6rem 0.5rem; text-align:left;">Stage</th>
+              <th style="padding:0.6rem 0.5rem; text-align:right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows}
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+
+  // ==========================================================================
+  // LIVE ORDER TRACKING (STEP-BY-STEP PROGRESS TRACKER)
+  // ==========================================================================
+  openOrderTracker(orderId) {
+    const dash = document.getElementById('prof-view-dashboard');
+    const settings = document.getElementById('prof-view-settings');
+    const subforms = document.getElementById('prof-view-subforms');
+    const tracking = document.getElementById('prof-view-order-tracking');
+    const payments = document.getElementById('prof-view-payments');
+
+    if (dash) dash.style.display = 'none';
+    if (settings) settings.style.display = 'none';
+    if (subforms) subforms.style.display = 'none';
+    if (payments) payments.style.display = 'none';
+    if (tracking) tracking.style.display = 'block';
+
+    let allOrders = [];
+    try {
+      allOrders = JSON.parse(localStorage.getItem('exide_orders') || '[]');
+    } catch (e) {
+      allOrders = [];
+    }
+
+    const order = allOrders.find(o => (o.id === orderId || o.orderId === orderId)) || {
+      id: orderId,
+      status: 'DISPATCHED',
+      createdAt: new Date().toISOString(),
+      grandTotal: 18500,
+      customerName: this.getCurrentCustomer()?.fullName || 'Valued Customer',
+      customerPhone: this.getCurrentCustomer()?.phone || '9809163454',
+      address: 'New Baneshwor, Kathmandu'
+    };
+
+    const status = String(order.status || 'CONFIRMED').toUpperCase();
+    let stepActive = 2; // Default to Confirmed & Processing
+    if (status.includes('PENDING')) stepActive = 1;
+    else if (status.includes('PROCESS') || status.includes('CONFIRM')) stepActive = 2;
+    else if (status.includes('SHIP') || status.includes('DISPATCH') || status.includes('TRANSIT')) stepActive = 3;
+    else if (status.includes('DELIVER') || status.includes('COMPLETE')) stepActive = 4;
+
+    const content = document.getElementById('prof-order-tracker-content');
+    if (!content) return;
+
+    const totalNpr = (Number(order.total) || Number(order.grandTotal) || 0).toLocaleString('en-IN');
+    const dateFormatted = order.createdAt ? new Date(order.createdAt).toLocaleString('en-GB') : 'Today';
+
+    content.innerHTML = `
+      <div style="padding:1.25rem;">
+        <!-- Top Order Summary Card -->
+        <div class="prof-tracker-summary-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+            <div>
+              <span class="prof-order-id-tag" style="font-size:0.9rem;">Order #${order.id || orderId}</span>
+              <div style="font-size:0.75rem; color:#64748B; margin-top:2px;">Placed on: ${dateFormatted}</div>
+            </div>
+            <div style="text-align:right;">
+              <span style="font-size:0.74rem; color:#64748B; display:block;">Grand Total</span>
+              <strong style="font-size:1.15rem; color:#0F172A;">Rs. ${totalNpr}</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Flipkart/Amazon Style Visual Step Timeline -->
+        <div class="prof-step-tracker">
+          <div class="prof-step-item ${stepActive >= 1 ? 'completed' : ''}">
+            <div class="prof-step-bullet">✓</div>
+            <div class="prof-step-info">
+              <strong>Order Placed & Verified</strong>
+              <span>Received by Exide Central Hub, Bijulibazar</span>
+            </div>
+          </div>
+
+          <div class="prof-step-item ${stepActive >= 2 ? (stepActive === 2 ? 'active' : 'completed') : ''}">
+            <div class="prof-step-bullet">${stepActive > 2 ? '✓' : '2'}</div>
+            <div class="prof-step-info">
+              <strong>Tested & Voltage Inspected</strong>
+              <span>Cold Cranking Amps (CCA) & 12V terminal benchmark passed</span>
+            </div>
+          </div>
+
+          <div class="prof-step-item ${stepActive >= 3 ? (stepActive === 3 ? 'active' : 'completed') : ''}">
+            <div class="prof-step-bullet">${stepActive > 3 ? '✓' : '3'}</div>
+            <div class="prof-step-info">
+              <strong>Out for Delivery & Installation</strong>
+              <span>Kathmandu Express Van: Doorstep fitting & old battery buyback</span>
+            </div>
+          </div>
+
+          <div class="prof-step-item ${stepActive >= 4 ? 'completed' : ''}">
+            <div class="prof-step-bullet">${stepActive >= 4 ? '✓' : '4'}</div>
+            <div class="prof-step-info">
+              <strong>Delivered & Warranty Activated</strong>
+              <span>Official digital warranty & Nepal IRD VAT tax bill issued</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Delivery Personnel & Hotline Card -->
+        <div class="prof-driver-card">
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            <div class="prof-driver-avatar">🚚</div>
+            <div>
+              <strong style="font-size:0.88rem; color:#0F172A; display:block;">Kathmandu Express Dispatch Team</strong>
+              <span style="font-size:0.75rem; color:#64748B;">Lead Technician: Sunil Shrestha (+977-9809163454)</span>
+            </div>
+          </div>
+          <button type="button" class="btn btn-outline-primary" onclick="window.open('tel:9809163454')" style="font-size:0.75rem; padding:5px 10px; font-weight:700;">
+            Call Driver
+          </button>
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="display:flex; gap:0.65rem; margin-top:1.25rem; flex-wrap:wrap;">
+          <button type="button" class="btn btn-primary" onclick="window.open('https://wa.me/9779809163454?text=Hi%20Exide%20Nepal,%20tracking%20Order%20${order.id || orderId}', '_blank')" style="flex:1; height:44px; font-weight:700; display:inline-flex; align-items:center; justify-content:center; gap:0.5rem;">
+            <span>💬 Track via WhatsApp</span>
+          </button>
+          <button type="button" class="btn btn-primary-red" onclick="if(window.cartSystem && window.cartSystem.showOrderDetailsModal){ window.cartSystem.showOrderDetailsModal('${order.id || orderId}'); } else { showToast('Generating official IRD invoice...', 'info'); }" style="flex:1; height:44px; font-weight:700; display:inline-flex; align-items:center; justify-content:center; gap:0.5rem;">
+            <span>📄 Download Tax Bill</span>
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  // ==========================================================================
+  // SAVED PAYMENT METHODS (FLIPKART-STYLE WALLET & PAYMENT PREFERENCES)
+  // ==========================================================================
+  renderSavedPaymentMethods() {
+    const container = document.getElementById('prof-saved-payments-list');
+    if (!container) return;
+
+    const cust = this.getCurrentCustomer();
+    let methods = cust?.savedPaymentMethods || [];
+
+    // Provide default initial methods if user hasn't configured any yet
+    if (methods.length === 0) {
+      methods = [
+        {
+          id: 'pay-esewa-default',
+          type: 'esewa',
+          account: cust?.phone ? cust.phone : '9809163454',
+          label: 'eSewa Mobile Wallet (+977)',
+          isDefault: true
+        },
+        {
+          id: 'pay-cod-default',
+          type: 'cod',
+          account: 'Cash / Fonepay on Doorstep Delivery',
+          label: 'Cash on Delivery (Kathmandu Valley)',
+          isDefault: false
+        }
+      ];
+      if (cust) {
+        cust.savedPaymentMethods = methods;
+        localStorage.setItem(this.customerStorageKey, JSON.stringify(cust));
+      }
+    }
+
+    const html = methods.map((m, idx) => {
+      const typeIcons = {
+        esewa: '📱',
+        khalti: '🟣',
+        connectips: '🏦',
+        cod: '💵',
+        card: '💳'
+      };
+      const icon = typeIcons[m.type] || '💳';
+
+      return `
+        <div class="prof-payment-method-card ${m.isDefault ? 'default-card' : ''}">
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            <div class="prof-payment-icon">${icon}</div>
+            <div>
+              <div style="display:flex; align-items:center; gap:0.4rem;">
+                <strong style="font-size:0.88rem; color:#0F172A;">${m.label || m.type.toUpperCase()}</strong>
+                ${m.isDefault ? '<span class="prof-default-pill">Default</span>' : ''}
+              </div>
+              <div style="font-size:0.78rem; color:#64748B;">${m.account || ''} ${m.bankName ? '• ' + m.bankName : ''}</div>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:0.4rem;">
+            ${!m.isDefault ? `<button type="button" class="btn-prof-sm" onclick="window.authManager.setDefaultPaymentMethod(${idx})">Set Default</button>` : ''}
+            <button type="button" class="btn-prof-sm danger" onclick="window.authManager.deletePaymentMethod(${idx})" title="Remove">✕</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    container.innerHTML = html;
+  }
+
+  handlePaymentTypeChange() {
+    const sel = document.getElementById('prof-input-pay-type');
+    const accLabel = document.getElementById('prof-pay-account-label');
+    const bankField = document.getElementById('prof-pay-field-bankname');
+    const accInput = document.getElementById('prof-input-pay-account');
+
+    if (!sel || !accLabel) return;
+    const val = sel.value;
+
+    if (val === 'esewa') {
+      accLabel.textContent = 'eSewa Registered Mobile Number (+977) *';
+      if (accInput) accInput.placeholder = '98XXXXXXXX';
+      if (bankField) bankField.style.display = 'none';
+    } else if (val === 'khalti') {
+      accLabel.textContent = 'Khalti Digital Wallet Mobile (+977) *';
+      if (accInput) accInput.placeholder = '98XXXXXXXX';
+      if (bankField) bankField.style.display = 'none';
+    } else if (val === 'connectips') {
+      accLabel.textContent = 'Account Number / Username *';
+      if (accInput) accInput.placeholder = 'e.g. 01010175000000';
+      if (bankField) bankField.style.display = 'block';
+    } else if (val === 'cod') {
+      accLabel.textContent = 'Preferred Cash / Fonepay QR Preference';
+      if (accInput) accInput.placeholder = 'e.g. Keep cash ready or pay via Fonepay QR';
+      if (bankField) bankField.style.display = 'none';
+    } else if (val === 'card') {
+      accLabel.textContent = 'Cardholder Name / Bank Name';
+      if (accInput) accInput.placeholder = 'e.g. Ramesh Shrestha - Nabil Visa';
+      if (bankField) bankField.style.display = 'none';
+    }
+  }
+
+  saveNewPaymentMethod() {
+    const cust = this.getCurrentCustomer();
+    if (!cust) {
+      if (typeof showToast === 'function') showToast('Please sign in to save payment methods.', 'warning');
+      return;
+    }
+
+    const typeEl = document.getElementById('prof-input-pay-type');
+    const accEl = document.getElementById('prof-input-pay-account');
+    const bankEl = document.getElementById('prof-input-pay-bank');
+    const defEl = document.getElementById('prof-input-pay-default');
+
+    const type = typeEl ? typeEl.value : 'esewa';
+    const account = accEl ? accEl.value.trim() : '';
+    const bankName = bankEl ? bankEl.value.trim() : '';
+    const isDefault = defEl ? defEl.checked : false;
+
+    if (!account) {
+      if (typeof showToast === 'function') showToast('Please enter your account or mobile number.', 'warning');
+      return;
+    }
+
+    const labels = {
+      esewa: 'eSewa Mobile Wallet',
+      khalti: 'Khalti Digital Wallet',
+      connectips: 'ConnectIPS Bank Account',
+      cod: 'Cash on Delivery',
+      card: 'Debit / Credit Card'
+    };
+
+    let methods = cust.savedPaymentMethods || [];
+    if (isDefault) {
+      methods.forEach(m => m.isDefault = false);
+    }
+
+    methods.push({
+      id: 'pay-' + Date.now().toString(36),
+      type,
+      account,
+      bankName: bankName || null,
+      label: labels[type] || type.toUpperCase(),
+      isDefault: isDefault || methods.length === 0
+    });
+
+    cust.savedPaymentMethods = methods;
+    localStorage.setItem(this.customerStorageKey, JSON.stringify(cust));
+
+    // Reset inputs
+    if (accEl) accEl.value = '';
+    if (bankEl) bankEl.value = '';
+
+    this.renderSavedPaymentMethods();
+    if (typeof showToast === 'function') {
+      showToast('Payment method saved successfully! ✓ Default updated.', 'success');
+    }
+  }
+
+  deletePaymentMethod(index) {
+    const cust = this.getCurrentCustomer();
+    if (!cust || !cust.savedPaymentMethods) return;
+
+    cust.savedPaymentMethods.splice(index, 1);
+    if (cust.savedPaymentMethods.length > 0 && !cust.savedPaymentMethods.some(m => m.isDefault)) {
+      cust.savedPaymentMethods[0].isDefault = true;
+    }
+
+    localStorage.setItem(this.customerStorageKey, JSON.stringify(cust));
+    this.renderSavedPaymentMethods();
+    if (typeof showToast === 'function') showToast('Payment method removed.', 'info');
+  }
+
+  setDefaultPaymentMethod(index) {
+    const cust = this.getCurrentCustomer();
+    if (!cust || !cust.savedPaymentMethods) return;
+
+    cust.savedPaymentMethods.forEach((m, i) => {
+      m.isDefault = (i === index);
+    });
+
+    localStorage.setItem(this.customerStorageKey, JSON.stringify(cust));
+    this.renderSavedPaymentMethods();
+    if (typeof showToast === 'function') showToast('Default payment method updated! ✓', 'success');
+  }
+
+  // ==========================================================================
+  // "HOT SALE" / RECOMMENDED BATTERIES (MATCHING USER REFERENCE IMAGE)
+  // ==========================================================================
+  renderHotSaleBatteries() {
+    const container = document.getElementById('prof-hotsale-grid-slot');
+    if (!container) return;
+
+    const hotItems = [
+      {
+        id: 'exide-inva-tubular-150',
+        name: 'Exide Inva Tubular 150Ah (IT500)',
+        spec: 'Home Inverter & Solar Heavy Duty',
+        price: '27,500',
+        oldPrice: '31,000',
+        warranty: '36 Months Warranty',
+        img: 'assets/products/inverter-tubular.png',
+        sku: 'EXD-INV-150'
+      },
+      {
+        id: 'exide-matrix-red-65',
+        name: 'Exide Matrix Red 65Ah (DIN65)',
+        spec: 'Car / SUV Diesel Maintenance-Free',
+        price: '14,200',
+        oldPrice: '16,000',
+        warranty: '48 Months Warranty',
+        img: 'assets/products/car-battery.png',
+        sku: 'EXD-MAT-65'
+      }
+    ];
+
+    const html = hotItems.map(item => `
+      <div class="prof-hotsale-card">
+        <div class="prof-hotsale-img-wrap">
+          <img src="${item.img}" alt="${item.name}" onerror="this.src='assets/logo.png';" />
+          <span class="prof-hotsale-badge">Save NPR ${(Number(item.oldPrice.replace(/,/g,'')) - Number(item.price.replace(/,/g,''))).toLocaleString('en-IN')}</span>
+        </div>
+        <div class="prof-hotsale-info">
+          <strong class="prof-hotsale-title">${item.name}</strong>
+          <span class="prof-hotsale-spec">${item.spec}</span>
+          <div class="prof-hotsale-price-row">
+            <div>
+              <span class="prof-hotsale-price">Rs. ${item.price}</span>
+              <span class="prof-hotsale-old-price">Rs. ${item.oldPrice}</span>
+            </div>
+            <button type="button" class="btn-prof-buy" onclick="window.authManager.quickAddToCart('${item.sku}')" title="Add to Cart">
+              + Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    container.innerHTML = html;
+  }
+
+  quickAddToCart(sku) {
+    if (window.cartSystem && typeof window.cartSystem.addToCart === 'function') {
+      window.cartSystem.addToCart(sku, 1);
+      if (typeof showToast === 'function') {
+        showToast('Battery added to cart! Proceed to checkout.', 'success');
+      }
+    } else {
+      if (typeof showToast === 'function') showToast('Added to cart!', 'success');
+    }
+  }
+
+  scrollToProducts(view) {
+    this.closeCustomerProfileModal();
+    const target = document.getElementById('products') || document.getElementById('products-section') || document.getElementById('finder-section');
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    if (typeof showToast === 'function') {
+      showToast(`Browsing ${view === 'wishlist' ? 'saved wishlist' : 'Nepal master catalog'}...`, 'info');
+    }
+  }
+
+  openWhatsAppSupport() {
+    window.open('https://wa.me/9779809163454?text=Hi%20Exide%20Nepal,%20I%20need%20support%20with%20my%20battery%20order', '_blank');
+  }
+
+  showWarrantyTerms() {
+    if (typeof showToast === 'function') {
+      showToast('Exide Official Nepal Warranty: Genuine replacement warranty honoured at Bijulibazar hub.', 'info', 5000);
+    }
   }
 
   async saveCustomerProfile() {
@@ -1445,7 +1988,8 @@ class AuthManager {
           vehicleModel: cust.vehicleModel,
           batteryAh: cust.batteryAh,
           companyName: cust.companyName,
-          panNumber: cust.panNumber
+          panNumber: cust.panNumber,
+          savedPaymentMethods: cust.savedPaymentMethods || []
         })
       });
       const data = await res.json().catch(() => ({}));
@@ -1527,8 +2071,8 @@ class AuthManager {
     }
     const modal = document.getElementById('customer-profile-modal-overlay');
     if (modal) {
+      this.backToCustomerDashboard();
       this.populateCustomerProfileData(cust);
-      this.switchCustomerProfileTab('overview');
       modal.classList.add('open');
     }
   }

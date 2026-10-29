@@ -500,6 +500,16 @@ class CartSystem {
       if (landmarkInput && customer.landmark) landmarkInput.value = customer.landmark;
       if (notesInput && customer.deliveryNotes) notesInput.value = customer.deliveryNotes;
 
+      // Auto-select customer's saved default payment method if available
+      if (customer.savedPaymentMethods && customer.savedPaymentMethods.length > 0) {
+        const defMethod = customer.savedPaymentMethods.find(m => m.isDefault) || customer.savedPaymentMethods[0];
+        if (defMethod && typeof this.selectPaymentMethod === 'function') {
+          const mapType = { esewa: 'esewa', khalti: 'khalti', connectips: 'bank', cod: 'cod', card: 'fonepay' };
+          const mapped = mapType[defMethod.type] || defMethod.type;
+          try { this.selectPaymentMethod(mapped); } catch (e) {}
+        }
+      }
+
       const isGoogle = customer.authProvider === 'google';
       const initial = (customer.fullName || 'C').charAt(0).toUpperCase();
       const avatarHtml = customer.photoURL

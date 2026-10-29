@@ -206,17 +206,20 @@ async function runSupabaseTests() {
     assert(!indexHtml.includes('Ankush Kumar (ankushkumaras50@gmail.com)'), 'Messy demo fillers still present in index.html');
   });
 
-  test('customer profile portal has 5 tabs and complete e-commerce fields', () => {
+  test('customer profile portal has professional Flipkart-style views, order tracking, and payment methods', () => {
     assert(indexHtml.includes('customer-profile-modal-box'), 'customer-profile-modal-box missing in index.html');
-    assert(indexHtml.includes('btn-prof-tab-overview'), 'Overview tab missing');
-    assert(indexHtml.includes('btn-prof-tab-personal'), 'Personal tab missing');
-    assert(indexHtml.includes('btn-prof-tab-address'), 'Address tab missing');
-    assert(indexHtml.includes('btn-prof-tab-vehicle'), 'Vehicle tab missing');
-    assert(indexHtml.includes('btn-prof-tab-business'), 'Business tab missing');
+    assert(indexHtml.includes('prof-view-dashboard'), 'Dashboard view missing in index.html');
+    assert(indexHtml.includes('prof-view-settings'), 'Settings view missing in index.html');
+    assert(indexHtml.includes('prof-view-order-tracking'), 'Order tracking view missing in index.html');
+    assert(indexHtml.includes('prof-view-payments'), 'Payment methods view missing in index.html');
+    assert(indexHtml.includes('prof-order-status-strip'), 'Order status strip missing in index.html');
     assert(indexHtml.includes('prof-input-buyer-pan'), 'PAN input missing');
     assert(indexHtml.includes('prof-input-battery-ah'), 'Battery Ah input missing');
+    assert(indexHtml.includes('prof-input-pay-account'), 'Payment account input missing');
 
-    assert(authManagerJs.includes('switchCustomerProfileTab('), 'switchCustomerProfileTab missing in auth-manager.js');
+    assert(authManagerJs.includes('openOrderTracker('), 'openOrderTracker missing in auth-manager.js');
+    assert(authManagerJs.includes('renderSavedPaymentMethods('), 'renderSavedPaymentMethods missing in auth-manager.js');
+    assert(authManagerJs.includes('saveNewPaymentMethod('), 'saveNewPaymentMethod missing in auth-manager.js');
     assert(authManagerJs.includes('populateCustomerProfileData('), 'populateCustomerProfileData missing in auth-manager.js');
     assert(authManagerJs.includes('saveCustomerProfile('), 'saveCustomerProfile missing in auth-manager.js');
     assert(authManagerJs.includes('findBatteriesForMyVehicle('), 'findBatteriesForMyVehicle missing in auth-manager.js');
@@ -225,6 +228,7 @@ async function runSupabaseTests() {
     assert(cartJs.includes('chk-buyer-pan'), 'Checkout PAN sync missing');
     assert(cartJs.includes('chk-province'), 'Checkout province sync missing');
     assert(cartJs.includes('chk-landmark'), 'Checkout landmark sync missing');
+    assert(cartJs.includes('savedPaymentMethods'), 'Checkout payment method sync missing');
   });
 
   console.log('\n======================================================');
