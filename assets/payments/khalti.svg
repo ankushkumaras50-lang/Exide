@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 48" fill="none">
+  <!-- Official Khalti Brand Emblem & Wordmark -->
+  <rect width="40" height="40" x="4" y="4" rx="10" fill="#5C2D91"/>
+  <!-- Signature Origami Geometric Bird / Shield Polygon -->
+  <path d="M14 14L24 10L31 18L26 27L17 32L14 24L21 21L14 14Z" fill="#FBB03B"/>
+  <path d="M24 10L31 18L24 24L18 17L24 10Z" fill="#FFFFFF"/>
+  <path d="M17 32L26 27L22 36L17 32Z" fill="#ED1C24"/>
+  <path d="M24 24L31 18L33 28L26 27L24 24Z" fill="#00AEEF"/>
+  <!-- Official Khalti Typography -->
+  <text x="50" y="30" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="20" font-weight="900" fill="#5C2D91" letter-spacing="-0.5">khalti</text>
+</svg>

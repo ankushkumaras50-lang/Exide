@@ -1425,49 +1425,49 @@
 
           <div id="checkout-payment-summary"></div>
 
-          <!-- Payment Options Grid -->
+          <!-- Payment Options Grid with Genuine Official Logos -->
           <div class="payment-methods-grid">
             <!-- eSewa -->
             <div class="payment-method-card selected" data-method="esewa" onclick="window.cartSystem.selectPaymentMethod('esewa')">
-              <div class="payment-logo-badge esewa">eSewa</div>
+              <img src="assets/payments/esewa.svg" alt="eSewa Mobile Wallet" class="payment-logo-img" style="height:32px; width:auto; max-width:115px; object-fit:contain;">
               <div>
-                <div style="font-weight:800; color:#0F172A;">eSewa Mobile Wallet</div>
-                <div style="font-size:0.75rem; color:#64748B;">Nepal's #1 digital wallet</div>
+                <div style="font-weight:800; color:#0F172A; font-size:0.92rem;">eSewa Mobile Wallet</div>
+                <div style="font-size:0.75rem; color:#64748B;">Nepal's #1 digital wallet & QR</div>
               </div>
             </div>
 
             <!-- Khalti -->
             <div class="payment-method-card" data-method="khalti" onclick="window.cartSystem.selectPaymentMethod('khalti')">
-              <div class="payment-logo-badge khalti">Khalti</div>
+              <img src="assets/payments/khalti.svg" alt="Khalti Digital Wallet" class="payment-logo-img" style="height:32px; width:auto; max-width:115px; object-fit:contain;">
               <div>
-                <div style="font-weight:800; color:#0F172A;">Khalti Digital Wallet</div>
+                <div style="font-weight:800; color:#0F172A; font-size:0.92rem;">Khalti Digital Wallet</div>
                 <div style="font-size:0.75rem; color:#64748B;">Instant online pay & cashback</div>
               </div>
             </div>
 
             <!-- Fonepay Dynamic QR -->
             <div class="payment-method-card" data-method="fonepay" onclick="window.cartSystem.selectPaymentMethod('fonepay')">
-              <div class="payment-logo-badge fonepay">Fonepay</div>
+              <img src="assets/payments/fonepay.svg" alt="Fonepay Dynamic QR" class="payment-logo-img" style="height:32px; width:auto; max-width:115px; object-fit:contain;">
               <div>
-                <div style="font-weight:800; color:#0F172A;">Fonepay Dynamic QR</div>
+                <div style="font-weight:800; color:#0F172A; font-size:0.92rem;">Fonepay Dynamic QR</div>
                 <div style="font-size:0.75rem; color:#64748B;">Scan with any Nepal bank app</div>
               </div>
             </div>
 
             <!-- Cash on Delivery -->
             <div class="payment-method-card" data-method="cod" onclick="window.cartSystem.selectPaymentMethod('cod')">
-              <div class="payment-logo-badge cod">COD</div>
+              <img src="assets/payments/cod.svg" alt="Cash on Delivery" class="payment-logo-img" style="height:32px; width:auto; max-width:115px; object-fit:contain;">
               <div>
-                <div style="font-weight:800; color:#0F172A;">Cash / Card on Delivery</div>
+                <div style="font-weight:800; color:#0F172A; font-size:0.92rem;">Cash / Card on Delivery</div>
                 <div style="font-size:0.75rem; color:#64748B;">Pay after battery installation</div>
               </div>
             </div>
 
             <!-- Bank Transfer -->
             <div class="payment-method-card" data-method="bank" onclick="window.cartSystem.selectPaymentMethod('bank')" style="grid-column: 1 / -1;">
-              <div class="payment-logo-badge bank">Bank</div>
+              <img src="assets/payments/connectips.svg" alt="Direct Bank Transfer / ConnectIPS" class="payment-logo-img" style="height:32px; width:auto; max-width:130px; object-fit:contain;">
               <div>
-                <div style="font-weight:800; color:#0F172A;">Direct Bank Transfer / ConnectIPS</div>
+                <div style="font-weight:800; color:#0F172A; font-size:0.92rem;">Direct Bank Transfer / ConnectIPS</div>
                 <div style="font-size:0.75rem; color:#64748B;">NIC Asia, Global IME, Nabil Bank corporate accounts</div>
               </div>
             </div>
@@ -1476,8 +1476,9 @@
           <!-- Gateway Sub-Panels -->
           <!-- eSewa Details -->
           <div id="pay-details-esewa" style="background:#F0FDF4; border:1.5px solid var(--color-esewa); border-radius:var(--radius-md); padding:1.25rem;">
-            <div style="display:flex; align-items:center; gap:0.5rem; color:var(--color-esewa); font-weight:800; margin-bottom:0.5rem;">
-              <span>eSewa Instant Pay & QR Checkout</span>
+            <div style="display:flex; align-items:center; gap:0.65rem; color:var(--color-esewa); font-weight:800; margin-bottom:0.65rem;">
+              <img src="assets/payments/esewa.svg" alt="eSewa" style="height:28px; width:auto;">
+              <span>Instant Pay & Dynamic QR</span>
             </div>
             <p style="font-size:0.85rem; color:#166534; margin-bottom:0.75rem;">
               Scan the dynamic QR code below using your eSewa app. The billed amount will automatically appear on your screen:
@@ -1491,7 +1492,10 @@
 
           <!-- Khalti Details -->
           <div id="pay-details-khalti" style="display:none; background:#FAF5FF; border:1.5px solid var(--color-khalti); border-radius:var(--radius-md); padding:1.25rem;">
-            <div style="color:var(--color-khalti); font-weight:800; margin-bottom:0.5rem;">Khalti Payment Gateway & QR</div>
+            <div style="display:flex; align-items:center; gap:0.65rem; color:var(--color-khalti); font-weight:800; margin-bottom:0.65rem;">
+              <img src="assets/payments/khalti.svg" alt="Khalti" style="height:28px; width:auto;">
+              <span>Instant Payment Gateway & QR</span>
+            </div>
             <p style="font-size:0.85rem; color:#6B21A8; margin-bottom:0.75rem;">
               Scan the dynamic QR code below using Khalti or enter your Khalti mobile number:
             </p>
@@ -1505,7 +1509,10 @@
           <!-- Fonepay Details -->
           <div id="pay-details-fonepay" style="display:none; background:#FFF1F2; border:1.5px solid var(--color-fonepay); border-radius:var(--radius-md); padding:1.25rem;">
             <div class="fonepay-qr-display">
-              <div style="color:var(--color-fonepay); font-weight:800; margin-bottom:0.5rem;">Scan & Pay via Fonepay / NepalPay QR</div>
+              <div style="display:flex; align-items:center; gap:0.65rem; color:var(--color-fonepay); font-weight:800; margin-bottom:0.65rem;">
+                <img src="assets/payments/fonepay.svg" alt="Fonepay" style="height:28px; width:auto;">
+                <span>Scan & Pay via Fonepay / NepalPay QR</span>
+              </div>
               <p style="font-size:0.8rem; color:#475569; margin-bottom:0.75rem;">
                 Compatible with all Nepal mobile banking apps (Global IME, NIC Asia, Nabil, Prabhu, Sanima, etc.)
               </p>
@@ -1519,7 +1526,10 @@
 
           <!-- Bank Details -->
           <div id="pay-details-bank" style="display:none; background:#F0F7FF; border:1.5px solid var(--color-exide-blue); border-radius:var(--radius-md); padding:1.25rem;">
-            <h5 style="color:var(--color-exide-blue); font-weight:800; margin-bottom:0.5rem;">Corporate Bank Transfer & NepalPay QR</h5>
+            <div style="display:flex; align-items:center; gap:0.65rem; color:var(--color-exide-blue); font-weight:800; margin-bottom:0.65rem;">
+              <img src="assets/payments/connectips.svg" alt="ConnectIPS" style="height:28px; width:auto;">
+              <span>Corporate Bank Transfer & ConnectIPS</span>
+            </div>
             <div class="dynamic-qr-slot"></div>
             <div style="font-size:0.85rem; color:#334155; line-height:1.6; margin-top:1rem;">
               <p><strong>Bank:</strong> Global IME Bank Ltd. (Main Branch)</p>
@@ -1531,7 +1541,10 @@
 
           <!-- COD Details -->
           <div id="pay-details-cod" style="display:none; background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:var(--radius-md); padding:1.25rem;">
-            <h5 style="font-weight:800; color:#0F172A; margin-bottom:0.5rem;">Cash or Card on Delivery</h5>
+            <div style="display:flex; align-items:center; gap:0.65rem; font-weight:800; color:#0F172A; margin-bottom:0.65rem;">
+              <img src="assets/payments/cod.svg" alt="Cash on Delivery" style="height:28px; width:auto;">
+              <span>Cash or Card on Delivery</span>
+            </div>
             <p style="font-size:0.85rem; color:#475569;">
               You do not need to pay anything in advance. Inspect your new battery, review the stamped warranty card, observe technician test parameters, and pay using cash or mobile banking to our rider upon completion.
             </p>

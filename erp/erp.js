@@ -189,6 +189,9 @@
         case 'dashboard':
           this.renderDashboardView(container);
           break;
+        case 'orders':
+          this.renderOrdersView(container);
+          break;
         case 'products':
           this.renderProductsView(container);
           break;
@@ -1797,6 +1800,739 @@
     }
 
     // ------------------------------------------------------------------------
+    // 4B. COMMERCIAL ORDER MANAGEMENT MODULE (FLIPKART / AMAZON SELLER STYLE)
+    // ------------------------------------------------------------------------
+    async renderOrdersView(container) {
+      try {
+        const token = localStorage.getItem(this.tokenKey);
+        const statusParam = this.ordersFilterStatus || 'all';
+        const searchParam = encodeURIComponent(this.ordersSearchQuery || '');
+        const paymentParam = this.ordersPaymentMethod || 'all';
+        const dateParam = this.ordersDateRange || 'all';
+
+        const res = await fetch(`/api/erp/orders?status=${statusParam}&search=${searchParam}&paymentMethod=${paymentParam}&dateRange=${dateParam}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        const orders = data.orders || [];
+        this.ordersData = orders;
+        const summary = data.summary || {
+          totalOrders: orders.length,
+          pending: 0,
+          processing: 0,
+          shipped: 0,
+          delivered: 0,
+          cancelled: 0,
+          totalRevenue: 0,
+          pendingValue: 0
+        };
+
+        // Update sidebar nav badge
+        const badge = document.getElementById('erp-nav-orders-count');
+        if (badge) {
+          badge.textContent = summary.pending;
+          badge.style.display = summary.pending > 0 ? 'inline-block' : 'none';
+        }
+
+        container.innerHTML = `
+          <!-- Header Strip -->
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1.25rem; flex-wrap:wrap; gap:1rem;">
+            <div>
+              <h2 style="font-size:1.35rem; font-weight:800; color:#0F172A; margin:0 0 0.25rem 0;">🛍️ Commercial Order Fulfillment & Dispatch</h2>
+              <div style="font-size:0.85rem; color:#64748B;">Flipkart / Amazon Seller Hub style workflow for web orders, dispatch riders, and IRD tax invoices.</div>
+            </div>
+            <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+              <button class="erp-btn erp-btn-secondary" onclick="window.erpApp.exportOrdersCsv()">📥 Export CSV</button>
+              <button class="erp-btn erp-btn-primary" onclick="window.erpApp.renderOrdersView(document.getElementById('erp-main-view'))">🔄 Refresh Orders</button>
+            </div>
+          </div>
+
+          <!-- Top KPI Metric Cards -->
+          <div class="erp-order-summary-grid">
+            <div class="erp-order-metric-tile">
+              <div class="erp-order-metric-icon" style="background:#EFF6FF; color:#1D4ED8;">📦</div>
+              <div>
+                <div style="font-size:0.75rem; font-weight:700; color:#64748B; text-transform:uppercase;">Total Orders Volume</div>
+                <div style="font-size:1.3rem; font-weight:900; color:#0F172A;">${summary.totalOrders}</div>
+                <div style="font-size:0.75rem; color:#10B981; font-weight:700;">NPR ${(summary.totalRevenue || 0).toLocaleString()} fulfilled</div>
+              </div>
+            </div>
+
+            <div class="erp-order-metric-tile" style="border-left:4px solid #F59E0B;">
+              <div class="erp-order-metric-icon" style="background:#FEF3C7; color:#D97706;">⏳</div>
+              <div>
+                <div style="font-size:0.75rem; font-weight:700; color:#64748B; text-transform:uppercase;">Needs Confirmation</div>
+                <div style="font-size:1.3rem; font-weight:900; color:#B45309;">${summary.pending}</div>
+                <div style="font-size:0.75rem; color:#B45309; font-weight:700;">NPR ${(summary.pendingValue || 0).toLocaleString()} awaiting</div>
+              </div>
+            </div>
+
+            <div class="erp-order-metric-tile" style="border-left:4px solid #3B82F6;">
+              <div class="erp-order-metric-icon" style="background:#EFF6FF; color:#2563EB;">🚚</div>
+              <div>
+                <div style="font-size:0.75rem; font-weight:700; color:#64748B; text-transform:uppercase;">Dispatched / In-Transit</div>
+                <div style="font-size:1.3rem; font-weight:900; color:#1D4ED8;">${summary.shipped}</div>
+                <div style="font-size:0.75rem; color:#2563EB; font-weight:700;">Assigned to riders</div>
+              </div>
+            </div>
+
+            <div class="erp-order-metric-tile" style="border-left:4px solid #10B981;">
+              <div class="erp-order-metric-icon" style="background:#ECFDF5; color:#059669;">✅</div>
+              <div>
+                <div style="font-size:0.75rem; font-weight:700; color:#64748B; text-transform:uppercase;">Delivered & Tested</div>
+                <div style="font-size:1.3rem; font-weight:900; color:#047857;">${summary.delivered}</div>
+                <div style="font-size:0.75rem; color:#059669; font-weight:700;">Verified customer handoff</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Flipkart / Amazon Seller-style Filter Tabs -->
+          <div class="erp-order-tab-bar">
+            <button class="erp-order-tab-btn ${statusParam === 'all' ? 'active' : ''}" onclick="window.erpApp.filterOrdersByStatus('all')">
+              All Orders <span class="erp-tab-count">${summary.totalOrders}</span>
+            </button>
+            <button class="erp-order-tab-btn ${statusParam === 'pending' ? 'active' : ''}" onclick="window.erpApp.filterOrdersByStatus('pending')">
+              ⏳ Pending <span class="erp-tab-count">${summary.pending}</span>
+            </button>
+            <button class="erp-order-tab-btn ${statusParam === 'processing' ? 'active' : ''}" onclick="window.erpApp.filterOrdersByStatus('processing')">
+              ⚙️ Processing / Confirmed <span class="erp-tab-count">${summary.processing}</span>
+            </button>
+            <button class="erp-order-tab-btn ${statusParam === 'shipped' ? 'active' : ''}" onclick="window.erpApp.filterOrdersByStatus('shipped')">
+              🚚 Dispatched / In Transit <span class="erp-tab-count">${summary.shipped}</span>
+            </button>
+            <button class="erp-order-tab-btn ${statusParam === 'delivered' ? 'active' : ''}" onclick="window.erpApp.filterOrdersByStatus('delivered')">
+              ✅ Delivered <span class="erp-tab-count">${summary.delivered}</span>
+            </button>
+            <button class="erp-order-tab-btn ${statusParam === 'cancelled' ? 'active' : ''}" onclick="window.erpApp.filterOrdersByStatus('cancelled')">
+              ❌ Cancelled / Returned <span class="erp-tab-count">${summary.cancelled}</span>
+            </button>
+          </div>
+
+          <!-- Search & Filter Controls Toolbar -->
+          <div class="erp-order-toolbar">
+            <div class="erp-order-search-box">
+              <span style="margin-right:0.5rem; color:#94A3B8;">🔍</span>
+              <input type="text" placeholder="Search Order #, Customer, Phone, City, IRD PAN..." value="${this.ordersSearchQuery || ''}" onkeydown="if(event.key==='Enter') window.erpApp.searchOrders(this.value)" oninput="window.erpApp.debounceSearchOrders(this.value)">
+            </div>
+
+            <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+              <select class="erp-input" style="height:40px; font-size:0.85rem; width:auto;" onchange="window.erpApp.filterOrdersByPayment(this.value)">
+                <option value="all" ${paymentParam === 'all' ? 'selected' : ''}>All Payments</option>
+                <option value="esewa" ${paymentParam === 'esewa' ? 'selected' : ''}>eSewa Mobile Wallet</option>
+                <option value="khalti" ${paymentParam === 'khalti' ? 'selected' : ''}>Khalti Digital Wallet</option>
+                <option value="fonepay" ${paymentParam === 'fonepay' ? 'selected' : ''}>Fonepay Dynamic QR</option>
+                <option value="cod" ${paymentParam === 'cod' ? 'selected' : ''}>Cash on Delivery</option>
+                <option value="bank" ${paymentParam === 'bank' ? 'selected' : ''}>Bank Transfer / ConnectIPS</option>
+              </select>
+
+              <select class="erp-input" style="height:40px; font-size:0.85rem; width:auto;" onchange="window.erpApp.filterOrdersByDate(this.value)">
+                <option value="all" ${dateParam === 'all' ? 'selected' : ''}>All Time</option>
+                <option value="today" ${dateParam === 'today' ? 'selected' : ''}>Today</option>
+                <option value="yesterday" ${dateParam === 'yesterday' ? 'selected' : ''}>Yesterday</option>
+                <option value="last7days" ${dateParam === 'last7days' ? 'selected' : ''}>Last 7 Days</option>
+                <option value="last30days" ${dateParam === 'last30days' ? 'selected' : ''}>Last 30 Days</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Commercial Orders Table -->
+          <div class="erp-card" style="padding:0; overflow:hidden;">
+            <div class="erp-table-responsive">
+              <table class="erp-table">
+                <thead>
+                  <tr>
+                    <th>Order & Date</th>
+                    <th>Customer Details</th>
+                    <th>Items & Battery Ah</th>
+                    <th>Scrap Exchange</th>
+                    <th>Financials & Gateway</th>
+                    <th>Fulfillment Status</th>
+                    <th style="text-align:right;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${orders.length === 0 ? `
+                    <tr>
+                      <td colspan="7" style="text-align:center; padding:3rem 1rem; color:#64748B;">
+                        <div style="font-size:2rem; margin-bottom:0.5rem;">📦</div>
+                        <div style="font-size:1rem; font-weight:700; color:#0F172A;">No orders found matching current filters</div>
+                        <div style="font-size:0.8rem; margin-top:0.25rem;">Try clearing your search query or selecting a different status tab.</div>
+                      </td>
+                    </tr>
+                  ` : ''}
+
+                  ${orders.map(o => {
+                    const st = String(o.status || 'CONFIRMED').toUpperCase();
+                    let stBadge = 'erp-badge-blue';
+                    if (st === 'PENDING' || st === 'CREATED') stBadge = 'erp-badge-yellow';
+                    else if (st === 'PROCESSING' || st === 'CONFIRMED') stBadge = 'erp-badge-blue';
+                    else if (st === 'SHIPPED' || st === 'OUT_FOR_DELIVERY') stBadge = 'erp-badge-purple';
+                    else if (st === 'DELIVERED') stBadge = 'erp-badge-green';
+                    else if (st === 'CANCELLED') stBadge = 'erp-badge-red';
+
+                    const p = o.pricing || o.calculations || {};
+                    const scrapRebate = p.scrapExchangeDeduction || 0;
+                    const grandTotal = p.grandTotal || o.grandTotal || 0;
+                    const items = Array.isArray(o.items) ? o.items : [];
+                    const customer = o.customer || {};
+                    const cleanPhone = String(customer.phone || '').replace(/\D/g, '');
+
+                    return `
+                      <tr>
+                        <td>
+                          <div style="font-weight:800; color:#0F172A; font-size:0.92rem;">#${o.orderId || o.id}</div>
+                          <div style="font-size:0.75rem; color:#64748B; margin-top:2px;">
+                            ${o.orderDateFormatted || (o.date ? new Date(o.date).toLocaleDateString('en-GB') : 'Recent')}
+                          </div>
+                          ${o.invoiceNumber ? `<div style="font-size:0.72rem; color:#1E40AF; font-weight:700;">Inv: ${o.invoiceNumber}</div>` : ''}
+                        </td>
+
+                        <td>
+                          <div style="font-weight:700; color:#0F172A;">${customer.fullName || 'Customer'}</div>
+                          <div style="font-size:0.78rem; display:flex; align-items:center; gap:0.35rem; margin-top:2px;">
+                            <a href="tel:${cleanPhone}" style="color:#2563EB; text-decoration:none; font-weight:600;">📞 ${customer.phone || 'N/A'}</a>
+                            ${cleanPhone ? `
+                              <a href="https://wa.me/977${cleanPhone.slice(-10)}?text=Namaste%20${encodeURIComponent(customer.fullName || '')}%2C%20regarding%20your%20Exide%20Battery%20Order%20${o.orderId}." target="_blank" style="color:#16A34A; text-decoration:none;" title="Chat on WhatsApp">
+                                💬
+                              </a>
+                            ` : ''}
+                          </div>
+                          <div style="font-size:0.74rem; color:#64748B; margin-top:2px;">
+                            📍 ${customer.city || customer.district || 'Kathmandu'}, Ward ${customer.ward || '10'}
+                          </div>
+                        </td>
+
+                        <td>
+                          <div style="font-size:0.82rem; font-weight:700; color:#0F172A;">
+                            ${items.length} Product${items.length !== 1 ? 's' : ''}
+                          </div>
+                          <div style="font-size:0.74rem; color:#475569; max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                            ${items.map(i => `${i.name || i.sku} (${i.quantity || 1}x)`).join(', ')}
+                          </div>
+                        </td>
+
+                        <td>
+                          ${scrapRebate > 0 ? `
+                            <span style="display:inline-flex; align-items:center; gap:3px; background:#ECFDF5; color:#047857; font-weight:700; font-size:0.78rem; padding:2px 8px; border-radius:6px; border:1px solid #A7F3D0;">
+                              ♻️ -NPR ${scrapRebate.toLocaleString()}
+                            </span>
+                            <div style="font-size:0.72rem; color:#64748B; margin-top:2px;">
+                              ${p.scrapBatteryAh ? p.scrapBatteryAh + 'Ah trade-in' : 'Scrap Deducted'}
+                            </div>
+                          ` : `
+                            <span style="font-size:0.78rem; color:#94A3B8;">None</span>
+                          `}
+                        </td>
+
+                        <td>
+                          <div style="font-weight:900; color:#0F172A; font-size:0.95rem;">
+                            NPR ${grandTotal.toLocaleString()}
+                          </div>
+                          <div style="display:flex; align-items:center; gap:0.35rem; margin-top:2px;">
+                            <span style="font-size:0.72rem; font-weight:800; text-transform:uppercase; color:#475569; background:#F1F5F9; padding:1px 6px; border-radius:4px;">
+                              ${o.paymentMethod || 'COD'}
+                            </span>
+                            <span style="font-size:0.72rem; font-weight:700; color:${o.paymentStatus === 'PAID' ? '#16A34A' : '#D97706'};">
+                              ● ${o.paymentStatus || 'PENDING'}
+                            </span>
+                          </div>
+                        </td>
+
+                        <td>
+                          <span class="erp-badge ${stBadge}">
+                            ${st}
+                          </span>
+                          <div style="font-size:0.74rem; color:#475569; margin-top:3px;">
+                            🏍️ ${customer.assignedRider || o.assignedRider || 'Standard Dispatch'}
+                          </div>
+                        </td>
+
+                        <td style="text-align:right;">
+                          <div style="display:inline-flex; align-items:center; gap:0.35rem;">
+                            <button class="erp-btn erp-btn-sm erp-btn-secondary" onclick="window.erpApp.openOrderDetailsModal('${o.orderId}')" title="View Full Order Details">
+                              👁️
+                            </button>
+                            <button class="erp-btn erp-btn-sm erp-btn-primary" onclick="window.erpApp.openOrderStatusModal('${o.orderId}')" title="Update Fulfillment & Assign Rider">
+                              🚚
+                            </button>
+                            <button class="erp-btn erp-btn-sm erp-btn-secondary" onclick="window.erpApp.printPackingSlipModal('${o.orderId}')" title="Print Shipping Packing Slip">
+                              🏷️
+                            </button>
+                            <button class="erp-btn erp-btn-sm erp-btn-secondary" onclick="window.erpApp.printTaxInvoiceModal('${o.orderId}')" title="Print IRD Tax Invoice">
+                              🧾
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    `;
+                  }).join('')}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+      } catch (err) {
+        console.error('Error rendering orders view:', err);
+        container.innerHTML = `
+          <div class="erp-card" style="padding:2rem; text-align:center; color:#DC2626;">
+            <h3>Error Loading Order Management Module</h3>
+            <p>${err.message}</p>
+            <button class="erp-btn erp-btn-primary" onclick="window.erpApp.renderOrdersView(document.getElementById('erp-main-view'))">Retry</button>
+          </div>
+        `;
+      }
+    }
+
+    filterOrdersByStatus(status) {
+      this.ordersFilterStatus = status;
+      this.renderOrdersView(document.getElementById('erp-main-view'));
+    }
+
+    searchOrders(query) {
+      this.ordersSearchQuery = query;
+      this.renderOrdersView(document.getElementById('erp-main-view'));
+    }
+
+    debounceSearchOrders(val) {
+      clearTimeout(this._searchTimer);
+      this._searchTimer = setTimeout(() => {
+        this.searchOrders(val);
+      }, 350);
+    }
+
+    filterOrdersByPayment(method) {
+      this.ordersPaymentMethod = method;
+      this.renderOrdersView(document.getElementById('erp-main-view'));
+    }
+
+    filterOrdersByDate(range) {
+      this.ordersDateRange = range;
+      this.renderOrdersView(document.getElementById('erp-main-view'));
+    }
+
+    // Modal 1: Comprehensive Order Details & Audit Trail
+    openOrderDetailsModal(orderId) {
+      const order = (this.ordersData || []).find(o => o.orderId === orderId || o.id === orderId);
+      if (!order) {
+        alert(`Order #${orderId} not found.`);
+        return;
+      }
+
+      const modalOverlay = document.getElementById('erp-modal-overlay');
+      const modalContent = document.getElementById('erp-modal-content');
+      if (!modalOverlay || !modalContent) return;
+
+      const customer = order.customer || {};
+      const pricing = order.pricing || order.calculations || {};
+      const items = Array.isArray(order.items) ? order.items : [];
+      const cleanPhone = String(customer.phone || '').replace(/\D/g, '');
+      const scrap = order.scrapExchangeRecord || pricing.scrapBatteryAh ? {
+        capacityAh: pricing.scrapBatteryAh || order.scrapExchangeRecord?.capacityAh,
+        rebateAmount: pricing.scrapExchangeDeduction || order.scrapExchangeRecord?.rebateAmount
+      } : null;
+
+      modalContent.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #E2E8F0; padding-bottom:1rem; margin-bottom:1.25rem;">
+          <div>
+            <h3 style="margin:0; font-size:1.25rem; font-weight:800; color:#0F172A;">Order Details: #${order.orderId || order.id}</h3>
+            <div style="font-size:0.8rem; color:#64748B;">Placed on ${order.orderDateFormatted || (order.date ? new Date(order.date).toLocaleString('en-GB') : 'Recent')}</div>
+          </div>
+          <button type="button" class="erp-btn erp-btn-secondary" onclick="document.getElementById('erp-modal-overlay').classList.remove('open')">✕ Close</button>
+        </div>
+
+        <!-- Status & Fulfillment Banner -->
+        <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:1rem; margin-bottom:1.25rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem;">
+          <div>
+            <span style="font-size:0.78rem; font-weight:700; color:#64748B; text-transform:uppercase;">Current State:</span>
+            <span class="erp-badge ${order.status === 'DELIVERED' ? 'erp-badge-green' : (order.status === 'CANCELLED' ? 'erp-badge-red' : 'erp-badge-blue')}" style="margin-left:0.4rem; font-size:0.85rem;">
+              ${order.status || 'CONFIRMED'}
+            </span>
+          </div>
+          <div>
+            <span style="font-size:0.78rem; font-weight:700; color:#64748B; text-transform:uppercase;">Payment:</span>
+            <span style="font-size:0.85rem; font-weight:800; color:#0F172A; margin-left:0.4rem;">${order.paymentMethod || 'COD'} (${order.paymentStatus || 'PENDING'})</span>
+          </div>
+          <div>
+            <span style="font-size:0.78rem; font-weight:700; color:#64748B; text-transform:uppercase;">Assigned Rider:</span>
+            <span style="font-size:0.85rem; font-weight:800; color:#1E40AF; margin-left:0.4rem;">${customer.assignedRider || order.assignedRider || 'Standard Dispatch'}</span>
+          </div>
+        </div>
+
+        <!-- Customer & Delivery Information Grid -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.25rem;">
+          <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:10px; padding:1rem;">
+            <h4 style="font-size:0.85rem; font-weight:800; color:#0F172A; margin:0 0 0.5rem 0; text-transform:uppercase; letter-spacing:0.5px;">👤 Customer Information</h4>
+            <div style="font-size:0.88rem; font-weight:700; color:#0F172A;">${customer.fullName || 'Valued Customer'}</div>
+            <div style="font-size:0.82rem; color:#475569; margin-top:2px;">Phone: <strong>${customer.phone || 'N/A'}</strong></div>
+            ${customer.email ? `<div style="font-size:0.82rem; color:#475569;">Email: ${customer.email}</div>` : ''}
+            ${customer.pan ? `<div style="font-size:0.82rem; color:#1E40AF; font-weight:700; margin-top:4px;">Buyer IRD PAN: ${customer.pan}</div>` : ''}
+            ${cleanPhone ? `
+              <div style="margin-top:0.6rem;">
+                <a href="https://wa.me/977${cleanPhone.slice(-10)}?text=Namaste%20${encodeURIComponent(customer.fullName || '')}%2C%20regarding%20your%20Exide%20Battery%20Order%20${order.orderId}." target="_blank" class="erp-btn erp-btn-sm" style="background:#25D366; color:#FFFFFF; text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
+                  💬 WhatsApp Customer
+                </a>
+              </div>
+            ` : ''}
+          </div>
+
+          <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:10px; padding:1rem;">
+            <h4 style="font-size:0.85rem; font-weight:800; color:#0F172A; margin:0 0 0.5rem 0; text-transform:uppercase; letter-spacing:0.5px;">📍 Doorstep Delivery Destination</h4>
+            <div style="font-size:0.85rem; font-weight:700; color:#0F172A;">${customer.deliveryAddress || customer.address || 'Kathmandu'}</div>
+            <div style="font-size:0.82rem; color:#475569; margin-top:2px;">City / District: <strong>${customer.city || customer.district || 'Kathmandu'}</strong></div>
+            <div style="font-size:0.82rem; color:#475569;">Ward No: <strong>${customer.ward || '10'}</strong></div>
+            ${customer.landmark ? `<div style="font-size:0.82rem; color:#D97706; font-weight:600;">Landmark: ${customer.landmark}</div>` : ''}
+          </div>
+        </div>
+
+        <!-- Ordered Products Line Items Table -->
+        <div style="margin-bottom:1.25rem;">
+          <h4 style="font-size:0.85rem; font-weight:800; color:#0F172A; margin:0 0 0.5rem 0; text-transform:uppercase;">📦 Ordered Items (${items.length})</h4>
+          <table class="erp-table" style="font-size:0.85rem;">
+            <thead>
+              <tr>
+                <th>Item / SKU</th>
+                <th>Capacity / Specs</th>
+                <th>Warranty</th>
+                <th>Qty</th>
+                <th>Unit Price</th>
+                <th style="text-align:right;">Line Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${items.map(i => `
+                <tr>
+                  <td>
+                    <div style="font-weight:700; color:#0F172A;">${i.name || i.sku}</div>
+                    <div style="font-size:0.74rem; color:#64748B;">SKU: ${i.sku || 'N/A'}</div>
+                  </td>
+                  <td>${i.capacity || '12V Power System'}</td>
+                  <td><span style="font-size:0.75rem; background:#EFF6FF; color:#1D4ED8; padding:2px 6px; border-radius:4px;">${i.warranty || '36 Mo'}</span></td>
+                  <td><strong>${i.quantity || 1}</strong></td>
+                  <td>NPR ${(i.unitPrice || i.price || 0).toLocaleString()}</td>
+                  <td style="text-align:right; font-weight:800;">NPR ${((i.quantity || 1) * (i.unitPrice || i.price || 0)).toLocaleString()}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Scrap Battery Trade-In Rebate (if applicable) -->
+        ${scrap && scrap.rebateAmount > 0 ? `
+          <div style="background:#ECFDF5; border:1.5px solid #10B981; border-radius:10px; padding:0.85rem 1rem; margin-bottom:1.25rem; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <strong style="color:#047857; font-size:0.9rem;">♻️ Old Battery Scrap Buyback Rebate Applied</strong>
+              <div style="font-size:0.78rem; color:#065F46;">Capacity: ${scrap.capacityAh} Ah • Certified Nepal Rate: NPR 35.00/Ah</div>
+            </div>
+            <div style="font-size:1.15rem; font-weight:900; color:#047857;">- NPR ${scrap.rebateAmount.toLocaleString()}</div>
+          </div>
+        ` : ''}
+
+        <!-- Official Nepal IRD Financials Breakdown -->
+        <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:1rem; margin-bottom:1.5rem; display:flex; flex-direction:column; gap:0.4rem; max-width:380px; margin-left:auto;">
+          <div style="display:flex; justify-content:space-between; font-size:0.85rem; color:#475569;">
+            <span>Subtotal:</span>
+            <span>NPR ${(pricing.rawSubtotal || 0).toLocaleString()}</span>
+          </div>
+          ${(pricing.scrapExchangeDeduction || 0) > 0 ? `
+            <div style="display:flex; justify-content:space-between; font-size:0.85rem; color:#047857; font-weight:700;">
+              <span>Scrap Trade-in Rebate:</span>
+              <span>- NPR ${pricing.scrapExchangeDeduction.toLocaleString()}</span>
+            </div>
+          ` : ''}
+          <div style="display:flex; justify-content:space-between; font-size:0.85rem; color:#475569;">
+            <span>Nepal 13% IRD VAT:</span>
+            <span>NPR ${(pricing.vatAmount || 0).toLocaleString()}</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:0.85rem; color:#475569;">
+            <span>Delivery & Fitting:</span>
+            <span style="color:#16A34A; font-weight:700;">FREE (Kathmandu Valley)</span>
+          </div>
+          <div style="border-top:1.5px solid #CBD5E1; padding-top:0.5rem; margin-top:0.25rem; display:flex; justify-content:space-between; font-size:1.15rem; font-weight:900; color:#0F172A;">
+            <span>Grand Total:</span>
+            <span style="color:#0047BA;">NPR ${(pricing.grandTotal || order.grandTotal || 0).toLocaleString()}</span>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid #E2E8F0; padding-top:1rem; flex-wrap:wrap; gap:0.5rem;">
+          <div style="display:flex; gap:0.5rem;">
+            <button class="erp-btn erp-btn-secondary" onclick="window.erpApp.printPackingSlipModal('${order.orderId}')">🏷️ Print Packing Slip</button>
+            <button class="erp-btn erp-btn-secondary" onclick="window.erpApp.printTaxInvoiceModal('${order.orderId}')">🧾 Print IRD Tax Invoice</button>
+          </div>
+          <button class="erp-btn erp-btn-primary" onclick="window.erpApp.openOrderStatusModal('${order.orderId}')">🚚 Dispatch / Update Status</button>
+        </div>
+      `;
+
+      modalOverlay.classList.add('open');
+    }
+
+    // Modal 2: Quick Status Transition & Rider Assignment
+    openOrderStatusModal(orderId) {
+      const order = (this.ordersData || []).find(o => o.orderId === orderId || o.id === orderId);
+      if (!order) {
+        alert(`Order #${orderId} not found.`);
+        return;
+      }
+
+      const modalOverlay = document.getElementById('erp-modal-overlay');
+      const modalContent = document.getElementById('erp-modal-content');
+      if (!modalOverlay || !modalContent) return;
+
+      const customer = order.customer || {};
+      const currentStatus = String(order.status || 'CONFIRMED').toUpperCase();
+      const currentPayment = String(order.paymentStatus || 'PENDING').toUpperCase();
+
+      modalContent.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #E2E8F0; padding-bottom:1rem; margin-bottom:1.25rem;">
+          <div>
+            <h3 style="margin:0; font-size:1.25rem; font-weight:800; color:#0F172A;">Update Fulfillment: #${order.orderId || order.id}</h3>
+            <div style="font-size:0.8rem; color:#64748B;">Customer: ${customer.fullName || 'Valued Buyer'} (${customer.phone || 'N/A'})</div>
+          </div>
+          <button type="button" class="erp-btn erp-btn-secondary" onclick="document.getElementById('erp-modal-overlay').classList.remove('open')">✕ Close</button>
+        </div>
+
+        <form onsubmit="event.preventDefault(); window.erpApp.submitOrderStatusUpdate('${order.orderId}');">
+          <div class="erp-form-group" style="margin-bottom:1.15rem;">
+            <label class="erp-label">Fulfillment State *</label>
+            <select id="erp-order-status-select" class="erp-input" style="font-weight:700;">
+              <option value="PENDING" ${currentStatus === 'PENDING' ? 'selected' : ''}>⏳ PENDING (Awaiting Phone Verification)</option>
+              <option value="CONFIRMED" ${currentStatus === 'CONFIRMED' || currentStatus === 'PROCESSING' ? 'selected' : ''}>⚙️ CONFIRMED / PROCESSING (Packed at Bijulibazar Hub)</option>
+              <option value="SHIPPED" ${currentStatus === 'SHIPPED' || currentStatus === 'OUT_FOR_DELIVERY' ? 'selected' : ''}>🚚 SHIPPED (Handed to Rider / Out for Fitting)</option>
+              <option value="DELIVERED" ${currentStatus === 'DELIVERED' ? 'selected' : ''}>✅ DELIVERED (Installed, Calibrated & Completed)</option>
+              <option value="CANCELLED" ${currentStatus === 'CANCELLED' ? 'selected' : ''}>❌ CANCELLED (Return Stock to Warehouse)</option>
+            </select>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.15rem;">
+            <div class="erp-form-group">
+              <label class="erp-label">Payment Condition</label>
+              <select id="erp-order-paystatus-select" class="erp-input">
+                <option value="PENDING" ${currentPayment === 'PENDING' ? 'selected' : ''}>⏳ Pending Payment (COD)</option>
+                <option value="PAID" ${currentPayment === 'PAID' ? 'selected' : ''}>✅ Paid & Reconciled</option>
+                <option value="REFUNDED" ${currentPayment === 'REFUNDED' ? 'selected' : ''}>↩️ Refunded / Reclaimed</option>
+              </select>
+            </div>
+
+            <div class="erp-form-group">
+              <label class="erp-label">Assigned Delivery Rider</label>
+              <select id="erp-order-rider-select" class="erp-input">
+                <option value="Standard Kathmandu Express">Standard Kathmandu Express</option>
+                <option value="Ramesh Thapa (+977 9801234567 - Central Rider)">Ramesh Thapa (+977 9801234567 - Central Rider)</option>
+                <option value="Bikash Shrestha (+977 9812345678 - Lalitpur & Patan)">Bikash Shrestha (+977 9812345678 - Lalitpur & Patan)</option>
+                <option value="Sujan Karki (+977 9823456789 - Bhaktapur Express)">Sujan Karki (+977 9823456789 - Bhaktapur Express)</option>
+                <option value="Direct Counter Pickup (Bijulibazar Store)">Direct Counter Pickup (Bijulibazar Store)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="erp-form-group" style="margin-bottom:1.15rem;">
+            <label class="erp-label">Dispatch Vehicle & Technician Note</label>
+            <input type="text" id="erp-order-vehicle-input" class="erp-input" placeholder="e.g. Ba 2 Ja 4521 Scooter - Carry terminal grease & multimeter" value="${order.dispatchVehicle || ''}">
+          </div>
+
+          <div class="erp-form-group" style="margin-bottom:1.5rem;">
+            <label class="erp-label">Tracking Timeline Note</label>
+            <input type="text" id="erp-order-tracking-note" class="erp-input" placeholder="e.g. Battery checked on load tester, loaded for Bijulibazar dispatch.">
+          </div>
+
+          <div style="display:flex; justify-content:flex-end; gap:0.5rem; border-top:1px solid #E2E8F0; padding-top:1rem;">
+            <button type="button" class="erp-btn erp-btn-secondary" onclick="document.getElementById('erp-modal-overlay').classList.remove('open')">Cancel</button>
+            <button type="submit" class="erp-btn erp-btn-primary" style="background:#0047BA;">💾 Save & Update Fulfillment</button>
+          </div>
+        </form>
+      `;
+
+      modalOverlay.classList.add('open');
+    }
+
+    async submitOrderStatusUpdate(orderId) {
+      try {
+        const token = localStorage.getItem(this.tokenKey);
+        const statusEl = document.getElementById('erp-order-status-select');
+        const payEl = document.getElementById('erp-order-paystatus-select');
+        const riderEl = document.getElementById('erp-order-rider-select');
+        const vehicleEl = document.getElementById('erp-order-vehicle-input');
+        const noteEl = document.getElementById('erp-order-tracking-note');
+
+        const payload = {
+          orderId,
+          status: statusEl ? statusEl.value : 'CONFIRMED',
+          paymentStatus: payEl ? payEl.value : 'PAID',
+          assignedRider: riderEl ? riderEl.value : 'Standard Kathmandu Express',
+          dispatchVehicle: vehicleEl ? vehicleEl.value.trim() : '',
+          trackingNote: noteEl ? noteEl.value.trim() : ''
+        };
+
+        const res = await fetch('/api/erp/orders', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          alert(`Order #${orderId} fulfillment updated successfully!`);
+          document.getElementById('erp-modal-overlay')?.classList.remove('open');
+          this.renderOrdersView(document.getElementById('erp-main-view'));
+        } else {
+          alert('Error: ' + (data.message || 'Failed to update order.'));
+        }
+      } catch (err) {
+        alert('Network error: ' + err.message);
+      }
+    }
+
+    // Modal 3: Flipkart / Amazon Style Commercial Shipping Packing Slip
+    printPackingSlipModal(orderId) {
+      const order = (this.ordersData || []).find(o => o.orderId === orderId || o.id === orderId);
+      if (!order) {
+        alert(`Order #${orderId} not found.`);
+        return;
+      }
+
+      const customer = order.customer || {};
+      const pricing = order.pricing || order.calculations || {};
+      const items = Array.isArray(order.items) ? order.items : [];
+
+      const modalOverlay = document.getElementById('erp-modal-overlay');
+      const modalContent = document.getElementById('erp-modal-content');
+      if (!modalOverlay || !modalContent) return;
+
+      modalContent.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #E2E8F0; padding-bottom:1rem; margin-bottom:1.25rem;">
+          <div>
+            <h3 style="margin:0; font-size:1.25rem; font-weight:800; color:#0F172A;">Commercial Packing Slip & Shipping Label</h3>
+            <div style="font-size:0.8rem; color:#64748B;">Standard Flipkart / Amazon Seller Format</div>
+          </div>
+          <div style="display:flex; gap:0.5rem;">
+            <button class="erp-btn erp-btn-primary" onclick="window.print()">🖨️ Print Label</button>
+            <button class="erp-btn erp-btn-secondary" onclick="document.getElementById('erp-modal-overlay').classList.remove('open')">✕ Close</button>
+          </div>
+        </div>
+
+        <div id="printable-slip" style="border:2px dashed #0F172A; padding:1.5rem; background:#FFFFFF; font-family:'Courier New', Courier, monospace; color:#0F172A;">
+          <!-- Slip Header -->
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid #0F172A; padding-bottom:1rem; margin-bottom:1rem;">
+            <div>
+              <div style="font-size:1.4rem; font-weight:900; letter-spacing:1px;">EXIDE BATTERY WHOLESALE</div>
+              <div style="font-size:0.85rem;">AET Official Partner • Nepal Power Hub</div>
+              <div style="font-size:0.8rem;">Bijulibazar, Kathmandu • Seller PAN: 609823412</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:1.1rem; font-weight:900;">EXP-DOORSTEP</div>
+              <div style="font-size:0.85rem;">ORDER: #${order.orderId}</div>
+              <div style="font-size:0.85rem;">INV: ${order.invoiceNumber || 'PENDING'}</div>
+            </div>
+          </div>
+
+          <!-- Shipping Destination -->
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; border-bottom:1.5px solid #CBD5E1; padding-bottom:1rem; margin-bottom:1rem;">
+            <div>
+              <div style="font-size:0.75rem; font-weight:800; text-transform:uppercase;">DELIVERY ADDRESS (SHIP TO):</div>
+              <div style="font-size:1.05rem; font-weight:900; margin-top:2px;">${customer.fullName || 'Customer'}</div>
+              <div style="font-size:0.9rem;">${customer.deliveryAddress || customer.address || 'Kathmandu'}</div>
+              <div style="font-size:0.9rem;">${customer.city || customer.district || 'Kathmandu'}, Ward ${customer.ward || '10'}</div>
+              <div style="font-size:0.9rem; font-weight:700;">TEL: ${customer.phone || 'N/A'}</div>
+            </div>
+            <div>
+              <div style="font-size:0.75rem; font-weight:800; text-transform:uppercase;">DISPATCH & PAYMENT:</div>
+              <div style="font-size:0.9rem; font-weight:800; margin-top:2px;">GATEWAY: ${String(order.paymentMethod || 'COD').toUpperCase()}</div>
+              <div style="font-size:0.9rem; font-weight:800;">COLLECT AMOUNT: NPR ${(pricing.grandTotal || order.grandTotal || 0).toLocaleString()}</div>
+              <div style="font-size:0.85rem; margin-top:4px;">COURIER: ${customer.assignedRider || order.assignedRider || 'Kathmandu Central Rider'}</div>
+            </div>
+          </div>
+
+          <!-- Warehouse Picker & Packer Checklist -->
+          <div style="margin-bottom:1rem;">
+            <div style="font-size:0.75rem; font-weight:800; text-transform:uppercase; margin-bottom:0.5rem;">PACKAGE CONTENTS CHECKLIST:</div>
+            <table style="width:100%; border-collapse:collapse; font-size:0.85rem;">
+              <thead>
+                <tr style="border-bottom:1px solid #0F172A; text-align:left;">
+                  <th style="padding:4px 0;">[ ] Item Description</th>
+                  <th style="padding:4px 0;">SKU</th>
+                  <th style="padding:4px 0;">Qty</th>
+                  <th style="padding:4px 0; text-align:right;">Verified</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${items.map(i => `
+                  <tr style="border-bottom:1px dashed #CBD5E1;">
+                    <td style="padding:6px 0;">[ ] ${i.name || i.sku}</td>
+                    <td style="padding:6px 0;">${i.sku || 'N/A'}</td>
+                    <td style="padding:6px 0;">${i.quantity || 1}</td>
+                    <td style="padding:6px 0; text-align:right;">( ___ )</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Complimentary Services Checklist -->
+          <div style="background:#F1F5F9; padding:0.6rem; border-radius:6px; font-size:0.78rem; margin-bottom:1rem;">
+            <strong>COMPLIMENTARY SERVICES CHECKLIST:</strong>
+            <div>[ ] Free Battery Terminal Greasing Applied</div>
+            <div>[ ] Inverter Charging Voltage Calibration Tested</div>
+            <div>[ ] Official Stamped Manufacturer Warranty Card Stamped & Delivered</div>
+          </div>
+
+          <!-- Barcode simulation -->
+          <div style="text-align:center; font-family:'Courier New', monospace; font-size:1.1rem; letter-spacing:6px; margin-top:1rem; border-top:1px solid #0F172A; padding-top:0.75rem;">
+            *${order.orderId}*
+          </div>
+        </div>
+      `;
+
+      modalOverlay.classList.add('open');
+    }
+
+    // CSV Export
+    exportOrdersCsv() {
+      const orders = this.ordersData || [];
+      if (orders.length === 0) {
+        alert('No orders available to export.');
+        return;
+      }
+
+      let csv = 'Order ID,Date,Invoice Number,Customer Name,Phone,Address,City,Ward,Items Count,Scrap Rebate NPR,13% VAT NPR,Grand Total NPR,Payment Method,Payment Status,Fulfillment Status,Assigned Rider\n';
+
+      orders.forEach(o => {
+        const c = o.customer || {};
+        const p = o.pricing || o.calculations || {};
+        const row = [
+          o.orderId || o.id,
+          o.orderDateFormatted || (o.date ? new Date(o.date).toLocaleDateString('en-GB') : ''),
+          o.invoiceNumber || '',
+          `"${(c.fullName || '').replace(/"/g, '""')}"`,
+          c.phone || '',
+          `"${(c.deliveryAddress || c.address || '').replace(/"/g, '""')}"`,
+          c.city || c.district || 'Kathmandu',
+          c.ward || '10',
+          Array.isArray(o.items) ? o.items.length : 0,
+          p.scrapExchangeDeduction || 0,
+          p.vatAmount || 0,
+          p.grandTotal || o.grandTotal || 0,
+          o.paymentMethod || 'COD',
+          o.paymentStatus || 'PENDING',
+          o.status || 'CONFIRMED',
+          `"${(c.assignedRider || o.assignedRider || 'Standard').replace(/"/g, '""')}"`
+        ];
+        csv += row.join(',') + '\n';
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `Exide_Orders_Export_${new Date().toISOString().slice(0, 10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // ------------------------------------------------------------------------
     // 5. SALES, TAX INVOICES & BATTERY EXCHANGE VIEW
     // ------------------------------------------------------------------------
     async renderSalesView(container) {
@@ -2988,6 +3724,9 @@
             <nav class="erp-nav">
               <a class="erp-nav-item active" data-route="dashboard" onclick="window.erpApp.navigate('dashboard')">
                 <span class="erp-nav-icon">📊</span> Dashboard
+              </a>
+              <a class="erp-nav-item" data-route="orders" onclick="window.erpApp.navigate('orders')">
+                <span class="erp-nav-icon">🛍️</span> Orders Management <span class="erp-nav-badge" id="erp-nav-orders-count" style="display:none; background:#ED1C24; color:#FFFFFF; border-radius:12px; font-size:0.7rem; font-weight:800; padding:1px 7px; margin-left:auto;">0</span>
               </a>
               <a class="erp-nav-item" data-route="products" onclick="window.erpApp.navigate('products')">
                 <span class="erp-nav-icon">📦</span> Product Catalogue

@@ -1152,8 +1152,8 @@ body.search-mode-active {
 
 .product-actions-row {
   display: grid;
-  grid-template-columns: 1fr 1fr 42px;
-  gap: 0.4rem;
+  grid-template-columns: 1fr 42px;
+  gap: 0.45rem;
   margin-top: 0.85rem;
   align-items: center;
 }
@@ -1161,18 +1161,19 @@ body.search-mode-active {
 .btn-add-cart {
   background: var(--color-exide-blue);
   color: #FFFFFF;
-  font-size: 0.8rem;
-  font-weight: 700;
-  height: 38px;
+  font-size: 0.84rem;
+  font-weight: 800;
+  height: 40px;
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.3rem;
+  gap: 0.4rem;
   transition: all var(--transition-fast);
   cursor: pointer;
   border: none;
-  padding: 0 0.4rem;
+  padding: 0 0.8rem;
+  width: 100%;
   white-space: nowrap;
 }
 
@@ -1182,33 +1183,12 @@ body.search-mode-active {
   transform: translateY(-1px);
 }
 
-.btn-buy-now-card {
-  background: var(--color-exide-red, #ED1C24);
-  color: #FFFFFF;
-  font-size: 0.8rem;
-  font-weight: 800;
-  height: 38px;
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.3rem;
-  transition: all var(--transition-fast);
-  cursor: pointer;
-  border: none;
-  box-shadow: 0 2px 8px rgba(237, 28, 36, 0.25);
-  padding: 0 0.4rem;
-  white-space: nowrap;
-}
-
-.btn-buy-now-card:hover {
-  background: #C4141B;
-  box-shadow: 0 4px 14px rgba(237, 28, 36, 0.4);
-  transform: translateY(-1px);
-}
-
-.btn-buy-now-card:active {
+.btn-add-cart:active {
   transform: translateY(1px);
+}
+
+.btn-buy-now-card {
+  display: none !important;
 }
 
 .btn-search-quick-buy {
@@ -1318,63 +1298,109 @@ body.search-mode-active {
 
 .brands-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1.25rem;
 }
 
 .brand-card-item {
   background: #FFFFFF;
   border: 1.5px solid var(--color-border);
   border-radius: var(--radius-lg);
-  padding: 1.75rem 1.25rem 1.25rem;
+  padding: 1.25rem 1rem 0.85rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  transition: all var(--transition-normal);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
-  min-height: 190px;
+  min-height: 150px;
+  position: relative;
+  overflow: hidden;
   box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
 }
 
 .brand-card-item:hover {
-  transform: translateY(-6px);
+  transform: translateY(-5px);
   border-color: var(--color-exide-blue);
-  box-shadow: 0 14px 28px -6px rgba(0, 71, 186, 0.16), 0 4px 10px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 12px 24px -4px rgba(0, 71, 186, 0.2), 0 4px 10px rgba(0, 0, 0, 0.04);
 }
 
 .brand-card-item.featured {
   border-color: var(--color-exide-red);
-  box-shadow: 0 6px 20px rgba(226, 27, 35, 0.15);
-  background: linear-gradient(180deg, #FFFFFF 0%, #FFF5F5 100%);
+  box-shadow: 0 6px 20px rgba(226, 27, 35, 0.12);
+}
+
+.brand-logo-frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 80px;
+  margin-bottom: 0.35rem;
 }
 
 .brand-card-logo {
-  height: 80px;
-  max-height: 85px;
+  height: 72px;
+  max-height: 78px;
   width: auto;
-  max-width: 170px;
+  max-width: 155px;
   object-fit: contain;
-  margin-bottom: 1rem;
-  filter: none;
-  transition: transform var(--transition-normal);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .brand-card-item:hover .brand-card-logo {
-  transform: scale(1.08);
+  transform: scale(1.1);
 }
 
 .brand-card-name {
-  font-size: 1.05rem;
-  font-weight: 800;
-  color: var(--color-text-main);
-  margin-bottom: 0.25rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #475569;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
   font-family: var(--font-heading);
   white-space: normal !important;
   word-wrap: break-word !important;
   overflow-wrap: break-word !important;
-  line-height: 1.25 !important;
+  line-height: 1.2 !important;
+  margin-bottom: 0.25rem;
+  transition: color 0.2s ease;
+}
+
+.brand-card-item:hover .brand-card-name {
+  color: var(--color-exide-blue);
+}
+
+.brand-card-action {
+  display: none !important;
+}
+
+.brand-card-hover-pill {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%) translateY(16px);
+  opacity: 0;
+  pointer-events: none;
+  background: var(--color-exide-blue);
+  color: #FFFFFF;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 4px 12px rgba(0, 71, 186, 0.4);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 2;
+}
+
+.brand-card-item:hover .brand-card-hover-pill {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 
 .brand-card-desc {
@@ -2903,6 +2929,19 @@ body.search-mode-active {
   border-color: var(--color-exide-red);
   background: var(--color-exide-red-subtle);
   box-shadow: 0 4px 12px rgba(226, 27, 35, 0.15);
+}
+
+.payment-logo-img {
+  height: 34px;
+  width: auto;
+  max-width: 110px;
+  object-fit: contain;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.payment-method-card:hover .payment-logo-img {
+  transform: scale(1.05);
 }
 
 .payment-logo-badge {
@@ -9821,32 +9860,46 @@ button:active,
   }
 
   /* Compact Brands Grid for Responsive Mobile Browsing */
+  /* Ultra-Compact 3-Column Brands Grid for Responsive Mobile Browsing */
   .brands-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 0.65rem !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 0.45rem !important;
   }
 
   .brand-card-item {
-    padding: 0.75rem 0.5rem !important;
-    min-height: 92px !important;
-    border-radius: 10px !important;
+    padding: 0.45rem 0.35rem !important;
+    min-height: 72px !important;
+    border-radius: 8px !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 0.35rem !important;
+    gap: 0.2rem !important;
+  }
+
+  .brand-logo-frame {
+    height: 36px !important;
+    margin-bottom: 0.15rem !important;
   }
 
   .brand-card-logo {
-    height: 38px !important;
-    max-height: 40px !important;
+    height: 32px !important;
+    max-height: 34px !important;
+    max-width: 80px !important;
     width: auto !important;
     object-fit: contain !important;
   }
 
   .brand-card-name {
-    font-size: 0.8rem !important;
+    font-size: 0.65rem !important;
     font-weight: 700 !important;
+    line-height: 1.1 !important;
+    margin: 0 !important;
+  }
+
+  .brand-card-hover-pill {
+    display: none !important;
+  }
     text-align: center !important;
   }
 
@@ -11314,28 +11367,30 @@ input[type="search"]::-webkit-search-results-decoration {
 
   /* 9. Associated Brands & Categories */
   .brands-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 0.55rem !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 0.4rem !important;
   }
 
   .brand-card-item {
-    min-height: 110px !important;
-    padding: 0.75rem 0.5rem 0.6rem !important;
-    border-radius: 10px !important;
+    min-height: 68px !important;
+    padding: 0.4rem 0.25rem !important;
+    border-radius: 8px !important;
+  }
+
+  .brand-logo-frame {
+    height: 32px !important;
+    margin-bottom: 0.1rem !important;
   }
 
   .brand-card-logo {
-    height: 38px !important;
-    max-height: 42px !important;
-    margin-bottom: 0.3rem !important;
+    height: 28px !important;
+    max-height: 30px !important;
+    margin-bottom: 0.15rem !important;
   }
 
   .brand-card-name {
-    font-size: 0.76rem !important;
-  }
-
-  .brand-card-count {
-    font-size: 0.66rem !important;
+    font-size: 0.62rem !important;
+    line-height: 1.1 !important;
   }
 
   .categories-grid {

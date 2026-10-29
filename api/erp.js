@@ -6,6 +6,7 @@ const handlers = {
   'metrics': require('../lib/erp/metrics.js'),
   'products': require('../lib/erp/products.js'),
   'inventory': require('../lib/erp/inventory.js'),
+  'orders': require('../lib/erp/orders.js'),
   'purchases': require('../lib/erp/purchases.js'),
   'sales': require('../lib/erp/sales.js'),
   'suppliers': require('../lib/erp/suppliers.js'),

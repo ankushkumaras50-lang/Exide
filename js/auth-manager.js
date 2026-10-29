@@ -1861,19 +1861,20 @@ class AuthManager {
     }
 
     const html = methods.map((m, idx) => {
-      const typeIcons = {
-        esewa: '📱',
-        khalti: '🟣',
-        connectips: '🏦',
-        cod: '💵',
-        card: '💳'
+      const typeLogos = {
+        esewa: '<img src="assets/payments/esewa.svg" alt="eSewa" style="height:22px; width:auto; max-width:70px; object-fit:contain;">',
+        khalti: '<img src="assets/payments/khalti.svg" alt="Khalti" style="height:22px; width:auto; max-width:70px; object-fit:contain;">',
+        fonepay: '<img src="assets/payments/fonepay.svg" alt="Fonepay" style="height:22px; width:auto; max-width:70px; object-fit:contain;">',
+        connectips: '<img src="assets/payments/connectips.svg" alt="ConnectIPS" style="height:22px; width:auto; max-width:75px; object-fit:contain;">',
+        cod: '<img src="assets/payments/cod.svg" alt="COD" style="height:22px; width:auto; max-width:70px; object-fit:contain;">',
+        card: '<img src="assets/payments/cards.svg" alt="Card" style="height:22px; width:auto; max-width:70px; object-fit:contain;">'
       };
-      const icon = typeIcons[m.type] || '💳';
+      const logoHtml = typeLogos[m.type] || '<span style="font-size:1.1rem;">💳</span>';
 
       return `
         <div class="prof-payment-method-card ${m.isDefault ? 'default-card' : ''}">
           <div style="display:flex; align-items:center; gap:0.75rem;">
-            <div class="prof-payment-icon">${icon}</div>
+            <div class="prof-payment-icon" style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:8px; padding:4px 8px; display:inline-flex; align-items:center; justify-content:center; min-width:55px;">${logoHtml}</div>
             <div>
               <div style="display:flex; align-items:center; gap:0.4rem;">
                 <strong style="font-size:0.88rem; color:#0F172A;">${m.label || m.type.toUpperCase()}</strong>

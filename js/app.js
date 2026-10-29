@@ -419,15 +419,11 @@ function renderProductsCatalog() {
           </div>
           <div class="product-actions-row">
             <button class="btn-add-cart" id="btn-add-${product.id}" onclick="event.stopPropagation(); handleAddToCart('${product.id}', this)" ${product.stock <= 0 ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''} aria-label="Add ${product.name} to Cart">
-              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-              <span>${product.stock <= 0 ? 'Out of Stock' : 'Add'}</span>
-            </button>
-            <button class="btn-buy-now-card" onclick="event.stopPropagation(); buyProductNow('${product.id}')" ${product.stock <= 0 ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''} aria-label="Buy ${product.name} Now with Old Battery Exchange" title="Buy Now & Choose Old Battery Exchange">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-              <span>Buy Now</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+              <span>${product.stock <= 0 ? 'Out of Stock' : 'Add to Cart'}</span>
             </button>
             <a href="https://wa.me/9779705997260?text=Hi%2C%20I%20am%20inquiring%20about%20${encodeURIComponent(product.name)}%20(SKU%3A%20${product.sku})%20priced%20at%20NPR%20${product.price}." target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" class="btn-whatsapp-card" title="Chat on WhatsApp" aria-label="WhatsApp Inquiry">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
                 <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2ZM12.05 20.15C10.57 20.15 9.12 19.75 7.85 19L7.55 18.82L4.43 19.64L5.26 16.6L5.06 16.29C4.24 14.98 3.81 13.47 3.81 11.91C3.81 7.37 7.5 3.69 12.05 3.69C14.25 3.69 16.31 4.55 17.87 6.11C19.42 7.66 20.28 9.72 20.28 11.92C20.27 16.46 16.59 20.15 12.05 20.15ZM16.57 14.37C16.32 14.25 15.1 13.65 14.87 13.56C14.64 13.48 14.48 13.44 14.31 13.68C14.15 13.93 13.66 14.5 13.51 14.67C13.37 14.83 13.22 14.85 12.97 14.73C12.72 14.6 11.93 14.34 10.99 13.51C10.26 12.86 9.77 12.05 9.62 11.8C9.48 11.55 9.61 11.42 9.73 11.3C9.84 11.19 9.98 11.01 10.1 10.87C10.23 10.73 10.27 10.62 10.35 10.46C10.44 10.29 10.39 10.15 10.33 10.03C10.27 9.9 9.77 8.68 9.57 8.18C9.37 7.69 9.17 7.76 9.02 7.75C8.88 7.74 8.71 7.74 8.55 7.74C8.38 7.74 8.12 7.8 7.89 8.05C7.67 8.3 7.03 8.89 7.03 10.1C7.03 11.31 7.91 12.47 8.03 12.63C8.16 12.8 9.76 15.26 12.21 16.32C12.79 16.57 13.25 16.72 13.6 16.83C14.19 17.02 14.72 16.99 15.15 16.93C15.63 16.86 16.62 16.33 16.83 15.75C17.03 15.16 17.03 14.66 16.97 14.56C16.91 14.45 16.82 14.49 16.57 14.37Z"/>
               </svg>
             </a>
@@ -584,12 +580,15 @@ function renderBrandsGrid() {
   if (!container) return;
 
   container.innerHTML = BRANDS_LIST.map(brand => `
-    <div class="brand-card-item ${brand.featured ? 'featured' : ''}" onclick="filterProductsByBrand('${brand.slug}')" title="Filter products by ${brand.name}" role="button" tabindex="0">
+    <div class="brand-card-item ${brand.featured ? 'featured' : ''}" onclick="filterProductsByBrand('${brand.slug}')" title="Browse ${brand.name} Products" role="button" tabindex="0">
       <div class="brand-logo-frame">
         <img src="${brand.logo}" alt="${brand.name} official partner" class="brand-card-logo" loading="lazy" onerror="this.onerror=null; this.src='assets/logo.png';">
       </div>
       <div class="brand-card-name">${brand.name}</div>
-      <span class="brand-card-action">View Catalog →</span>
+      <div class="brand-card-hover-pill">
+        <span>Browse Products</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
     </div>
   `).join('');
 }
@@ -705,22 +704,33 @@ function closeProductDetails(updateHistory = true) {
   document.title = 'Exide Battery Wholesale | AET Official Partner - The Power House';
 }
 
-function updateProductDetailQty(delta, maxStock) {
+function updateProductDetailQty(delta, maxStock, unitPrice) {
   const input = document.getElementById('detail-qty-input');
   if (!input) return;
   let val = parseInt(input.value, 10) || 1;
   val = Math.max(1, Math.min(val + delta, maxStock || 99));
   input.value = val;
   activeDetailQuantity = val;
+  updateDetailPriceDisplay(val, unitPrice);
 }
 
-function setProductDetailQty(val, maxStock) {
+function setProductDetailQty(val, maxStock, unitPrice) {
   const input = document.getElementById('detail-qty-input');
   let parsed = parseInt(val, 10);
   if (isNaN(parsed) || parsed < 1) parsed = 1;
   parsed = Math.min(parsed, maxStock || 99);
   if (input) input.value = parsed;
   activeDetailQuantity = parsed;
+  updateDetailPriceDisplay(parsed, unitPrice);
+}
+
+function updateDetailPriceDisplay(qty, unitPrice) {
+  const countEl = document.getElementById('detail-qty-count');
+  const priceEl = document.getElementById('detail-qty-total-price');
+  if (countEl) countEl.textContent = qty;
+  if (priceEl && typeof unitPrice === 'number' && unitPrice > 0) {
+    priceEl.textContent = `NPR ${(qty * unitPrice).toLocaleString()}`;
+  }
 }
 
 function buyProductNow(productId) {
@@ -744,18 +754,38 @@ function buyProductNow(productId) {
 }
 window.buyProductNow = buyProductNow;
 
-function copyProductShareLink(productId) {
+async function shareProduct(productId, productName) {
   const shareUrl = `${window.location.origin}${window.location.pathname}?product=${encodeURIComponent(productId)}`;
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(shareUrl).then(() => {
-      showToast('Product link copied to clipboard!', 'success');
-    }).catch(() => {
-      prompt('Copy this product link:', shareUrl);
-    });
-  } else {
-    prompt('Copy this product link:', shareUrl);
+  const title = productName ? decodeURIComponent(productName) : 'Exide Battery Wholesale Nepal';
+  const text = `Check out ${title} at Exide Battery Wholesale Nepal - Bijulibazar Official Hub`;
+
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title,
+        text,
+        url: shareUrl
+      });
+      showToast('Shared successfully!', 'success');
+      return;
+    } catch (err) {
+      if (err.name === 'AbortError') return; // User closed the native share dialog
+    }
   }
+
+  // Fallback to clipboard
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      showToast('Product link copied to clipboard!', 'success');
+      return;
+    } catch (e) {}
+  }
+
+  prompt('Copy this product link to share:', shareUrl);
 }
+window.shareProduct = shareProduct;
+window.copyProductShareLink = shareProduct; // backward compatibility
 
 function openProductQuickView(productId) {
   navigateToProduct(productId, true);
@@ -901,41 +931,43 @@ function renderProductDetailPage(product) {
             </div>
           ` : ''}
 
-          <!-- Quantity Selector & Actions Group -->
-          <div style="margin-bottom:1.25rem; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:0.85rem 1rem;">
+          <!-- Quantity Selector & Actions Group with Dynamic Total Price -->
+          <div style="margin-bottom:1.25rem; background:#F8FAFC; border:1.5px solid #E2E8F0; border-radius:12px; padding:1rem 1.15rem;">
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.75rem; flex-wrap:wrap; gap:0.5rem;">
-              <label for="detail-qty-input" style="font-size:0.85rem; font-weight:700; color:#0F172A;">Quantity:</label>
-              <div class="qty-control" style="background:#FFFFFF; border:1px solid #CBD5E1;">
-                <button class="qty-btn" type="button" onclick="updateProductDetailQty(-1, ${product.stock})" aria-label="Decrease quantity" style="background:#F1F5F9; color:#0F172A;">-</button>
-                <input type="number" id="detail-qty-input" value="1" min="1" max="${product.stock}" oninput="setProductDetailQty(this.value, ${product.stock})" style="width:48px; height:28px; text-align:center; border:none; font-weight:800; font-size:0.95rem; color:#0F172A; background:transparent;">
-                <button class="qty-btn" type="button" onclick="updateProductDetailQty(1, ${product.stock})" aria-label="Increase quantity" style="background:#F1F5F9; color:#0F172A;">+</button>
+              <label for="detail-qty-input" style="font-size:0.9rem; font-weight:700; color:#0F172A;">Quantity:</label>
+              <div class="qty-control" style="background:#FFFFFF; border:1.5px solid #CBD5E1; border-radius:8px; overflow:hidden; display:inline-flex; align-items:center;">
+                <button class="qty-btn" type="button" onclick="updateProductDetailQty(-1, ${product.stock}, ${product.price})" aria-label="Decrease quantity" style="background:#F1F5F9; color:#0F172A; width:36px; height:36px; border:none; cursor:pointer; font-weight:800; font-size:1.15rem; transition:background 0.15s;">-</button>
+                <input type="number" id="detail-qty-input" value="1" min="1" max="${product.stock}" oninput="setProductDetailQty(this.value, ${product.stock}, ${product.price})" style="width:52px; height:36px; text-align:center; border:none; font-weight:800; font-size:1rem; color:#0F172A; background:transparent;">
+                <button class="qty-btn" type="button" onclick="updateProductDetailQty(1, ${product.stock}, ${product.price})" aria-label="Increase quantity" style="background:#F1F5F9; color:#0F172A; width:36px; height:36px; border:none; cursor:pointer; font-weight:800; font-size:1.15rem; transition:background 0.15s;">+</button>
               </div>
             </div>
 
-            <!-- Action Buttons: Add to Cart, Buy Now, WhatsApp -->
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.65rem; margin-bottom:0.65rem;">
-              <button class="btn-primary-red" style="height:44px; font-size:0.9rem; font-weight:800; border-radius:8px;" onclick="window.cartSystem.addItem('${product.id}', activeDetailQuantity); closeProductDetails(true);" ${product.stock <= 0 ? 'disabled style="opacity:0.5;"' : ''}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+            <!-- Dynamic Total Price for Added Quantity -->
+            <div id="detail-qty-total-container" style="display:flex; justify-content:space-between; align-items:center; background:#EFF6FF; border:1px solid #BFDBFE; border-radius:8px; padding:0.65rem 0.9rem; margin-bottom:0.85rem;">
+              <span style="font-size:0.84rem; font-weight:700; color:#1E40AF;">Total for <span id="detail-qty-count">1</span> unit(s):</span>
+              <span id="detail-qty-total-price" style="font-size:1.15rem; font-weight:900; color:#0047BA;">NPR ${product.price.toLocaleString()}</span>
+            </div>
+
+            <!-- Action Buttons: Add to Cart & Share -->
+            <div style="display:grid; grid-template-columns:1fr auto; gap:0.65rem; margin-bottom:0.65rem;">
+              <button class="btn-primary-red" style="height:44px; font-size:0.92rem; font-weight:800; border-radius:8px; display:inline-flex; align-items:center; justify-content:center; gap:0.5rem;" onclick="window.cartSystem.addItem('${product.id}', activeDetailQuantity); closeProductDetails(true);" ${product.stock <= 0 ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
                 <span>Add to Cart</span>
               </button>
 
-              <button class="btn-buy-now" style="height:44px; font-size:0.9rem; font-weight:800; border-radius:8px; background:#0047BA; color:#FFFFFF; border:none; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:0.4rem;" onclick="buyProductNow('${product.id}')" ${product.stock <= 0 ? 'disabled style="opacity:0.5;"' : ''}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                <span>Buy Now</span>
+              <button type="button" onclick="shareProduct('${product.id}', '${encodeURIComponent(product.name)}')" class="btn-share-product" style="height:44px; font-size:0.85rem; font-weight:700; color:#0F172A; background:#FFFFFF; border:1.5px solid #CBD5E1; border-radius:8px; padding:0 1rem; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:0.4rem; transition:all 0.15s ease;" title="Share product link">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                <span>Share</span>
               </button>
             </div>
 
-            <div style="display:grid; grid-template-columns:1fr auto; gap:0.5rem;">
-              <a href="https://wa.me/9779705997260?text=Hi%20Exide%20Battery%20Wholesale%2C%20I%20am%20interested%20in%20${encodeURIComponent(product.name)}%20(SKU%3A%20${product.sku})%20priced%20at%20NPR%20${product.price}." target="_blank" rel="noopener noreferrer" class="btn-whatsapp-aligned" style="width:100%; height:40px; font-size:0.85rem; padding:0 0.85rem;">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                  <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2ZM12.05 20.15C10.57 20.15 9.12 19.75 7.85 19L7.55 18.82L4.43 19.64L5.26 16.6L5.06 16.29C4.24 14.98 3.81 13.47 3.81 11.91C3.81 7.37 7.5 3.69 12.05 3.69C14.25 3.69 16.31 4.55 17.87 6.11C19.42 7.66 20.28 9.72 20.28 11.92C20.27 16.46 16.59 20.15 12.05 20.15ZM16.57 14.37C16.32 14.25 15.1 13.65 14.87 13.56C14.64 13.48 14.48 13.44 14.31 13.68C14.15 13.93 13.66 14.5 13.51 14.67C13.37 14.83 13.22 14.85 12.97 14.73C12.72 14.6 11.93 14.34 10.99 13.51C10.26 12.86 9.77 12.05 9.62 11.8C9.48 11.55 9.61 11.42 9.73 11.3C9.84 11.19 9.98 11.01 10.1 10.87C10.23 10.73 10.27 10.62 10.35 10.46C10.44 10.29 10.39 10.15 10.33 10.03C10.27 9.9 9.77 8.68 9.57 8.18C9.37 7.69 9.17 7.76 9.02 7.75C8.88 7.74 8.71 7.74 8.55 7.74C8.38 7.74 8.12 7.8 7.89 8.05C7.67 8.3 7.03 8.89 7.03 10.1C7.03 11.31 7.91 12.47 8.03 12.63C8.16 12.8 9.76 15.26 12.21 16.32C12.79 16.57 13.25 16.72 13.6 16.83C14.19 17.02 14.72 16.99 15.15 16.93C15.63 16.86 16.62 16.33 16.83 15.75C17.03 15.16 17.03 14.66 16.97 14.56C16.91 14.45 16.82 14.49 16.57 14.37Z"/>
-                </svg>
-                <span>WhatsApp</span>
-              </a>
-              <button type="button" onclick="copyProductShareLink('${product.id}')" style="height:40px; font-size:0.8rem; font-weight:700; color:#0047BA; background:#EFF6FF; border:1px solid #BFDBFE; border-radius:6px; padding:0 0.75rem; cursor:pointer;" title="Share product link">
-                🔗 Link
-              </button>
-            </div>
+            <!-- WhatsApp Instant Inquiry -->
+            <a href="https://wa.me/9779705997260?text=Hi%20Exide%20Battery%20Wholesale%2C%20I%20am%20interested%20in%20${encodeURIComponent(product.name)}%20(SKU%3A%20${product.sku})%20priced%20at%20NPR%20${product.price}." target="_blank" rel="noopener noreferrer" class="btn-whatsapp-aligned" style="width:100%; height:42px; font-size:0.88rem; font-weight:700; border-radius:8px; display:inline-flex; align-items:center; justify-content:center; gap:0.5rem; background:#25D366; color:#FFFFFF; text-decoration:none; box-shadow:0 2px 8px rgba(37,211,102,0.25);">
+              <svg viewBox="0 0 24 24" width="19" height="19" fill="currentColor">
+                <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2ZM12.05 20.15C10.57 20.15 9.12 19.75 7.85 19L7.55 18.82L4.43 19.64L5.26 16.6L5.06 16.29C4.24 14.98 3.81 13.47 3.81 11.91C3.81 7.37 7.5 3.69 12.05 3.69C14.25 3.69 16.31 4.55 17.87 6.11C19.42 7.66 20.28 9.72 20.28 11.92C20.27 16.46 16.59 20.15 12.05 20.15ZM16.57 14.37C16.32 14.25 15.1 13.65 14.87 13.56C14.64 13.48 14.48 13.44 14.31 13.68C14.15 13.93 13.66 14.5 13.51 14.67C13.37 14.83 13.22 14.85 12.97 14.73C12.72 14.6 11.93 14.34 10.99 13.51C10.26 12.86 9.77 12.05 9.62 11.8C9.48 11.55 9.61 11.42 9.73 11.3C9.84 11.19 9.98 11.01 10.1 10.87C10.23 10.73 10.27 10.62 10.35 10.46C10.44 10.29 10.39 10.15 10.33 10.03C10.27 9.9 9.77 8.68 9.57 8.18C9.37 7.69 9.17 7.76 9.02 7.75C8.88 7.74 8.71 7.74 8.55 7.74C8.38 7.74 8.12 7.8 7.89 8.05C7.67 8.3 7.03 8.89 7.03 10.1C7.03 11.31 7.91 12.47 8.03 12.63C8.16 12.8 9.76 15.26 12.21 16.32C12.79 16.57 13.25 16.72 13.6 16.83C14.19 17.02 14.72 16.99 15.15 16.93C15.63 16.86 16.62 16.33 16.83 15.75C17.03 15.16 17.03 14.66 16.97 14.56C16.91 14.45 16.82 14.49 16.57 14.37Z"/>
+              </svg>
+              <span>WhatsApp Inquiry</span>
+            </a>
           </div>
 
           <!-- Doorstep Service Highlights -->

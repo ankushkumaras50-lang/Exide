@@ -1199,3 +1199,165 @@ body {
   color: var(--erp-dark);
   padding: 0.35rem;
 }
+
+/* ==========================================================================
+   COMMERCIAL ORDER MANAGEMENT MODULE (FLIPKART / AMAZON SELLER STYLE)
+   ========================================================================== */
+.erp-order-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.erp-order-metric-tile {
+  background: var(--erp-card-bg, #FFFFFF);
+  border: 1.5px solid var(--erp-border, #E2E8F0);
+  border-radius: 12px;
+  padding: 1.15rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.erp-order-metric-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+}
+
+.erp-order-metric-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.erp-order-tab-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  overflow-x: auto;
+  padding: 0.4rem 0.5rem;
+  background: #F1F5F9;
+  border-radius: 10px;
+  margin-bottom: 1.25rem;
+  scrollbar-width: thin;
+}
+
+.erp-order-tab-btn {
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  padding: 0.55rem 0.95rem;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #475569;
+  cursor: pointer;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  transition: all 0.15s ease;
+}
+
+.erp-order-tab-btn:hover {
+  background: rgba(255, 255, 255, 0.7);
+  color: #0F172A;
+}
+
+.erp-order-tab-btn.active {
+  background: #FFFFFF;
+  color: var(--erp-primary, #ED1C24);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.erp-tab-count {
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: 10px;
+  background: #E2E8F0;
+  color: #334155;
+}
+
+.erp-order-tab-btn.active .erp-tab-count {
+  background: #FEE2E2;
+  color: #DC2626;
+}
+
+.erp-order-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.erp-order-search-box {
+  display: flex;
+  align-items: center;
+  background: #FFFFFF;
+  border: 1.5px solid var(--erp-border, #CBD5E1);
+  border-radius: 8px;
+  padding: 0 0.75rem;
+  height: 40px;
+  flex: 1;
+  min-width: 240px;
+  max-width: 440px;
+}
+
+.erp-order-search-box input {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 0.88rem;
+  color: #0F172A;
+  background: transparent;
+}
+
+.erp-timeline-container {
+  border-left: 2px solid #E2E8F0;
+  margin-left: 1rem;
+  padding-left: 1rem;
+  position: relative;
+}
+
+.erp-timeline-item {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.erp-timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -1.35rem;
+  top: 4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--erp-primary, #ED1C24);
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 0 0 2px rgba(237, 28, 36, 0.2);
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #printable-slip, #printable-slip * {
+    visibility: visible;
+  }
+  #printable-slip {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+}

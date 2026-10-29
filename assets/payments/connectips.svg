@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 170 48" fill="none">
+  <!-- Official ConnectIPS / NCHL Emblem & Wordmark -->
+  <rect width="40" height="40" x="4" y="4" rx="10" fill="#0A3B7B"/>
+  <!-- NCHL Intertwined Infinity Ribbon in Red and White -->
+  <path d="M14 24C14 18.5 18 15 22 19L27 24L22 29C18 33 14 29.5 14 24Z" stroke="#ED1C24" stroke-width="3" stroke-linecap="round"/>
+  <path d="M34 24C34 29.5 30 33 26 29L21 24L26 19C30 15 34 18.5 34 24Z" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+  <!-- ConnectIPS Typography -->
+  <text x="50" y="25" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="800" fill="#0A3B7B" letter-spacing="-0.3">connect<tspan fill="#ED1C24">IPS</tspan></text>
+  <text x="50" y="37" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9" font-weight="600" fill="#64748B" letter-spacing="0.5">NCHL NEPAL</text>
+</svg>
