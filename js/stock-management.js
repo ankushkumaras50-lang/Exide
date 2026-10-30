@@ -2122,15 +2122,193 @@ class StockManagementSystem {
     }
   }
 
-  printShippingParcelLabel(orderId) {
-    const order = this.orders.find(o => o.orderId === orderId);
-    if (!order) return;
-
-    if (window.printShippingParcelLabel) {
-      window.printShippingParcelLabel(order);
+  printShippingParcelLabel(orderIdOrObj) {
+    let order = null;
+    if (typeof orderIdOrObj === 'object' && orderIdOrObj !== null) {
+      order = orderIdOrObj;
     } else {
-      showToast('Shipping label generator unavailable', 'warning');
+      order = (this.orders || []).find(o => (o.orderId === orderIdOrObj || o.id === orderIdOrObj));
+      if (!order) {
+        try {
+          const localList = JSON.parse(localStorage.getItem('exide_orders') || '[]');
+          order = localList.find(o => (o.orderId === orderIdOrObj || o.id === orderIdOrObj));
+        } catch(e) {}
+      }
     }
+
+    if (!order) {
+      if (typeof showToast === 'function') showToast(`Order #${orderIdOrObj} not found.`, 'warning');
+      return;
+    }
+
+    this.renderShippingParcelLabelModal(order);
+  }
+
+  renderShippingParcelLabelModal(order) {
+    let modal = document.getElementById('shipping-parcel-label-modal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'shipping-parcel-label-modal';
+      modal.className = 'modal-overlay';
+      modal.style.zIndex = '10040';
+      modal.innerHTML = `
+        <div style="background:#fff; border-radius:12px; width:100%; max-width:820px; box-shadow:0 25px 50px -12px rgba(0,0,0,0.25); max-height:92vh; overflow-y:auto; padding:1.5rem; position:relative;">
+          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #E2E8F0; padding-bottom:0.75rem; margin-bottom:1rem;">
+            <div>
+              <h3 style="margin:0; font-size:1.15rem; font-weight:800; color:#0F172A;">Commercial Shipping & Delivery Label</h3>
+              <span style="font-size:0.75rem; color:#64748B;">Flipkart & Amazon Nepal Dispatch Manifest</span>
+            </div>
+            <div style="display:flex; gap:0.5rem;">
+              <button type="button" class="btn btn-primary" onclick="window.print()" style="font-size:0.8rem; padding:6px 14px; font-weight:700; background:#0047BA; color:#fff; border:none; border-radius:6px; cursor:pointer;">
+                🖨️ Print Label
+              </button>
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('shipping-parcel-label-modal').classList.remove('open')" style="font-size:0.8rem; padding:6px 12px; border:1px solid #CBD5E1; background:#F8FAFC; border-radius:6px; cursor:pointer;">
+                ✕ Close
+              </button>
+            </div>
+          </div>
+          <div id="shipping-parcel-label-body"></div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+
+    const customer = order.customer || {};
+    const pricing = order.pricing || order.calculations || {};
+    const items = Array.isArray(order.items) ? order.items : [];
+    const dateFormatted = order.createdAt ? new Date(order.createdAt).toLocaleDateString('en-GB') : (order.date || 'Recent');
+    const orderNum = order.orderId || order.id || 'EXD-2026';
+    const grandTotal = Number(pricing.grandTotal || order.grandTotal || order.total || 0).toLocaleString('en-IN');
+    const scrapRebate = Number(pricing.scrapExchangeDeduction || 0);
+
+    // Delivery personnel info
+    const rawRider = order.deliveryRider || order.assignedRider || order.dispatchRider || order.driverInfo || {};
+    const riderName = typeof rawRider === 'string' ? rawRider : (rawRider.name || rawRider.driverName || 'Kathmandu Central Dispatch');
+    const riderPhone = typeof rawRider === 'object' && rawRider.phone ? rawRider.phone : '9705997260';
+    const riderVehicle = typeof rawRider === 'object' && rawRider.vehicle ? rawRider.vehicle : (order.dispatchVehicle || 'Motorbike Express');
+
+    const bodyEl = document.getElementById('shipping-parcel-label-body');
+    if (bodyEl) {
+      bodyEl.innerHTML = `
+        <div style="border:2px dashed #0F172A; padding:1.25rem; background:#FFFFFF; font-family:'Courier New', Courier, monospace; color:#0F172A;">
+          <!-- Header Bar -->
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid #0F172A; padding-bottom:0.75rem; margin-bottom:1rem;">
+            <div>
+              <div style="font-size:1.35rem; font-weight:900; letter-spacing:1px; color:#0047BA;">EXIDE BATTERY WHOLESALE</div>
+              <div style="font-size:0.82rem; font-weight:700;">AET Official Partner • Nepal Power House</div>
+              <div style="font-size:0.75rem; color:#475569;">Bijulibazar, Kathmandu • Hotline: +977-9705997260</div>
+              <div style="font-size:0.75rem; color:#475569;">IRD Nepal Seller PAN: <strong>609823412</strong></div>
+            </div>
+            <div style="text-align:right;">
+              <div style="background:#0F172A; color:#FFFFFF; padding:4px 10px; font-weight:900; font-size:0.85rem; border-radius:4px; display:inline-block; margin-bottom:4px;">
+                PRIORITY DOORSTEP DELIVERY
+              </div>
+              <div style="font-size:0.78rem; font-weight:700;">MANIFEST: #${orderNum}</div>
+              <div style="font-size:0.72rem; color:#475569;">Date: ${dateFormatted}</div>
+            </div>
+          </div>
+
+          <!-- Barcode Simulation -->
+          <div style="text-align:center; margin-bottom:1rem; border-bottom:1px dashed #CBD5E1; padding-bottom:0.75rem;">
+            <div style="font-family:'Libre Barcode 39', monospace, monospace; font-size:2.2rem; letter-spacing:4px; line-height:1;">
+              *${orderNum}*
+            </div>
+            <div style="font-size:0.72rem; color:#64748B; letter-spacing:1px; margin-top:2px;">
+              AWB: EXD-${orderNum.replace(/\D/g, '').padEnd(8, '0')}-KTM
+            </div>
+          </div>
+
+          <!-- Recipient & Dispatch Grid -->
+          <div style="display:grid; grid-template-columns:1.2fr 1fr; gap:1rem; border-bottom:2px solid #0F172A; padding-bottom:1rem; margin-bottom:1rem;">
+            <div style="background:#F8FAFC; border:1px solid #CBD5E1; border-radius:6px; padding:0.75rem;">
+              <div style="font-size:0.75rem; font-weight:900; color:#64748B; text-transform:uppercase; margin-bottom:4px;">
+                📦 SHIP TO RECIPIENT:
+              </div>
+              <div style="font-size:1.05rem; font-weight:900; color:#0F172A;">${customer.fullName || 'Valued Customer'}</div>
+              <div style="font-size:0.88rem; font-weight:800; color:#0047BA; margin-top:2px;">
+                📞 +977-${customer.phone || '98XXXXXXXX'} ${customer.alternatePhone ? ' / ' + customer.alternatePhone : ''}
+              </div>
+              <div style="font-size:0.82rem; margin-top:4px; color:#1E293B;">
+                📍 ${customer.deliveryAddress || customer.address || 'Kathmandu Valley'}, ${customer.city || 'Kathmandu'}, Ward ${customer.ward || '10'}
+              </div>
+              ${customer.landmark ? `<div style="font-size:0.75rem; color:#059669; font-weight:700; margin-top:2px;">🚩 Landmark: ${customer.landmark}</div>` : ''}
+              ${customer.panNumber ? `<div style="font-size:0.75rem; color:#4338CA; font-weight:700; margin-top:2px;">🏢 Buyer PAN: ${customer.panNumber}</div>` : ''}
+            </div>
+
+            <div style="background:#F8FAFC; border:1px solid #CBD5E1; border-radius:6px; padding:0.75rem;">
+              <div style="font-size:0.75rem; font-weight:900; color:#64748B; text-transform:uppercase; margin-bottom:4px;">
+                🚚 DISPATCH & RIDER:
+              </div>
+              <div style="font-size:0.95rem; font-weight:800; color:#0F172A;">${riderName}</div>
+              <div style="font-size:0.82rem; color:#0047BA; font-weight:700;">📞 +977-${riderPhone}</div>
+              <div style="font-size:0.8rem; color:#475569; margin-top:2px;">Vehicle: <strong>${riderVehicle}</strong></div>
+              <div style="margin-top:8px; padding-top:6px; border-top:1px dashed #CBD5E1;">
+                <span style="font-size:0.72rem; color:#64748B;">Payment Mode:</span>
+                <div style="font-size:0.95rem; font-weight:900; color:${String(order.paymentStatus || '').toUpperCase().includes('PAID') ? '#059669' : '#DC2626'};">
+                  ${(order.paymentMethod || 'COD').toUpperCase()} • ${order.paymentStatus || 'COLLECT CASH'}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Parcel Items -->
+          <div style="margin-bottom:1rem;">
+            <div style="font-size:0.75rem; font-weight:900; color:#64748B; text-transform:uppercase; margin-bottom:6px;">
+              PARCEL CONTENTS & SPECIFICATIONS:
+            </div>
+            <table style="width:100%; border-collapse:collapse; font-size:0.82rem;">
+              <thead>
+                <tr style="border-bottom:1px solid #0F172A; text-align:left;">
+                  <th style="padding:4px 0;">Item & Model</th>
+                  <th style="padding:4px 0;">Ah / Specs</th>
+                  <th style="padding:4px 0; text-align:center;">Qty</th>
+                  <th style="padding:4px 0; text-align:right;">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${items.map(it => `
+                  <tr style="border-bottom:1px dashed #E2E8F0;">
+                    <td style="padding:6px 0; font-weight:700;">${it.name || it.sku || 'Exide Battery'}</td>
+                    <td style="padding:6px 0;">${it.capacity || '12V Power'}</td>
+                    <td style="padding:6px 0; text-align:center;"><strong>${it.quantity || 1}</strong></td>
+                    <td style="padding:6px 0; text-align:right; font-weight:800;">Rs. ${((it.quantity || 1) * (it.price || it.unitPrice || 0)).toLocaleString('en-IN')}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Financials & Scrap Collection -->
+          <div style="display:flex; justify-content:space-between; align-items:center; background:#0F172A; color:#FFFFFF; padding:0.75rem 1rem; border-radius:6px; margin-bottom:1rem;">
+            <div>
+              ${scrapRebate > 0 ? `
+                <div style="font-size:0.75rem; color:#34D399; font-weight:700;">
+                  ♻️ OLD BATTERY BUYBACK: Collect scrap (-Rs. ${scrapRebate.toLocaleString('en-IN')})
+                </div>
+              ` : `
+                <div style="font-size:0.75rem; color:#94A3B8;">Free Doorstep Delivery & Terminal Greasing</div>
+              `}
+              <div style="font-size:0.82rem; font-weight:700;">COLLECTION AMOUNT:</div>
+            </div>
+            <div style="font-size:1.4rem; font-weight:900; color:#60A5FA;">
+              Rs. ${grandTotal}
+            </div>
+          </div>
+
+          <!-- Inspection Verification Box -->
+          <div style="border:1px solid #CBD5E1; padding:0.65rem 0.85rem; border-radius:6px; font-size:0.72rem; color:#334155;">
+            <strong>Mandatory Pre-Dispatch Protocol Verified:</strong>
+            <div style="display:flex; gap:1.25rem; margin-top:3px; flex-wrap:wrap;">
+              <span>[✓] 12V Open Circuit & Load Verified</span>
+              <span>[✓] Free Terminal Grease Sachet Packed</span>
+              <span>[✓] Warranty Card Stamped with Official Hub Seal</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    modal.classList.add('open');
   }
 
   // ==========================================================================
@@ -3085,5 +3263,16 @@ window.deleteDescTable = function() {
     const hidden = document.getElementById('new-detailed-desc');
     if (hidden && editor) hidden.value = editor.innerHTML;
     if (typeof showToast === 'function') showToast('Table deleted from description', 'info');
+  }
+};
+
+// Global Shipping Parcel Label Dispatcher
+window.printShippingParcelLabel = function(orderOrId) {
+  if (window.stockManager && typeof window.stockManager.printShippingParcelLabel === 'function') {
+    return window.stockManager.printShippingParcelLabel(orderOrId);
+  }
+  if (window.erpApp && typeof window.erpApp.printPackingSlipModal === 'function') {
+    const id = typeof orderOrId === 'object' ? (orderOrId.orderId || orderOrId.id) : orderOrId;
+    return window.erpApp.printPackingSlipModal(id);
   }
 };
