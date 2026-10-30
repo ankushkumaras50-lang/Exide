@@ -539,7 +539,25 @@ class CartSystem {
           </button>
         </div>
       `;
+
+      // Show and configure address mode container
+      const addrModeContainer = document.getElementById('checkout-address-mode-container');
+      const addrPreview = document.getElementById('chk-profile-address-preview');
+      if (addrModeContainer) {
+        addrModeContainer.style.display = 'block';
+        if (addrPreview) {
+          const parts = [];
+          if (customer.address) parts.push(customer.address);
+          if (customer.ward) parts.push(`Ward ${customer.ward}`);
+          if (customer.city) parts.push(customer.city);
+          if (customer.district) parts.push(customer.district);
+          addrPreview.textContent = parts.length > 0 ? `📍 ${parts.join(', ')}` : 'Fast auto-fill from your verified customer account';
+        }
+      }
     } else {
+      const addrModeContainer = document.getElementById('checkout-address-mode-container');
+      if (addrModeContainer) addrModeContainer.style.display = 'none';
+
       authBox.innerHTML = `
         <div class="checkout-auth-prompt-card" style="background:#F8FAFC; border:1.5px dashed #CBD5E1; border-radius:10px; padding:0.9rem 1rem; margin-bottom:1.25rem;">
           <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.6rem;">
@@ -570,6 +588,60 @@ class CartSystem {
     }
   }
 
+  setAddressMode(mode) {
+    this.addressMode = mode;
+    const profileCard = document.getElementById('chk-addr-card-profile');
+    const customCard = document.getElementById('chk-addr-card-custom');
+    const radioProfile = document.getElementById('chk-addr-mode-profile');
+    const radioCustom = document.getElementById('chk-addr-mode-custom');
+
+    if (mode === 'profile') {
+      if (profileCard) profileCard.classList.add('active');
+      if (customCard) customCard.classList.remove('active');
+      if (radioProfile) radioProfile.checked = true;
+      this.fillAddressFromCustomerProfile();
+    } else {
+      if (profileCard) profileCard.classList.remove('active');
+      if (customCard) customCard.classList.add('active');
+      if (radioCustom) radioCustom.checked = true;
+      const addrInput = document.getElementById('chk-address');
+      if (addrInput) addrInput.focus();
+    }
+  }
+
+  fillAddressFromCustomerProfile() {
+    const customer = window.authManager ? window.authManager.getCurrentCustomer() : null;
+    if (!customer) return;
+
+    const nameInput = document.getElementById('chk-fullname');
+    const phoneInput = document.getElementById('chk-phone');
+    const emailInput = document.getElementById('chk-email');
+    const panInput = document.getElementById('chk-buyer-pan');
+    const provinceInput = document.getElementById('chk-province');
+    const districtInput = document.getElementById('chk-district');
+    const cityInput = document.getElementById('chk-city');
+    const wardInput = document.getElementById('chk-ward');
+    const addressInput = document.getElementById('chk-address');
+    const landmarkInput = document.getElementById('chk-landmark');
+
+    if (nameInput && customer.fullName) nameInput.value = customer.fullName;
+    if (phoneInput && customer.phone) phoneInput.value = customer.phone;
+    if (emailInput && customer.email && !customer.email.includes('@customer.exidebattery.com.np')) {
+      emailInput.value = customer.email;
+    }
+    if (panInput && customer.panNumber) panInput.value = customer.panNumber;
+    if (provinceInput && customer.province) provinceInput.value = customer.province;
+    if (districtInput && customer.district) districtInput.value = customer.district;
+    if (cityInput && customer.city) cityInput.value = customer.city;
+    if (wardInput && customer.ward) wardInput.value = customer.ward;
+    if (addressInput && customer.address) addressInput.value = customer.address;
+    if (landmarkInput && customer.landmark) landmarkInput.value = customer.landmark;
+
+    if (typeof showToast === 'function') {
+      showToast('Loaded saved delivery address from your profile', 'success');
+    }
+  }
+
   goToCheckoutStep(step) {
     if (step === 2) {
       // Validate Step 1 form fields
@@ -588,6 +660,28 @@ class CartSystem {
       if (cleanPhone.length < 10) {
         showToast('Please enter a valid 10-digit Nepal mobile number (e.g. 98XXXXXXXX)', 'warning');
         return;
+      }
+
+      // Check if user requested saving updated address to customer profile
+      const saveToProfileChk = document.getElementById('chk-save-to-profile');
+      if (saveToProfileChk && saveToProfileChk.checked && window.authManager) {
+        const cust = window.authManager.getCurrentCustomer();
+        if (cust) {
+          cust.address = address;
+          cust.district = district;
+          cust.city = document.getElementById('chk-city')?.value.trim() || cust.city;
+          cust.ward = document.getElementById('chk-ward')?.value.trim() || cust.ward;
+          cust.province = document.getElementById('chk-province')?.value || cust.province;
+          cust.landmark = document.getElementById('chk-landmark')?.value.trim() || cust.landmark;
+          cust.panNumber = document.getElementById('chk-buyer-pan')?.value.trim() || cust.panNumber;
+          try {
+            localStorage.setItem('exide_customer_session', JSON.stringify(cust));
+            localStorage.setItem('exide_user_profile', JSON.stringify(cust));
+            if (typeof window.authManager.syncCustomerProfileToSupabase === 'function') {
+              window.authManager.syncCustomerProfileToSupabase(cust);
+            }
+          } catch(e) {}
+        }
       }
 
       // Automatically register / link customer profile if not already logged in

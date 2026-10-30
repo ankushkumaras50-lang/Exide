@@ -1403,13 +1403,20 @@ class AuthManager {
     const latest = orders.slice(0, 3);
     const html = latest.map(ord => {
       const ordId = ord.id || ord.orderId || ('ORD-' + (ord.createdAt ? new Date(ord.createdAt).getTime().toString().slice(-6) : 'REF'));
-      const total = (Number(ord.total) || Number(ord.grandTotal) || 0).toLocaleString('en-IN');
-      const date = ord.createdAt ? new Date(ord.createdAt).toLocaleDateString('en-GB') : 'Recent';
-      const status = ord.status || 'CONFIRMED';
+      const totalNum = Number(ord.pricing?.grandTotal) || Number(ord.calculations?.grandTotal) || Number(ord.grandTotal) || Number(ord.total) || 0;
+      const total = totalNum.toLocaleString('en-IN');
+      const date = ord.createdAt || ord.date ? new Date(ord.createdAt || ord.date).toLocaleDateString('en-GB') : 'Recent';
+      const status = ord.status || ord.orderStatus || 'CONFIRMED';
       const isDelivered = status.toLowerCase().includes('deliver') || status.toLowerCase().includes('complete');
 
+      const items = Array.isArray(ord.items) && ord.items.length > 0 ? ord.items : [];
+      const itemsCount = items.length > 0 ? items.reduce((s, it) => s + (Number(it.quantity) || 1), 0) : 1;
+      const firstItemTitle = items.length > 0 ? (items[0].name || items[0].title || 'Exide Power Battery') : 'Exide Battery';
+      const extraItemsSuffix = items.length > 1 ? ` +${items.length - 1} more` : '';
+      const scrapRebate = Number(ord.pricing?.scrapExchangeDeduction || ord.calculations?.scrapExchangeDeduction || 0);
+
       return `
-        <div class="prof-order-preview-card">
+        <div class="prof-order-preview-card" style="cursor:pointer;" onclick="if(!event.target.closest('button')){ window.authManager.toggleOrderItemsDetails('${ordId}'); }">
           <div class="prof-order-card-header">
             <div>
               <span class="prof-order-id-tag">#${ordId}</span>
@@ -1417,17 +1424,79 @@ class AuthManager {
             </div>
             <span class="prof-order-status-badge ${isDelivered ? 'green' : 'blue'}">${status}</span>
           </div>
+
           <div class="prof-order-card-body">
-            <div class="prof-order-amount">Rs. ${total}</div>
-            <div class="prof-order-actions-row">
-              <button type="button" class="btn-prof-track-order" onclick="window.authManager.openOrderTracker('${ordId}')">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
-                <span>Track Order</span>
-              </button>
-              <button type="button" class="btn-prof-invoice" onclick="if(window.cartSystem && window.cartSystem.showOrderDetailsModal){ window.cartSystem.showOrderDetailsModal('${ordId}'); } else { window.open('https://wa.me/9779705997260?text=Invoice%20Inquiry%20Order%20${ordId}', '_blank'); }">
-                Invoice
-              </button>
+            <!-- Amount & Items summary visible without clicking -->
+            <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:0.25rem;">
+              <div class="prof-order-amount">Rs. ${total}</div>
+              <span class="prof-order-item-count-badge">📦 ${itemsCount} ${itemsCount === 1 ? 'Item' : 'Items'}</span>
             </div>
+            
+            <div style="font-size:0.75rem; color:#64748B; margin-bottom:0.4rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+              ${firstItemTitle}${extraItemsSuffix}
+            </div>
+
+            <div class="prof-order-summary-row">
+              <button type="button" class="btn-prof-toggle-items" onclick="event.stopPropagation(); window.authManager.toggleOrderItemsDetails('${ordId}');">
+                <span>View ${itemsCount} Item${itemsCount > 1 ? 's' : ''} & Breakdown</span>
+                <span class="prof-toggle-chevron" id="prof-chevron-${ordId}">▼</span>
+              </button>
+
+              <div class="prof-order-actions-row">
+                <button type="button" class="btn-prof-track-order" onclick="event.stopPropagation(); window.authManager.openOrderTracker('${ordId}')">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                  <span>Track</span>
+                </button>
+                <button type="button" class="btn-prof-invoice" onclick="event.stopPropagation(); if(window.cartSystem && window.cartSystem.showOrderDetailsModal){ window.cartSystem.showOrderDetailsModal('${ordId}'); } else { window.open('https://wa.me/9779705997260?text=Invoice%20Inquiry%20Order%20${ordId}', '_blank'); }">
+                  Invoice
+                </button>
+              </div>
+            </div>
+
+            <!-- Expandable Line Items Drawer on Click -->
+            <div class="prof-order-items-drawer" id="prof-order-items-drawer-${ordId}">
+              <div style="font-size:0.75rem; font-weight:800; color:#1E293B; margin-bottom:0.5rem; text-transform:uppercase; letter-spacing:0.3px;">
+                Ordered Battery Items (${itemsCount})
+              </div>
+              ${items.map(it => {
+                const itQty = Number(it.quantity) || 1;
+                const itPrice = Number(it.price) || Number(it.unitPrice) || 0;
+                const itLineTotal = (Number(it.itemTotal) || (itQty * itPrice)).toLocaleString('en-IN');
+                return `
+                  <div class="prof-drawer-item-row">
+                    <img src="${it.image || 'assets/logo.png'}" alt="${it.name || 'Battery'}" class="prof-drawer-thumb" onerror="this.src='assets/logo.png'">
+                    <div class="prof-drawer-meta">
+                      <div class="prof-drawer-title" title="${it.name || ''}">${it.name || 'Exide Battery'}</div>
+                      <div class="prof-drawer-sub">
+                        <span>SKU: ${it.sku || 'EX-BAT'}</span>
+                        <span>Qty: <strong>${itQty}</strong></span>
+                        ${it.capacity ? `<span>• ${it.capacity}</span>` : ''}
+                      </div>
+                    </div>
+                    <div class="prof-drawer-price">Rs. ${itLineTotal}</div>
+                  </div>
+                `;
+              }).join('')}
+
+              ${scrapRebate > 0 ? `
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:4px 0; font-size:0.74rem; color:#059669; font-weight:700;">
+                  <span>♻️ Scrap Battery Buyback Rebate:</span>
+                  <span>-Rs. ${scrapRebate.toLocaleString('en-IN')}</span>
+                </div>
+              ` : ''}
+
+              <div style="display:flex; justify-content:space-between; align-items:center; padding-top:6px; margin-top:4px; border-top:1px dashed #CBD5E1; font-size:0.8rem; font-weight:800; color:#0F172A;">
+                <span>Total Amount Paid / Due:</span>
+                <span style="color:#0047BA;">Rs. ${total}</span>
+              </div>
+
+              ${(ord.customer?.deliveryAddress || ord.customer?.address) ? `
+                <div style="font-size:0.72rem; color:#64748B; margin-top:6px; padding-top:4px; border-top:1px solid #EDF2F7;">
+                  📍 <strong>Delivery Address:</strong> ${ord.customer.deliveryAddress || ord.customer.address}, ${ord.customer.city || 'Kathmandu'} (Ward ${ord.customer.ward || '10'})
+                </div>
+              ` : ''}
+            </div>
+
           </div>
         </div>
       `;
@@ -1534,26 +1603,75 @@ class AuthManager {
 
     const rows = orders.map(ord => {
       const ordId = ord.id || ord.orderId || ('ORD-' + (ord.createdAt ? new Date(ord.createdAt).getTime().toString().slice(-6) : 'REF'));
-      const total = (Number(ord.total) || Number(ord.grandTotal) || 0).toLocaleString('en-IN');
-      const date = ord.createdAt ? new Date(ord.createdAt).toLocaleDateString('en-GB') : 'Recent';
-      const status = ord.status || 'CONFIRMED';
+      const totalNum = Number(ord.pricing?.grandTotal) || Number(ord.calculations?.grandTotal) || Number(ord.grandTotal) || Number(ord.total) || 0;
+      const total = totalNum.toLocaleString('en-IN');
+      const date = ord.createdAt || ord.date ? new Date(ord.createdAt || ord.date).toLocaleDateString('en-GB') : 'Recent';
+      const status = ord.status || ord.orderStatus || 'CONFIRMED';
       const isDelivered = status.toLowerCase().includes('deliver') || status.toLowerCase().includes('complete');
 
+      const items = Array.isArray(ord.items) && ord.items.length > 0 ? ord.items : [];
+      const itemsCount = items.length > 0 ? items.reduce((s, it) => s + (Number(it.quantity) || 1), 0) : 1;
+      const scrapRebate = Number(ord.pricing?.scrapExchangeDeduction || ord.calculations?.scrapExchangeDeduction || 0);
+
       return `
-        <tr style="border-bottom:1px solid #F1F5F9; font-size:0.82rem;">
-          <td style="padding:0.75rem 0.5rem; font-weight:700; color:#0047BA;">#${ordId}</td>
+        <tr style="border-bottom:1px solid #F1F5F9; font-size:0.82rem; cursor:pointer;" onclick="if(!event.target.closest('button')){ window.authManager.toggleOrderItemsDetails('${ordId}'); }">
+          <td style="padding:0.75rem 0.5rem; font-weight:700; color:#0047BA;">
+            <div>#${ordId}</div>
+            <div style="font-size:0.7rem; color:#475569; font-weight:600; margin-top:2px;">
+              📦 ${itemsCount} ${itemsCount === 1 ? 'Item' : 'Items'}
+            </div>
+          </td>
           <td style="padding:0.75rem 0.5rem; color:#64748B;">${date}</td>
-          <td style="padding:0.75rem 0.5rem; font-weight:800; color:#0F172A;">Rs. ${total}</td>
+          <td style="padding:0.75rem 0.5rem; font-weight:800; color:#0F172A;">
+            <div>Rs. ${total}</div>
+            ${scrapRebate > 0 ? `<div style="font-size:0.68rem; color:#059669; font-weight:600;">Rebate: -Rs. ${scrapRebate.toLocaleString('en-IN')}</div>` : ''}
+          </td>
           <td style="padding:0.75rem 0.5rem;">
             <span class="prof-order-status-badge ${isDelivered ? 'green' : 'blue'}">${status}</span>
           </td>
           <td style="padding:0.75rem 0.5rem; text-align:right;">
-            <button type="button" class="btn btn-outline-primary" onclick="window.authManager.openOrderTracker('${ordId}')" style="font-size:0.75rem; padding:4px 8px; font-weight:700; margin-right:4px;">
+            <button type="button" class="btn btn-outline-primary" onclick="event.stopPropagation(); window.authManager.toggleOrderItemsDetails('${ordId}');" style="font-size:0.74rem; padding:4px 8px; font-weight:700; margin-right:4px;">
+              Items ▼
+            </button>
+            <button type="button" class="btn btn-primary" onclick="event.stopPropagation(); window.authManager.openOrderTracker('${ordId}')" style="font-size:0.74rem; padding:4px 8px; font-weight:700; margin-right:4px;">
               Track
             </button>
-            <button type="button" class="btn btn-primary-red" onclick="if(window.cartSystem && window.cartSystem.showOrderDetailsModal){ window.cartSystem.showOrderDetailsModal('${ordId}'); } else { window.open('https://wa.me/9779705997260?text=Invoice%20Inquiry%20Order%20${ordId}', '_blank'); }" style="font-size:0.75rem; padding:4px 8px; font-weight:700;">
+            <button type="button" class="btn btn-primary-red" onclick="event.stopPropagation(); if(window.cartSystem && window.cartSystem.showOrderDetailsModal){ window.cartSystem.showOrderDetailsModal('${ordId}'); } else { window.open('https://wa.me/9779705997260?text=Invoice%20Inquiry%20Order%20${ordId}', '_blank'); }" style="font-size:0.74rem; padding:4px 8px; font-weight:700;">
               Invoice
             </button>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="5" style="padding:0; border:none;">
+            <div class="prof-order-items-drawer" id="prof-order-items-drawer-${ordId}" style="margin:4px 8px 12px; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:0.75rem;">
+              <div style="font-size:0.75rem; font-weight:800; color:#1E293B; margin-bottom:0.5rem; text-transform:uppercase;">
+                Order Line Items (${itemsCount})
+              </div>
+              ${items.map(it => {
+                const itQty = Number(it.quantity) || 1;
+                const itPrice = Number(it.price) || Number(it.unitPrice) || 0;
+                const itLineTotal = (Number(it.itemTotal) || (itQty * itPrice)).toLocaleString('en-IN');
+                return `
+                  <div class="prof-drawer-item-row">
+                    <img src="${it.image || 'assets/logo.png'}" alt="${it.name || 'Battery'}" class="prof-drawer-thumb" onerror="this.src='assets/logo.png'">
+                    <div class="prof-drawer-meta">
+                      <div class="prof-drawer-title" title="${it.name || ''}">${it.name || 'Exide Battery'}</div>
+                      <div class="prof-drawer-sub">
+                        <span>SKU: ${it.sku || 'EX-BAT'}</span>
+                        <span>Qty: <strong>${itQty}</strong></span>
+                        ${it.capacity ? `<span>• ${it.capacity}</span>` : ''}
+                      </div>
+                    </div>
+                    <div class="prof-drawer-price">Rs. ${itLineTotal}</div>
+                  </div>
+                `;
+              }).join('')}
+              ${(ord.customer?.deliveryAddress || ord.customer?.address) ? `
+                <div style="font-size:0.72rem; color:#64748B; margin-top:6px; padding-top:4px; border-top:1px solid #EDF2F7;">
+                  📍 <strong>Delivery Address:</strong> ${ord.customer.deliveryAddress || ord.customer.address}, ${ord.customer.city || 'Kathmandu'} (Ward ${ord.customer.ward || '10'})
+                </div>
+              ` : ''}
+            </div>
           </td>
         </tr>
       `;
@@ -1564,9 +1682,9 @@ class AuthManager {
         <table class="prof-orders-table" style="width:100%; border-collapse:collapse;">
           <thead>
             <tr style="background:#F8FAFC; border-bottom:1.5px solid #E2E8F0; font-size:0.74rem; color:#475569; text-transform:uppercase;">
-              <th style="padding:0.6rem 0.5rem; text-align:left;">Order ID</th>
+              <th style="padding:0.6rem 0.5rem; text-align:left;">Order ID & Items</th>
               <th style="padding:0.6rem 0.5rem; text-align:left;">Date</th>
-              <th style="padding:0.6rem 0.5rem; text-align:left;">Total</th>
+              <th style="padding:0.6rem 0.5rem; text-align:left;">Amount</th>
               <th style="padding:0.6rem 0.5rem; text-align:left;">Stage</th>
               <th style="padding:0.6rem 0.5rem; text-align:right;">Actions</th>
             </tr>
@@ -1577,6 +1695,232 @@ class AuthManager {
         </table>
       </div>
     `;
+  }
+
+  toggleOrderItemsDetails(ordId) {
+    const drawer = document.getElementById(`prof-order-items-drawer-${ordId}`);
+    const chevron = document.getElementById(`prof-chevron-${ordId}`);
+    if (!drawer) return;
+    const isOpen = drawer.classList.contains('open');
+    if (isOpen) {
+      drawer.classList.remove('open');
+      drawer.style.display = 'none';
+      if (chevron) chevron.style.transform = 'rotate(0deg)';
+    } else {
+      drawer.classList.add('open');
+      drawer.style.display = 'block';
+      if (chevron) chevron.style.transform = 'rotate(180deg)';
+    }
+  }
+
+  // ------------------------------------------------------------------------
+  // AVATAR UPLOAD, CROP & RESIZE ENGINE
+  // ------------------------------------------------------------------------
+  openAvatarCropModal() {
+    const modal = document.getElementById('prof-avatar-crop-modal');
+    if (!modal) return;
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+
+    const cust = this.getCurrentCustomer();
+    const currentImg = cust?.photoURL || 'assets/logo.png';
+    this.initAvatarCropper(currentImg);
+  }
+
+  closeAvatarCropModal() {
+    const modal = document.getElementById('prof-avatar-crop-modal');
+    if (!modal) return;
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  handleAvatarFileSelect(e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      if (typeof showToast === 'function') showToast('Please select a valid image file (PNG, JPG, WebP)', 'error');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      this.initAvatarCropper(evt.target.result);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  initAvatarCropper(imgSrc) {
+    this.cropState = {
+      image: new Image(),
+      zoom: 1.0,
+      rotation: 0,
+      offsetX: 0,
+      offsetY: 0,
+      isDragging: false,
+      startX: 0,
+      startY: 0
+    };
+
+    const slider = document.getElementById('prof-avatar-zoom-slider');
+    const zoomVal = document.getElementById('prof-avatar-zoom-val');
+    if (slider) slider.value = '1.0';
+    if (zoomVal) zoomVal.textContent = '100%';
+
+    this.cropState.image.crossOrigin = 'anonymous';
+    this.cropState.image.onload = () => {
+      this.renderAvatarCropCanvas();
+    };
+    this.cropState.image.onerror = () => {
+      this.renderAvatarCropCanvas();
+    };
+    this.cropState.image.src = imgSrc;
+
+    this.setupAvatarCanvasTouchListeners();
+  }
+
+  setupAvatarCanvasTouchListeners() {
+    const canvas = document.getElementById('prof-avatar-crop-canvas');
+    if (!canvas || canvas.dataset.listenersAttached) return;
+    canvas.dataset.listenersAttached = 'true';
+
+    const getPos = (e) => {
+      if (e.touches && e.touches.length > 0) {
+        return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      }
+      return { x: e.clientX, y: e.clientY };
+    };
+
+    const startDrag = (e) => {
+      if (!this.cropState) return;
+      this.cropState.isDragging = true;
+      const pos = getPos(e);
+      this.cropState.startX = pos.x - this.cropState.offsetX;
+      this.cropState.startY = pos.y - this.cropState.offsetY;
+      canvas.style.cursor = 'grabbing';
+    };
+
+    const doDrag = (e) => {
+      if (!this.cropState || !this.cropState.isDragging) return;
+      if (e.cancelable) e.preventDefault();
+      const pos = getPos(e);
+      this.cropState.offsetX = pos.x - this.cropState.startX;
+      this.cropState.offsetY = pos.y - this.cropState.startY;
+      this.renderAvatarCropCanvas();
+    };
+
+    const stopDrag = () => {
+      if (!this.cropState) return;
+      this.cropState.isDragging = false;
+      canvas.style.cursor = 'grab';
+    };
+
+    canvas.addEventListener('mousedown', startDrag);
+    window.addEventListener('mousemove', doDrag);
+    window.addEventListener('mouseup', stopDrag);
+
+    canvas.addEventListener('touchstart', startDrag, { passive: false });
+    window.addEventListener('touchmove', doDrag, { passive: false });
+    window.addEventListener('touchend', stopDrag);
+  }
+
+  handleAvatarZoom(val) {
+    if (!this.cropState) return;
+    const num = parseFloat(val) || 1.0;
+    this.cropState.zoom = num;
+    const zoomVal = document.getElementById('prof-avatar-zoom-val');
+    if (zoomVal) zoomVal.textContent = `${Math.round(num * 100)}%`;
+    this.renderAvatarCropCanvas();
+  }
+
+  stepAvatarZoom(delta) {
+    if (!this.cropState) return;
+    const slider = document.getElementById('prof-avatar-zoom-slider');
+    const newZoom = Math.min(3.0, Math.max(0.5, (this.cropState.zoom || 1.0) + delta));
+    if (slider) slider.value = newZoom.toFixed(2);
+    this.handleAvatarZoom(newZoom);
+  }
+
+  rotateAvatar(deg) {
+    if (!this.cropState) return;
+    this.cropState.rotation = (this.cropState.rotation + deg) % 360;
+    this.renderAvatarCropCanvas();
+  }
+
+  renderAvatarCropCanvas() {
+    const canvas = document.getElementById('prof-avatar-crop-canvas');
+    if (!canvas || !this.cropState || !this.cropState.image) return;
+    const ctx = canvas.getContext('2d');
+    const w = canvas.width;
+    const h = canvas.height;
+
+    ctx.clearRect(0, 0, w, h);
+    ctx.save();
+
+    // Center point translation
+    ctx.translate(w / 2 + this.cropState.offsetX, h / 2 + this.cropState.offsetY);
+    ctx.rotate((this.cropState.rotation * Math.PI) / 180);
+    ctx.scale(this.cropState.zoom, this.cropState.zoom);
+
+    const img = this.cropState.image;
+    if (img.complete && img.naturalWidth) {
+      const scale = Math.max(w / img.naturalWidth, h / img.naturalHeight);
+      const drawW = img.naturalWidth * scale;
+      const drawH = img.naturalHeight * scale;
+      ctx.drawImage(img, -drawW / 2, -drawH / 2, drawW, drawH);
+    } else {
+      ctx.fillStyle = '#1E293B';
+      ctx.fillRect(-w / 2, -h / 2, w, h);
+    }
+    ctx.restore();
+  }
+
+  saveCroppedAvatar() {
+    const canvas = document.getElementById('prof-avatar-crop-canvas');
+    if (!canvas) return;
+
+    // Create 300x300 target canvas
+    const exportCanvas = document.createElement('canvas');
+    exportCanvas.width = 300;
+    exportCanvas.height = 300;
+    const eCtx = exportCanvas.getContext('2d');
+
+    // Circular crop mask
+    eCtx.beginPath();
+    eCtx.arc(150, 150, 150, 0, Math.PI * 2, true);
+    eCtx.closePath();
+    eCtx.clip();
+
+    eCtx.drawImage(canvas, 0, 0, 300, 300);
+
+    const croppedDataUrl = exportCanvas.toDataURL('image/jpeg', 0.92);
+
+    // Save to customer profile in session & storage
+    let cust = this.getCurrentCustomer();
+    if (!cust) {
+      cust = { id: 'cust_anon', fullName: 'Valued Customer' };
+    }
+
+    cust.photoURL = croppedDataUrl;
+    try {
+      localStorage.setItem('exide_customer_session', JSON.stringify(cust));
+      localStorage.setItem('exide_user_profile', JSON.stringify(cust));
+    } catch (e) {}
+
+    // Sync to Supabase if connected
+    if (typeof this.syncCustomerProfileToSupabase === 'function') {
+      try { this.syncCustomerProfileToSupabase(cust); } catch (e) {}
+    }
+
+    // Refresh avatar slots
+    this.renderCustomerProfileModal();
+    if (window.cartSystem && typeof window.cartSystem.syncCheckoutAuthUI === 'function') {
+      window.cartSystem.syncCheckoutAuthUI();
+    }
+    this.updateNavbarAuthUI();
+
+    this.closeAvatarCropModal();
+    if (typeof showToast === 'function') {
+      showToast('Profile photo updated successfully!', 'success');
+    }
   }
 
   // ==========================================================================

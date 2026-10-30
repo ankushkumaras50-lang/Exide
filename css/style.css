@@ -6564,7 +6564,10 @@ body.search-mode-active {
   max-height: 92vh;
   background: #F8FAFC;
   border-radius: 24px;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
   display: flex;
   flex-direction: column;
   box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.35), 0 0 0 1px rgba(15, 23, 42, 0.08);
@@ -6573,10 +6576,11 @@ body.search-mode-active {
 
 .prof-view-screen {
   width: 100%;
-  height: 100%;
+  min-height: 100%;
+  height: auto;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: visible;
 }
 
 /* 1. Top Vibrant Sunset Hero (Matching Left Screen of Reference Image) */
@@ -6676,6 +6680,12 @@ body.search-mode-active {
   margin-bottom: 1.15rem;
 }
 
+.prof-avatar-container {
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
 .prof-avatar-wrap {
   width: 58px;
   height: 58px;
@@ -6688,6 +6698,31 @@ body.search-mode-active {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.prof-avatar-edit-btn {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #0047BA;
+  color: #FFFFFF;
+  border: 2px solid #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  transition: all 0.2s ease;
+  z-index: 2;
+  padding: 0;
+}
+
+.prof-avatar-edit-btn:hover {
+  background: #ED1C24;
+  transform: scale(1.12);
 }
 
 .prof-hero-avatar-img {
@@ -7831,17 +7866,30 @@ body.search-mode-active {
     align-items: flex-end !important;
     justify-content: center !important;
     z-index: 10006 !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
   }
 
   .customer-profile-modal-box {
     width: 100vw !important;
     max-width: 100vw !important;
-    height: 92vh !important;
+    height: 94vh !important;
     max-height: 94vh !important;
     border-radius: 24px 24px 0 0 !important;
     margin: 0 !important;
     box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.35) !important;
-    padding-bottom: max(16px, env(safe-area-inset-bottom)) !important;
+    padding-bottom: max(20px, env(safe-area-inset-bottom)) !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior: contain !important;
+    touch-action: pan-y !important;
+  }
+
+  .prof-view-screen {
+    min-height: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
   }
 
   .prof-mobile-drag-pill {
@@ -7852,6 +7900,7 @@ body.search-mode-active {
     padding: 0.85rem 1rem 1.25rem !important;
     border-bottom-left-radius: 20px !important;
     border-bottom-right-radius: 20px !important;
+    flex-shrink: 0 !important;
   }
 
   .prof-user-row {
@@ -7925,6 +7974,8 @@ body.search-mode-active {
 
   .prof-scrollable-body {
     padding: 0.85rem !important;
+    overflow-y: visible !important;
+    flex: 1 0 auto !important;
     -webkit-overflow-scrolling: touch !important;
   }
 
@@ -7932,6 +7983,158 @@ body.search-mode-active {
     grid-template-columns: 1fr !important;
     gap: 0.75rem !important;
   }
+}
+
+/* ==========================================================================
+   ORDER ITEM DETAILS ACCORDION & DRAWER STYLES
+   ========================================================================== */
+.prof-order-summary-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.35rem;
+  padding-top: 0.35rem;
+  border-top: 1px dashed #E2E8F0;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.prof-order-item-count-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #EFF6FF;
+  color: #1D4ED8;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 6px;
+  border: 1px solid #BFDBFE;
+}
+
+.btn-prof-toggle-items {
+  background: none;
+  border: none;
+  color: #0047BA;
+  font-size: 0.74rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  padding: 2px 4px;
+  transition: all 0.15s ease;
+}
+
+.btn-prof-toggle-items:hover {
+  color: #ED1C24;
+  text-decoration: underline;
+}
+
+.prof-toggle-chevron {
+  font-size: 0.65rem;
+  transition: transform 0.2s ease;
+}
+
+.prof-order-items-drawer {
+  display: none;
+  margin-top: 0.65rem;
+  padding: 0.65rem;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+  animation: profDrawerSlide 0.25s ease forwards;
+}
+
+.prof-order-items-drawer.open {
+  display: block;
+}
+
+@keyframes profDrawerSlide {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.prof-drawer-item-row {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid #EDF2F7;
+}
+
+.prof-drawer-item-row:last-child {
+  border-bottom: none;
+}
+
+.prof-drawer-thumb {
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  object-fit: contain;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  padding: 2px;
+  flex-shrink: 0;
+}
+
+.prof-drawer-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.prof-drawer-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #0F172A;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.prof-drawer-sub {
+  font-size: 0.7rem;
+  color: #64748B;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.prof-drawer-price {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #0F172A;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   CHECKOUT DUAL ADDRESS SELECTOR
+   ========================================================================== */
+.checkout-address-mode-card {
+  border: 1.5px solid #CBD5E1;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.75rem;
+  background: #FFFFFF;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.checkout-address-mode-card.active {
+  border-color: #0047BA;
+  background: #EFF6FF;
+  box-shadow: 0 0 0 1px #0047BA;
+}
+
+.checkout-address-mode-card input[type="radio"] {
+  margin-top: 3px;
+  accent-color: #0047BA;
+  cursor: pointer;
 }
 
 /* Extra Compact Devices (<= 360px - Fold outer, iPhone SE 1st gen) */

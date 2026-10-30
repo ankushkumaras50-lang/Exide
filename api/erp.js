@@ -10,7 +10,8 @@ const handlers = {
   'purchases': require('../lib/erp/purchases.js'),
   'sales': require('../lib/erp/sales.js'),
   'suppliers': require('../lib/erp/suppliers.js'),
-  'exchanges': require('../lib/erp/exchanges.js')
+  'exchanges': require('../lib/erp/exchanges.js'),
+  'staff': require('../lib/auth/staff.js')
 };
 
 module.exports = async (req, res) => {

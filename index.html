@@ -1281,6 +1281,38 @@
           <!-- Verified Customer Login Box in Checkout -->
           <div id="checkout-customer-auth-box"></div>
 
+          <!-- Customer Address Options (Profile vs New Address) -->
+          <div id="checkout-address-mode-container" style="display:none; margin-bottom:1.25rem;">
+            <div style="font-size:0.84rem; font-weight:800; color:#1E293B; margin-bottom:0.5rem; display:flex; align-items:center; justify-content:space-between;">
+              <span>📍 Delivery Destination Selection:</span>
+              <button type="button" class="btn btn-outline-primary" onclick="window.cartSystem.fillAddressFromCustomerProfile()" style="font-size:0.74rem; font-weight:700; padding:2px 8px; border-radius:6px;">
+                🔄 Re-sync Profile Address
+              </button>
+            </div>
+            
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
+              <label class="checkout-address-mode-card active" id="chk-addr-card-profile" onclick="window.cartSystem.setAddressMode('profile')">
+                <input type="radio" name="chk-address-mode" id="chk-addr-mode-profile" value="profile" checked>
+                <div>
+                  <strong style="display:block; font-size:0.85rem; color:#0F172A;">Deliver to Saved Profile Address</strong>
+                  <span id="chk-profile-address-preview" style="display:block; font-size:0.75rem; color:#64748B; margin-top:2px;">
+                    Fast auto-fill from your verified customer account
+                  </span>
+                </div>
+              </label>
+
+              <label class="checkout-address-mode-card" id="chk-addr-card-custom" onclick="window.cartSystem.setAddressMode('custom')">
+                <input type="radio" name="chk-address-mode" id="chk-addr-mode-custom" value="custom">
+                <div>
+                  <strong style="display:block; font-size:0.85rem; color:#0F172A;">Deliver to Different / New Address</strong>
+                  <span style="display:block; font-size:0.75rem; color:#64748B; margin-top:2px;">
+                    Send to workshop, job site, or secondary location
+                  </span>
+                </div>
+              </label>
+            </div>
+          </div>
+
           <div class="form-grid-2">
             <div class="form-group">
               <label for="chk-fullname" class="form-label">Full Name *</label>
@@ -1348,6 +1380,13 @@
           <div class="form-group" style="margin-top:1rem;">
             <label for="chk-landmark" class="form-label">Notable Landmark (Helps delivery rider)</label>
             <input type="text" id="chk-landmark" class="form-input" placeholder="e.g. Opposite Krishna Bakery">
+          </div>
+
+          <div style="margin-top:1rem; padding:0.65rem 0.85rem; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:8px;">
+            <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer; font-size:0.82rem; font-weight:600; color:#1E293B; margin:0;">
+              <input type="checkbox" id="chk-save-to-profile" checked style="accent-color:#0047BA; width:16px; height:16px;">
+              <span>Save this delivery address to my customer profile for future orders</span>
+            </label>
           </div>
 
           <div style="display:flex; justify-content:flex-end; margin-top:2rem;">
@@ -2383,7 +2422,12 @@
 
           <!-- User Profile Details -->
           <div class="prof-user-row">
-            <div id="prof-hero-avatar-slot" class="prof-avatar-wrap"></div>
+            <div class="prof-avatar-container">
+              <div id="prof-hero-avatar-slot" class="prof-avatar-wrap"></div>
+              <button type="button" class="prof-avatar-edit-btn" onclick="window.authManager.openAvatarCropModal()" title="Change Profile Picture" aria-label="Change Profile Picture">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              </button>
+            </div>
             <div class="prof-user-meta">
               <div class="prof-name-title-wrap">
                 <h3 id="prof-hero-name" class="prof-user-name">Ahmed Hammad</h3>
@@ -2825,6 +2869,22 @@
                 <span>Used for official warranty certificates and doorstep delivery dispatch.</span>
               </div>
 
+              <!-- Profile Photo Action Card -->
+              <div style="display:flex; align-items:center; justify-content:space-between; background:#FFFFFF; border:1px solid #E2E8F0; border-radius:12px; padding:0.85rem 1rem; margin-bottom:1rem;">
+                <div style="display:flex; align-items:center; gap:0.75rem;">
+                  <div style="width:40px; height:40px; border-radius:50%; background:#EFF6FF; border:1.5px solid #3B82F6; display:flex; align-items:center; justify-content:center; color:#1D4ED8;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                  </div>
+                  <div>
+                    <strong style="font-size:0.85rem; color:#0F172A; display:block;">Profile Photo & Avatar</strong>
+                    <span style="font-size:0.74rem; color:#64748B;">Upload, crop & resize customer photo</span>
+                  </div>
+                </div>
+                <button type="button" class="btn btn-outline-primary" onclick="window.authManager.openAvatarCropModal()" style="font-size:0.78rem; font-weight:700; padding:5px 12px; border-radius:8px;">
+                  Change Photo 📷
+                </button>
+              </div>
+
               <div class="form-group" style="margin-bottom:1rem;">
                 <label class="form-label" for="prof-input-fullname">Full Name *</label>
                 <input type="text" id="prof-input-fullname" class="form-input" placeholder="e.g. Ramesh Shrestha" required>
@@ -3143,6 +3203,67 @@
         </div>
       </div>
 
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       18B. CUSTOMER PROFILE PICTURE UPLOADER, CROPPER & RESIZER MODAL
+       ========================================================================== -->
+  <div class="modal-overlay" id="prof-avatar-crop-modal" style="display:none; z-index:10020;">
+    <div class="auth-modal-content" style="max-width:440px; border-radius:20px; overflow:hidden; background:#FFFFFF; box-shadow:0 25px 60px -15px rgba(15,23,42,0.4);">
+      <div style="background:linear-gradient(135deg, #003399 0%, #001A4E 100%); padding:1.25rem 1.5rem; color:#FFFFFF; display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <h4 style="margin:0; font-size:1.1rem; font-weight:800; color:#FFFFFF;">Profile Photo & Avatar</h4>
+          <p style="margin:4px 0 0; font-size:0.75rem; color:rgba(255,255,255,0.85);">Upload, crop, zoom, and adjust your customer profile picture.</p>
+        </div>
+        <button type="button" class="prof-icon-btn close" onclick="window.authManager.closeAvatarCropModal()" title="Close" aria-label="Close" style="color:#FFF;">&times;</button>
+      </div>
+
+      <div style="padding:1.25rem 1.5rem;">
+        <!-- Upload controls -->
+        <div style="display:flex; gap:0.5rem; margin-bottom:1rem; flex-wrap:wrap;">
+          <input type="file" id="prof-avatar-file-input" accept="image/*" style="display:none;" onchange="window.authManager.handleAvatarFileSelect(event)">
+          <button type="button" class="btn btn-outline-primary" onclick="document.getElementById('prof-avatar-file-input').click()" style="flex:1; font-size:0.82rem; font-weight:700; padding:0.55rem 0.85rem; border-radius:10px; display:inline-flex; align-items:center; justify-content:center; gap:0.4rem;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <span>Choose Photo from Device</span>
+          </button>
+        </div>
+
+        <!-- Canvas Cropper Area -->
+        <div style="position:relative; width:280px; height:280px; margin:0 auto 1rem; border-radius:16px; overflow:hidden; background:#0F172A; box-shadow:inset 0 0 0 1px rgba(255,255,255,0.1), 0 8px 24px rgba(0,0,0,0.15); display:flex; align-items:center; justify-content:center; touch-action:none; cursor:grab;" id="prof-avatar-canvas-wrap">
+          <canvas id="prof-avatar-crop-canvas" width="280" height="280" style="display:block; width:280px; height:280px;"></canvas>
+          <div id="prof-avatar-crop-overlay" style="position:absolute; inset:0; pointer-events:none; border-radius:50%; box-shadow:0 0 0 9999px rgba(15,23,42,0.65), inset 0 0 0 2px #3B82F6;"></div>
+          <div id="prof-avatar-drag-hint" style="position:absolute; bottom:8px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.6); color:#FFF; font-size:0.68rem; padding:2px 8px; border-radius:12px; pointer-events:none; font-weight:600; white-space:nowrap;">
+            Drag to reposition • Slider to zoom
+          </div>
+        </div>
+
+        <!-- Controls: Zoom & Rotate -->
+        <div style="background:#F8FAFC; border-radius:12px; padding:0.75rem 1rem; margin-bottom:1.25rem; border:1px solid #E2E8F0;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.45rem;">
+            <span style="font-size:0.78rem; font-weight:700; color:#334155;">Zoom & Scale</span>
+            <span id="prof-avatar-zoom-val" style="font-size:0.75rem; font-weight:800; color:#0047BA;">100%</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:0.65rem;">
+            <button type="button" class="btn" onclick="window.authManager.stepAvatarZoom(-0.1)" style="padding:2px 8px; font-weight:800; font-size:0.9rem; background:#E2E8F0; border:none; border-radius:6px; cursor:pointer;" title="Zoom Out">−</button>
+            <input type="range" id="prof-avatar-zoom-slider" min="0.5" max="3.0" step="0.05" value="1.0" style="flex:1; cursor:pointer;" oninput="window.authManager.handleAvatarZoom(this.value)">
+            <button type="button" class="btn" onclick="window.authManager.stepAvatarZoom(0.1)" style="padding:2px 8px; font-weight:800; font-size:0.9rem; background:#E2E8F0; border:none; border-radius:6px; cursor:pointer;" title="Zoom In">+</button>
+            <button type="button" class="btn" onclick="window.authManager.rotateAvatar(90)" title="Rotate 90° clockwise" style="padding:4px 8px; font-size:0.78rem; font-weight:700; background:#E2E8F0; border:none; border-radius:6px; cursor:pointer; display:inline-flex; align-items:center; gap:3px;">
+              ↻ 90°
+            </button>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div style="display:flex; gap:0.75rem;">
+          <button type="button" class="btn btn-secondary" onclick="window.authManager.closeAvatarCropModal()" style="flex:1; font-weight:700; padding:0.65rem; border-radius:10px;">
+            Cancel
+          </button>
+          <button type="button" class="btn btn-primary" onclick="window.authManager.saveCroppedAvatar()" style="flex:2; font-weight:700; padding:0.65rem; border-radius:10px; background:#0047BA; border-color:#0047BA;">
+            Crop & Save Photo ✓
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 

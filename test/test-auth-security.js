@@ -237,6 +237,37 @@ async function runAuthSecurityTests() {
   assert(authInviteRes.statusCode === 201, 'SuperAdmin successfully creates staff invitation (HTTP 201)');
   assert(authInviteRes.data && authInviteRes.data.invitation && authInviteRes.data.invitation.role === 'inventory_manager', 'Invitation issued with role = inventory_manager');
 
+  // 5F. SuperAdmin directly assigning a staff user with username and password
+  const directAssignReq = {
+    method: 'POST',
+    headers: { authorization: `Bearer ${superAdminToken}` },
+    body: {
+      action: 'create',
+      fullName: 'Bibek Thapa',
+      username: 'bibek_sales_' + Math.floor(1000 + Math.random() * 9000),
+      password: 'SalesPassword@2026',
+      role: 'sales_staff',
+      phone: '9841' + Math.floor(100000 + Math.random() * 900000)
+    }
+  };
+  const directAssignRes = mockRes();
+  await staffHandler(directAssignReq, directAssignRes);
+
+  assert(directAssignRes.statusCode === 201, 'SuperAdmin directly assigns staff user (HTTP 201)');
+  assert(directAssignRes.data && directAssignRes.data.success, 'Direct staff assignment returns success = true');
+  assert(directAssignRes.data.staff && directAssignRes.data.staff.username, 'Assigned staff has valid login username');
+
+  // Verify new staff can authenticate immediately with assigned credentials
+  const newStaffLoginReq = {
+    method: 'POST',
+    headers: {},
+    body: { username: directAssignReq.body.username, password: directAssignReq.body.password }
+  };
+  const newStaffLoginRes = mockRes();
+  await adminLoginHandler(newStaffLoginReq, newStaffLoginRes);
+  assert(newStaffLoginRes.statusCode === 200, 'Newly assigned staff successfully logs in to ERP with username and password');
+  assert(newStaffLoginRes.data && newStaffLoginRes.data.token, 'Assigned staff login returns authenticated JWT');
+
   // ==========================================================================
   // 6. CUSTOMER PROFILE MANAGEMENT & E-COMMERCE PREFERENCES SYNC
   // ==========================================================================

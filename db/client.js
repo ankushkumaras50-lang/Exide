@@ -309,6 +309,7 @@ function createProfile(data) {
 
   const newProfile = {
     id,
+    username: data.username ? String(data.username).trim().toLowerCase() : (cleanEmail ? cleanEmail.split('@')[0] : null),
     email: cleanEmail,
     phone: cleanPhone,
     fullName: String(data.fullName || data.name || 'Customer').trim(),

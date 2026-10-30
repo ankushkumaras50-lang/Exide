@@ -172,8 +172,24 @@
       this.renderCurrentView();
 
       // Close mobile sidebar if open
+      this.toggleMobileSidebar(false);
+    }
+
+    toggleMobileSidebar(open = null) {
       const sidebar = document.getElementById('erp-sidebar');
-      if (sidebar) sidebar.classList.remove('open');
+      const backdrop = document.getElementById('erp-sidebar-backdrop');
+      const closeBtn = document.getElementById('erp-sidebar-close-btn');
+      if (!sidebar) return;
+      const isOpen = open !== null ? open : !sidebar.classList.contains('open');
+      if (isOpen) {
+        sidebar.classList.add('open');
+        if (backdrop) backdrop.classList.add('active');
+        if (closeBtn) closeBtn.style.display = 'block';
+      } else {
+        sidebar.classList.remove('open');
+        if (backdrop) backdrop.classList.remove('active');
+        if (closeBtn) closeBtn.style.display = 'none';
+      }
     }
 
     // ------------------------------------------------------------------------
@@ -723,6 +739,9 @@
             <button type="button" class="erp-sku-tab-btn" data-tab="description" onclick="window.erpApp.switchSkuTab('description')">
               📝 6. Rich Description
             </button>
+            <button type="button" class="erp-sku-tab-btn" data-tab="preview" onclick="window.erpApp.switchSkuTab('preview')">
+              👁️ 7. Storefront Preview
+            </button>
           </div>
 
           <!-- TAB 1: BASIC INFO & CLASSIFICATION -->
@@ -1114,12 +1133,30 @@
             </div>
           </div>
 
+          <!-- TAB 7: LIVE STOREFRONT PREVIEW -->
+          <div class="erp-sku-tab-pane" id="erp-tab-preview">
+            <div class="erp-form-section-card">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
+                <div>
+                  <div class="erp-form-section-title">👁️ Live Storefront Product Card & Detail Preview</div>
+                  <div class="erp-form-section-sub">Inspect how this battery appears to customers before saving or publishing to catalog.</div>
+                </div>
+                <button type="button" class="erp-btn erp-btn-secondary" onclick="window.erpApp.renderSkuLivePreview()" style="font-size:0.75rem; padding:4px 10px;">
+                  🔄 Refresh Preview
+                </button>
+              </div>
+
+              <div id="erp-sku-preview-content"></div>
+            </div>
+          </div>
+
           <!-- Bottom Action Buttons Strip -->
           <div style="display:flex; justify-content:space-between; align-items:center; margin-top:1.5rem; padding-top:1rem; border-top:1.5px solid var(--erp-border); flex-wrap:wrap; gap:1rem;">
             <div style="font-size:0.76rem; color:var(--erp-muted);">
               Fields with <strong>*</strong> are required. Empty optional specs are omitted automatically from public view.
             </div>
             <div style="display:flex; gap:0.75rem;">
+              <button type="button" class="erp-btn erp-btn-secondary" onclick="window.erpApp.switchSkuTab('preview')">👁️ Live Preview</button>
               <button type="button" class="erp-btn erp-btn-secondary" onclick="document.getElementById('erp-modal-overlay').classList.remove('open')">Cancel</button>
               <button type="submit" id="erp-sku-submit-btn" class="erp-btn erp-btn-primary" style="padding:0 1.75rem;">
                 💾 ${prod ? 'Update Product SKU' : 'Create & Save Product SKU'}
@@ -1142,6 +1179,120 @@
       document.querySelectorAll('.erp-sku-tab-pane').forEach(pane => {
         pane.classList.toggle('active', pane.id === `erp-tab-${tabId}`);
       });
+      if (tabId === 'preview') {
+        this.renderSkuLivePreview();
+      }
+    }
+
+    renderSkuLivePreview() {
+      const container = document.getElementById('erp-sku-preview-content');
+      if (!container) return;
+
+      const title = document.getElementById('erp-name-input')?.value.trim() || 'Exide Invamaster Inverter Battery';
+      const brand = document.getElementById('erp-brand-input')?.value || 'Exide';
+      const sku = document.getElementById('erp-sku-input')?.value.trim() || 'EX-SKU';
+      const capacity = document.getElementById('erp-capacity-input')?.value.trim() || '150Ah - 12V';
+      const price = parseFloat(document.getElementById('erp-price-input')?.value) || 34000;
+      const mrp = parseFloat(document.getElementById('erp-mrp-input')?.value) || (price * 1.15);
+      const scrapRebate = parseFloat(document.getElementById('erp-scrap-input')?.value) || 5250;
+      const warranty = document.getElementById('erp-warranty-input')?.value.trim() || '36 Months Warranty';
+      const descHtml = document.getElementById('erp-sku-desc-editor')?.innerHTML || '<p>Official Exide battery for high performance backup.</p>';
+      
+      const images = Array.isArray(this.currentEditingImages) && this.currentEditingImages.length > 0 
+        ? this.currentEditingImages 
+        : ['assets/images/exide-imtt1500.png'];
+      const mainImage = images[0] || 'assets/logo.png';
+
+      // Read selected complimentary services
+      const checkedServices = [];
+      document.querySelectorAll('.erp-comp-service-chk:checked').forEach(c => {
+        checkedServices.push(c.value);
+      });
+
+      container.innerHTML = `
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap:1.5rem; margin-top:0.75rem;">
+          
+          <!-- STOREFRONT CARD PREVIEW -->
+          <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:16px; padding:1.25rem; box-shadow:0 4px 14px rgba(0,0,0,0.06); position:relative;">
+            <div style="font-size:0.75rem; font-weight:800; color:#64748B; text-transform:uppercase; margin-bottom:0.75rem; display:flex; justify-content:space-between; align-items:center;">
+              <span>Storefront Catalog Card</span>
+              <span class="erp-badge erp-badge-blue">Live Card Preview</span>
+            </div>
+
+            <div style="border:1.5px solid #F1F5F9; border-radius:14px; padding:1rem; background:#FAFAFA;">
+              <div style="position:relative; width:100%; height:180px; display:flex; align-items:center; justify-content:center; background:#FFFFFF; border-radius:10px; margin-bottom:0.85rem; overflow:hidden;">
+                <span style="position:absolute; top:8px; left:8px; background:#ED1C24; color:#FFFFFF; font-size:0.7rem; font-weight:800; padding:2px 8px; border-radius:6px;">
+                  ${brand}
+                </span>
+                <span style="position:absolute; top:8px; right:8px; background:#003399; color:#FFFFFF; font-size:0.7rem; font-weight:800; padding:2px 8px; border-radius:6px;">
+                  ${capacity}
+                </span>
+                <img src="${mainImage}" alt="${title}" style="max-height:160px; max-width:90%; object-fit:contain;" onerror="this.src='assets/logo.png'">
+              </div>
+
+              <div style="font-size:0.75rem; color:#64748B; font-weight:600;">SKU: ${sku} • ${warranty}</div>
+              <h4 style="font-size:0.95rem; font-weight:800; color:#0F172A; margin:0.35rem 0 0.5rem; line-height:1.3; min-height:2.6em;">
+                ${title}
+              </h4>
+
+              <div style="display:flex; align-items:baseline; gap:0.5rem; margin-bottom:0.4rem;">
+                <span style="font-size:1.15rem; font-weight:800; color:#ED1C24;">Rs. ${price.toLocaleString('en-IN')}</span>
+                ${mrp > price ? `<span style="font-size:0.8rem; color:#94A3B8; text-decoration:line-through;">Rs. ${mrp.toLocaleString('en-IN')}</span>` : ''}
+              </div>
+
+              ${scrapRebate > 0 ? `
+                <div style="background:#ECFDF5; border:1px solid #A7F3D0; border-radius:6px; padding:3px 8px; font-size:0.74rem; font-weight:700; color:#065F46; margin-bottom:0.75rem;">
+                  ♻️ Old Scrap Buyback: -Rs. ${scrapRebate.toLocaleString('en-IN')} instant rebate
+                </div>
+              ` : ''}
+
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem;">
+                <button type="button" class="btn btn-primary" style="font-size:0.78rem; font-weight:700; padding:6px; border-radius:8px; background:#ED1C24; border:none; color:#FFFFFF; text-align:center;">
+                  Add to Cart 🛒
+                </button>
+                <button type="button" class="btn" style="font-size:0.78rem; font-weight:700; padding:6px; border-radius:8px; background:#25D366; border:none; color:#FFFFFF; text-align:center;">
+                  WhatsApp 💬
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- STOREFRONT DETAIL / SPEC SHEET PREVIEW -->
+          <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:16px; padding:1.25rem; box-shadow:0 4px 14px rgba(0,0,0,0.06);">
+            <div style="font-size:0.75rem; font-weight:800; color:#64748B; text-transform:uppercase; margin-bottom:0.75rem; display:flex; justify-content:space-between; align-items:center;">
+              <span>Product Details & Modal Presentation</span>
+              <span class="erp-badge erp-badge-green">Customer View</span>
+            </div>
+
+            <!-- Gallery Thumbnails -->
+            <div style="display:flex; gap:0.4rem; margin-bottom:0.85rem; overflow-x:auto; padding-bottom:4px;">
+              ${images.map(img => `
+                <img src="${img}" style="width:48px; height:48px; border-radius:6px; object-fit:contain; background:#F8FAFC; border:1.5px solid #E2E8F0; padding:2px;" onerror="this.src='assets/logo.png'">
+              `).join('')}
+            </div>
+
+            <div style="font-size:0.82rem; font-weight:700; color:#0F172A; margin-bottom:0.4rem;">Included Complimentary Nepal Power Services:</div>
+            <div style="display:flex; flex-direction:column; gap:4px; margin-bottom:1rem;">
+              ${(checkedServices.length > 0 ? checkedServices : [
+                'Free Battery Terminal Greasing (Prevents sulfur buildup)',
+                'Free Inverter Charging Voltage Calibration Check',
+                'Free Official Stamped Warranty Card Verification'
+              ]).map(s => `
+                <div style="display:flex; align-items:center; gap:6px; font-size:0.76rem; color:#065F46;">
+                  <span style="color:#10B981; font-weight:900;">✓</span>
+                  <span>${s}</span>
+                </div>
+              `).join('')}
+            </div>
+
+            <div style="font-size:0.82rem; font-weight:700; color:#0F172A; margin-bottom:0.4rem;">Rich Description Preview:</div>
+            <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:8px; padding:0.75rem; font-size:0.78rem; color:#475569; max-height:140px; overflow-y:auto; line-height:1.5;">
+              ${descHtml}
+            </div>
+          </div>
+
+        </div>
+      `;
     }
 
     formatEditor(command, value = null) {
@@ -3687,18 +3838,325 @@
       document.body.removeChild(link);
     }
 
-    renderUsersView(c) {
+    async renderUsersView(c) {
       c.innerHTML = `
-        <div class="erp-card">
-          <div class="erp-card-header">
-            <span class="erp-card-title">🛡️ Staff Directory & Role-Based Access Control</span>
-            <button class="erp-btn erp-btn-primary" onclick="alert('Staff invitations can be created by SuperAdmin.')">+ Invite Staff Member</button>
+        <div style="display:flex; justify-content:center; align-items:center; padding:3rem; color:var(--erp-muted);">
+          <span>Loading Staff Directory & Security Accounts...</span>
+        </div>
+      `;
+
+      let staffList = [];
+      try {
+        const token = this.authToken || localStorage.getItem('exide_erp_token');
+        const res = await fetch('/api/erp/staff?action=list', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (data.success && Array.isArray(data.staff)) {
+          staffList = data.staff;
+        }
+      } catch (e) {
+        staffList = [];
+      }
+
+      // Default fallback staff profiles if offline or unauthenticated
+      if (staffList.length === 0) {
+        staffList = [
+          { id: 'usr_admin', fullName: 'SuperAdmin Account', username: 'admin', email: 'admin@exidebattery.com.np', phone: '9705997260', role: 'super_admin', active: true },
+          { id: 'usr_mgr', fullName: 'Store Manager', username: 'manager', email: 'manager@exidebattery.com.np', phone: '9841234567', role: 'inventory_manager', active: true }
+        ];
+      }
+
+      const totalCount = staffList.length;
+      const superAdmins = staffList.filter(s => s.role === 'super_admin').length;
+      const managers = staffList.filter(s => ['inventory_manager', 'store_manager'].includes(s.role)).length;
+      const salesRiders = staffList.filter(s => ['sales_staff', 'delivery_rider'].includes(s.role)).length;
+
+      const roleBadgeColors = {
+        super_admin: { bg: '#FEE2E2', text: '#991B1B', border: '#FCA5A5', label: 'SuperAdmin' },
+        inventory_manager: { bg: '#FEF3C7', text: '#92400E', border: '#FCD34D', label: 'Inventory Manager' },
+        sales_staff: { bg: '#EFF6FF', text: '#1E40AF', border: '#BFDBFE', label: 'Sales Staff' },
+        delivery_rider: { bg: '#ECFDF5', text: '#065F46', border: '#A7F3D0', label: 'Delivery Rider' },
+        accountant: { bg: '#F5F3FF', text: '#5B21B6', border: '#DDD6FE', label: 'Accountant' },
+        viewer: { bg: '#F1F5F9', text: '#475569', border: '#CBD5E1', label: 'Store Viewer' }
+      };
+
+      c.innerHTML = `
+        <!-- KPI METRICS SUMMARY -->
+        <div class="erp-kpi-grid" style="margin-bottom:1.5rem;">
+          <div class="erp-kpi-card">
+            <div class="erp-kpi-title">Total Staff Accounts</div>
+            <div class="erp-kpi-value">${totalCount}</div>
+            <div class="erp-kpi-sub">Active Enterprise RBAC Seats</div>
           </div>
-          <div class="erp-card-body">
-            <p style="color:#64748B;">Staff accounts are protected with salted cryptographic hashes and authenticated server claims. Self-registration is disabled for security compliance.</p>
+          <div class="erp-kpi-card">
+            <div class="erp-kpi-title">SuperAdmins</div>
+            <div class="erp-kpi-value">${superAdmins}</div>
+            <div class="erp-kpi-sub">Full System Privileges</div>
+          </div>
+          <div class="erp-kpi-card">
+            <div class="erp-kpi-title">Inventory & Store Managers</div>
+            <div class="erp-kpi-value">${managers}</div>
+            <div class="erp-kpi-sub">Stock & Purchases Control</div>
+          </div>
+          <div class="erp-kpi-card">
+            <div class="erp-kpi-title">Sales & Delivery Team</div>
+            <div class="erp-kpi-value">${salesRiders}</div>
+            <div class="erp-kpi-sub">Kathmandu Dispatch & Invoicing</div>
+          </div>
+        </div>
+
+        <!-- STAFF DIRECTORY CARD -->
+        <div class="erp-card">
+          <div class="erp-card-header" style="flex-wrap:wrap; gap:0.75rem;">
+            <div>
+              <span class="erp-card-title">🛡️ Staff Directory & Role-Based Access Control</span>
+              <div style="font-size:0.78rem; color:var(--erp-muted); margin-top:2px;">
+                Directly assign staff members with unique username and encrypted salted password.
+              </div>
+            </div>
+            <div style="display:flex; gap:0.5rem;">
+              <button class="erp-btn erp-btn-primary" onclick="window.erpApp.openAssignStaffModal()">
+                + Assign New Staff Member
+              </button>
+            </div>
+          </div>
+
+          <div class="erp-card-body" style="padding:0;">
+            <div class="erp-table-responsive">
+              <table class="erp-table" style="width:100%;">
+                <thead>
+                  <tr>
+                    <th>Staff Member</th>
+                    <th>Login Username</th>
+                    <th>Assigned Role</th>
+                    <th>Contact Phone</th>
+                    <th>Official Email</th>
+                    <th>Status</th>
+                    <th style="text-align:right;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${staffList.map(st => {
+                    const r = roleBadgeColors[st.role] || { bg: '#F1F5F9', text: '#334155', border: '#E2E8F0', label: st.role };
+                    const initial = (st.fullName || 'S').charAt(0).toUpperCase();
+                    const isActive = st.active !== false;
+
+                    return `
+                      <tr>
+                        <td>
+                          <div style="display:flex; align-items:center; gap:0.65rem;">
+                            <div style="width:34px; height:34px; border-radius:50%; background:#003399; color:#FFFFFF; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:0.85rem;">
+                              ${initial}
+                            </div>
+                            <div>
+                              <strong style="color:var(--erp-dark); font-size:0.88rem; display:block;">${st.fullName || 'Staff User'}</strong>
+                              <span style="font-size:0.72rem; color:var(--erp-muted);">ID: ${st.id}</span>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <code style="background:var(--erp-surface-alt); padding:2px 6px; border-radius:4px; font-weight:700; color:#003399;">
+                            @${st.username || (st.email ? st.email.split('@')[0] : 'user')}
+                          </code>
+                        </td>
+                        <td>
+                          <span style="background:${r.bg}; color:${r.text}; border:1px solid ${r.border}; font-size:0.74rem; font-weight:700; padding:2px 8px; border-radius:6px; display:inline-block;">
+                            ${r.label}
+                          </span>
+                        </td>
+                        <td>
+                          <span style="font-size:0.82rem; color:var(--erp-dark);">${st.phone ? '+977-' + st.phone : '—'}</span>
+                        </td>
+                        <td>
+                          <span style="font-size:0.82rem; color:var(--erp-muted);">${st.email || '—'}</span>
+                        </td>
+                        <td>
+                          <span class="erp-badge ${isActive ? 'erp-badge-green' : 'erp-badge-red'}">
+                            ${isActive ? 'Active' : 'Deactivated'}
+                          </span>
+                        </td>
+                        <td style="text-align:right;">
+                          <button class="erp-btn erp-btn-secondary" style="height:28px; padding:0 0.55rem; font-size:0.74rem;" onclick="window.erpApp.toggleStaffActiveStatus('${st.id}', ${isActive})">
+                            ${isActive ? 'Deactivate' : 'Activate'}
+                          </button>
+                        </td>
+                      </tr>
+                    `;
+                  }).join('')}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       `;
+    }
+
+    openAssignStaffModal() {
+      const modal = document.getElementById('erp-modal-overlay');
+      const title = document.getElementById('erp-modal-title');
+      const body = document.getElementById('erp-modal-body');
+      if (!modal || !title || !body) return;
+
+      title.innerHTML = `
+        <div style="display:flex; align-items:center; gap:0.65rem;">
+          <span style="font-size:1.35rem;">🛡️</span>
+          <div>
+            <div style="font-size:1.15rem; font-weight:800; color:var(--erp-dark);">Assign New Staff Member</div>
+            <div style="font-size:0.75rem; color:var(--erp-muted);">Directly assign login username, password and RBAC permissions.</div>
+          </div>
+        </div>
+      `;
+
+      body.innerHTML = `
+        <form id="erp-assign-staff-form" onsubmit="event.preventDefault(); window.erpApp.submitAssignStaffForm();">
+          <div class="erp-form-grid" style="margin-bottom:1rem;">
+            <div class="erp-form-group">
+              <label class="erp-form-label">Full Name *</label>
+              <input type="text" id="erp-staff-fullname" class="erp-input" style="width:100%; font-weight:700;" placeholder="e.g. Bibek Thapa" required>
+            </div>
+            <div class="erp-form-group">
+              <label class="erp-form-label">Login Username * (Alphanumeric)</label>
+              <div style="display:flex; align-items:center;">
+                <span style="background:var(--erp-surface-alt); border:1.5px solid var(--erp-border); border-right:none; padding:0 0.6rem; height:38px; display:flex; align-items:center; border-radius:var(--erp-radius-sm) 0 0 var(--erp-radius-sm); font-weight:700; color:#003399;">@</span>
+                <input type="text" id="erp-staff-username" class="erp-input" style="width:100%; border-radius:0 var(--erp-radius-sm) var(--erp-radius-sm) 0; font-weight:700; text-transform:lowercase;" placeholder="e.g. bibek_sales" required>
+              </div>
+              <small style="color:var(--erp-muted); font-size:0.72rem;">Staff can sign in at /erp with this username.</small>
+            </div>
+          </div>
+
+          <div class="erp-form-grid" style="margin-bottom:1rem;">
+            <div class="erp-form-group">
+              <label class="erp-form-label">Staff Role & Permissions *</label>
+              <select id="erp-staff-role" class="erp-select" style="width:100%; font-weight:700;" required>
+                <option value="sales_staff" selected>Sales Staff (Sales Orders, IRD VAT Invoicing, Catalog)</option>
+                <option value="inventory_manager">Store & Inventory Manager (Stock Ledger, PO & GRN)</option>
+                <option value="delivery_rider">Delivery Rider (Kathmandu Delivery Dispatch & Cash Handover)</option>
+                <option value="accountant">Accountant (Financial Ledgers, Tax Reports, P&L)</option>
+                <option value="super_admin">SuperAdmin (Full Unrestricted Access)</option>
+                <option value="viewer">Store Auditor / Viewer (Read Only)</option>
+              </select>
+            </div>
+            <div class="erp-form-group">
+              <label class="erp-form-label">Nepal Mobile (+977) *</label>
+              <input type="tel" id="erp-staff-phone" class="erp-input" style="width:100%;" placeholder="98XXXXXXXX" pattern="[0-9]{10}" maxlength="10" required>
+            </div>
+          </div>
+
+          <div class="erp-form-grid" style="margin-bottom:1.25rem;">
+            <div class="erp-form-group">
+              <label class="erp-form-label">Staff Email Address (Optional)</label>
+              <input type="email" id="erp-staff-email" class="erp-input" style="width:100%;" placeholder="name@exidebattery.com.np">
+            </div>
+            <div class="erp-form-group">
+              <label class="erp-form-label">Initial Password * (Min 6 Characters)</label>
+              <div style="display:flex; gap:0.4rem;">
+                <input type="password" id="erp-staff-password" class="erp-input" style="flex:1; font-weight:700;" placeholder="Enter secure password" minlength="6" required>
+                <button type="button" class="erp-btn erp-btn-secondary" onclick="window.erpApp.generateStaffPassword()" style="font-size:0.75rem; padding:0 0.65rem;" title="Generate Secure Password">
+                  Auto 🔑
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end; gap:0.75rem; padding-top:1rem; border-top:1px solid var(--erp-border);">
+            <button type="button" class="erp-btn erp-btn-secondary" onclick="document.getElementById('erp-modal-overlay').classList.remove('open')">
+              Cancel
+            </button>
+            <button type="submit" id="erp-assign-staff-submit-btn" class="erp-btn erp-btn-primary" style="padding:0 1.5rem;">
+              Assign Staff Member ✓
+            </button>
+          </div>
+        </form>
+      `;
+
+      modal.classList.add('open');
+    }
+
+    generateStaffPassword() {
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789@#$';
+      let pass = '';
+      for (let i = 0; i < 10; i++) {
+        pass += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      const passInput = document.getElementById('erp-staff-password');
+      if (passInput) {
+        passInput.type = 'text';
+        passInput.value = pass;
+        alert(`Generated Secure Password: ${pass}\nPlease securely communicate this to the staff member.`);
+      }
+    }
+
+    async submitAssignStaffForm() {
+      const fullName = document.getElementById('erp-staff-fullname')?.value.trim();
+      const username = document.getElementById('erp-staff-username')?.value.trim().toLowerCase();
+      const role = document.getElementById('erp-staff-role')?.value;
+      const phone = document.getElementById('erp-staff-phone')?.value.trim();
+      const email = document.getElementById('erp-staff-email')?.value.trim();
+      const password = document.getElementById('erp-staff-password')?.value;
+
+      if (!fullName || !username || !password) {
+        alert('Please complete all required fields.');
+        return;
+      }
+
+      const submitBtn = document.getElementById('erp-assign-staff-submit-btn');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Assigning...';
+      }
+
+      try {
+        const token = this.authToken || localStorage.getItem('exide_erp_token');
+        const res = await fetch('/api/erp/staff?action=create', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ fullName, username, role, phone, email, password })
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          alert(`Staff member ${fullName} (@${username}) successfully assigned as ${role}!\nThey can immediately log in at /erp.`);
+          document.getElementById('erp-modal-overlay')?.classList.remove('open');
+          this.renderUsersView(document.getElementById('erp-main-view'));
+        } else {
+          alert(`Error: ${data.message || 'Could not assign staff member'}`);
+        }
+      } catch (err) {
+        alert(`Request failed: ${err.message}`);
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Assign Staff Member ✓';
+        }
+      }
+    }
+
+    async toggleStaffActiveStatus(userId, currentActive) {
+      if (!confirm(`Are you sure you want to ${currentActive ? 'deactivate' : 'activate'} this staff account?`)) return;
+
+      try {
+        const token = this.authToken || localStorage.getItem('exide_erp_token');
+        const res = await fetch('/api/erp/staff?action=toggle-status', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ userId, active: !currentActive })
+        });
+        const data = await res.json();
+        if (data.success) {
+          this.renderUsersView(document.getElementById('erp-main-view'));
+        } else {
+          alert(`Error: ${data.message || 'Could not update status'}`);
+        }
+      } catch (err) {
+        alert(`Action failed: ${err.message}`);
+      }
     }
 
     // ------------------------------------------------------------------------
@@ -3711,49 +4169,65 @@
 
       appEl.innerHTML = `
         <div class="erp-container">
+          <!-- Mobile Backdrop Overlay -->
+          <div class="erp-sidebar-backdrop" id="erp-sidebar-backdrop" onclick="window.erpApp.toggleMobileSidebar(false)"></div>
+
           <!-- Sidebar Navigation -->
           <aside class="erp-sidebar" id="erp-sidebar">
             <div class="erp-brand">
               <img src="/assets/logo.png" alt="Exide Nepal" class="erp-brand-logo">
-              <div>
+              <div style="flex:1;">
                 <div class="erp-brand-title">EXIDE ERP</div>
                 <div class="erp-brand-sub">The Power House Nepal</div>
               </div>
+              <button type="button" class="erp-menu-close-btn" onclick="window.erpApp.toggleMobileSidebar(false)" style="background:none; border:none; color:#94A3B8; font-size:1.4rem; cursor:pointer; line-height:1; display:none;" id="erp-sidebar-close-btn">&times;</button>
             </div>
 
             <nav class="erp-nav">
               <a class="erp-nav-item active" data-route="dashboard" onclick="window.erpApp.navigate('dashboard')">
-                <span class="erp-nav-icon">📊</span> Dashboard
+                <svg class="erp-nav-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+                <span>Dashboard</span>
               </a>
               <a class="erp-nav-item" data-route="orders" onclick="window.erpApp.navigate('orders')">
-                <span class="erp-nav-icon">🛍️</span> Orders Management <span class="erp-nav-badge" id="erp-nav-orders-count" style="display:none; background:#ED1C24; color:#FFFFFF; border-radius:12px; font-size:0.7rem; font-weight:800; padding:1px 7px; margin-left:auto;">0</span>
+                <svg class="erp-nav-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                <span>Orders Management</span>
+                <span class="erp-nav-badge" id="erp-nav-orders-count" style="display:none; background:#ED1C24; color:#FFFFFF; border-radius:12px; font-size:0.7rem; font-weight:800; padding:1px 7px; margin-left:auto;">0</span>
               </a>
               <a class="erp-nav-item" data-route="products" onclick="window.erpApp.navigate('products')">
-                <span class="erp-nav-icon">📦</span> Product Catalogue
+                <svg class="erp-nav-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                <span>Product Catalogue</span>
               </a>
               <a class="erp-nav-item" data-route="inventory" onclick="window.erpApp.navigate('inventory')">
-                <span class="erp-nav-icon">📋</span> Stock Ledger
+                <svg class="erp-nav-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                <span>Stock Ledger</span>
               </a>
               <a class="erp-nav-item" data-route="purchases" onclick="window.erpApp.navigate('purchases')">
-                <span class="erp-nav-icon">📥</span> Purchases & GRN
+                <svg class="erp-nav-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="8 17 12 21 16 17"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"/></svg>
+                <span>Purchases & GRN</span>
               </a>
               <a class="erp-nav-item" data-route="sales" onclick="window.erpApp.navigate('sales')">
-                <span class="erp-nav-icon">🧾</span> Sales & Invoices
+                <svg class="erp-nav-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                <span>Sales & Invoices</span>
               </a>
               <a class="erp-nav-item" data-route="customers" onclick="window.erpApp.navigate('customers')">
-                <span class="erp-nav-icon">👥</span> Customers
+                <svg class="erp-nav-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <span>Customers</span>
               </a>
               <a class="erp-nav-item" data-route="suppliers" onclick="window.erpApp.navigate('suppliers')">
-                <span class="erp-nav-icon">🏭</span> Suppliers
+                <svg class="erp-nav-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                <span>Suppliers</span>
               </a>
               <a class="erp-nav-item" data-route="reports" onclick="window.erpApp.navigate('reports')">
-                <span class="erp-nav-icon">📈</span> Reports
+                <svg class="erp-nav-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                <span>Reports</span>
               </a>
               <a class="erp-nav-item" data-route="settings" onclick="window.erpApp.navigate('settings')">
-                <span class="erp-nav-icon">⚙️</span> Store Settings
+                <svg class="erp-nav-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                <span>Store Settings</span>
               </a>
               <a class="erp-nav-item" data-route="users" onclick="window.erpApp.navigate('users')">
-                <span class="erp-nav-icon">🛡️</span> Staff & Security
+                <svg class="erp-nav-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <span>Staff & Security</span>
               </a>
             </nav>
 

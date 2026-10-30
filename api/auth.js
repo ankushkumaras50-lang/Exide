@@ -21,21 +21,19 @@ module.exports = async (req, res) => {
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   const parsed = url.parse(req.url, true);
-  let action = req.query?.action || parsed.query?.action;
+  let action = null;
 
-  // 1. If passed via __subpath rewrite query parameter
+  // 1. Pathname match (e.g. /api/auth/staff?action=list -> endpoint = 'staff')
+  const rawPath = parsed.pathname || req.url || '';
+  const pathMatch = rawPath.match(/\/api\/auth\/([^\/\?#]+)/);
+  if (pathMatch && handlers[pathMatch[1]]) {
+    action = pathMatch[1];
+  }
+
+  // 2. If passed via __subpath rewrite query parameter
   if (!action && (req.query?.__subpath || parsed.query?.__subpath)) {
     const rawSub = req.query?.__subpath || parsed.query?.__subpath;
     action = String(rawSub).split('/')[0];
-  }
-
-  // 2. Fallback to parsing pathname (e.g. /api/auth/admin-login)
-  if (!action) {
-    const rawPath = parsed.pathname || req.url || '';
-    const match = rawPath.match(/\/api\/auth\/([^\/\?#]+)/);
-    if (match) {
-      action = match[1];
-    }
   }
 
   // 3. Fallback to Vercel x-matched-path header
@@ -44,6 +42,11 @@ module.exports = async (req, res) => {
     if (match) {
       action = match[1];
     }
+  }
+
+  // 4. Fallback to query action
+  if (!action) {
+    action = req.query?.action || parsed.query?.action;
   }
 
   // Clean and trim action string
