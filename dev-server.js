@@ -101,7 +101,12 @@ const server = http.createServer(async (req, res) => {
 
       if (fs.existsSync(handlerPath)) {
         try {
-          delete require.cache[require.resolve(handlerPath)];
+          // Clear cache for all project API, lib, and db handlers so live code edits apply instantly
+          Object.keys(require.cache).forEach(k => {
+            if (k.includes(path.sep + 'api' + path.sep) || k.includes(path.sep + 'lib' + path.sep) || k.includes(path.sep + 'db' + path.sep)) {
+              delete require.cache[k];
+            }
+          });
           const handler = require(handlerPath);
           await handler(req, res);
         } catch (err) {

@@ -1,12 +1,12 @@
 [
   {
-    "id": "INVITE-MVRWTO0J",
+    "id": "INVITE-MVV9MCAZ",
     "email": "warehouse.staff@exidebattery.com.np",
     "role": "inventory_manager",
-    "token": "2105e2ee1fd98737c96d38d7ba2908bd43fda29f697053a2",
+    "token": "7a2c8bcfc5d7f64ce9c8fa143a0f37fd5a174dd59fe3cf58",
     "createdBy": "USER-SUPERADMIN-001",
     "status": "pending",
-    "createdAt": "2026-10-28T09:26:21.139Z",
-    "expiresAt": "2026-11-04T09:26:21.139Z"
+    "createdAt": "2026-10-30T17:47:52.907Z",
+    "expiresAt": "2026-11-06T17:47:52.907Z"
   }
 ]

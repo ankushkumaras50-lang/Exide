@@ -39,6 +39,19 @@ class StockManagementSystem {
     this.loadData();
     this.loadOrders();
 
+    // Real-time synchronization when order placed from storefront cart or another tab
+    window.addEventListener('orders_synced', (e) => {
+      this.loadOrders();
+      this.syncServerOrders();
+    });
+
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'exide_orders' || e.key === 'bm_exide_orders' || e.key === 'exide_orders_sync_trigger') {
+        this.loadOrders();
+        this.syncServerOrders();
+      }
+    });
+
     // Expose productsCatalog globally for storefront & cart
     window.productsCatalog = this.inventory;
 
@@ -514,172 +527,92 @@ class StockManagementSystem {
         }
       });
 
-      if (combined.length > 0) {
-        this.orders = combined.map(o => this.normalizeOrder(o)).filter(Boolean);
-      } else {
-        // Seed initial commercial orders
-        this.orders = [
-          {
-            orderId: 'EX-NP-842109',
-            invoiceNumber: 'INV-2026-4819',
-            orderDate: new Date(Date.now() - 3600000 * 5).toLocaleString('en-US', { timeZone: 'Asia/Kathmandu' }),
-            customer: {
-              fullName: 'Sunil Shakya',
-              phone: '9841892011',
-              email: 'sunil.shakya@gmail.com',
-              province: 'bagmati',
-              district: 'Kathmandu',
-              city: 'Kathmandu',
-              ward: '10',
-              address: 'Bijulibazar, Anamnagar Chowk (Near BhatBhateni)',
-              landmark: 'Opposite Sunrise Bank ATM',
-              notes: 'Please install after 4 PM.',
-              panNumber: '601928374'
-            },
-            items: [
-              {
-                id: 'exide-battery-150-invamaster',
-                sku: 'EX-IMTT1500',
-                name: 'Exide 150 Ah Invamaster Tubular Battery - IMTT1500',
-                price: 34000,
-                image: 'assets/images/exide-imtt1500.png',
-                brand: 'Exide',
-                capacity: '150Ah - 12V',
-                quantity: 1
-              },
-              {
-                id: 'livfast-1175-inverter',
-                sku: 'LF-1175VA',
-                name: 'Livfast 1175 Pure Sinewave Inverter (1050VA)',
-                price: 18500,
-                image: 'assets/images/livfast-1954.png',
-                brand: 'Livfast',
-                capacity: '1050VA / 840W',
-                quantity: 1
-              }
-            ],
-            calculations: {
-              rawSubtotal: 52500,
-              totalItemsCount: 2,
-              scrapExchangeDeduction: 5250,
-              couponDiscount: 0,
-              finalDelivery: 0,
-              grandTotal: 47250,
-              vatAmount: 5435
-            },
-            exchangeScrap: true,
-            scrapBatteryAh: 150,
-            scrapRateUsed: 35,
-            deliveryOption: 'Express Doorstep Delivery',
-            fittingService: 'Professional Fitting Included (Free)',
-            paymentMethod: 'ESEWA',
-            paymentStatus: 'Paid / Verified (Txn: 98124912)',
-            status: 'Processing', // 'Pending' | 'Processing' | 'Dispatched' | 'Delivered' | 'Cancelled'
-            trackingHistory: [
-              { step: 'Order Placed', time: '10:15 AM', note: 'Customer placed order via Nepal Storefront' },
-              { step: 'Payment Verified', time: '10:20 AM', note: 'eSewa digital wallet payment confirmed' },
-              { step: 'Processing & Packaging', time: '11:00 AM', note: 'Technician assigned for terminal testing & warranty stamping' }
-            ],
-            driverInfo: {
-              driverName: 'Ramesh Thapa (Technician)',
-              driverPhone: '+9779705997260',
-              vehicleNumber: 'BA 2 PA 4912'
-            }
-          },
-          {
-            orderId: 'EX-NP-719342',
-            invoiceNumber: 'INV-2026-4815',
-            orderDate: new Date(Date.now() - 3600000 * 28).toLocaleString('en-US', { timeZone: 'Asia/Kathmandu' }),
-            customer: {
-              fullName: 'Bikram Thapa',
-              phone: '9857021199',
-              email: 'bikram.thapa@yahoo.com',
-              province: 'lumbini',
-              district: 'Rupandehi',
-              city: 'Butwal',
-              ward: '04',
-              address: 'Traffic Chowk, Hospital Line',
-              landmark: 'Near Butwal Hospital Entrance',
-              notes: 'Heavy duty car battery replacement.',
-              panNumber: 'N/A'
-            },
-            items: [
-              {
-                id: 'exide-matrix-car-battery',
-                sku: 'EX-MTX80',
-                name: 'Exide Matrix 12V 80Ah Heavy-Duty Car Battery',
-                price: 19800,
-                image: 'assets/images/exide-matrix.png',
-                brand: 'Exide',
-                capacity: '80Ah - 12V',
-                quantity: 1
-              }
-            ],
-            calculations: {
-              rawSubtotal: 19800,
-              totalItemsCount: 1,
-              scrapExchangeDeduction: 2800,
-              couponDiscount: 0,
-              finalDelivery: 0,
-              grandTotal: 17000,
-              vatAmount: 1955
-            },
-            exchangeScrap: true,
-            scrapBatteryAh: 80,
-            scrapRateUsed: 35,
-            deliveryOption: 'Direct Store Pickup & Testing',
-            fittingService: 'Free Terminal Clamp Fitting',
-            paymentMethod: 'COD',
-            paymentStatus: 'Cash Collected on Delivery',
-            status: 'Delivered',
-            trackingHistory: [
-              { step: 'Order Placed', time: 'Yesterday 09:00 AM', note: 'Order placed' },
-              { step: 'Processing', time: 'Yesterday 10:00 AM', note: 'Inventory allocated from Butwal Depot' },
-              { step: 'Dispatched', time: 'Yesterday 11:30 AM', note: 'Out for fitting' },
-              { step: 'Delivered', time: 'Yesterday 01:15 PM', note: 'Installed in vehicle & 60-Month Warranty activated' }
-            ],
-            driverInfo: {
-              driverName: 'Suresh KC',
-              driverPhone: '+9779705997260',
-              vehicleNumber: 'LU 1 CHA 3399'
+      // Purge legacy demo seed orders completely
+      const demoIds = ['EX-NP-842109', 'EX-NP-719342'];
+      const realOrders = combined.filter(o => {
+        const id = o.orderId || o.id;
+        return id && !demoIds.includes(id);
+      });
+
+      this.orders = realOrders.map(o => this.normalizeOrder(o)).filter(Boolean);
+      this.orders.sort((a, b) => {
+        const dateA = new Date(a.date || a.orderDate || 0).getTime();
+        const dateB = new Date(b.date || b.orderDate || 0).getTime();
+        return dateB - dateA;
+      });
+
+      this.saveOrders();
+
+      // Immediately sync with authoritative backend orders API
+      this.syncServerOrders();
+    } catch (e) {
+      console.error('Error loading orders', e);
+      this.orders = [];
+    }
+  }
+
+  async syncServerOrders() {
+    if (typeof fetch !== 'function') return;
+    try {
+      let serverOrders = [];
+      try {
+        const res = await fetch('/api/orders');
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.success && Array.isArray(data.orders)) {
+            serverOrders = data.orders;
+          }
+        }
+      } catch (e) {}
+
+      if (serverOrders.length === 0) {
+        try {
+          const erpRes = await fetch('/api/erp/orders?status=all');
+          if (erpRes.ok) {
+            const erpData = await erpRes.json();
+            if (erpData && erpData.success && Array.isArray(erpData.orders)) {
+              serverOrders = erpData.orders;
             }
           }
-        ];
+        } catch (e) {}
+      }
+
+      if (serverOrders.length > 0) {
+        const map = new Map();
+        (this.orders || []).forEach(o => {
+          const key = o.orderId || o.id || o.invoiceNumber;
+          if (key) map.set(key, o);
+        });
+
+        serverOrders.forEach(so => {
+          const norm = this.normalizeOrder(so);
+          if (!norm) return;
+          const key = norm.orderId || norm.id || norm.invoiceNumber;
+          if (key) {
+            const existing = map.get(key) || {};
+            map.set(key, { ...existing, ...norm });
+          }
+        });
+
+        const demoIds = ['EX-NP-842109', 'EX-NP-719342'];
+        this.orders = Array.from(map.values())
+          .filter(o => !demoIds.includes(o.orderId) && !demoIds.includes(o.id))
+          .sort((a, b) => {
+            const dateA = new Date(a.date || a.createdAt || a.orderDate || 0).getTime();
+            const dateB = new Date(b.date || b.createdAt || b.orderDate || 0).getTime();
+            return dateB - dateA;
+          });
+
         this.saveOrders();
+        if (this.activeAdminTab === 'orders') {
+          this.renderOrdersTable();
+        }
+        if (typeof this.updateDashboardKPIs === 'function') this.updateDashboardKPIs();
       }
-
-      // Ensure every order in memory is properly normalized
-      this.orders = (this.orders || []).map(o => this.normalizeOrder(o)).filter(Boolean);
-
-      // Asynchronously fetch latest authoritative orders from backend API
-      if (typeof fetch === 'function') {
-        fetch('/api/orders')
-          .then(res => res.ok ? res.json() : null)
-          .then(data => {
-            if (data && data.success && Array.isArray(data.orders)) {
-              let updated = false;
-              data.orders.forEach(srvOrder => {
-                const norm = this.normalizeOrder(srvOrder);
-                if (!norm) return;
-                const idx = this.orders.findIndex(o => (o.orderId && o.orderId === norm.orderId) || (o.invoiceNumber && o.invoiceNumber === norm.invoiceNumber));
-                if (idx >= 0) {
-                  this.orders[idx] = { ...this.orders[idx], ...norm };
-                  updated = true;
-                } else {
-                  this.orders.unshift(norm);
-                  updated = true;
-                }
-              });
-              if (updated) {
-                this.saveOrders();
-                this.renderOrdersTable();
-                if (typeof this.updateDashboardKPIs === 'function') this.updateDashboardKPIs();
-              }
-            }
-          })
-          .catch(err => console.warn('Backend orders sync offline fallback active:', err));
-      }
-    } catch (e) {
+    } catch (err) {
+      console.warn('Backend orders sync offline notice:', err);
+    }
+  }
       console.error('Error loading orders', e);
       this.orders = [];
     }
@@ -2336,7 +2269,9 @@ class StockManagementSystem {
     });
 
     if (tabName === 'orders') {
+      this.loadOrders();
       this.renderOrdersTable();
+      this.syncServerOrders();
     } else if (tabName === 'inventory') {
       this.filterAndRenderTable();
     } else if (tabName === 'audit') {
@@ -2353,6 +2288,8 @@ class StockManagementSystem {
       });
       return;
     }
+    this.loadOrders();
+    this.syncServerOrders();
     this.renderAdminUI();
     if (window.authManager) window.authManager.updateAuthUI();
     const modal = document.getElementById('admin-modal-overlay');

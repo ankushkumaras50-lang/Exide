@@ -2089,6 +2089,19 @@
           console.warn('Orders API offline fallback:', fetchErr);
         }
 
+        // Secondary fallback: pull directly from authoritative public orders catalog API
+        if (serverOrders.length === 0) {
+          try {
+            const pubRes = await fetch('/api/orders');
+            if (pubRes.ok) {
+              const pubData = await pubRes.json();
+              if (pubData.success && Array.isArray(pubData.orders)) {
+                serverOrders = pubData.orders;
+              }
+            }
+          } catch(e) {}
+        }
+
         // 2. Fetch local storage orders from both storefront keys ('exide_orders' and 'bm_exide_orders')
         let localOrders = [];
         try {
@@ -3345,6 +3358,18 @@
           }
         } catch (fetchErr) {
           // Silent local fallback
+        }
+
+        if (serverOrders.length === 0) {
+          try {
+            const pRes = await fetch('/api/orders');
+            if (pRes.ok) {
+              const pData = await pRes.json();
+              if (pData.success && Array.isArray(pData.orders)) {
+                serverOrders = pData.orders;
+              }
+            }
+          } catch(e) {}
         }
 
         // 2. Fetch local storage orders

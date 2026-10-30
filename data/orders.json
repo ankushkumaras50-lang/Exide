@@ -1,5 +1,1717 @@
 [
   {
+    "orderId": "EXD-855933",
+    "id": "EXD-855933",
+    "invoiceNumber": "INV-2026-01090",
+    "trackingNumber": "NP-EXD-92963",
+    "date": "2026-10-30T17:47:57.748Z",
+    "orderDate": "30 Oct 2026, 23:32",
+    "orderDateFormatted": "30 Oct 2026, 23:32",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ramesh Karki (E2E Test 350733)",
+      "phone": "9841556677",
+      "email": "9841556677@customer.exidebattery.com.np",
+      "district": "Kathmandu",
+      "city": "Kathmandu",
+      "ward": "10",
+      "address": "Bijulibazar, Anamnagar",
+      "deliveryAddress": "Bijulibazar, Anamnagar",
+      "assignedRider": "Bikram Thapa"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 1,
+        "itemTotal": 34000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 0,
+      "couponDiscount": 0,
+      "deliveryFee": 0,
+      "grandTotal": 34000,
+      "vatAmount": 3912,
+      "taxableAmount": 30088,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "calculations": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 0,
+      "scrapBatteryAh": 0,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 3912,
+      "taxableAmount": 30088,
+      "grandTotal": 34000
+    },
+    "scrapExchange": null,
+    "appliedCoupon": null,
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "status": "SHIPPED",
+    "orderStatus": "SHIPPED",
+    "notes": "Urgent wholesale delivery",
+    "idempotencyKey": null,
+    "updatedAt": "2026-10-30T17:47:57.761Z",
+    "assignedRider": {
+      "name": "Bikram Thapa",
+      "phone": "9851087654",
+      "vehicle": "Delivery Van (BA 2 CHA 4521)"
+    },
+    "trackingHistory": [
+      {
+        "step": "SHIPPED",
+        "time": "11:32 PM",
+        "note": "Dispatched from Bijulibazar central warehouse"
+      }
+    ]
+  },
+  {
+    "orderId": "EXD-922648",
+    "id": "EXD-922648",
+    "invoiceNumber": "INV-2026-01089",
+    "trackingNumber": "NP-EXD-55185",
+    "date": "2026-10-30T17:47:56.897Z",
+    "orderDate": "30 Oct 2026, 23:32",
+    "orderDateFormatted": "30 Oct 2026, 23:32",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Shyam Sundar Sharma",
+      "phone": "9841998877",
+      "email": "9841998877@customer.exidebattery.com.np",
+      "district": "Kathmandu",
+      "city": "Kathmandu",
+      "ward": "03",
+      "address": "Lazimpat, Near Radisson Hotel",
+      "deliveryAddress": "Lazimpat, Near Radisson Hotel",
+      "assignedRider": "Bikash Shrestha (+977 9812345678 - Lalitpur)"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 1,
+        "itemTotal": 34000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 0,
+      "couponDiscount": 0,
+      "deliveryFee": 0,
+      "grandTotal": 34000,
+      "vatAmount": 3912,
+      "taxableAmount": 30088,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "calculations": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 0,
+      "scrapBatteryAh": 0,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 3912,
+      "taxableAmount": 30088,
+      "grandTotal": 34000
+    },
+    "scrapExchange": null,
+    "appliedCoupon": null,
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "status": "SHIPPED",
+    "orderStatus": "SHIPPED",
+    "notes": "Customer urgent inverter replacement",
+    "idempotencyKey": null,
+    "assignedRider": "Bikash Shrestha (+977 9812345678 - Lalitpur)",
+    "dispatchVehicle": "Ba 3 Pa 9120",
+    "trackingHistory": [
+      {
+        "step": "SHIPPED",
+        "time": "11:32 PM",
+        "date": "2026-10-30T17:47:56.934Z",
+        "note": "Order dispatched with Multimeter test kit",
+        "updatedBy": "staff_superadmin_01"
+      }
+    ],
+    "updatedAt": "2026-10-30T17:47:56.934Z"
+  },
+  {
+    "orderId": "EXD-TEST-441596",
+    "invoiceNumber": "INV-TEST-3713",
+    "status": "DELIVERED",
+    "paymentMethod": "CASH_ON_DELIVERY",
+    "paymentStatus": "PAID",
+    "date": "2026-10-30T17:47:55.106Z",
+    "customer": {
+      "fullName": "Aayush Maharjan",
+      "phone": "9841234567",
+      "address": "Patan Dhoka, Lalitpur",
+      "city": "Lalitpur",
+      "ward": "3",
+      "assignedRider": "Bikash Shrestha (+977 9812345678 - Lalitpur & Patan)"
+    },
+    "items": [
+      {
+        "productId": "prod_test-exp-mvrwto5e_to5g",
+        "name": "Exide Enterprise Inverter Battery 180Ah",
+        "quantity": 1,
+        "unitPrice": 28500
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 28500,
+      "scrapExchangeDeduction": 0,
+      "vatAmount": 3705,
+      "grandTotal": 32205
+    },
+    "orderStatus": "DELIVERED",
+    "trackingHistory": [
+      {
+        "step": "CONFIRMED",
+        "time": "11:32 PM",
+        "date": "2026-10-30T17:47:55.141Z",
+        "note": "Order verified via phone with buyer Aayush",
+        "updatedBy": "sales_test_user"
+      },
+      {
+        "step": "SHIPPED",
+        "time": "11:32 PM",
+        "date": "2026-10-30T17:47:55.167Z",
+        "note": "Dispatched from Bijulibazar warehouse",
+        "updatedBy": "admin_test_user"
+      },
+      {
+        "step": "DELIVERED",
+        "time": "11:32 PM",
+        "date": "2026-10-30T17:47:55.173Z",
+        "note": "Delivered, terminal greased, and payment collected",
+        "updatedBy": "admin_test_user"
+      }
+    ],
+    "updatedAt": "2026-10-30T17:47:55.173Z",
+    "assignedRider": "Bikash Shrestha (+977 9812345678 - Lalitpur & Patan)",
+    "dispatchVehicle": "Ba 2 Ja 5542 Scooter"
+  },
+  {
+    "orderId": "EXD-584834",
+    "id": "EXD-584834",
+    "invoiceNumber": "INV-2026-01088",
+    "trackingNumber": "NP-EXD-54028",
+    "orderType": "SALE",
+    "date": "2026-10-30T17:47:53.820Z",
+    "orderDate": "30 Oct 2026, 23:32",
+    "orderDateFormatted": "30 Oct 2026, 23:32",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, opposite Sunrise City Home, Kathmandu, Nepal",
+      "phone": "+977 9705997260",
+      "email": "batterymartbtl@gmail.com",
+      "ward": "10",
+      "city": "Kathmandu",
+      "district": "Kathmandu"
+    },
+    "customer": {
+      "fullName": "Krishna Prasad Sharma",
+      "phone": "9851098765",
+      "email": "krishna.sharma@yahoo.com",
+      "pan": "500123987",
+      "district": "Kathmandu",
+      "city": "Kathmandu",
+      "ward": "10",
+      "address": "Baneshwor Chowk",
+      "deliveryAddress": "Baneshwor Chowk",
+      "assignedRider": "Standard Kathmandu Express"
+    },
+    "items": [
+      {
+        "productId": "prod_test-exp-mvv9mcgi_mcgn",
+        "id": "prod_test-exp-mvv9mcgi_mcgn",
+        "sku": "TEST-EXP-MVV9MCGI",
+        "name": "Exide Enterprise Inverter Battery 180Ah",
+        "brand": "Exide",
+        "capacity": "180Ah",
+        "warranty": "36 Months Official Warranty",
+        "price": 28500,
+        "unitPrice": 28500,
+        "quantity": 2,
+        "itemTotal": 57000,
+        "lineTotal": 57000,
+        "image": "assets/logo.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 57000,
+      "scrapExchangeDeduction": 5250,
+      "couponDiscount": 0,
+      "deliveryFee": 0,
+      "taxableAmount": 51750,
+      "vatPercentage": 13,
+      "vatAmount": 6728,
+      "grandTotal": 58478,
+      "currency": "NPR"
+    },
+    "calculations": {
+      "rawSubtotal": 57000,
+      "scrapExchangeDeduction": 5250,
+      "scrapBatteryAh": 150,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "taxableAmount": 51750,
+      "vatAmount": 6728,
+      "grandTotal": 58478
+    },
+    "scrapExchangeRecord": {
+      "exchangeId": "exc_exc_2026_00149_mczv",
+      "exchangeNumber": "EXC-2026-00149",
+      "capacityAh": 150,
+      "rebateAmount": 5250
+    },
+    "status": "CANCELLED",
+    "paymentMethod": "CASH_ON_DELIVERY",
+    "paymentStatus": "PENDING",
+    "notes": "",
+    "stockMovements": [
+      {
+        "productId": "prod_test-exp-mvv9mcgi_mcgn",
+        "sku": "TEST-EXP-MVV9MCGI",
+        "previousStock": 52,
+        "newStock": 50,
+        "quantity": -2
+      }
+    ],
+    "issuedBy": "usr_sales_staff",
+    "createdAt": "2026-10-30T17:47:53.820Z",
+    "updatedAt": "2026-10-30T17:47:53.871Z"
+  },
+  {
+    "orderId": "EXD-624222",
+    "id": "EXD-624222",
+    "invoiceNumber": "INV-2026-01087",
+    "trackingNumber": "NP-EXD-96086",
+    "date": "2026-10-30T17:47:52.016Z",
+    "orderDate": "30 Oct 2026, 23:32",
+    "orderDateFormatted": "30 Oct 2026, 23:32",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ramesh Shrestha",
+      "phone": "9841234567",
+      "email": "ramesh.nepal@gmail.com",
+      "district": "Kathmandu",
+      "city": "Kathmandu",
+      "ward": "10",
+      "address": "Bijulibazar, Anamnagar",
+      "deliveryAddress": "Bijulibazar, Anamnagar",
+      "assignedRider": "Standard Courier Express"
+    },
+    "items": [
+      {
+        "id": "prod_test-exp-mvv9l9yv_l9z0",
+        "sku": "TEST-EXP-MVV9L9YV",
+        "name": "Exide Enterprise Inverter Battery 180Ah",
+        "brand": "Exide",
+        "capacity": "180Ah",
+        "warranty": "36 Months Official Warranty",
+        "price": 28500,
+        "quantity": 1,
+        "itemTotal": 28500,
+        "image": "assets/logo.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 28500,
+      "scrapExchangeDeduction": 7000,
+      "couponDiscount": 2150,
+      "deliveryFee": 0,
+      "grandTotal": 19350,
+      "vatAmount": 2226,
+      "taxableAmount": 17124,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "calculations": {
+      "rawSubtotal": 28500,
+      "scrapExchangeDeduction": 7000,
+      "scrapBatteryAh": 200,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 2226,
+      "taxableAmount": 17124,
+      "grandTotal": 19350
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 200,
+      "ratePerAh": 35,
+      "totalScrapValue": 7000,
+      "calculatedDiscount": 7000,
+      "excessScrapRefund": 0,
+      "batteryBrand": "Customer Trade-in",
+      "batteryCondition": "Recyclable Lead Acid"
+    },
+    "appliedCoupon": {
+      "code": "EXIDE2026",
+      "percent": 10,
+      "discountAmount": 2150
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "status": "Confirmed",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": null
+  },
+  {
+    "orderId": "EXD-276307",
+    "id": "EXD-276307",
+    "invoiceNumber": "INV-2026-01086",
+    "trackingNumber": "NP-EXD-29714",
+    "date": "2026-10-30T17:47:07.156Z",
+    "orderDate": "30 Oct 2026, 23:32",
+    "orderDateFormatted": "30 Oct 2026, 23:32",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ramesh Karki (E2E Test 387251)",
+      "phone": "9841556677",
+      "email": "9841556677@customer.exidebattery.com.np",
+      "district": "Kathmandu",
+      "city": "Kathmandu",
+      "ward": "10",
+      "address": "Bijulibazar, Anamnagar",
+      "deliveryAddress": "Bijulibazar, Anamnagar",
+      "assignedRider": "Standard Courier Express"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 1,
+        "itemTotal": 34000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 0,
+      "couponDiscount": 0,
+      "deliveryFee": 0,
+      "grandTotal": 34000,
+      "vatAmount": 3912,
+      "taxableAmount": 30088,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "calculations": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 0,
+      "scrapBatteryAh": 0,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 3912,
+      "taxableAmount": 30088,
+      "grandTotal": 34000
+    },
+    "scrapExchange": null,
+    "appliedCoupon": null,
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "status": "Confirmed",
+    "orderStatus": "Confirmed",
+    "notes": "Urgent wholesale delivery",
+    "idempotencyKey": null,
+    "updatedAt": "2026-10-30T17:47:07.172Z"
+  },
+  {
+    "orderId": "EXD-317708",
+    "id": "EXD-317708",
+    "invoiceNumber": "INV-2026-01085",
+    "trackingNumber": "NP-EXD-90925",
+    "date": "2026-10-30T17:47:06.580Z",
+    "orderDate": "30 Oct 2026, 23:32",
+    "orderDateFormatted": "30 Oct 2026, 23:32",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Shyam Sundar Sharma",
+      "phone": "9841998877",
+      "email": "9841998877@customer.exidebattery.com.np",
+      "district": "Kathmandu",
+      "city": "Kathmandu",
+      "ward": "03",
+      "address": "Lazimpat, Near Radisson Hotel",
+      "deliveryAddress": "Lazimpat, Near Radisson Hotel",
+      "assignedRider": "Bikash Shrestha (+977 9812345678 - Lalitpur)"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 1,
+        "itemTotal": 34000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 0,
+      "couponDiscount": 0,
+      "deliveryFee": 0,
+      "grandTotal": 34000,
+      "vatAmount": 3912,
+      "taxableAmount": 30088,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "calculations": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 0,
+      "scrapBatteryAh": 0,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 3912,
+      "taxableAmount": 30088,
+      "grandTotal": 34000
+    },
+    "scrapExchange": null,
+    "appliedCoupon": null,
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "status": "SHIPPED",
+    "orderStatus": "SHIPPED",
+    "notes": "Customer urgent inverter replacement",
+    "idempotencyKey": null,
+    "assignedRider": "Bikash Shrestha (+977 9812345678 - Lalitpur)",
+    "dispatchVehicle": "Ba 3 Pa 9120",
+    "trackingHistory": [
+      {
+        "step": "SHIPPED",
+        "time": "11:32 PM",
+        "date": "2026-10-30T17:47:06.620Z",
+        "note": "Order dispatched with Multimeter test kit",
+        "updatedBy": "staff_superadmin_01"
+      }
+    ],
+    "updatedAt": "2026-10-30T17:47:06.620Z"
+  },
+  {
+    "orderId": "EXD-TEST-599966",
+    "invoiceNumber": "INV-TEST-5267",
+    "status": "DELIVERED",
+    "paymentMethod": "CASH_ON_DELIVERY",
+    "paymentStatus": "PAID",
+    "date": "2026-10-30T17:47:05.223Z",
+    "customer": {
+      "fullName": "Aayush Maharjan",
+      "phone": "9841234567",
+      "address": "Patan Dhoka, Lalitpur",
+      "city": "Lalitpur",
+      "ward": "3",
+      "assignedRider": "Bikash Shrestha (+977 9812345678 - Lalitpur & Patan)"
+    },
+    "items": [
+      {
+        "productId": "prod_test-exp-mvrwto5e_to5g",
+        "name": "Exide Enterprise Inverter Battery 180Ah",
+        "quantity": 1,
+        "unitPrice": 28500
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 28500,
+      "scrapExchangeDeduction": 0,
+      "vatAmount": 3705,
+      "grandTotal": 32205
+    },
+    "orderStatus": "DELIVERED",
+    "trackingHistory": [
+      {
+        "step": "CONFIRMED",
+        "time": "11:32 PM",
+        "date": "2026-10-30T17:47:05.252Z",
+        "note": "Order verified via phone with buyer Aayush",
+        "updatedBy": "sales_test_user"
+      },
+      {
+        "step": "SHIPPED",
+        "time": "11:32 PM",
+        "date": "2026-10-30T17:47:05.276Z",
+        "note": "Dispatched from Bijulibazar warehouse",
+        "updatedBy": "admin_test_user"
+      },
+      {
+        "step": "DELIVERED",
+        "time": "11:32 PM",
+        "date": "2026-10-30T17:47:05.282Z",
+        "note": "Delivered, terminal greased, and payment collected",
+        "updatedBy": "admin_test_user"
+      }
+    ],
+    "updatedAt": "2026-10-30T17:47:05.282Z",
+    "assignedRider": "Bikash Shrestha (+977 9812345678 - Lalitpur & Patan)",
+    "dispatchVehicle": "Ba 2 Ja 5542 Scooter"
+  },
+  {
+    "orderId": "EXD-190050",
+    "id": "EXD-190050",
+    "invoiceNumber": "INV-2026-01084",
+    "trackingNumber": "NP-EXD-29403",
+    "orderType": "SALE",
+    "date": "2026-10-30T17:47:03.888Z",
+    "orderDate": "30 Oct 2026, 23:32",
+    "orderDateFormatted": "30 Oct 2026, 23:32",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, opposite Sunrise City Home, Kathmandu, Nepal",
+      "phone": "+977 9705997260",
+      "email": "batterymartbtl@gmail.com",
+      "ward": "10",
+      "city": "Kathmandu",
+      "district": "Kathmandu"
+    },
+    "customer": {
+      "fullName": "Krishna Prasad Sharma",
+      "phone": "9851098765",
+      "email": "krishna.sharma@yahoo.com",
+      "pan": "500123987",
+      "district": "Kathmandu",
+      "city": "Kathmandu",
+      "ward": "10",
+      "address": "Baneshwor Chowk",
+      "deliveryAddress": "Baneshwor Chowk",
+      "assignedRider": "Standard Kathmandu Express"
+    },
+    "items": [
+      {
+        "productId": "prod_test-exp-mvv9l9yv_l9z0",
+        "id": "prod_test-exp-mvv9l9yv_l9z0",
+        "sku": "TEST-EXP-MVV9L9YV",
+        "name": "Exide Enterprise Inverter Battery 180Ah",
+        "brand": "Exide",
+        "capacity": "180Ah",
+        "warranty": "36 Months Official Warranty",
+        "price": 28500,
+        "unitPrice": 28500,
+        "quantity": 2,
+        "itemTotal": 57000,
+        "lineTotal": 57000,
+        "image": "assets/logo.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 57000,
+      "scrapExchangeDeduction": 5250,
+      "couponDiscount": 0,
+      "deliveryFee": 0,
+      "taxableAmount": 51750,
+      "vatPercentage": 13,
+      "vatAmount": 6728,
+      "grandTotal": 58478,
+      "currency": "NPR"
+    },
+    "calculations": {
+      "rawSubtotal": 57000,
+      "scrapExchangeDeduction": 5250,
+      "scrapBatteryAh": 150,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "taxableAmount": 51750,
+      "vatAmount": 6728,
+      "grandTotal": 58478
+    },
+    "scrapExchangeRecord": {
+      "exchangeId": "exc_exc_2026_00146_lagt",
+      "exchangeNumber": "EXC-2026-00146",
+      "capacityAh": 150,
+      "rebateAmount": 5250
+    },
+    "status": "CANCELLED",
+    "paymentMethod": "CASH_ON_DELIVERY",
+    "paymentStatus": "PENDING",
+    "notes": "",
+    "stockMovements": [
+      {
+        "productId": "prod_test-exp-mvv9l9yv_l9z0",
+        "sku": "TEST-EXP-MVV9L9YV",
+        "previousStock": 52,
+        "newStock": 50,
+        "quantity": -2
+      }
+    ],
+    "issuedBy": "usr_sales_staff",
+    "createdAt": "2026-10-30T17:47:03.888Z",
+    "updatedAt": "2026-10-30T17:47:03.941Z"
+  },
+  {
+    "orderId": "EXD-519342",
+    "id": "EXD-519342",
+    "invoiceNumber": "INV-2026-01083",
+    "trackingNumber": "NP-EXD-71751",
+    "date": "2026-10-30T17:47:02.215Z",
+    "orderDate": "30 Oct 2026, 23:32",
+    "orderDateFormatted": "30 Oct 2026, 23:32",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ramesh Shrestha",
+      "phone": "9841234567",
+      "email": "ramesh.nepal@gmail.com",
+      "district": "Kathmandu",
+      "city": "Kathmandu",
+      "ward": "10",
+      "address": "Bijulibazar, Anamnagar",
+      "deliveryAddress": "Bijulibazar, Anamnagar",
+      "assignedRider": "Standard Courier Express"
+    },
+    "items": [
+      {
+        "id": "prod_test-exp-mvv9kol9_kold",
+        "sku": "TEST-EXP-MVV9KOL9",
+        "name": "Exide Enterprise Inverter Battery 180Ah",
+        "brand": "Exide",
+        "capacity": "180Ah",
+        "warranty": "36 Months Official Warranty",
+        "price": 28500,
+        "quantity": 1,
+        "itemTotal": 28500,
+        "image": "assets/logo.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 28500,
+      "scrapExchangeDeduction": 7000,
+      "couponDiscount": 2150,
+      "deliveryFee": 0,
+      "grandTotal": 19350,
+      "vatAmount": 2226,
+      "taxableAmount": 17124,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "calculations": {
+      "rawSubtotal": 28500,
+      "scrapExchangeDeduction": 7000,
+      "scrapBatteryAh": 200,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 2226,
+      "taxableAmount": 17124,
+      "grandTotal": 19350
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 200,
+      "ratePerAh": 35,
+      "totalScrapValue": 7000,
+      "calculatedDiscount": 7000,
+      "excessScrapRefund": 0,
+      "batteryBrand": "Customer Trade-in",
+      "batteryCondition": "Recyclable Lead Acid"
+    },
+    "appliedCoupon": {
+      "code": "EXIDE2026",
+      "percent": 10,
+      "discountAmount": 2150
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "status": "Confirmed",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": null
+  },
+  {
+    "orderId": "EXD-CLIENT-291793",
+    "invoiceNumber": "INV-CLIENT-9912",
+    "date": "2026-10-30T17:47:56.924Z",
+    "customer": {
+      "fullName": "Anita Gurung (Client Offline Checkout)",
+      "phone": "9801122334",
+      "district": "Lalitpur",
+      "deliveryAddress": "Jhamsikhel, Ward 03"
+    },
+    "items": [
+      {
+        "id": "exide-matrix-car-battery",
+        "sku": "EX-MTX80",
+        "name": "Exide Matrix 12V 80Ah Car Battery",
+        "price": 19800,
+        "quantity": 1
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 19800,
+      "grandTotal": 19800,
+      "vatAmount": 2278
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "PENDING",
+    "status": "CONFIRMED",
+    "id": "EXD-CLIENT-291793",
+    "orderStatus": "CONFIRMED",
+    "createdAt": "2026-10-30T17:46:38.745Z",
+    "updatedAt": "2026-10-30T17:47:56.926Z"
+  },
+  {
+    "orderId": "EXD-973284",
+    "id": "EXD-973284",
+    "invoiceNumber": "INV-2026-01082",
+    "trackingNumber": "NP-EXD-22219",
+    "date": "2026-10-30T17:46:38.706Z",
+    "orderDate": "30 Oct 2026, 23:31",
+    "orderDateFormatted": "30 Oct 2026, 23:31",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Shyam Sundar Sharma",
+      "phone": "9841998877",
+      "email": "9841998877@customer.exidebattery.com.np",
+      "district": "Kathmandu",
+      "city": "Kathmandu",
+      "ward": "03",
+      "address": "Lazimpat, Near Radisson Hotel",
+      "deliveryAddress": "Lazimpat, Near Radisson Hotel",
+      "assignedRider": "Bikash Shrestha (+977 9812345678 - Lalitpur)"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 1,
+        "itemTotal": 34000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 0,
+      "couponDiscount": 0,
+      "deliveryFee": 0,
+      "grandTotal": 34000,
+      "vatAmount": 3912,
+      "taxableAmount": 30088,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "calculations": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 0,
+      "scrapBatteryAh": 0,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 3912,
+      "taxableAmount": 30088,
+      "grandTotal": 34000
+    },
+    "scrapExchange": null,
+    "appliedCoupon": null,
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "status": "SHIPPED",
+    "orderStatus": "SHIPPED",
+    "notes": "Customer urgent inverter replacement",
+    "idempotencyKey": null,
+    "assignedRider": "Bikash Shrestha (+977 9812345678 - Lalitpur)",
+    "dispatchVehicle": "Ba 3 Pa 9120",
+    "trackingHistory": [
+      {
+        "step": "SHIPPED",
+        "time": "11:31 PM",
+        "date": "2026-10-30T17:46:38.753Z",
+        "note": "Order dispatched with Multimeter test kit",
+        "updatedBy": "staff_superadmin_01"
+      }
+    ],
+    "updatedAt": "2026-10-30T17:46:38.753Z"
+  },
+  {
+    "orderId": "ORD-SYNC-1793382475989",
+    "id": "ORD-SYNC-1793382475989",
+    "invoiceNumber": "INV-2026-SYNC01",
+    "date": "2026-10-30T17:47:55.989Z",
+    "status": "DELIVERED",
+    "orderStatus": "DELIVERED",
+    "paymentStatus": "PAID",
+    "paymentMethod": "COD",
+    "customer": {
+      "fullName": "Rohan Karmacharya",
+      "phone": "9841999888",
+      "email": "rohan.sync@test.com",
+      "address": "Bijulibazar Tole 4",
+      "city": "Kathmandu",
+      "district": "Kathmandu",
+      "province": "Bagmati",
+      "ward": "10",
+      "assignedRider": "Bikash Shrestha (+977 9812345678)"
+    },
+    "items": [
+      {
+        "id": "exide-inv-150",
+        "name": "Exide Inva Master 150Ah",
+        "quantity": 1,
+        "unitPrice": 22500
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 22500,
+      "scrapExchangeDeduction": 0,
+      "vatAmount": 2588,
+      "deliveryFee": 0,
+      "grandTotal": 22500
+    },
+    "assignedRider": "Bikash Shrestha (+977 9812345678)",
+    "trackingHistory": [
+      {
+        "step": "PROCESSING",
+        "time": "11:31 PM",
+        "date": "2026-10-30T17:46:38.069Z",
+        "note": "Order verified and reserved at central store.",
+        "updatedBy": "staff_superadmin_01"
+      },
+      {
+        "step": "SHIPPED",
+        "time": "11:31 PM",
+        "date": "2026-10-30T17:46:38.094Z",
+        "note": "Handed over to technician for doorstep fitting.",
+        "updatedBy": "staff_superadmin_01"
+      },
+      {
+        "step": "DELIVERED",
+        "time": "11:31 PM",
+        "date": "2026-10-30T17:46:38.101Z",
+        "note": "Installed and voltage calibrated. COD payment collected.",
+        "updatedBy": "staff_superadmin_01"
+      },
+      {
+        "step": "PROCESSING",
+        "time": "11:32 PM",
+        "date": "2026-10-30T17:47:05.892Z",
+        "note": "Order verified and reserved at central store.",
+        "updatedBy": "staff_superadmin_01"
+      },
+      {
+        "step": "SHIPPED",
+        "time": "11:32 PM",
+        "date": "2026-10-30T17:47:05.919Z",
+        "note": "Handed over to technician for doorstep fitting.",
+        "updatedBy": "staff_superadmin_01"
+      },
+      {
+        "step": "DELIVERED",
+        "time": "11:32 PM",
+        "date": "2026-10-30T17:47:05.927Z",
+        "note": "Installed and voltage calibrated. COD payment collected.",
+        "updatedBy": "staff_superadmin_01"
+      },
+      {
+        "step": "PROCESSING",
+        "time": "11:32 PM",
+        "date": "2026-10-30T17:47:56.023Z",
+        "note": "Order verified and reserved at central store.",
+        "updatedBy": "staff_superadmin_01"
+      },
+      {
+        "step": "SHIPPED",
+        "time": "11:32 PM",
+        "date": "2026-10-30T17:47:56.048Z",
+        "note": "Handed over to technician for doorstep fitting.",
+        "updatedBy": "staff_superadmin_01"
+      },
+      {
+        "step": "DELIVERED",
+        "time": "11:32 PM",
+        "date": "2026-10-30T17:47:56.056Z",
+        "note": "Installed and voltage calibrated. COD payment collected.",
+        "updatedBy": "staff_superadmin_01"
+      }
+    ],
+    "updatedAt": "2026-10-30T17:47:56.056Z",
+    "dispatchVehicle": "Ba 4 Pa 9012 Scooter"
+  },
+  {
+    "orderId": "EXD-TEST-180335",
+    "invoiceNumber": "INV-TEST-5065",
+    "status": "DELIVERED",
+    "paymentMethod": "CASH_ON_DELIVERY",
+    "paymentStatus": "PAID",
+    "date": "2026-10-30T17:46:37.379Z",
+    "customer": {
+      "fullName": "Aayush Maharjan",
+      "phone": "9841234567",
+      "address": "Patan Dhoka, Lalitpur",
+      "city": "Lalitpur",
+      "ward": "3",
+      "assignedRider": "Bikash Shrestha (+977 9812345678 - Lalitpur & Patan)"
+    },
+    "items": [
+      {
+        "productId": "prod_test-exp-mvrwto5e_to5g",
+        "name": "Exide Enterprise Inverter Battery 180Ah",
+        "quantity": 1,
+        "unitPrice": 28500
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 28500,
+      "scrapExchangeDeduction": 0,
+      "vatAmount": 3705,
+      "grandTotal": 32205
+    },
+    "orderStatus": "DELIVERED",
+    "trackingHistory": [
+      {
+        "step": "CONFIRMED",
+        "time": "11:31 PM",
+        "date": "2026-10-30T17:46:37.410Z",
+        "note": "Order verified via phone with buyer Aayush",
+        "updatedBy": "sales_test_user"
+      },
+      {
+        "step": "SHIPPED",
+        "time": "11:31 PM",
+        "date": "2026-10-30T17:46:37.444Z",
+        "note": "Dispatched from Bijulibazar warehouse",
+        "updatedBy": "admin_test_user"
+      },
+      {
+        "step": "DELIVERED",
+        "time": "11:31 PM",
+        "date": "2026-10-30T17:46:37.454Z",
+        "note": "Delivered, terminal greased, and payment collected",
+        "updatedBy": "admin_test_user"
+      }
+    ],
+    "updatedAt": "2026-10-30T17:46:37.454Z",
+    "assignedRider": "Bikash Shrestha (+977 9812345678 - Lalitpur & Patan)",
+    "dispatchVehicle": "Ba 2 Ja 5542 Scooter"
+  },
+  {
+    "orderId": "EXD-564212",
+    "id": "EXD-564212",
+    "invoiceNumber": "INV-2026-01081",
+    "trackingNumber": "NP-EXD-37949",
+    "orderType": "SALE",
+    "date": "2026-10-30T17:46:36.193Z",
+    "orderDate": "30 Oct 2026, 23:31",
+    "orderDateFormatted": "30 Oct 2026, 23:31",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, opposite Sunrise City Home, Kathmandu, Nepal",
+      "phone": "+977 9705997260",
+      "email": "batterymartbtl@gmail.com",
+      "ward": "10",
+      "city": "Kathmandu",
+      "district": "Kathmandu"
+    },
+    "customer": {
+      "fullName": "Krishna Prasad Sharma",
+      "phone": "9851098765",
+      "email": "krishna.sharma@yahoo.com",
+      "pan": "500123987",
+      "district": "Kathmandu",
+      "city": "Kathmandu",
+      "ward": "10",
+      "address": "Baneshwor Chowk",
+      "deliveryAddress": "Baneshwor Chowk",
+      "assignedRider": "Standard Kathmandu Express"
+    },
+    "items": [
+      {
+        "productId": "prod_test-exp-mvv9kol9_kold",
+        "id": "prod_test-exp-mvv9kol9_kold",
+        "sku": "TEST-EXP-MVV9KOL9",
+        "name": "Exide Enterprise Inverter Battery 180Ah",
+        "brand": "Exide",
+        "capacity": "180Ah",
+        "warranty": "36 Months Official Warranty",
+        "price": 28500,
+        "unitPrice": 28500,
+        "quantity": 2,
+        "itemTotal": 57000,
+        "lineTotal": 57000,
+        "image": "assets/logo.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 57000,
+      "scrapExchangeDeduction": 5250,
+      "couponDiscount": 0,
+      "deliveryFee": 0,
+      "taxableAmount": 51750,
+      "vatPercentage": 13,
+      "vatAmount": 6728,
+      "grandTotal": 58478,
+      "currency": "NPR"
+    },
+    "calculations": {
+      "rawSubtotal": 57000,
+      "scrapExchangeDeduction": 5250,
+      "scrapBatteryAh": 150,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "taxableAmount": 51750,
+      "vatAmount": 6728,
+      "grandTotal": 58478
+    },
+    "scrapExchangeRecord": {
+      "exchangeId": "exc_exc_2026_00143_kp3h",
+      "exchangeNumber": "EXC-2026-00143",
+      "capacityAh": 150,
+      "rebateAmount": 5250
+    },
+    "status": "CANCELLED",
+    "paymentMethod": "CASH_ON_DELIVERY",
+    "paymentStatus": "PENDING",
+    "notes": "",
+    "stockMovements": [
+      {
+        "productId": "prod_test-exp-mvv9kol9_kold",
+        "sku": "TEST-EXP-MVV9KOL9",
+        "previousStock": 52,
+        "newStock": 50,
+        "quantity": -2
+      }
+    ],
+    "issuedBy": "usr_sales_staff",
+    "createdAt": "2026-10-30T17:46:36.193Z",
+    "updatedAt": "2026-10-30T17:46:36.241Z"
+  },
+  {
+    "orderId": "EXD-645486",
+    "id": "EXD-645486",
+    "invoiceNumber": "INV-2026-01080",
+    "trackingNumber": "NP-EXD-88621",
+    "date": "2026-10-30T17:46:34.411Z",
+    "orderDate": "30 Oct 2026, 23:31",
+    "orderDateFormatted": "30 Oct 2026, 23:31",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ramesh Shrestha",
+      "phone": "9841234567",
+      "email": "ramesh.nepal@gmail.com",
+      "district": "Kathmandu",
+      "city": "Kathmandu",
+      "ward": "10",
+      "address": "Bijulibazar, Anamnagar",
+      "deliveryAddress": "Bijulibazar, Anamnagar",
+      "assignedRider": "Standard Courier Express"
+    },
+    "items": [
+      {
+        "id": "prod_test-exp-mvv9jq1m_jq1r",
+        "sku": "TEST-EXP-MVV9JQ1M",
+        "name": "Exide Enterprise Inverter Battery 180Ah",
+        "brand": "Exide",
+        "capacity": "180Ah",
+        "warranty": "36 Months Official Warranty",
+        "price": 28500,
+        "quantity": 1,
+        "itemTotal": 28500,
+        "image": "assets/logo.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 28500,
+      "scrapExchangeDeduction": 7000,
+      "couponDiscount": 2150,
+      "deliveryFee": 0,
+      "grandTotal": 19350,
+      "vatAmount": 2226,
+      "taxableAmount": 17124,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "calculations": {
+      "rawSubtotal": 28500,
+      "scrapExchangeDeduction": 7000,
+      "scrapBatteryAh": 200,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 2226,
+      "taxableAmount": 17124,
+      "grandTotal": 19350
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 200,
+      "ratePerAh": 35,
+      "totalScrapValue": 7000,
+      "calculatedDiscount": 7000,
+      "excessScrapRefund": 0,
+      "batteryBrand": "Customer Trade-in",
+      "batteryCondition": "Recyclable Lead Acid"
+    },
+    "appliedCoupon": {
+      "code": "EXIDE2026",
+      "percent": 10,
+      "discountAmount": 2150
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "status": "Confirmed",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": null
+  },
+  {
+    "orderId": "EXD-TEST-724442",
+    "invoiceNumber": "INV-TEST-2336",
+    "status": "DELIVERED",
+    "paymentMethod": "CASH_ON_DELIVERY",
+    "paymentStatus": "PAID",
+    "date": "2026-10-30T17:45:52.962Z",
+    "customer": {
+      "fullName": "Aayush Maharjan",
+      "phone": "9841234567",
+      "address": "Patan Dhoka, Lalitpur",
+      "city": "Lalitpur",
+      "ward": "3",
+      "assignedRider": "Bikash Shrestha (+977 9812345678 - Lalitpur & Patan)"
+    },
+    "items": [
+      {
+        "productId": "prod_test-exp-mvrwto5e_to5g",
+        "name": "Exide Enterprise Inverter Battery 180Ah",
+        "quantity": 1,
+        "unitPrice": 28500
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 28500,
+      "scrapExchangeDeduction": 0,
+      "vatAmount": 3705,
+      "grandTotal": 32205
+    },
+    "orderStatus": "DELIVERED",
+    "trackingHistory": [
+      {
+        "step": "CONFIRMED",
+        "time": "11:30 PM",
+        "date": "2026-10-30T17:45:52.992Z",
+        "note": "Order verified via phone with buyer Aayush",
+        "updatedBy": "sales_test_user"
+      },
+      {
+        "step": "SHIPPED",
+        "time": "11:30 PM",
+        "date": "2026-10-30T17:45:53.015Z",
+        "note": "Dispatched from Bijulibazar warehouse",
+        "updatedBy": "admin_test_user"
+      },
+      {
+        "step": "DELIVERED",
+        "time": "11:30 PM",
+        "date": "2026-10-30T17:45:53.021Z",
+        "note": "Delivered, terminal greased, and payment collected",
+        "updatedBy": "admin_test_user"
+      }
+    ],
+    "updatedAt": "2026-10-30T17:45:53.021Z",
+    "assignedRider": "Bikash Shrestha (+977 9812345678 - Lalitpur & Patan)",
+    "dispatchVehicle": "Ba 2 Ja 5542 Scooter"
+  },
+  {
+    "orderId": "EXD-597989",
+    "id": "EXD-597989",
+    "invoiceNumber": "INV-2026-01079",
+    "trackingNumber": "NP-EXD-52666",
+    "orderType": "SALE",
+    "date": "2026-10-30T17:45:51.413Z",
+    "orderDate": "30 Oct 2026, 23:30",
+    "orderDateFormatted": "30 Oct 2026, 23:30",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, opposite Sunrise City Home, Kathmandu, Nepal",
+      "phone": "+977 9705997260",
+      "email": "batterymartbtl@gmail.com",
+      "ward": "10",
+      "city": "Kathmandu",
+      "district": "Kathmandu"
+    },
+    "customer": {
+      "fullName": "Krishna Prasad Sharma",
+      "phone": "9851098765",
+      "email": "krishna.sharma@yahoo.com",
+      "pan": "500123987",
+      "district": "Kathmandu",
+      "city": "Kathmandu",
+      "ward": "10",
+      "address": "Baneshwor Chowk",
+      "deliveryAddress": "Baneshwor Chowk",
+      "assignedRider": "Standard Kathmandu Express"
+    },
+    "items": [
+      {
+        "productId": "prod_test-exp-mvv9jq1m_jq1r",
+        "id": "prod_test-exp-mvv9jq1m_jq1r",
+        "sku": "TEST-EXP-MVV9JQ1M",
+        "name": "Exide Enterprise Inverter Battery 180Ah",
+        "brand": "Exide",
+        "capacity": "180Ah",
+        "warranty": "36 Months Official Warranty",
+        "price": 28500,
+        "unitPrice": 28500,
+        "quantity": 2,
+        "itemTotal": 57000,
+        "lineTotal": 57000,
+        "image": "assets/logo.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 57000,
+      "scrapExchangeDeduction": 5250,
+      "couponDiscount": 0,
+      "deliveryFee": 0,
+      "taxableAmount": 51750,
+      "vatPercentage": 13,
+      "vatAmount": 6728,
+      "grandTotal": 58478,
+      "currency": "NPR"
+    },
+    "calculations": {
+      "rawSubtotal": 57000,
+      "scrapExchangeDeduction": 5250,
+      "scrapBatteryAh": 150,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "taxableAmount": 51750,
+      "vatAmount": 6728,
+      "grandTotal": 58478
+    },
+    "scrapExchangeRecord": {
+      "exchangeId": "exc_exc_2026_00140_jqjl",
+      "exchangeNumber": "EXC-2026-00140",
+      "capacityAh": 150,
+      "rebateAmount": 5250
+    },
+    "status": "CANCELLED",
+    "paymentMethod": "CASH_ON_DELIVERY",
+    "paymentStatus": "PENDING",
+    "notes": "",
+    "stockMovements": [
+      {
+        "productId": "prod_test-exp-mvv9jq1m_jq1r",
+        "sku": "TEST-EXP-MVV9JQ1M",
+        "previousStock": 52,
+        "newStock": 50,
+        "quantity": -2
+      }
+    ],
+    "issuedBy": "usr_sales_staff",
+    "createdAt": "2026-10-30T17:45:51.413Z",
+    "updatedAt": "2026-10-30T17:45:51.467Z"
+  },
+  {
+    "orderId": "EXD-296554",
+    "id": "EXD-296554",
+    "invoiceNumber": "INV-2026-01078",
+    "trackingNumber": "NP-EXD-31408",
+    "date": "2026-10-30T17:45:49.803Z",
+    "orderDate": "30 Oct 2026, 23:30",
+    "orderDateFormatted": "30 Oct 2026, 23:30",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ramesh Shrestha",
+      "phone": "9841234567",
+      "email": "ramesh.nepal@gmail.com",
+      "district": "Kathmandu",
+      "city": "Kathmandu",
+      "ward": "10",
+      "address": "Bijulibazar, Anamnagar",
+      "deliveryAddress": "Bijulibazar, Anamnagar",
+      "assignedRider": "Standard Courier Express"
+    },
+    "items": [
+      {
+        "id": "prod_test-exp-mvtvcxq6_cxqa",
+        "sku": "TEST-EXP-MVTVCXQ6",
+        "name": "Exide Enterprise Inverter Battery 180Ah",
+        "brand": "Exide",
+        "capacity": "180Ah",
+        "warranty": "36 Months Official Warranty",
+        "price": 28500,
+        "quantity": 1,
+        "itemTotal": 28500,
+        "image": "assets/logo.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 28500,
+      "scrapExchangeDeduction": 7000,
+      "couponDiscount": 2150,
+      "deliveryFee": 0,
+      "grandTotal": 19350,
+      "vatAmount": 2226,
+      "taxableAmount": 17124,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "calculations": {
+      "rawSubtotal": 28500,
+      "scrapExchangeDeduction": 7000,
+      "scrapBatteryAh": 200,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 2226,
+      "taxableAmount": 17124,
+      "grandTotal": 19350
+    },
+    "scrapExchange": {
+      "active": true,
+      "capacityAh": 200,
+      "ratePerAh": 35,
+      "totalScrapValue": 7000,
+      "calculatedDiscount": 7000,
+      "excessScrapRefund": 0,
+      "batteryBrand": "Customer Trade-in",
+      "batteryCondition": "Recyclable Lead Acid"
+    },
+    "appliedCoupon": {
+      "code": "EXIDE2026",
+      "percent": 10,
+      "discountAmount": 2150
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "status": "Confirmed",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": null
+  },
+  {
+    "orderId": "EXD-972153",
+    "id": "EXD-972153",
+    "invoiceNumber": "INV-2026-01077",
+    "trackingNumber": "NP-EXD-71983",
+    "date": "2026-10-30T17:45:43.467Z",
+    "orderDate": "30 Oct 2026, 23:30",
+    "orderDateFormatted": "30 Oct 2026, 23:30",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Ramesh Karki (E2E Test 172457)",
+      "phone": "9841556677",
+      "email": "9841556677@customer.exidebattery.com.np",
+      "district": "Kathmandu",
+      "city": "Kathmandu",
+      "ward": "10",
+      "address": "Bijulibazar, Anamnagar",
+      "deliveryAddress": "Bijulibazar, Anamnagar",
+      "assignedRider": "Bikram Thapa"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 1,
+        "itemTotal": 34000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 0,
+      "couponDiscount": 0,
+      "deliveryFee": 0,
+      "grandTotal": 34000,
+      "vatAmount": 3912,
+      "taxableAmount": 30088,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "calculations": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 0,
+      "scrapBatteryAh": 0,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 3912,
+      "taxableAmount": 30088,
+      "grandTotal": 34000
+    },
+    "scrapExchange": null,
+    "appliedCoupon": null,
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "status": "SHIPPED",
+    "orderStatus": "SHIPPED",
+    "notes": "Urgent wholesale delivery",
+    "idempotencyKey": null,
+    "updatedAt": "2026-10-30T17:45:43.496Z",
+    "assignedRider": {
+      "name": "Bikram Thapa",
+      "phone": "9851087654",
+      "vehicle": "Delivery Van (BA 2 CHA 4521)"
+    },
+    "trackingHistory": [
+      {
+        "step": "SHIPPED",
+        "time": "11:30 PM",
+        "note": "Dispatched from Bijulibazar central warehouse"
+      }
+    ]
+  },
+  {
+    "orderId": "EXD-SYNC-TEST-99",
+    "customer": {
+      "fullName": "Direct Sync Order",
+      "phone": "9841000000"
+    },
+    "items": [
+      {
+        "name": "Exide IMTT1500",
+        "price": 34000,
+        "quantity": 1
+      }
+    ],
+    "pricing": {
+      "grandTotal": 34000
+    },
+    "id": "EXD-SYNC-TEST-99",
+    "invoiceNumber": "INV-2026-01076",
+    "date": "2026-10-30T17:41:56.780Z",
+    "status": "CONFIRMED",
+    "orderStatus": "CONFIRMED",
+    "paymentStatus": "PAID",
+    "createdAt": "2026-10-30T17:41:56.781Z",
+    "updatedAt": "2026-10-30T17:41:56.781Z"
+  },
+  {
+    "orderId": "EXD-856899",
+    "id": "EXD-856899",
+    "invoiceNumber": "INV-2026-01075",
+    "trackingNumber": "NP-EXD-40161",
+    "date": "2026-10-30T17:36:52.168Z",
+    "orderDate": "30 Oct 2026, 23:21",
+    "orderDateFormatted": "30 Oct 2026, 23:21",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Test Cart User",
+      "phone": "9812345678",
+      "email": "9812345678@customer.exidebattery.com.np",
+      "district": "Kathmandu",
+      "city": "Kathmandu",
+      "ward": "01",
+      "address": "New Baneshwor",
+      "deliveryAddress": "New Baneshwor",
+      "assignedRider": "Standard Courier Express"
+    },
+    "items": [
+      {
+        "id": "exide-battery-150-invamaster",
+        "sku": "EX-IMTT1500",
+        "name": "Exide 150 Ah Invamaster Tubular Battery - IMTT1500",
+        "brand": "Exide",
+        "capacity": "150Ah - 12V",
+        "warranty": "36 Months (24 Months Free + 12 Months Pro-Rata)",
+        "price": 34000,
+        "quantity": 1,
+        "itemTotal": 34000,
+        "image": "assets/images/exide-imtt1500.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 0,
+      "couponDiscount": 0,
+      "deliveryFee": 0,
+      "grandTotal": 34000,
+      "vatAmount": 3912,
+      "taxableAmount": 30088,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "calculations": {
+      "rawSubtotal": 34000,
+      "scrapExchangeDeduction": 0,
+      "scrapBatteryAh": 0,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 3912,
+      "taxableAmount": 30088,
+      "grandTotal": 34000
+    },
+    "scrapExchange": null,
+    "appliedCoupon": null,
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "status": "Confirmed",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": null
+  },
+  {
+    "orderId": "EXD-902639",
+    "id": "EXD-902639",
+    "invoiceNumber": "INV-2026-01074",
+    "trackingNumber": "NP-EXD-23025",
+    "date": "2026-10-30T17:29:58.140Z",
+    "orderDate": "30 Oct 2026, 23:14",
+    "orderDateFormatted": "30 Oct 2026, 23:14",
+    "seller": {
+      "name": "EXIDE BATTERY WHOLESALE (AET Official Partner)",
+      "pan": "609823412",
+      "address": "Bijulibazar, Anamnagar, Kathmandu, Nepal",
+      "phone": "+9779705997260",
+      "email": "batterymartbtl@gmail.com"
+    },
+    "customer": {
+      "fullName": "Bikash Adhikari",
+      "phone": "9851155377",
+      "email": "9851155377@customer.exidebattery.com.np",
+      "district": "Kathmandu",
+      "city": "Kathmandu",
+      "ward": "10",
+      "address": "New Baneshwor",
+      "deliveryAddress": "New Baneshwor",
+      "assignedRider": "Standard Courier Express"
+    },
+    "items": [
+      {
+        "id": "exide-matrix-car-battery",
+        "sku": "EX-MTX80",
+        "name": "Exide Matrix 12V 80Ah Heavy-Duty Car Battery (MTX-80)",
+        "brand": "Exide",
+        "capacity": "80Ah - 12V",
+        "warranty": "60 Months (36 Months Free Replacement + 24 Months Pro-Rata)",
+        "price": 13500,
+        "quantity": 1,
+        "itemTotal": 13500,
+        "image": "assets/images/exide-matrix.png"
+      }
+    ],
+    "pricing": {
+      "rawSubtotal": 13500,
+      "scrapExchangeDeduction": 0,
+      "couponDiscount": 0,
+      "deliveryFee": 0,
+      "grandTotal": 13500,
+      "vatAmount": 1553,
+      "taxableAmount": 11947,
+      "currency": "NPR",
+      "vatPercentage": 13
+    },
+    "calculations": {
+      "rawSubtotal": 13500,
+      "scrapExchangeDeduction": 0,
+      "scrapBatteryAh": 0,
+      "scrapRate": 35,
+      "finalDelivery": 0,
+      "vatAmount": 1553,
+      "taxableAmount": 11947,
+      "grandTotal": 13500
+    },
+    "scrapExchange": null,
+    "appliedCoupon": null,
+    "paymentMethod": "COD",
+    "paymentStatus": "Pending Cash Collection",
+    "status": "Confirmed",
+    "orderStatus": "Confirmed",
+    "notes": "",
+    "idempotencyKey": null
+  },
+  {
     "orderId": "EXD-TEST-576349",
     "invoiceNumber": "INV-TEST-4505",
     "status": "DELIVERED",
