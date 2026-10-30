@@ -1065,7 +1065,17 @@ class CartSystem {
 
       const payload = {
         customer: customer,
-        items: this.items.map(i => ({ id: i.id, quantity: i.quantity })),
+        items: this.items.map(i => ({
+          id: i.id,
+          sku: i.sku || i.id,
+          name: i.name,
+          brand: i.brand || 'Exide',
+          capacity: i.capacity || '',
+          warranty: i.warranty || '36 Months Official Warranty',
+          price: Number(i.price) || 0,
+          quantity: Number(i.quantity) || 1,
+          image: i.image || 'assets/logo.png'
+        })),
         exchangeScrap: {
           active: this.exchangeScrapActive,
           capacityAh: this.scrapBatteryAh,
@@ -1173,13 +1183,33 @@ class CartSystem {
         if (typeof window.stockManager.renderOrdersTable === 'function') window.stockManager.renderOrdersTable();
       }
 
-      // Save to local storage for persistence across reloads
+      // Save to local storage for persistence across reloads (both keys for ERP and Stock ERP)
       try {
         const localOrders = JSON.parse(localStorage.getItem('exide_orders') || '[]');
-        localOrders.unshift(finalOrder);
+        const existingIdx = localOrders.findIndex(o => (o.orderId && o.orderId === finalOrder.orderId) || (o.id && o.id === finalOrder.id));
+        if (existingIdx !== -1) {
+          localOrders[existingIdx] = finalOrder;
+        } else {
+          localOrders.unshift(finalOrder);
+        }
         localStorage.setItem('exide_orders', JSON.stringify(localOrders));
+        localStorage.setItem('bm_exide_orders', JSON.stringify(localOrders));
         localStorage.setItem('exide_orders_sync_trigger', Date.now().toString());
+
+        // Broadcast real-time order sync event across all tabs and open views
         window.dispatchEvent(new CustomEvent('orders_synced', { detail: { order: finalOrder, source: 'storefront_checkout' } }));
+
+        // Instantly notify ERP application if instantiated
+        if (window.erpApp && typeof window.erpApp.quickSyncOrders === 'function') {
+          window.erpApp.quickSyncOrders(true);
+        }
+
+        // Asynchronously ensure order is posted to backend server API
+        fetch('/api/erp/orders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ order: finalOrder })
+        }).catch(() => {});
       } catch (e) {}
 
       // Notify customer via SMS / WhatsApp gateway

@@ -146,11 +146,32 @@ module.exports = async (req, res) => {
       let rawSubtotal = 0;
 
       for (const reqItem of items) {
-        const product = db.getProductById(reqItem.id);
+        let product = db.getProductById(reqItem.id);
+        if (!product && reqItem.sku) {
+          product = db.getProductById(reqItem.sku);
+        }
+        if (!product) {
+          const allProds = db.getProducts();
+          product = allProds.find(p => p.id === reqItem.id || p.sku === (reqItem.sku || reqItem.id) || (reqItem.name && p.name && p.name.toLowerCase() === reqItem.name.toLowerCase()));
+        }
+        if (!product && (reqItem.name && (reqItem.price || reqItem.unitPrice))) {
+          product = {
+            id: reqItem.id || `prod_${Date.now()}`,
+            sku: reqItem.sku || reqItem.id || `SKU-${Date.now()}`,
+            name: reqItem.name,
+            brand: reqItem.brand || 'Exide',
+            capacity: reqItem.capacity || '',
+            warranty: reqItem.warranty || '36 Months Official Warranty',
+            price: Number(reqItem.price || reqItem.unitPrice) || 0,
+            stock: 50,
+            image: reqItem.image || 'assets/logo.png'
+          };
+        }
+
         if (!product) {
           return res.status(400).json({
             success: false,
-            message: `Product ID "${reqItem.id}" is invalid or not available in the catalog.`
+            message: `Product ID "${reqItem.id || reqItem.sku || 'Item'}" is invalid or not available in the catalog.`
           });
         }
 
@@ -159,7 +180,7 @@ module.exports = async (req, res) => {
         if ((product.stock || 0) < quantity) {
           // Auto-allocate from Central Wholesale Warehouse buffer (Teku / Butwal HQ)
           product.stock = Math.max(quantity + 20, (product.stock || 0) + 25);
-          db.saveProducts(db.getProducts());
+          try { db.saveProducts(db.getProducts()); } catch(e) {}
         }
 
         const itemTotal = product.price * quantity;

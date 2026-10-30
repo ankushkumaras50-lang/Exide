@@ -2064,7 +2064,7 @@
     // ------------------------------------------------------------------------
     // 4B. COMMERCIAL ORDER MANAGEMENT MODULE (FLIPKART / AMAZON SELLER STYLE)
     // ------------------------------------------------------------------------
-    async renderOrdersView(container) {
+    async renderOrdersView(container, keepModalOpen = false) {
       try {
         const token = this.getAuthToken();
         const statusParam = this.ordersFilterStatus || 'all';
@@ -2072,9 +2072,92 @@
         const paymentParam = this.ordersPaymentMethod || 'all';
         const dateParam = this.ordersDateRange || 'all';
 
-        let orders = [];
-        let summary = {
-          totalOrders: 0,
+        let serverOrders = [];
+        let summary = null;
+
+        // 1. Fetch server orders from API
+        try {
+          const res = await fetch(`/api/erp/orders?status=all&search=${searchParam}&paymentMethod=${paymentParam}&dateRange=${dateParam}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          if (res.ok) {
+            const data = await res.json();
+            serverOrders = data.orders || [];
+            if (data.summary) summary = data.summary;
+          }
+        } catch (fetchErr) {
+          console.warn('Orders API offline fallback:', fetchErr);
+        }
+
+        // 2. Fetch local storage orders from both storefront keys ('exide_orders' and 'bm_exide_orders')
+        let localOrders = [];
+        try {
+          const raw1 = JSON.parse(localStorage.getItem('exide_orders') || '[]');
+          const raw2 = JSON.parse(localStorage.getItem('bm_exide_orders') || '[]');
+          localOrders = [...(Array.isArray(raw1) ? raw1 : []), ...(Array.isArray(raw2) ? raw2 : [])];
+        } catch(e) {
+          localOrders = [];
+        }
+
+        // 3. Seamlessly merge server and local orders (prevent checkout orders from ever being hidden)
+        const orderMap = new Map();
+        localOrders.forEach(lo => {
+          const key = lo.orderId || lo.id || lo.invoiceNumber;
+          if (key) orderMap.set(key, lo);
+        });
+        serverOrders.forEach(so => {
+          const key = so.orderId || so.id || so.invoiceNumber;
+          if (key) {
+            const existing = orderMap.get(key) || {};
+            orderMap.set(key, { ...existing, ...so });
+          }
+        });
+
+        // 4. Background push any local-only checkout order to the server so data/orders.json has it
+        const unSyncedOrders = localOrders.filter(lo => {
+          const key = lo.orderId || lo.id;
+          return key && !serverOrders.some(so => (so.orderId === key || so.id === key));
+        });
+        if (unSyncedOrders.length > 0 && token) {
+          fetch('/api/erp/orders', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify({ orders: unSyncedOrders })
+          }).catch(() => {});
+        }
+
+        // 5. Consolidate and sort newest first
+        const consolidatedOrders = Array.from(orderMap.values()).map(o => {
+          const orderIdVal = o.orderId || o.id || 'EXD-000000';
+          const st = String(o.status || o.orderStatus || 'CONFIRMED').toUpperCase();
+          const payStatus = String(o.paymentStatus || (String(o.paymentMethod || '').toUpperCase().includes('COD') ? 'PENDING' : 'PAID')).toUpperCase();
+          const pricing = o.pricing || o.calculations || {};
+          const total = parseFloat(pricing.grandTotal || o.grandTotal || o.total || 0);
+
+          return {
+            ...o,
+            orderId: orderIdVal,
+            id: orderIdVal,
+            status: st,
+            orderStatus: st,
+            paymentStatus: payStatus,
+            grandTotal: total
+          };
+        }).sort((a, b) => {
+          const dateA = new Date(a.date || a.createdAt || a.orderDate || 0).getTime();
+          const dateB = new Date(b.date || b.createdAt || b.orderDate || 0).getTime();
+          return dateB - dateA;
+        });
+
+        this.ordersData = consolidatedOrders;
+        try {
+          localStorage.setItem('exide_orders', JSON.stringify(consolidatedOrders));
+          localStorage.setItem('bm_exide_orders', JSON.stringify(consolidatedOrders));
+        } catch(e) {}
+
+        // Compute summary metrics across consolidated real data
+        summary = {
+          totalOrders: consolidatedOrders.length,
           pending: 0,
           processing: 0,
           shipped: 0,
@@ -2084,39 +2167,60 @@
           pendingValue: 0
         };
 
-        try {
-          const res = await fetch(`/api/erp/orders?status=${statusParam}&search=${searchParam}&paymentMethod=${paymentParam}&dateRange=${dateParam}`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-          });
-          const data = await res.json();
-          orders = data.orders || [];
-          this.ordersData = orders;
-          if (data.summary) summary = data.summary;
-        } catch (fetchErr) {
-          console.warn('Orders API offline fallback:', fetchErr);
-          try {
-            orders = JSON.parse(localStorage.getItem('exide_orders') || '[]');
-            this.ordersData = orders;
-          } catch(e) {
-            orders = [];
+        consolidatedOrders.forEach(o => {
+          const st = o.status;
+          const amt = o.grandTotal || 0;
+          if (st === 'PENDING' || st === 'CREATED' || st === 'SUBMITTED') {
+            summary.pending++;
+            summary.pendingValue += amt;
+          } else if (st === 'PROCESSING' || st === 'CONFIRMED' || st === 'ACCEPTED') {
+            summary.processing++;
+            summary.totalRevenue += amt;
+          } else if (st === 'SHIPPED' || st === 'OUT_FOR_DELIVERY' || st === 'IN_TRANSIT' || st === 'DISPATCHED') {
+            summary.shipped++;
+            summary.totalRevenue += amt;
+          } else if (st === 'DELIVERED' || st === 'COMPLETED') {
+            summary.delivered++;
+            summary.totalRevenue += amt;
+          } else if (st === 'CANCELLED' || st === 'REJECTED' || st === 'RETURNED') {
+            summary.cancelled++;
+          } else {
+            summary.processing++;
+            summary.totalRevenue += amt;
+          }
+        });
+
+        // Compute Category Counts
+        const catCounts = {
+          all: consolidatedOrders.length,
+          scrap: consolidatedOrders.filter(o => this.getOrderCategory(o).isScrap).length,
+          b2b: consolidatedOrders.filter(o => this.getOrderCategory(o).isB2B).length,
+          inverter: consolidatedOrders.filter(o => this.getOrderCategory(o).isInverterSolar).length,
+          twowheeler: consolidatedOrders.filter(o => this.getOrderCategory(o).isTwoWheeler).length,
+          car: consolidatedOrders.filter(o => this.getOrderCategory(o).isCar).length,
+          cod: consolidatedOrders.filter(o => this.getOrderCategory(o).isCOD).length,
+          digital: consolidatedOrders.filter(o => this.getOrderCategory(o).isDigital).length
+        };
+
+        // Filter displayed orders by status tab
+        let displayedOrders = [...consolidatedOrders];
+        if (statusParam !== 'all') {
+          const spUpper = statusParam.toUpperCase();
+          if (spUpper === 'PENDING') {
+            displayedOrders = displayedOrders.filter(o => ['PENDING', 'CREATED', 'SUBMITTED'].includes(o.status));
+          } else if (spUpper === 'PROCESSING' || spUpper === 'CONFIRMED') {
+            displayedOrders = displayedOrders.filter(o => ['PROCESSING', 'CONFIRMED', 'ACCEPTED'].includes(o.status));
+          } else if (spUpper === 'SHIPPED') {
+            displayedOrders = displayedOrders.filter(o => ['SHIPPED', 'OUT_FOR_DELIVERY', 'IN_TRANSIT', 'DISPATCHED'].includes(o.status));
+          } else if (spUpper === 'DELIVERED') {
+            displayedOrders = displayedOrders.filter(o => ['DELIVERED', 'COMPLETED'].includes(o.status));
+          } else if (spUpper === 'CANCELLED') {
+            displayedOrders = displayedOrders.filter(o => ['CANCELLED', 'REJECTED', 'RETURNED'].includes(o.status));
           }
         }
 
-        // Compute Category Counts
-        const allOrdersList = this.ordersData || [];
-        const catCounts = {
-          all: allOrdersList.length,
-          scrap: allOrdersList.filter(o => this.getOrderCategory(o).isScrap).length,
-          b2b: allOrdersList.filter(o => this.getOrderCategory(o).isB2B).length,
-          inverter: allOrdersList.filter(o => this.getOrderCategory(o).isInverterSolar).length,
-          twowheeler: allOrdersList.filter(o => this.getOrderCategory(o).isTwoWheeler).length,
-          car: allOrdersList.filter(o => this.getOrderCategory(o).isCar).length,
-          cod: allOrdersList.filter(o => this.getOrderCategory(o).isCOD).length,
-          digital: allOrdersList.filter(o => this.getOrderCategory(o).isDigital).length
-        };
-
+        // Filter by category
         const catParam = this.ordersCategoryFilter || 'all';
-        let displayedOrders = orders;
         if (catParam !== 'all') {
           displayedOrders = displayedOrders.filter(o => {
             const c = this.getOrderCategory(o);
@@ -2129,6 +2233,34 @@
             if (catParam === 'digital') return c.isDigital;
             return true;
           });
+        }
+
+        // Filter by payment method
+        if (paymentParam !== 'all') {
+          const pm = paymentParam.toLowerCase();
+          displayedOrders = displayedOrders.filter(o => String(o.paymentMethod || '').toLowerCase().includes(pm));
+        }
+
+        // Filter by Search Query
+        if (this.ordersSearchQuery && this.ordersSearchQuery.trim()) {
+          const q = this.ordersSearchQuery.trim().toLowerCase();
+          const qDigits = q.replace(/\D/g, '');
+          displayedOrders = displayedOrders.filter(o => {
+            const oId = String(o.orderId || '').toLowerCase();
+            const inv = String(o.invoiceNumber || '').toLowerCase();
+            const cName = String(o.customer?.fullName || '').toLowerCase();
+            const cPhone = String(o.customer?.phone || '').replace(/\D/g, '');
+            const cCity = String(o.customer?.city || o.customer?.district || '').toLowerCase();
+            const cAddress = String(o.customer?.deliveryAddress || o.customer?.address || '').toLowerCase();
+            const cPan = String(o.customer?.pan || o.customer?.panNumber || '').toLowerCase();
+            const itemsText = Array.isArray(o.items) ? o.items.map(i => `${i.name || ''} ${i.sku || ''}`).join(' ').toLowerCase() : '';
+            return oId.includes(q) || inv.includes(q) || cName.includes(q) || (qDigits.length > 0 && cPhone.includes(qDigits)) || cCity.includes(q) || cAddress.includes(q) || cPan.includes(q) || itemsText.includes(q);
+          });
+        }
+
+        // If a modal is currently open and keepModalOpen is requested, do not disturb the modal
+        if (!keepModalOpen && !this.currentOpenOrderId) {
+          // Keep modal state as is
         }
 
         // Update sidebar nav badge
@@ -2462,8 +2594,14 @@
       this.renderOrdersView(document.getElementById('erp-main-view'));
     }
 
+    closeOrderModal() {
+      this.currentOpenOrderId = null;
+      document.getElementById('erp-modal-overlay')?.classList.remove('open');
+    }
+
     // Modal 1: Comprehensive Order Details & Audit Trail
     openOrderDetailsModal(orderId) {
+      this.currentOpenOrderId = orderId;
       const order = (this.ordersData || []).find(o => o.orderId === orderId || o.id === orderId);
       if (!order) {
         alert(`Order #${orderId} not found.`);
@@ -2508,7 +2646,7 @@
                 ${currentStatus === 'PENDING' ? '⏩ Proceed: Accept & Allocate Stock ➔' : (currentStatus === 'PROCESSING' || currentStatus === 'CONFIRMED' ? '🚚 Proceed: Handover to Rider & Dispatch ➔' : '✅ Proceed: Mark Delivered & Paid ➔')}
               </button>
             ` : ''}
-            <button type="button" class="erp-btn erp-btn-secondary" onclick="document.getElementById('erp-modal-overlay').classList.remove('open')">✕ Close</button>
+            <button type="button" class="erp-btn erp-btn-secondary" onclick="window.erpApp.closeOrderModal()">✕ Close</button>
           </div>
         </div>
 
@@ -2689,6 +2827,7 @@
 
     // Modal 2: Quick Status Transition & Rider Assignment
     openOrderStatusModal(orderId) {
+      this.currentOpenOrderId = orderId;
       const order = (this.ordersData || []).find(o => o.orderId === orderId || o.id === orderId);
       if (!order) {
         alert(`Order #${orderId} not found.`);
@@ -2712,7 +2851,7 @@
             <h3 style="margin:0; font-size:1.25rem; font-weight:800; color:#0F172A;">Update Fulfillment: #${order.orderId || order.id}</h3>
             <div style="font-size:0.8rem; color:#64748B;">Customer: ${customer.fullName || 'Valued Buyer'} (${customer.phone || 'N/A'})</div>
           </div>
-          <button type="button" class="erp-btn erp-btn-secondary" onclick="document.getElementById('erp-modal-overlay').classList.remove('open')">✕ Close</button>
+          <button type="button" class="erp-btn erp-btn-secondary" onclick="window.erpApp.openOrderDetailsModal('${order.orderId || order.id}')">← Back to Details</button>
         </div>
 
         <form onsubmit="event.preventDefault(); window.erpApp.submitOrderStatusUpdate('${order.orderId || order.id}');">
@@ -2776,7 +2915,7 @@
           </div>
 
           <div style="display:flex; justify-content:flex-end; gap:0.5rem; border-top:1px solid #E2E8F0; padding-top:1rem;">
-            <button type="button" class="erp-btn erp-btn-secondary" onclick="document.getElementById('erp-modal-overlay').classList.remove('open')">Cancel</button>
+            <button type="button" class="erp-btn erp-btn-secondary" onclick="window.erpApp.openOrderDetailsModal('${order.orderId || order.id}')">Cancel</button>
             <button type="submit" class="erp-btn erp-btn-primary" style="background:#0047BA;">💾 Save & Update Fulfillment</button>
           </div>
         </form>
@@ -2931,6 +3070,9 @@
         dispatchVehicle: vehicleEl ? vehicleEl.value.trim() : '',
         trackingNote: noteEl ? noteEl.value.trim() : ''
       });
+
+      // Keep open and return to comprehensive details view
+      this.openOrderDetailsModal(orderId);
     }
 
     // Modal 3: Flipkart / Amazon Style Commercial Shipping Packing Slip
@@ -2960,7 +3102,8 @@
           </div>
           <div style="display:flex; gap:0.5rem;">
             <button class="erp-btn erp-btn-primary" onclick="window.print()">🖨️ Print Label</button>
-            <button class="erp-btn erp-btn-secondary" onclick="document.getElementById('erp-modal-overlay').classList.remove('open')">✕ Close</button>
+            <button class="erp-btn erp-btn-secondary" onclick="window.erpApp.openOrderDetailsModal('${order.orderId}')">← Back to Details</button>
+            <button class="erp-btn erp-btn-secondary" onclick="window.erpApp.closeOrderModal()">✕ Close</button>
           </div>
         </div>
 
@@ -3155,20 +3298,29 @@
         } catch(e) {}
       }
 
-      // Trigger cross-window synchronization
+      // Cross-window sync trigger
       localStorage.setItem('exide_orders_sync_trigger', Date.now().toString());
       window.dispatchEvent(new CustomEvent('orders_synced', {
         detail: { orderId, status: updates.status, source: 'erp' }
       }));
 
-      document.getElementById('erp-modal-overlay')?.classList.remove('open');
-      await this.renderOrdersView(document.getElementById('erp-main-view'));
+      // DO NOT CLOSE MODAL - Allow order process to stay open until user clicks close
+      const modalOverlay = document.getElementById('erp-modal-overlay');
+      const isModalOpen = modalOverlay && modalOverlay.classList.contains('open');
+
+      if (isModalOpen) {
+        this.openOrderDetailsModal(orderId);
+      }
+
+      // Also refresh the background orders view silently without closing the modal
+      const mainView = document.getElementById('erp-main-view');
+      if (mainView && this.activeRoute === 'orders') {
+        await this.renderOrdersView(mainView, true);
+      }
 
       const feedbackMsg = `Order #${orderId} updated to ${updates.status || 'Updated'}!`;
       if (typeof showToast === 'function') {
         showToast(feedbackMsg, 'success');
-      } else {
-        alert(feedbackMsg);
       }
     }
 
@@ -3227,7 +3379,11 @@
 
         this.ordersData = allSynced;
         if (!silent || this.activeRoute === 'orders') {
-          await this.renderOrdersView(document.getElementById('erp-main-view'));
+          const isModalOpen = document.getElementById('erp-modal-overlay')?.classList.contains('open');
+          await this.renderOrdersView(document.getElementById('erp-main-view'), isModalOpen);
+          if (isModalOpen && this.currentOpenOrderId) {
+            this.openOrderDetailsModal(this.currentOpenOrderId);
+          }
         }
 
         if (!silent) {
@@ -3693,7 +3849,8 @@
 
           <div style="margin-top:1.5rem; display:flex; justify-content:flex-end; gap:0.75rem;">
             <button class="erp-btn erp-btn-secondary" onclick="window.print()">🖨️ Print Invoice</button>
-            <button class="erp-btn erp-btn-primary" onclick="document.getElementById('erp-modal-overlay').classList.remove('open')">Close</button>
+            <button class="erp-btn erp-btn-secondary" onclick="window.erpApp.openOrderDetailsModal('${orderId}')">← Back to Details</button>
+            <button class="erp-btn erp-btn-primary" onclick="window.erpApp.closeOrderModal()">Close</button>
           </div>
         `;
 
@@ -4922,11 +5079,11 @@
         </div>
 
         <!-- Global Action Modal -->
-        <div class="erp-modal-overlay" id="erp-modal-overlay">
+        <div class="erp-modal-overlay" id="erp-modal-overlay" onclick="if(event.target === this) window.erpApp.closeOrderModal()">
           <div class="erp-modal">
             <div class="erp-modal-header">
               <h3 class="erp-modal-title" id="erp-modal-title">ERP Action</h3>
-              <button class="erp-modal-close" onclick="document.getElementById('erp-modal-overlay').classList.remove('open')">&times;</button>
+              <button class="erp-modal-close" onclick="window.erpApp.closeOrderModal()">&times;</button>
             </div>
             <div class="erp-modal-body" id="erp-modal-body"><div id="erp-modal-content"></div></div>
           </div>

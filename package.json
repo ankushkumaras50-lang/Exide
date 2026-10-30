@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node dev-server.js",
     "dev": "node dev-server.js",
-    "test": "node test/verify-system.js && node test/test-auth-security.js && node test/test-erp-inventory.js && node test/test-erp-sales-purchases.js && node test/test-supabase-integration.js && node test/test-erp-orders.js && node test/test-checkout-and-orders-sync.js",
+    "test": "node test/verify-system.js && node test/test-auth-security.js && node test/test-erp-inventory.js && node test/test-erp-sales-purchases.js && node test/test-supabase-integration.js && node test/test-erp-orders.js && node test/test-checkout-and-orders-sync.js && node test/test-order-management-checkout-visibility.js",
     "seed:admin": "node scripts/seed-superadmin.js",
     "seed:supabase": "node scripts/seed-supabase.js"
   },
