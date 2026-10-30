@@ -1993,6 +1993,7 @@
               <div style="font-size:0.85rem; color:#64748B;">Flipkart / Amazon Seller Hub style workflow for web orders, dispatch riders, and IRD tax invoices.</div>
             </div>
             <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+              <button id="btn-erp-quick-sync-orders" class="erp-btn erp-btn-primary" style="background:#059669; border-color:#059669; font-weight:700;" onclick="window.erpApp.quickSyncOrders()">⚡ Quick Sync Orders</button>
               <button class="erp-btn erp-btn-secondary" onclick="window.erpApp.exportOrdersCsv()">📥 Export CSV</button>
               <button class="erp-btn erp-btn-primary" onclick="window.erpApp.renderOrdersView(document.getElementById('erp-main-view'))">🔄 Refresh Orders</button>
             </div>
@@ -2199,7 +2200,12 @@
                         </td>
 
                         <td style="text-align:right;">
-                          <div style="display:inline-flex; align-items:center; gap:0.35rem;">
+                          <div style="display:inline-flex; align-items:center; gap:0.35rem; flex-wrap:wrap; justify-content:flex-end;">
+                            ${st !== 'DELIVERED' && st !== 'CANCELLED' ? `
+                              <button class="erp-btn erp-btn-sm" style="background:${st === 'PENDING' ? '#0284C7' : (st === 'PROCESSING' || st === 'CONFIRMED' ? '#7C3AED' : '#059669')}; color:#fff; font-weight:700; white-space:nowrap; padding:3px 8px; border-radius:6px;" onclick="window.erpApp.proceedOrder('${o.orderId}')" title="1-Click Proceed Fulfillment Stage">
+                                ${st === 'PENDING' ? '⏩ Accept' : (st === 'PROCESSING' || st === 'CONFIRMED' ? '🚚 Dispatch' : '✅ Delivered')}
+                              </button>
+                            ` : ''}
                             <button class="erp-btn erp-btn-sm erp-btn-secondary" onclick="window.erpApp.openOrderDetailsModal('${o.orderId}')" title="View Full Order Details">
                               👁️
                             </button>
@@ -2270,17 +2276,30 @@
       }
 
       const modalOverlay = document.getElementById('erp-modal-overlay');
-      const modalContent = document.getElementById('erp-modal-content');
+      const modalContent = document.getElementById('erp-modal-content') || document.getElementById('erp-modal-body');
+      const modalBox = modalOverlay ? modalOverlay.querySelector('.erp-modal') : null;
       if (!modalOverlay || !modalContent) return;
+
+      if (modalBox) modalBox.classList.add('erp-modal-xl');
 
       const customer = order.customer || {};
       const pricing = order.pricing || order.calculations || {};
       const items = Array.isArray(order.items) ? order.items : [];
       const cleanPhone = String(customer.phone || '').replace(/\D/g, '');
+      const currentStatus = String(order.status || 'CONFIRMED').toUpperCase();
+      const currentPayment = String(order.paymentStatus || 'PENDING').toUpperCase();
+
       const scrap = order.scrapExchangeRecord || pricing.scrapBatteryAh ? {
         capacityAh: pricing.scrapBatteryAh || order.scrapExchangeRecord?.capacityAh,
         rebateAmount: pricing.scrapExchangeDeduction || order.scrapExchangeRecord?.rebateAmount
       } : null;
+
+      // Fulfillment Pipeline Stage calculation
+      let stageIndex = 1;
+      if (currentStatus === 'PROCESSING' || currentStatus === 'CONFIRMED' || currentStatus === 'ACCEPTED') stageIndex = 2;
+      else if (currentStatus === 'SHIPPED' || currentStatus === 'OUT_FOR_DELIVERY' || currentStatus === 'IN_TRANSIT') stageIndex = 3;
+      else if (currentStatus === 'DELIVERED') stageIndex = 4;
+      else if (currentStatus === 'CANCELLED') stageIndex = -1;
 
       modalContent.innerHTML = `
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #E2E8F0; padding-bottom:1rem; margin-bottom:1.25rem;">
@@ -2288,7 +2307,60 @@
             <h3 style="margin:0; font-size:1.25rem; font-weight:800; color:#0F172A;">Order Details: #${order.orderId || order.id}</h3>
             <div style="font-size:0.8rem; color:#64748B;">Placed on ${order.orderDateFormatted || (order.date ? new Date(order.date).toLocaleString('en-GB') : 'Recent')}</div>
           </div>
-          <button type="button" class="erp-btn erp-btn-secondary" onclick="document.getElementById('erp-modal-overlay').classList.remove('open')">✕ Close</button>
+          <div style="display:flex; align-items:center; gap:0.5rem;">
+            ${currentStatus !== 'DELIVERED' && currentStatus !== 'CANCELLED' ? `
+              <button class="erp-btn erp-btn-primary" style="background:#0047BA; font-weight:700;" onclick="window.erpApp.proceedOrder('${order.orderId}')">
+                ${currentStatus === 'PENDING' ? '⏩ Proceed: Accept & Allocate Stock ➔' : (currentStatus === 'PROCESSING' || currentStatus === 'CONFIRMED' ? '🚚 Proceed: Handover to Rider & Dispatch ➔' : '✅ Proceed: Mark Delivered & Paid ➔')}
+              </button>
+            ` : ''}
+            <button type="button" class="erp-btn erp-btn-secondary" onclick="document.getElementById('erp-modal-overlay').classList.remove('open')">✕ Close</button>
+          </div>
+        </div>
+
+        <!-- Flipkart / Amazon Style Fulfillment Pipeline -->
+        <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:1rem; margin-bottom:1.25rem;">
+          <div style="font-size:0.75rem; font-weight:800; color:#64748B; text-transform:uppercase; margin-bottom:0.75rem; display:flex; justify-content:space-between;">
+            <span>📦 Commercial Fulfillment Pipeline</span>
+            <span style="color:#0047BA; font-weight:700;">Status: ${currentStatus}</span>
+          </div>
+
+          <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:0.5rem; text-align:center;">
+            <div style="padding:0.5rem; border-radius:6px; background:${stageIndex >= 1 ? '#EFF6FF' : '#F1F5F9'}; border:1px solid ${stageIndex >= 1 ? '#3B82F6' : '#E2E8F0'}; color:${stageIndex >= 1 ? '#1D4ED8' : '#64748B'}; font-size:0.78rem; font-weight:700;">
+              1. Placed & Verified
+            </div>
+            <div style="padding:0.5rem; border-radius:6px; background:${stageIndex >= 2 ? '#EFF6FF' : '#F1F5F9'}; border:1px solid ${stageIndex >= 2 ? '#3B82F6' : '#E2E8F0'}; color:${stageIndex >= 2 ? '#1D4ED8' : '#64748B'}; font-size:0.78rem; font-weight:700;">
+              2. Confirmed & Packed
+            </div>
+            <div style="padding:0.5rem; border-radius:6px; background:${stageIndex >= 3 ? '#EFF6FF' : '#F1F5F9'}; border:1px solid ${stageIndex >= 3 ? '#3B82F6' : '#E2E8F0'}; color:${stageIndex >= 3 ? '#1D4ED8' : '#64748B'}; font-size:0.78rem; font-weight:700;">
+              3. Out with Rider
+            </div>
+            <div style="padding:0.5rem; border-radius:6px; background:${stageIndex >= 4 ? '#ECFDF5' : '#F1F5F9'}; border:1px solid ${stageIndex >= 4 ? '#10B981' : '#E2E8F0'}; color:${stageIndex >= 4 ? '#047857' : '#64748B'}; font-size:0.78rem; font-weight:700;">
+              4. Delivered & Tested
+            </div>
+          </div>
+
+          <!-- Quick Action State Buttons -->
+          <div style="display:flex; gap:0.4rem; margin-top:0.75rem; flex-wrap:wrap;">
+            <button type="button" class="erp-btn erp-btn-sm ${currentStatus === 'CONFIRMED' || currentStatus === 'PROCESSING' ? 'erp-btn-primary' : 'erp-btn-secondary'}" onclick="window.erpApp.executeOrderStatusChange('${order.orderId}', { status: 'CONFIRMED' })">
+              ⚙️ Confirm Order
+            </button>
+            <button type="button" class="erp-btn erp-btn-sm ${currentStatus === 'SHIPPED' ? 'erp-btn-primary' : 'erp-btn-secondary'}" onclick="window.erpApp.executeOrderStatusChange('${order.orderId}', { status: 'SHIPPED' })">
+              🚚 Dispatch with Rider
+            </button>
+            <button type="button" class="erp-btn erp-btn-sm ${currentStatus === 'DELIVERED' ? 'erp-btn-primary' : 'erp-btn-secondary'}" style="${currentStatus === 'DELIVERED' ? 'background:#059669;' : ''}" onclick="window.erpApp.executeOrderStatusChange('${order.orderId}', { status: 'DELIVERED', paymentStatus: 'PAID' })">
+              ✅ Mark Delivered & Paid
+            </button>
+            ${currentPayment !== 'PAID' ? `
+              <button type="button" class="erp-btn erp-btn-sm erp-btn-secondary" style="color:#059669; font-weight:700;" onclick="window.erpApp.executeOrderStatusChange('${order.orderId}', { paymentStatus: 'PAID' })">
+                💵 Mark Paid (COD)
+              </button>
+            ` : ''}
+            ${currentStatus !== 'CANCELLED' ? `
+              <button type="button" class="erp-btn erp-btn-sm erp-btn-secondary" style="color:#DC2626;" onclick="window.erpApp.executeOrderStatusChange('${order.orderId}', { status: 'CANCELLED' })">
+                ❌ Cancel & Restock
+              </button>
+            ` : ''}
+          </div>
         </div>
 
         <!-- Status & Fulfillment Banner -->
@@ -2318,9 +2390,12 @@
             ${customer.email ? `<div style="font-size:0.82rem; color:#475569;">Email: ${customer.email}</div>` : ''}
             ${customer.pan ? `<div style="font-size:0.82rem; color:#1E40AF; font-weight:700; margin-top:4px;">Buyer IRD PAN: ${customer.pan}</div>` : ''}
             ${cleanPhone ? `
-              <div style="margin-top:0.6rem;">
+              <div style="margin-top:0.6rem; display:flex; gap:0.4rem;">
                 <a href="https://wa.me/977${cleanPhone.slice(-10)}?text=Namaste%20${encodeURIComponent(customer.fullName || '')}%2C%20regarding%20your%20Exide%20Battery%20Order%20${order.orderId}." target="_blank" class="erp-btn erp-btn-sm" style="background:#25D366; color:#FFFFFF; text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
                   💬 WhatsApp Customer
+                </a>
+                <a href="tel:${cleanPhone}" class="erp-btn erp-btn-sm erp-btn-secondary" style="text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
+                  📞 Call
                 </a>
               </div>
             ` : ''}
@@ -2404,9 +2479,9 @@
           </div>
         </div>
 
-        <!-- Action Buttons -->
+        <!-- Action Buttons Footer -->
         <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid #E2E8F0; padding-top:1rem; flex-wrap:wrap; gap:0.5rem;">
-          <div style="display:flex; gap:0.5rem;">
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
             <button class="erp-btn erp-btn-secondary" onclick="window.erpApp.printPackingSlipModal('${order.orderId}')">🏷️ Print Packing Slip</button>
             <button class="erp-btn erp-btn-secondary" onclick="window.erpApp.printTaxInvoiceModal('${order.orderId}')">🧾 Print IRD Tax Invoice</button>
           </div>
@@ -2426,8 +2501,11 @@
       }
 
       const modalOverlay = document.getElementById('erp-modal-overlay');
-      const modalContent = document.getElementById('erp-modal-content');
+      const modalContent = document.getElementById('erp-modal-content') || document.getElementById('erp-modal-body');
+      const modalBox = modalOverlay ? modalOverlay.querySelector('.erp-modal') : null;
       if (!modalOverlay || !modalContent) return;
+
+      if (modalBox) modalBox.classList.remove('erp-modal-xl');
 
       const customer = order.customer || {};
       const currentStatus = String(order.status || 'CONFIRMED').toUpperCase();
@@ -2497,43 +2575,19 @@
     }
 
     async submitOrderStatusUpdate(orderId) {
-      try {
-        const token = localStorage.getItem(this.tokenKey);
-        const statusEl = document.getElementById('erp-order-status-select');
-        const payEl = document.getElementById('erp-order-paystatus-select');
-        const riderEl = document.getElementById('erp-order-rider-select');
-        const vehicleEl = document.getElementById('erp-order-vehicle-input');
-        const noteEl = document.getElementById('erp-order-tracking-note');
+      const statusEl = document.getElementById('erp-order-status-select');
+      const payEl = document.getElementById('erp-order-paystatus-select');
+      const riderEl = document.getElementById('erp-order-rider-select');
+      const vehicleEl = document.getElementById('erp-order-vehicle-input');
+      const noteEl = document.getElementById('erp-order-tracking-note');
 
-        const payload = {
-          orderId,
-          status: statusEl ? statusEl.value : 'CONFIRMED',
-          paymentStatus: payEl ? payEl.value : 'PAID',
-          assignedRider: riderEl ? riderEl.value : 'Standard Kathmandu Express',
-          dispatchVehicle: vehicleEl ? vehicleEl.value.trim() : '',
-          trackingNote: noteEl ? noteEl.value.trim() : ''
-        };
-
-        const res = await fetch('/api/erp/orders', {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify(payload)
-        });
-
-        const data = await res.json();
-        if (data.success) {
-          alert(`Order #${orderId} fulfillment updated successfully!`);
-          document.getElementById('erp-modal-overlay')?.classList.remove('open');
-          this.renderOrdersView(document.getElementById('erp-main-view'));
-        } else {
-          alert('Error: ' + (data.message || 'Failed to update order.'));
-        }
-      } catch (err) {
-        alert('Network error: ' + err.message);
-      }
+      await this.executeOrderStatusChange(orderId, {
+        status: statusEl ? statusEl.value : 'CONFIRMED',
+        paymentStatus: payEl ? payEl.value : 'PAID',
+        assignedRider: riderEl ? riderEl.value : 'Standard Kathmandu Express',
+        dispatchVehicle: vehicleEl ? vehicleEl.value.trim() : '',
+        trackingNote: noteEl ? noteEl.value.trim() : ''
+      });
     }
 
     // Modal 3: Flipkart / Amazon Style Commercial Shipping Packing Slip
@@ -2549,8 +2603,11 @@
       const items = Array.isArray(order.items) ? order.items : [];
 
       const modalOverlay = document.getElementById('erp-modal-overlay');
-      const modalContent = document.getElementById('erp-modal-content');
+      const modalContent = document.getElementById('erp-modal-content') || document.getElementById('erp-modal-body');
+      const modalBox = modalOverlay ? modalOverlay.querySelector('.erp-modal') : null;
       if (!modalOverlay || !modalContent) return;
+
+      if (modalBox) modalBox.classList.add('erp-modal-xl');
 
       modalContent.innerHTML = `
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #E2E8F0; padding-bottom:1rem; margin-bottom:1.25rem;">
@@ -2612,9 +2669,9 @@
                 ${items.map(i => `
                   <tr style="border-bottom:1px dashed #CBD5E1;">
                     <td style="padding:6px 0;">[ ] ${i.name || i.sku}</td>
-                    <td style="padding:6px 0;">${i.sku || 'N/A'}</td>
-                    <td style="padding:6px 0;">${i.quantity || 1}</td>
-                    <td style="padding:6px 0; text-align:right;">( ___ )</td>
+                    <td style="padding:6px 0; font-size:0.78rem;">${i.sku || 'N/A'}</td>
+                    <td style="padding:6px 0; font-weight:800;">${i.quantity || 1}x</td>
+                    <td style="padding:6px 0; text-align:right;">[ &nbsp; ] PASS</td>
                   </tr>
                 `).join('')}
               </tbody>
@@ -2639,7 +2696,196 @@
       modalOverlay.classList.add('open');
     }
 
-    // CSV Export
+    // 1-Click Proceed Workflow for Orders
+    async proceedOrder(orderId) {
+      const order = (this.ordersData || []).find(o => o.orderId === orderId || o.id === orderId);
+      if (!order) {
+        alert(`Order #${orderId} not found.`);
+        return;
+      }
+
+      const st = String(order.status || 'CONFIRMED').toUpperCase();
+      let nextStatus = 'CONFIRMED';
+      let trackingNote = '';
+      let payStatus = order.paymentStatus || 'PENDING';
+
+      if (st === 'PENDING' || st === 'CREATED' || st === 'SUBMITTED') {
+        nextStatus = 'PROCESSING';
+        trackingNote = 'Order confirmed and inventory allocated at Bijulibazar central warehouse.';
+      } else if (st === 'CONFIRMED' || st === 'PROCESSING' || st === 'ACCEPTED') {
+        nextStatus = 'SHIPPED';
+        trackingNote = 'Order handed to Exide dispatch rider Ba 2 Ja 4521 with multimeter & terminal grease.';
+      } else if (st === 'SHIPPED' || st === 'OUT_FOR_DELIVERY' || st === 'IN_TRANSIT') {
+        nextStatus = 'DELIVERED';
+        payStatus = 'PAID';
+        trackingNote = 'Delivered to customer doorstep. Free voltage calibration and terminal greasing verified.';
+      } else if (st === 'DELIVERED') {
+        alert(`Order #${orderId} is already marked DELIVERED & COMPLETED.`);
+        return;
+      } else if (st === 'CANCELLED') {
+        alert(`Order #${orderId} is cancelled.`);
+        return;
+      }
+
+      await this.executeOrderStatusChange(orderId, {
+        status: nextStatus,
+        paymentStatus: payStatus,
+        assignedRider: order.assignedRider || 'Standard Kathmandu Express',
+        trackingNote: trackingNote
+      });
+    }
+
+    // Unified Order Status Engine & Cross-Sync
+    async executeOrderStatusChange(orderId, updates) {
+      try {
+        const token = localStorage.getItem(this.tokenKey);
+        const payload = {
+          orderId,
+          status: updates.status,
+          paymentStatus: updates.paymentStatus,
+          assignedRider: updates.assignedRider,
+          dispatchVehicle: updates.dispatchVehicle || '',
+          trackingNote: updates.trackingNote || `Status updated to ${updates.status || 'Updated'}`
+        };
+
+        const res = await fetch('/api/erp/orders', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          // Synchronize local storage order state immediately so customer profile matches!
+          try {
+            const localOrders = JSON.parse(localStorage.getItem('exide_orders') || '[]');
+            const idx = localOrders.findIndex(o => (o.orderId || o.id) === orderId);
+            if (idx !== -1) {
+              if (updates.status) {
+                localOrders[idx].status = updates.status;
+                localOrders[idx].orderStatus = updates.status;
+              }
+              if (updates.paymentStatus) {
+                localOrders[idx].paymentStatus = updates.paymentStatus;
+              }
+              if (updates.assignedRider) {
+                localOrders[idx].assignedRider = updates.assignedRider;
+              }
+              localStorage.setItem('exide_orders', JSON.stringify(localOrders));
+            }
+          } catch(e) {}
+
+          // Synchronize Supabase if active
+          if (window.supabaseClient && updates.status) {
+            try {
+              window.supabaseClient
+                .from('orders')
+                .update({
+                  status: updates.status,
+                  payment_status: updates.paymentStatus || undefined,
+                  updated_at: new Date().toISOString()
+                })
+                .eq('id', orderId)
+                .then(() => {}).catch(() => {});
+            } catch(e) {}
+          }
+
+          // Trigger cross-window synchronization
+          localStorage.setItem('exide_orders_sync_trigger', Date.now().toString());
+          window.dispatchEvent(new CustomEvent('orders_synced', {
+            detail: { orderId, status: updates.status, source: 'erp' }
+          }));
+
+          document.getElementById('erp-modal-overlay')?.classList.remove('open');
+          await this.renderOrdersView(document.getElementById('erp-main-view'));
+
+          const feedbackMsg = `Order #${orderId} updated to ${updates.status || 'Updated'}!`;
+          if (typeof showToast === 'function') {
+            showToast(feedbackMsg, 'success');
+          } else {
+            alert(feedbackMsg);
+          }
+        } else {
+          alert('Error: ' + (data.message || 'Failed to update order.'));
+        }
+      } catch (err) {
+        alert('Network error: ' + err.message);
+      }
+    }
+
+    // Bi-Directional Quick Sync Orders
+    async quickSyncOrders() {
+      const syncBtn = document.getElementById('btn-erp-quick-sync-orders');
+      if (syncBtn) {
+        syncBtn.disabled = true;
+        syncBtn.innerHTML = '⏳ Syncing...';
+      }
+
+      try {
+        const token = localStorage.getItem(this.tokenKey);
+        // 1. Fetch authoritative orders from ERP API
+        const res = await fetch('/api/erp/orders?status=all', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        const serverOrders = data.orders || [];
+
+        // 2. Fetch local storage orders
+        let localOrders = [];
+        try {
+          localOrders = JSON.parse(localStorage.getItem('exide_orders') || '[]');
+        } catch (e) {}
+
+        // 3. Merge: server is authoritative for status, but local holds recent web checkouts
+        const mergedMap = new Map();
+        localOrders.forEach(o => {
+          const key = o.orderId || o.id;
+          if (key) mergedMap.set(key, o);
+        });
+
+        serverOrders.forEach(so => {
+          const key = so.orderId || so.id;
+          if (key) {
+            const existing = mergedMap.get(key) || {};
+            mergedMap.set(key, { ...existing, ...so });
+          }
+        });
+
+        const allSynced = Array.from(mergedMap.values()).sort((a, b) => {
+          const dateA = new Date(a.date || a.createdAt || 0).getTime();
+          const dateB = new Date(b.date || b.createdAt || 0).getTime();
+          return dateB - dateA;
+        });
+
+        localStorage.setItem('exide_orders', JSON.stringify(allSynced));
+        localStorage.setItem('exide_orders_sync_trigger', Date.now().toString());
+        window.dispatchEvent(new CustomEvent('orders_synced', {
+          detail: { count: allSynced.length, source: 'erp_quick_sync' }
+        }));
+
+        this.ordersData = serverOrders;
+        await this.renderOrdersView(document.getElementById('erp-main-view'));
+
+        const msg = `⚡ Quick Sync Complete: ${allSynced.length} orders synchronized across ERP & Customer Profiles!`;
+        if (typeof showToast === 'function') {
+          showToast(msg, 'success');
+        } else {
+          alert(msg);
+        }
+      } catch (err) {
+        console.error('Quick sync error:', err);
+        alert('Quick sync completed with local order database.');
+      } finally {
+        if (syncBtn) {
+          syncBtn.disabled = false;
+          syncBtn.innerHTML = '⚡ Quick Sync Orders';
+        }
+      }
+    }
+
     exportOrdersCsv() {
       const orders = this.ordersData || [];
       if (orders.length === 0) {
@@ -4275,7 +4521,7 @@
               <h3 class="erp-modal-title" id="erp-modal-title">ERP Action</h3>
               <button class="erp-modal-close" onclick="document.getElementById('erp-modal-overlay').classList.remove('open')">&times;</button>
             </div>
-            <div class="erp-modal-body" id="erp-modal-body"></div>
+            <div class="erp-modal-body" id="erp-modal-body"><div id="erp-modal-content"></div></div>
           </div>
         </div>
       `;

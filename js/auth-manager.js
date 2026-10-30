@@ -55,6 +55,20 @@ class AuthManager {
     // Initialize Supabase Google OAuth detection and session listener
     this.initSupabaseGoogleAuth();
 
+    // Two-way real-time sync with ERP Order Management & Storefront Orders
+    window.addEventListener('orders_synced', () => {
+      if (this.isCustomerLoggedIn()) {
+        this.syncCustomerOrders(false);
+      }
+    });
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'exide_orders' || e.key === 'exide_orders_sync_trigger') {
+        if (this.isCustomerLoggedIn()) {
+          this.syncCustomerOrders(false);
+        }
+      }
+    });
+
     // Attach listener to update UI on DOM ready
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', () => this.updateAuthUI());
@@ -1388,6 +1402,12 @@ class AuthManager {
 
     if (!orders || orders.length === 0) {
       container.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.65rem;">
+          <span style="font-size:0.82rem; font-weight:800; color:#1E293B;">Recent Orders & Tracking</span>
+          <button type="button" class="btn btn-outline-primary" onclick="window.authManager.syncCustomerOrders(true)" style="font-size:0.72rem; font-weight:700; padding:2px 8px; border-radius:6px;">
+            ⚡ Quick Sync
+          </button>
+        </div>
         <div class="prof-no-orders-clean">
           <div class="prof-no-orders-icon">📦</div>
           <strong style="color:#1E293B; font-size:0.88rem; display:block; margin-bottom:0.25rem;">No Active Orders Placed</strong>
@@ -1400,7 +1420,15 @@ class AuthManager {
       return;
     }
 
-    const latest = orders.slice(0, 3);
+    const headerHtml = `
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.65rem;">
+        <span style="font-size:0.82rem; font-weight:800; color:#1E293B;">Recent Orders (${orders.length})</span>
+        <button type="button" class="btn btn-outline-primary" onclick="window.authManager.syncCustomerOrders(true)" style="font-size:0.72rem; font-weight:700; padding:2px 8px; border-radius:6px;">
+          ⚡ Sync Status
+        </button>
+      </div>
+    `;
+const latest = orders.slice(0, 3);
     const html = latest.map(ord => {
       const ordId = ord.id || ord.orderId || ('ORD-' + (ord.createdAt ? new Date(ord.createdAt).getTime().toString().slice(-6) : 'REF'));
       const totalNum = Number(ord.pricing?.grandTotal) || Number(ord.calculations?.grandTotal) || Number(ord.grandTotal) || Number(ord.total) || 0;
@@ -1588,8 +1616,20 @@ class AuthManager {
   }
 
   buildOrdersTableHtml(orders) {
+    const toolbarHtml = `
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; padding-bottom:0.6rem; border-bottom:1px solid #E2E8F0; flex-wrap:wrap; gap:0.5rem;">
+        <div>
+          <h4 style="margin:0; font-size:1rem; font-weight:800; color:#0F172A;">Commercial Orders & IRD Tax Invoices (${orders.length})</h4>
+          <div style="font-size:0.75rem; color:#64748B;">Live tracking synced directly with Exide Kathmandu ERP fulfillment center</div>
+        </div>
+        <button type="button" class="btn btn-outline-primary" onclick="window.authManager.syncCustomerOrders(true)" style="font-size:0.75rem; font-weight:700; padding:4px 10px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">
+          ⚡ Sync Orders
+        </button>
+      </div>
+    `;
     if (!orders || orders.length === 0) {
       return `
+        ${toolbarHtml}
         <div class="prof-no-orders-clean">
           <div class="prof-no-orders-icon">📋</div>
           <strong style="color:#0F172A; font-size:0.95rem; display:block; margin-bottom:0.25rem;">No Order History Recorded</strong>
@@ -1678,6 +1718,7 @@ class AuthManager {
     }).join('');
 
     return `
+      ${toolbarHtml}
       <div class="prof-orders-table-wrap">
         <table class="prof-orders-table" style="width:100%; border-collapse:collapse;">
           <thead>

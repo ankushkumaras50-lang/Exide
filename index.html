@@ -1313,80 +1313,90 @@
             </div>
           </div>
 
-          <div class="form-grid-2">
-            <div class="form-group">
-              <label for="chk-fullname" class="form-label">Full Name *</label>
-              <input type="text" id="chk-fullname" class="form-input" placeholder="e.g. Ramesh Shrestha" value="Ramesh Shrestha" required>
-            </div>
-            <div class="form-group">
-              <label for="chk-phone" class="form-label">Nepal Mobile Number (+977) *</label>
-              <input type="tel" id="chk-phone" class="form-input" placeholder="98XXXXXXXX" value="9841234567" required>
-            </div>
-          </div>
+          <!-- Verified Profile Address Card (Shown when Profile Address selected: NO TYPING NEEDED) -->
+          <div id="checkout-profile-address-card" style="display:none; margin-bottom:1.25rem;"></div>
 
-          <div class="form-grid-2" style="margin-top:1rem;">
-            <div class="form-group">
-              <label for="chk-email" class="form-label">Email Address (Optional)</label>
-              <input type="email" id="chk-email" class="form-input" placeholder="name@domain.com" value="ramesh.nepal@gmail.com">
+          <!-- New / Different Address Form Fields (Shown when New Address selected or guest) -->
+          <div id="checkout-new-address-form" style="display:block;">
+            <div style="font-size:0.88rem; font-weight:800; color:#0F172A; margin-bottom:0.75rem; display:flex; align-items:center; gap:0.4rem;">
+              <span>📝 Enter Detailed Delivery Destination:</span>
             </div>
-            <div class="form-group">
-              <label for="chk-buyer-pan" class="form-label">Company VAT / PAN (Optional)</label>
-              <input type="text" id="chk-buyer-pan" class="form-input" placeholder="e.g. 601928374">
-            </div>
-          </div>
 
-          <div class="form-grid-2" style="margin-top:1rem;">
-            <div class="form-group">
-              <label for="chk-province" class="form-label">Province *</label>
-              <select id="chk-province" class="form-select">
-                <option value="bagmati" selected>Bagmati Province (बागमती)</option>
-                <option value="lumbini">Lumbini Province (लुम्बिनी)</option>
-                <option value="gandaki">Gandaki Province (गण्डकी)</option>
-                <option value="koshi">Koshi Province (कोशी)</option>
-                <option value="madhesh">Madhesh Province (मधेश)</option>
-                <option value="karnali">Karnali Province (कर्णाली)</option>
-                <option value="sudurpashchim">Sudurpashchim (सुदूरपश्चिम)</option>
-              </select>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="chk-fullname" class="form-label">Full Name *</label>
+                <input type="text" id="chk-fullname" class="form-input" placeholder="e.g. Ramesh Shrestha" value="Ramesh Shrestha" required>
+              </div>
+              <div class="form-group">
+                <label for="chk-phone" class="form-label">Nepal Mobile Number (+977) *</label>
+                <input type="tel" id="chk-phone" class="form-input" placeholder="98XXXXXXXX" value="9841234567" required>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="chk-district" class="form-label">District *</label>
-              <select id="chk-district" class="form-select">
-                <option value="Kathmandu" selected>Kathmandu</option>
-                <option value="Lalitpur">Lalitpur</option>
-                <option value="Bhaktapur">Bhaktapur</option>
-                <option value="Chitwan">Chitwan</option>
-                <option value="Rupandehi">Rupandehi (Butwal)</option>
-                <option value="Kaski">Kaski (Pokhara)</option>
-              </select>
+
+            <div class="form-grid-2" style="margin-top:1rem;">
+              <div class="form-group">
+                <label for="chk-email" class="form-label">Email Address (Optional)</label>
+                <input type="email" id="chk-email" class="form-input" placeholder="name@domain.com" value="ramesh.nepal@gmail.com">
+              </div>
+              <div class="form-group">
+                <label for="chk-buyer-pan" class="form-label">Company VAT / PAN (Optional)</label>
+                <input type="text" id="chk-buyer-pan" class="form-input" placeholder="e.g. 601928374">
+              </div>
             </div>
-          </div>
 
-          <div class="form-grid-2" style="margin-top:1rem;">
-            <div class="form-group">
-              <label for="chk-city" class="form-label">Municipality / City *</label>
-              <input type="text" id="chk-city" class="form-input" placeholder="e.g. Kathmandu Metro" value="Kathmandu Metro">
+            <div class="form-grid-2" style="margin-top:1rem;">
+              <div class="form-group">
+                <label for="chk-province" class="form-label">Province *</label>
+                <select id="chk-province" class="form-select">
+                  <option value="bagmati" selected>Bagmati Province (बागमती)</option>
+                  <option value="lumbini">Lumbini Province (लुम्बिनी)</option>
+                  <option value="gandaki">Gandaki Province (गण्डकी)</option>
+                  <option value="koshi">Koshi Province (कोशी)</option>
+                  <option value="madhesh">Madhesh Province (मधेश)</option>
+                  <option value="karnali">Karnali Province (कर्णाली)</option>
+                  <option value="sudurpashchim">Sudurpashchim (सुदूरपश्चिम)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="chk-district" class="form-label">District *</label>
+                <select id="chk-district" class="form-select">
+                  <option value="Kathmandu" selected>Kathmandu</option>
+                  <option value="Lalitpur">Lalitpur</option>
+                  <option value="Bhaktapur">Bhaktapur</option>
+                  <option value="Chitwan">Chitwan</option>
+                  <option value="Rupandehi">Rupandehi (Butwal)</option>
+                  <option value="Kaski">Kaski (Pokhara)</option>
+                </select>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="chk-ward" class="form-label">Ward No. *</label>
-              <input type="text" id="chk-ward" class="form-input" placeholder="e.g. 10" value="10">
+
+            <div class="form-grid-2" style="margin-top:1rem;">
+              <div class="form-group">
+                <label for="chk-city" class="form-label">Municipality / City *</label>
+                <input type="text" id="chk-city" class="form-input" placeholder="e.g. Kathmandu Metro" value="Kathmandu Metro">
+              </div>
+              <div class="form-group">
+                <label for="chk-ward" class="form-label">Ward No. *</label>
+                <input type="text" id="chk-ward" class="form-input" placeholder="e.g. 10" value="10">
+              </div>
             </div>
-          </div>
 
-          <div class="form-group" style="margin-top:1rem;">
-            <label for="chk-address" class="form-label">Street / Tole / Colony Address *</label>
-            <input type="text" id="chk-address" class="form-input" placeholder="e.g. New Baneshwor, Near Everest Hotel" value="New Baneshwor, Tole-4">
-          </div>
+            <div class="form-group" style="margin-top:1rem;">
+              <label for="chk-address" class="form-label">Street / Tole / Colony Address *</label>
+              <input type="text" id="chk-address" class="form-input" placeholder="e.g. New Baneshwor, Near Everest Hotel" value="New Baneshwor, Tole-4">
+            </div>
 
-          <div class="form-group" style="margin-top:1rem;">
-            <label for="chk-landmark" class="form-label">Notable Landmark (Helps delivery rider)</label>
-            <input type="text" id="chk-landmark" class="form-input" placeholder="e.g. Opposite Krishna Bakery">
-          </div>
+            <div class="form-group" style="margin-top:1rem;">
+              <label for="chk-landmark" class="form-label">Notable Landmark (Helps delivery rider)</label>
+              <input type="text" id="chk-landmark" class="form-input" placeholder="e.g. Opposite Krishna Bakery">
+            </div>
 
-          <div style="margin-top:1rem; padding:0.65rem 0.85rem; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:8px;">
-            <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer; font-size:0.82rem; font-weight:600; color:#1E293B; margin:0;">
-              <input type="checkbox" id="chk-save-to-profile" checked style="accent-color:#0047BA; width:16px; height:16px;">
-              <span>Save this delivery address to my customer profile for future orders</span>
-            </label>
+            <div style="margin-top:1rem; padding:0.65rem 0.85rem; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:8px;">
+              <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer; font-size:0.82rem; font-weight:600; color:#1E293B; margin:0;">
+                <input type="checkbox" id="chk-save-to-profile" checked style="accent-color:#0047BA; width:16px; height:16px;">
+                <span>Save this delivery address to my customer profile for future orders</span>
+              </label>
+            </div>
           </div>
 
           <div style="display:flex; justify-content:flex-end; margin-top:2rem;">
