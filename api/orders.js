@@ -4,7 +4,7 @@ const db = require('../lib/db.js');
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Idempotency-Key');
 
   if (req.method === 'OPTIONS') return res.status(200).end();
@@ -68,9 +68,18 @@ module.exports = async (req, res) => {
       }
       if (assignedRider !== undefined) {
         order.assignedRider = assignedRider;
-        if (order.customer) {
-          order.customer.assignedRider = typeof assignedRider === 'object' && assignedRider ? assignedRider.name : assignedRider;
-        }
+        if (!order.customer) order.customer = {};
+        const riderName = typeof assignedRider === 'object' && assignedRider ? (assignedRider.name || '') : String(assignedRider).split('(')[0].trim();
+        const riderPhone = typeof assignedRider === 'object' && assignedRider ? (assignedRider.phone || '') : (String(assignedRider).match(/\d{10}/) || [''])[0];
+        order.customer.assignedRider = riderName || assignedRider;
+        order.dispatchRider = {
+          name: riderName || assignedRider,
+          phone: riderPhone,
+          vehicle: body.dispatchVehicle || order.dispatchVehicle || ''
+        };
+      }
+      if (body.dispatchVehicle) {
+        order.dispatchVehicle = body.dispatchVehicle;
       }
       if (paymentStatus) {
         order.paymentStatus = paymentStatus;
@@ -260,6 +269,7 @@ module.exports = async (req, res) => {
       const orderRecord = {
         orderId: orderId,
         id: orderId,
+        isDemo: false,
         invoiceNumber: invoiceNumber,
         trackingNumber: trackingNumber,
         date: new Date().toISOString(),

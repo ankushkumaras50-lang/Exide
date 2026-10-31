@@ -1,5 +1,164 @@
 [
   {
+    "id": "po_po_2026_00126_sfd9",
+    "poNumber": "PO-2026-00126",
+    "supplierId": "sup_exide_ind",
+    "supplierName": "Exide Industries Ltd.",
+    "supplierPan": "301294821",
+    "supplierPhone": "+977-1-4221199",
+    "status": "COMPLETED",
+    "orderDate": "2026-10-31T07:24:25.677Z",
+    "expectedDeliveryDate": "2026-11-07T07:24:25.678Z",
+    "paymentTerms": "Net 30",
+    "items": [
+      {
+        "productId": "prod_test-exp-mvw2sf21_sf27",
+        "sku": "TEST-EXP-MVW2SF21",
+        "name": "Exide Enterprise Inverter Battery 180Ah",
+        "brand": "Exide",
+        "capacity": "180Ah",
+        "orderedQty": 20,
+        "receivedQty": 20,
+        "unitCost": 18000,
+        "totalCost": 360000
+      }
+    ],
+    "pricing": {
+      "subtotal": 360000,
+      "vatRate": 13,
+      "vatAmount": 46800,
+      "grandTotal": 406800,
+      "currency": "NPR"
+    },
+    "notes": "Urgent restocking for Kathmandu central distribution",
+    "grns": [
+      {
+        "grnNumber": "GRN-MVW2SFDK",
+        "receivedDate": "2026-10-31T07:24:25.752Z",
+        "receivedBy": "usr_inv_manager",
+        "warehouse": "wh-ktm-central",
+        "items": [
+          {
+            "productId": "prod_test-exp-mvw2sf21_sf27",
+            "quantityReceived": 20,
+            "newStock": 52
+          }
+        ],
+        "notes": "Received in full at Bijulibazar depot",
+        "invoiceRef": ""
+      }
+    ],
+    "createdBy": "usr_inv_manager",
+    "createdAt": "2026-10-31T07:24:25.678Z",
+    "updatedAt": "2026-10-31T07:24:25.752Z"
+  },
+  {
+    "id": "po_po_2026_00125_qqq6",
+    "poNumber": "PO-2026-00125",
+    "supplierId": "sup_exide_ind",
+    "supplierName": "Exide Industries Ltd.",
+    "supplierPan": "301294821",
+    "supplierPhone": "+977-1-4221199",
+    "status": "COMPLETED",
+    "orderDate": "2026-10-31T07:23:07.086Z",
+    "expectedDeliveryDate": "2026-11-07T07:23:07.086Z",
+    "paymentTerms": "Net 30",
+    "items": [
+      {
+        "productId": "prod_test-exp-mvw2qqfj_qqfo",
+        "sku": "TEST-EXP-MVW2QQFJ",
+        "name": "Exide Enterprise Inverter Battery 180Ah",
+        "brand": "Exide",
+        "capacity": "180Ah",
+        "orderedQty": 20,
+        "receivedQty": 20,
+        "unitCost": 18000,
+        "totalCost": 360000
+      }
+    ],
+    "pricing": {
+      "subtotal": 360000,
+      "vatRate": 13,
+      "vatAmount": 46800,
+      "grandTotal": 406800,
+      "currency": "NPR"
+    },
+    "notes": "Urgent restocking for Kathmandu central distribution",
+    "grns": [
+      {
+        "grnNumber": "GRN-MVW2QQQI",
+        "receivedDate": "2026-10-31T07:23:07.164Z",
+        "receivedBy": "usr_inv_manager",
+        "warehouse": "wh-ktm-central",
+        "items": [
+          {
+            "productId": "prod_test-exp-mvw2qqfj_qqfo",
+            "quantityReceived": 20,
+            "newStock": 52
+          }
+        ],
+        "notes": "Received in full at Bijulibazar depot",
+        "invoiceRef": ""
+      }
+    ],
+    "createdBy": "usr_inv_manager",
+    "createdAt": "2026-10-31T07:23:07.086Z",
+    "updatedAt": "2026-10-31T07:23:07.164Z"
+  },
+  {
+    "id": "po_po_2026_00124_pil5",
+    "poNumber": "PO-2026-00124",
+    "supplierId": "sup_exide_ind",
+    "supplierName": "Exide Industries Ltd.",
+    "supplierPan": "301294821",
+    "supplierPhone": "+977-1-4221199",
+    "status": "COMPLETED",
+    "orderDate": "2026-10-31T07:22:09.881Z",
+    "expectedDeliveryDate": "2026-11-07T07:22:09.881Z",
+    "paymentTerms": "Net 30",
+    "items": [
+      {
+        "productId": "prod_test-exp-mvw2pia0_pia6",
+        "sku": "TEST-EXP-MVW2PIA0",
+        "name": "Exide Enterprise Inverter Battery 180Ah",
+        "brand": "Exide",
+        "capacity": "180Ah",
+        "orderedQty": 20,
+        "receivedQty": 20,
+        "unitCost": 18000,
+        "totalCost": 360000
+      }
+    ],
+    "pricing": {
+      "subtotal": 360000,
+      "vatRate": 13,
+      "vatAmount": 46800,
+      "grandTotal": 406800,
+      "currency": "NPR"
+    },
+    "notes": "Urgent restocking for Kathmandu central distribution",
+    "grns": [
+      {
+        "grnNumber": "GRN-MVW2PILG",
+        "receivedDate": "2026-10-31T07:22:09.961Z",
+        "receivedBy": "usr_inv_manager",
+        "warehouse": "wh-ktm-central",
+        "items": [
+          {
+            "productId": "prod_test-exp-mvw2pia0_pia6",
+            "quantityReceived": 20,
+            "newStock": 52
+          }
+        ],
+        "notes": "Received in full at Bijulibazar depot",
+        "invoiceRef": ""
+      }
+    ],
+    "createdBy": "usr_inv_manager",
+    "createdAt": "2026-10-31T07:22:09.881Z",
+    "updatedAt": "2026-10-31T07:22:09.961Z"
+  },
+  {
     "id": "po_po_2026_00123_lw2a",
     "poNumber": "PO-2026-00123",
     "supplierId": "sup_exide_ind",

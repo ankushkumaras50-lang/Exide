@@ -1,0 +1,52 @@
+[
+  {
+    "id": "TSK-DEMO-01",
+    "title": "Doorstep Battery Voltage & Alternator Calibration Check",
+    "customerName": "Rita Sharma",
+    "location": "Thamel, Kathmandu",
+    "assignedTo": "Ramesh Thapa",
+    "status": "COMPLETED",
+    "date": "2026-05-14",
+    "isDemo": true
+  },
+  {
+    "id": "TSK-DEMO-02",
+    "title": "Inverter Charging Voltage Calibration & Float Test",
+    "customerName": "Bikash Maharjan",
+    "location": "Mangalbazar, Patan",
+    "assignedTo": "Bikram Shrestha",
+    "status": "COMPLETED",
+    "date": "2026-01-20",
+    "isDemo": true
+  },
+  {
+    "id": "TSK-DEMO-03",
+    "title": "Corporate Solar Battery Rack Verification (4x 200Ah)",
+    "customerName": "Nepal Power Systems Pvt. Ltd.",
+    "location": "Bijulibazar Corporate Tower",
+    "assignedTo": "Sujan Karki",
+    "status": "COMPLETED",
+    "date": "2026-08-08",
+    "isDemo": true
+  },
+  {
+    "id": "TSK-DEMO-04",
+    "title": "Terminal Greasing & Warranty Registration Stamp",
+    "customerName": "Ramesh Karki",
+    "location": "Bijulibazar Marg",
+    "assignedTo": "Ramesh Thapa",
+    "status": "IN_PROGRESS",
+    "date": "2026-10-25",
+    "isDemo": true
+  },
+  {
+    "id": "TSK-DEMO-05",
+    "title": "Follow-up Quotation for Hospital ICU Inverter Bank",
+    "customerName": "Everest Hospital",
+    "location": "New Baneshwor",
+    "assignedTo": "Store Manager",
+    "status": "PENDING",
+    "date": "2026-10-31",
+    "isDemo": true
+  }
+]

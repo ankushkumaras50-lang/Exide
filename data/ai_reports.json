@@ -1,0 +1,35 @@
+[
+  {
+    "id": "REP-DEMO-AI-01",
+    "title": "[DEMO AI REPORT] Q3 Wholesale Demand & Scrap Battery Recovery Analysis",
+    "period": "Q1 - Q3 2026 (Jan - Sep 2026)",
+    "generatedAt": "2026-10-01T09:00:00.000Z",
+    "status": "DEMO_OUTPUT",
+    "isDemo": true,
+    "summary": "Automated executive synthesis of high-capacity tubular battery movements, monsoon grid outage patterns, and scrap recycling buyback yield across Kathmandu Valley.",
+    "keyFindings": [
+      "Monsoon lightning storms in July-August caused a 34% surge in 150Ah & 200Ah tubular inverter orders.",
+      "Old battery scrap recovery rate achieved 92.4% customer participation with certified NPR 35.00/Ah buyback credit.",
+      "Total demo scrap battery weight recovered: 4,120 kg recyclable lead diverted from Kathmandu landfills."
+    ],
+    "financialReconciliation": {
+      "totalDemoRevenue": "NPR 256,539.00",
+      "totalDemoVatCollected": "NPR 29,514.00",
+      "totalScrapRebatesDisbursed": "NPR 20,475.00",
+      "auditStatus": "Reconciled 100% with Sales Ledger"
+    }
+  },
+  {
+    "id": "REP-DEMO-AI-02",
+    "title": "[DEMO AI REPORT] Predictive Winter Solar Inverter Stocking Model (Kathmandu & Pokhara)",
+    "period": "Q4 2026 Projection",
+    "generatedAt": "2026-10-20T14:30:00.000Z",
+    "status": "DEMO_OUTPUT",
+    "isDemo": true,
+    "summary": "Machine learning forecast on regional temperature drops and peak evening power demand recommending optimal safety stock.",
+    "keyFindings": [
+      "Forecast models indicate an anticipated 22% spike in Exide Matrix 35Ah & 45Ah car batteries due to cold start cranking issues.",
+      "Recommend maintaining 45 units minimum safety buffer for Invamaster IMTT1500 at Bijulibazar central warehouse."
+    ]
+  }
+]

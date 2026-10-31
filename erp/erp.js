@@ -100,6 +100,7 @@
       const isAuthenticated = await this.verifySession();
       if (isAuthenticated) {
         this.renderAppShell();
+        this.checkDemoModeStatus();
         this.handleRouteFromUrl();
       } else {
         this.renderLoginScreen();
@@ -171,6 +172,7 @@
           localStorage.setItem(this.sessionKey, JSON.stringify(data.admin));
           this.currentUser = data.admin;
           this.renderAppShell();
+          this.checkDemoModeStatus();
           this.navigate('dashboard');
         } else {
           if (errBox) {
@@ -203,6 +205,7 @@
           localStorage.setItem(this.sessionKey, JSON.stringify(fallbackUser));
           this.currentUser = fallbackUser;
           this.renderAppShell();
+          this.checkDemoModeStatus();
           this.navigate('dashboard');
           return;
         }
@@ -2529,7 +2532,7 @@
                             ${st}
                           </span>
                           <div style="font-size:0.75rem; color:#1E3A8A; font-weight:700; margin-top:3px; display:flex; align-items:center; gap:3px;">
-                            🏍️ ${customer.assignedRider || o.assignedRider || 'Standard Dispatch'}
+                            🏍️ ${o.assignedRider || customer.assignedRider || 'Standard Dispatch'}
                           </div>
                         </td>
 
@@ -2723,7 +2726,7 @@
           </div>
           <div>
             <span style="font-size:0.78rem; font-weight:700; color:#64748B; text-transform:uppercase;">Assigned Rider:</span>
-            <span style="font-size:0.85rem; font-weight:800; color:#1E40AF; margin-left:0.4rem;">${customer.assignedRider || order.assignedRider || 'Standard Dispatch'}</span>
+            <span style="font-size:0.85rem; font-weight:800; color:#1E40AF; margin-left:0.4rem;">${order.assignedRider || customer.assignedRider || 'Standard Dispatch'}</span>
           </div>
         </div>
 
@@ -2857,6 +2860,7 @@
       const customer = order.customer || {};
       const currentStatus = String(order.status || 'CONFIRMED').toUpperCase();
       const currentPayment = String(order.paymentStatus || 'PENDING').toUpperCase();
+      const currentRider = String(order.assignedRider || customer.assignedRider || '');
 
       modalContent.innerHTML = `
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #E2E8F0; padding-bottom:1rem; margin-bottom:1.25rem;">
@@ -2898,7 +2902,7 @@
               </div>
               <select id="erp-order-rider-select" class="erp-input" onchange="window.erpApp.onRiderSelectChange(this.value)">
                 ${(this.deliveryRiders || []).map(r => `
-                  <option value="${r.name} (+977 ${r.phone} - ${r.area})" data-vehicle="${r.vehicle}" data-phone="${r.phone}" ${order.assignedRider && (order.assignedRider.includes(r.phone) || order.assignedRider.includes(r.name)) ? 'selected' : ''}>
+                  <option value="${r.name} (+977 ${r.phone} - ${r.area})" data-vehicle="${r.vehicle}" data-phone="${r.phone}" ${currentRider && (currentRider.includes(r.phone) || currentRider.includes(r.name)) ? 'selected' : ''}>
                     ● ${r.name} (${r.area}) • ${r.vehicle}
                   </option>
                 `).join('')}
@@ -2935,6 +2939,12 @@
       `;
 
       modalOverlay.classList.add('open');
+      setTimeout(() => {
+        const rSelect = document.getElementById('erp-order-rider-select');
+        if (rSelect && rSelect.value) {
+          this.onRiderSelectChange(rSelect.value);
+        }
+      }, 50);
     }
 
     onRiderSelectChange(val) {
@@ -3076,12 +3086,25 @@
       const vehicleEl = document.getElementById('erp-order-vehicle-input');
       const noteEl = document.getElementById('erp-order-tracking-note');
 
+      const selectedRiderVal = riderEl ? riderEl.value : '';
+      const riderObj = (this.deliveryRiders || []).find(r => 
+        selectedRiderVal.includes(r.phone) || selectedRiderVal.includes(r.name)
+      ) || (this.deliveryRiders && this.deliveryRiders[0]) || {
+        name: selectedRiderVal.split('(')[0].trim() || 'Ramesh Thapa',
+        phone: '9801234567',
+        vehicle: vehicleEl ? vehicleEl.value.trim() : 'Ba 2 Pa 4521',
+        area: 'Kathmandu Central'
+      };
+
       await this.executeOrderStatusChange(orderId, {
         status: statusEl ? statusEl.value : 'CONFIRMED',
         paymentStatus: payEl ? payEl.value : 'PAID',
-        assignedRider: riderEl ? riderEl.value : 'Standard Kathmandu Express',
-        dispatchVehicle: vehicleEl ? vehicleEl.value.trim() : '',
-        trackingNote: noteEl ? noteEl.value.trim() : ''
+        assignedRider: `${riderObj.name} (+977 ${riderObj.phone} - ${riderObj.area})`,
+        riderName: riderObj.name,
+        riderPhone: riderObj.phone,
+        riderVehicle: vehicleEl ? vehicleEl.value.trim() : riderObj.vehicle,
+        dispatchVehicle: vehicleEl ? vehicleEl.value.trim() : riderObj.vehicle,
+        trackingNote: noteEl ? noteEl.value.trim() : `Assigned to delivery technician ${riderObj.name} (${riderObj.phone})`
       });
 
       // Keep open and return to comprehensive details view
@@ -3148,7 +3171,7 @@
               <div style="font-size:0.75rem; font-weight:800; text-transform:uppercase;">DISPATCH & PAYMENT:</div>
               <div style="font-size:0.9rem; font-weight:800; margin-top:2px;">GATEWAY: ${String(order.paymentMethod || 'COD').toUpperCase()}</div>
               <div style="font-size:0.9rem; font-weight:800;">COLLECT AMOUNT: NPR ${(pricing.grandTotal || order.grandTotal || 0).toLocaleString()}</div>
-              <div style="font-size:0.85rem; margin-top:4px;">COURIER: ${customer.assignedRider || order.assignedRider || 'Kathmandu Central Rider'}</div>
+              <div style="font-size:0.85rem; margin-top:4px;">COURIER: ${order.assignedRider || customer.assignedRider || 'Kathmandu Central Rider'}</div>
             </div>
           </div>
 
@@ -3207,17 +3230,33 @@
       let nextStatus = 'CONFIRMED';
       let trackingNote = '';
       let payStatus = order.paymentStatus || 'PENDING';
+      let assignedRider = order.assignedRider || order.customer?.assignedRider || '';
+      let dispatchVehicle = order.dispatchVehicle || '';
+      let riderName = '';
+      let riderPhone = '';
 
       if (st === 'PENDING' || st === 'CREATED' || st === 'SUBMITTED') {
         nextStatus = 'PROCESSING';
         trackingNote = 'Order confirmed and inventory allocated at Bijulibazar central warehouse.';
       } else if (st === 'CONFIRMED' || st === 'PROCESSING' || st === 'ACCEPTED') {
         nextStatus = 'SHIPPED';
-        trackingNote = 'Order handed to Exide dispatch rider Ba 2 Ja 4521 with multimeter & terminal grease.';
+        const defaultRider = (this.deliveryRiders && this.deliveryRiders[0]) || {
+          name: 'Ramesh Thapa', phone: '9801234567', vehicle: 'Ba 2 Pa 4521 (Hero Splendor)', area: 'Kathmandu Central'
+        };
+        if (!assignedRider || assignedRider.includes('Standard Dispatch') || assignedRider.includes('Standard Courier')) {
+          assignedRider = `${defaultRider.name} (+977 ${defaultRider.phone} - ${defaultRider.area})`;
+          dispatchVehicle = defaultRider.vehicle;
+          riderName = defaultRider.name;
+          riderPhone = defaultRider.phone;
+        } else {
+          riderName = assignedRider.split('(')[0].trim();
+          riderPhone = (assignedRider.match(/\d{10}/) || [''])[0];
+        }
+        trackingNote = `Order handed to Exide technician ${riderName || 'Ramesh Thapa'} (${riderPhone || '9801234567'}) with multimeter & terminal grease. Out for doorstep delivery.`;
       } else if (st === 'SHIPPED' || st === 'OUT_FOR_DELIVERY' || st === 'IN_TRANSIT') {
         nextStatus = 'DELIVERED';
         payStatus = 'PAID';
-        trackingNote = 'Delivered to customer doorstep. Free voltage calibration and terminal greasing verified.';
+        trackingNote = 'Delivered to customer doorstep. Free voltage calibration and terminal greasing verified. Payment reconciled.';
       } else if (st === 'DELIVERED') {
         alert(`Order #${orderId} is already marked DELIVERED & COMPLETED.`);
         return;
@@ -3229,7 +3268,10 @@
       await this.executeOrderStatusChange(orderId, {
         status: nextStatus,
         paymentStatus: payStatus,
-        assignedRider: order.assignedRider || 'Standard Kathmandu Express',
+        assignedRider: assignedRider || 'Ramesh Thapa (+977 9801234567 - Kathmandu Central)',
+        riderName: riderName,
+        riderPhone: riderPhone,
+        dispatchVehicle: dispatchVehicle || 'Ba 2 Pa 4521 (Hero Splendor)',
         trackingNote: trackingNote
       });
     }
@@ -3237,12 +3279,19 @@
     // Unified Order Status Engine & Cross-Sync
     async executeOrderStatusChange(orderId, updates) {
       const token = this.getAuthToken();
+      const riderString = updates.assignedRider || '';
+      const riderName = updates.riderName || (riderString.includes('(') ? riderString.split('(')[0].trim() : riderString);
+      const riderPhone = updates.riderPhone || (riderString.match(/\d{10}/) ? riderString.match(/\d{10}/)[0] : '');
+      const vehicle = updates.dispatchVehicle || updates.riderVehicle || '';
+
       const payload = {
         orderId,
+        id: orderId,
         status: updates.status,
+        orderStatus: updates.status,
         paymentStatus: updates.paymentStatus,
-        assignedRider: updates.assignedRider,
-        dispatchVehicle: updates.dispatchVehicle || '',
+        assignedRider: riderString,
+        dispatchVehicle: vehicle,
         trackingNote: updates.trackingNote || `Status updated to ${updates.status || 'Updated'}`
       };
 
@@ -3257,6 +3306,16 @@
         }).catch(err => console.warn('ERP order update API notice:', err.message));
       } catch (e) {}
 
+      try {
+        await fetch('/api/orders', {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        }).catch(() => {});
+      } catch (e) {}
+
       // Always update local storage & memory state so user actions never fail!
       try {
         const localOrders = JSON.parse(localStorage.getItem('exide_orders') || '[]');
@@ -3269,11 +3328,14 @@
           if (updates.paymentStatus) {
             localOrders[idx].paymentStatus = updates.paymentStatus;
           }
-          if (updates.assignedRider) {
-            localOrders[idx].assignedRider = updates.assignedRider;
+          if (riderString) {
+            localOrders[idx].assignedRider = riderString;
+            if (!localOrders[idx].customer) localOrders[idx].customer = {};
+            localOrders[idx].customer.assignedRider = riderName || riderString;
+            localOrders[idx].dispatchRider = { name: riderName, phone: riderPhone, vehicle };
           }
-          if (updates.dispatchVehicle) {
-            localOrders[idx].dispatchVehicle = updates.dispatchVehicle;
+          if (vehicle) {
+            localOrders[idx].dispatchVehicle = vehicle;
           }
           if (!localOrders[idx].trackingHistory) localOrders[idx].trackingHistory = [];
           localOrders[idx].trackingHistory.push({
@@ -3282,16 +3344,25 @@
             note: payload.trackingNote
           });
           localStorage.setItem('exide_orders', JSON.stringify(localOrders));
+          localStorage.setItem('bm_exide_orders', JSON.stringify(localOrders));
         }
 
         // Update in-memory ordersData as well
         if (Array.isArray(this.ordersData)) {
           const memIdx = this.ordersData.findIndex(o => (o.orderId || o.id) === orderId);
           if (memIdx !== -1) {
-            if (updates.status) this.ordersData[memIdx].status = updates.status;
+            if (updates.status) {
+              this.ordersData[memIdx].status = updates.status;
+              this.ordersData[memIdx].orderStatus = updates.status;
+            }
             if (updates.paymentStatus) this.ordersData[memIdx].paymentStatus = updates.paymentStatus;
-            if (updates.assignedRider) this.ordersData[memIdx].assignedRider = updates.assignedRider;
-            if (updates.dispatchVehicle) this.ordersData[memIdx].dispatchVehicle = updates.dispatchVehicle;
+            if (riderString) {
+              this.ordersData[memIdx].assignedRider = riderString;
+              if (!this.ordersData[memIdx].customer) this.ordersData[memIdx].customer = {};
+              this.ordersData[memIdx].customer.assignedRider = riderName || riderString;
+              this.ordersData[memIdx].dispatchRider = { name: riderName, phone: riderPhone, vehicle };
+            }
+            if (vehicle) this.ordersData[memIdx].dispatchVehicle = vehicle;
           }
         }
       } catch(e) {}
@@ -4318,6 +4389,13 @@
     }
 
     renderSettingsView(c) {
+      if (!this.settingsActiveTab) this.settingsActiveTab = 'store';
+
+      if (this.settingsActiveTab === 'demo') {
+        this.renderDemoResetView(c);
+        return;
+      }
+
       let savedSettings = {};
       try {
         savedSettings = JSON.parse(localStorage.getItem('bm_exide_erp_settings') || '{}');
@@ -4347,6 +4425,16 @@
 
       c.innerHTML = `
         <div style="max-width: 1080px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem;">
+          <!-- Sub-Navigation Navigation Tabs -->
+          <div style="display:flex; gap:0.65rem; border-bottom:2px solid #E2E8F0; padding-bottom:0.75rem; flex-wrap:wrap;">
+            <button type="button" class="erp-btn ${this.settingsActiveTab !== 'demo' ? 'erp-btn-primary' : 'erp-btn-secondary'}" style="${this.settingsActiveTab !== 'demo' ? 'background:#003399; font-weight:800;' : 'font-weight:700;'}" onclick="window.erpApp.switchSettingsTab('store')">
+              ⚙️ Store & Operations Settings
+            </button>
+            <button type="button" class="erp-btn ${this.settingsActiveTab === 'demo' ? 'erp-btn-primary' : 'erp-btn-secondary'}" style="${this.settingsActiveTab === 'demo' ? 'background:#DC2626; color:#FFF; font-weight:800;' : 'font-weight:700;'}" onclick="window.erpApp.switchSettingsTab('demo')">
+              🧹 Demo Data & Reset Workspace
+            </button>
+          </div>
+
           <!-- Top Bar Header with Actions -->
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
             <div>
@@ -4579,6 +4667,710 @@
       localStorage.removeItem('bm_exide_erp_settings');
       this.renderSettingsView(document.getElementById('erp-main-view'));
       alert('Settings reset to official Exide factory defaults.');
+    }
+
+    switchSettingsTab(tab) {
+      this.settingsActiveTab = tab;
+      const mainView = document.getElementById('erp-main-view');
+      if (mainView) this.renderSettingsView(mainView);
+    }
+
+    navigateToSettingsDemoReset() {
+      this.settingsActiveTab = 'demo';
+      this.navigate('settings');
+    }
+
+    async checkDemoModeStatus() {
+      try {
+        const res = await fetch('/api/erp/demo?action=status');
+        if (res.ok) {
+          const data = await res.json();
+          this.demoStatus = data;
+          this.updateDemoModePill();
+        }
+      } catch (e) {}
+    }
+
+    updateDemoModePill() {
+      const el = document.getElementById('erp-demo-mode-pill-slot');
+      if (!el) return;
+      const isDemo = this.demoStatus ? this.demoStatus.isDemoActive : true;
+      if (isDemo) {
+        el.innerHTML = `
+          <span class="erp-demo-pill" onclick="window.erpApp.navigateToSettingsDemoReset()" style="background:#FEF3C7; color:#92400E; border:1.5px solid #F59E0B; padding:3px 10px; border-radius:20px; font-weight:800; font-size:0.75rem; cursor:pointer; display:inline-flex; align-items:center; gap:5px;" title="Demo Mode is Active. Click to manage or purge demo records.">
+            🟡 DEMO MODE &bull; Reset
+          </span>
+        `;
+      } else {
+        el.innerHTML = `
+          <span style="background:#ECFDF5; color:#047857; border:1.5px solid #10B981; padding:3px 10px; border-radius:20px; font-weight:800; font-size:0.75rem; display:inline-flex; align-items:center; gap:5px;">
+            🟢 LIVE PRODUCTION
+          </span>
+        `;
+      }
+    }
+
+    renderDemoResetView(c) {
+      const isDemo = this.demoStatus ? this.demoStatus.isDemoActive : true;
+
+      c.innerHTML = `
+        <div style="max-width: 1080px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem;">
+          <!-- Sub-Navigation Navigation Tabs -->
+          <div style="display:flex; gap:0.65rem; border-bottom:2px solid #E2E8F0; padding-bottom:0.75rem; flex-wrap:wrap;">
+            <button type="button" class="erp-btn erp-btn-secondary" style="font-weight:700;" onclick="window.erpApp.switchSettingsTab('store')">
+              ⚙️ Store & Operations Settings
+            </button>
+            <button type="button" class="erp-btn erp-btn-primary" style="background:#DC2626; color:#FFF; font-weight:800;" onclick="window.erpApp.switchSettingsTab('demo')">
+              🧹 Demo Data & Reset Workspace
+            </button>
+          </div>
+
+          <!-- Top Status Banner -->
+          <div style="background:${isDemo ? '#FFFBEB' : '#ECFDF5'}; border:1.5px solid ${isDemo ? '#F59E0B' : '#10B981'}; border-radius:12px; padding:1.25rem 1.5rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+            <div>
+              <div style="display:flex; align-items:center; gap:0.5rem;">
+                <span style="font-size:1.15rem; font-weight:900; color:${isDemo ? '#92400E' : '#047857'};">
+                  ${isDemo ? '🟡 DEMO MODE ACTIVE' : '🟢 LIVE PRODUCTION WORKSPACE'}
+                </span>
+                <span class="erp-badge ${isDemo ? 'erp-badge-yellow' : 'erp-badge-green'}" style="font-size:0.72rem;">
+                  ${isDemo ? 'Multi-Period Demo Dataset' : 'Authoritative Store Data Only'}
+                </span>
+              </div>
+              <p style="font-size:0.85rem; color:${isDemo ? '#B45309' : '#065F46'}; margin:0.35rem 0 0 0; max-width:680px; line-height:1.45;">
+                ${isDemo 
+                  ? 'A sample demo dataset is loaded with orders spanning multiple periods, reconciled financial calculations, sample expenses, field tasks, and AI reports. You can review preview metrics below or purge all demo records for clean commercial production.'
+                  : `All mock demo records have been successfully purged. Real storefront customer orders and official product catalog items are actively managed.`}
+              </p>
+            </div>
+            <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+              ${isDemo ? `
+                <button type="button" class="erp-btn erp-btn-danger" style="background:#DC2626; color:#FFF; font-weight:800; padding:8px 16px;" onclick="window.erpApp.openRemoveDemoDataModal()">
+                  🗑️ Remove Demo Data
+                </button>
+              ` : `
+                <button type="button" class="erp-btn erp-btn-secondary" onclick="window.erpApp.seedDemoDataAction()">
+                  📦 Re-Seed Demo Dataset
+                </button>
+              `}
+              <button type="button" class="erp-btn erp-btn-secondary" onclick="window.erpApp.downloadSystemBackup()">
+                📥 Backup System JSON
+              </button>
+            </div>
+          </div>
+
+          <!-- The 4 Distinct Reset & Management Options -->
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
+            <!-- Option 1: Remove Demo Data Only (Path: Settings -> Demo Data & Reset -> Remove Demo Data) -->
+            <div class="erp-card" style="border:1.5px solid #FCD34D;">
+              <div class="erp-card-header" style="background:#FFFDF0;">
+                <div>
+                  <span class="erp-card-title" style="color:#92400E;">1. Remove Demo Data Only</span>
+                  <div style="font-size:0.75rem; color:#B45309;">Path: Settings → Demo Data & Reset → Remove Demo Data</div>
+                </div>
+                <span style="font-size:1.4rem;">🗑️</span>
+              </div>
+              <div class="erp-card-body" style="font-size:0.85rem; color:#475569; display:flex; flex-direction:column; justify-content:space-between; gap:1rem;">
+                <div>
+                  <p style="margin:0 0 0.75rem 0; line-height:1.45;">
+                    Surgically identifies and deletes only records explicitly tagged with <code>isDemo: true</code>.
+                  </p>
+                  <ul style="margin:0; padding-left:1.25rem; font-size:0.82rem; color:#64748B; line-height:1.5;">
+                    <li>Requires verified Owner authentication password.</li>
+                    <li>Shows full dependency preview before deletion.</li>
+                    <li><strong>100% Preserves</strong> real non-demo customer orders, catalog SKUs, and settings.</li>
+                    <li>Records audit event and refreshes executive metrics.</li>
+                    <li>Ensures demo data never silently reappears.</li>
+                  </ul>
+                </div>
+                <button type="button" class="erp-btn erp-btn-danger" style="background:#DC2626; color:#FFF; font-weight:800; width:100%; justify-content:center;" onclick="window.erpApp.openRemoveDemoDataModal()">
+                  Preview & Remove Demo Data ➔
+                </button>
+              </div>
+            </div>
+
+            <!-- Option 2: Remove Selected Operational Records -->
+            <div class="erp-card">
+              <div class="erp-card-header">
+                <div>
+                  <span class="erp-card-title">2. Remove Selected Operations</span>
+                  <div style="font-size:0.75rem; color:var(--erp-muted);">Granular Transaction Purge</div>
+                </div>
+                <span style="font-size:1.4rem;">🧹</span>
+              </div>
+              <div class="erp-card-body" style="font-size:0.85rem; color:#475569; display:flex; flex-direction:column; justify-content:space-between; gap:1rem;">
+                <div>
+                  <p style="margin:0 0 0.75rem 0; line-height:1.45;">
+                    Selectively clear specific operational modules without modifying product catalogs or configurations.
+                  </p>
+                  <div style="display:flex; flex-direction:column; gap:0.4rem; font-size:0.82rem;">
+                    <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+                      <input type="checkbox" id="erp-chk-op-orders" checked style="accent-color:#003399;">
+                      <span>Customer Orders & IRD Invoices</span>
+                    </label>
+                    <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+                      <input type="checkbox" id="erp-chk-op-purchases" checked style="accent-color:#003399;">
+                      <span>Supplier Purchases & GRN Logs</span>
+                    </label>
+                    <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+                      <input type="checkbox" id="erp-chk-op-exchanges" checked style="accent-color:#003399;">
+                      <span>Scrap Battery Buybacks & Exchanges</span>
+                    </label>
+                    <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+                      <input type="checkbox" id="erp-chk-op-expenses" checked style="accent-color:#003399;">
+                      <span>Store Operational Expenses</span>
+                    </label>
+                    <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+                      <input type="checkbox" id="erp-chk-op-tasks" checked style="accent-color:#003399;">
+                      <span>Technician Tasks & Field Activities</span>
+                    </label>
+                  </div>
+                </div>
+                <button type="button" class="erp-btn erp-btn-secondary" style="font-weight:700; width:100%; justify-content:center;" onclick="window.erpApp.openClearOperationalModal()">
+                  Clear Selected Operations ➔
+                </button>
+              </div>
+            </div>
+
+            <!-- Option 3: Reset Selected Settings -->
+            <div class="erp-card">
+              <div class="erp-card-header">
+                <div>
+                  <span class="erp-card-title">3. Reset Selected Settings</span>
+                  <div style="font-size:0.75rem; color:var(--erp-muted);">Factory Operational Defaults</div>
+                </div>
+                <span style="font-size:1.4rem;">↺</span>
+              </div>
+              <div class="erp-card-body" style="font-size:0.85rem; color:#475569; display:flex; flex-direction:column; justify-content:space-between; gap:1rem;">
+                <div>
+                  <p style="margin:0 0 0.75rem 0; line-height:1.45;">
+                    Restore store configuration parameters to official Nepal Exide wholesale factory standards.
+                  </p>
+                  <ul style="margin:0; padding-left:1.25rem; font-size:0.82rem; color:#64748B; line-height:1.5;">
+                    <li>Statutory IRD Value Added Tax (VAT) rate: <strong>13%</strong></li>
+                    <li>Certified Old Battery Buyback Rebate: <strong>NPR 35.00 / Ah</strong></li>
+                    <li>Central Dispatch Depot: <strong>Bijulibazar, Kathmandu</strong></li>
+                    <li>Customer Support & Alerts Hotline: <strong>+977 9705997260</strong></li>
+                    <li>Fulfillment Window: <strong>2-4 Hours Kathmandu Express</strong></li>
+                  </ul>
+                </div>
+                <button type="button" class="erp-btn erp-btn-secondary" style="font-weight:700; width:100%; justify-content:center;" onclick="window.erpApp.resetSettingsToDefaults()">
+                  ↺ Reset Store Parameters to Defaults
+                </button>
+              </div>
+            </div>
+
+            <!-- Option 4: Prepare an Empty Business Workspace -->
+            <div class="erp-card" style="border:1.5px solid #EF4444;">
+              <div class="erp-card-header" style="background:#FEF2F2;">
+                <div>
+                  <span class="erp-card-title" style="color:#B91C1C;">4. Prepare Empty Workspace</span>
+                  <div style="font-size:0.75rem; color:#DC2626;">Tenant Fresh Start & Production Ready</div>
+                </div>
+                <span style="font-size:1.4rem;">⚠️</span>
+              </div>
+              <div class="erp-card-body" style="font-size:0.85rem; color:#475569; display:flex; flex-direction:column; justify-content:space-between; gap:1rem;">
+                <div>
+                  <p style="margin:0 0 0.75rem 0; line-height:1.45;">
+                    A complete, safe destructive reset for a new commercial deployment or client handover.
+                  </p>
+                  <ul style="margin:0; padding-left:1.25rem; font-size:0.82rem; color:#B91C1C; line-height:1.5;">
+                    <li><strong>Automatic Pre-Reset Backup:</strong> downloads a complete JSON snapshot before wiping.</li>
+                    <li>Requires verified Owner password and explicit text confirmation.</li>
+                    <li><strong>Safely Preserves:</strong> Essential Owner account, role permissions, schema & product master.</li>
+                    <li>Leaves clean, pristine empty states with zero mock history.</li>
+                  </ul>
+                </div>
+                <button type="button" class="erp-btn erp-btn-danger" style="background:#B91C1C; color:#FFF; font-weight:800; width:100%; justify-content:center;" onclick="window.erpApp.openEmptyWorkspaceModal()">
+                  ⚠️ Prepare Empty Workspace ➔
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recovery & Backup Vault Card -->
+          <div class="erp-card">
+            <div class="erp-card-header">
+              <span class="erp-card-title">🔐 Authoritative Disaster Recovery Vault</span>
+              <button type="button" class="erp-btn erp-btn-secondary" onclick="window.erpApp.downloadSystemBackup()">
+                📥 Export Safety Snapshot
+              </button>
+            </div>
+            <div class="erp-card-body" style="font-size:0.85rem; color:#475569;">
+              <p style="margin:0 0 0.5rem 0;">
+                All operational records, catalogue items, customer orders, tax invoices, and store parameters can be backed up to a JSON snapshot file at any time. In the event of an accidental wipe, backups can be restored immediately without data loss.
+              </p>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Modal 4: Preview & Remove Demo Data
+    async openRemoveDemoDataModal() {
+      const modalOverlay = document.getElementById('erp-modal-overlay');
+      const modalContent = document.getElementById('erp-modal-content') || document.getElementById('erp-modal-body');
+      const modalBox = modalOverlay ? modalOverlay.querySelector('.erp-modal') : null;
+      if (!modalOverlay || !modalContent) return;
+
+      if (modalBox) modalBox.classList.add('erp-modal-xl');
+
+      modalContent.innerHTML = `<div style="text-align:center; padding:2rem;"><div class="erp-loader" style="margin:0 auto 1rem auto;"></div>Loading Demo Data preview and dependency verification...</div>`;
+      modalOverlay.classList.add('open');
+
+      try {
+        const res = await fetch('/api/erp/demo?action=preview');
+        const data = await res.json();
+        const counts = data.counts || {};
+        const previewOrders = (data.previewItems && data.previewItems.orders) || [];
+
+        modalContent.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #E2E8F0; padding-bottom:1rem; margin-bottom:1.25rem;">
+            <div>
+              <h3 style="margin:0; font-size:1.25rem; font-weight:800; color:#DC2626;">🗑️ Remove Demo Data: Preview & Verification</h3>
+              <div style="font-size:0.8rem; color:#64748B;">Path: Settings → Demo Data & Reset → Remove Demo Data</div>
+            </div>
+            <button type="button" class="erp-btn erp-btn-secondary" onclick="window.erpApp.closeOrderModal()">✕ Close</button>
+          </div>
+
+          <!-- Summary Metric Cards -->
+          <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:0.75rem; margin-bottom:1.25rem;">
+            <div style="background:#FEF2F2; border:1px solid #FCA5A5; border-radius:8px; padding:0.75rem; text-align:center;">
+              <div style="font-size:1.4rem; font-weight:900; color:#DC2626;">${counts.orders || 0}</div>
+              <div style="font-size:0.75rem; font-weight:700; color:#991B1B;">Demo Orders</div>
+            </div>
+            <div style="background:#FFFBEB; border:1px solid #FDE68A; border-radius:8px; padding:0.75rem; text-align:center;">
+              <div style="font-size:1.4rem; font-weight:900; color:#D97706;">${counts.expenses || 0}</div>
+              <div style="font-size:0.75rem; font-weight:700; color:#92400E;">Demo Expenses</div>
+            </div>
+            <div style="background:#EFF6FF; border:1px solid #BFDBFE; border-radius:8px; padding:0.75rem; text-align:center;">
+              <div style="font-size:1.4rem; font-weight:900; color:#2563EB;">${counts.tasks || 0}</div>
+              <div style="font-size:0.75rem; font-weight:700; color:#1E40AF;">Demo Tasks</div>
+            </div>
+            <div style="background:#F0FDF4; border:1px solid #BBF7D0; border-radius:8px; padding:0.75rem; text-align:center;">
+              <div style="font-size:1.4rem; font-weight:900; color:#16A34A;">${counts.aiReports || 0}</div>
+              <div style="font-size:0.75rem; font-weight:700; color:#166534;">Demo AI Reports</div>
+            </div>
+          </div>
+
+          <!-- Preview Orders Table -->
+          <div style="margin-bottom:1.25rem;">
+            <div style="font-size:0.82rem; font-weight:800; color:#0F172A; margin-bottom:0.4rem; text-transform:uppercase;">
+              Sample Demo Records to be Removed (${counts.orders || 0} Total):
+            </div>
+            <table class="erp-table" style="font-size:0.82rem;">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Invoice</th>
+                  <th>Customer</th>
+                  <th>Date</th>
+                  <th>Total NPR</th>
+                  <th>Marker</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${previewOrders.map(o => `
+                  <tr>
+                    <td><strong>#${o.orderId}</strong></td>
+                    <td>${o.invoiceNumber || 'N/A'}</td>
+                    <td>${o.customerName || 'Demo Customer'}</td>
+                    <td>${o.date || 'Recent'}</td>
+                    <td style="font-weight:700;">NPR ${(o.grandTotal || 0).toLocaleString()}</td>
+                    <td><span style="font-size:0.7rem; background:#FEF2F2; color:#DC2626; padding:1px 6px; border-radius:4px; font-weight:800;">isDemo: true</span></td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Preserved Assets Card -->
+          <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:8px; padding:0.85rem 1rem; margin-bottom:1.25rem;">
+            <div style="font-size:0.8rem; font-weight:800; color:#047857; text-transform:uppercase; margin-bottom:0.35rem;">
+              ✓ Verified Protected Non-Demo Assets (Will NOT be deleted):
+            </div>
+            <ul style="margin:0; padding-left:1.25rem; font-size:0.8rem; color:#475569; line-height:1.5;">
+              ${(data.preservedItems || []).map(item => `<li>${item}</li>`).join('')}
+            </ul>
+          </div>
+
+          <!-- Owner Password Verification Form -->
+          <form onsubmit="event.preventDefault(); window.erpApp.executePurgeDemoData();" style="border-top:1.5px solid #E2E8F0; padding-top:1rem;">
+            <div class="erp-form-group" style="margin-bottom:1rem;">
+              <label class="erp-label" style="color:#0F172A; font-weight:800;">Owner Authentication Password *</label>
+              <input type="password" id="erp-demo-owner-password" class="erp-input" placeholder="Enter Owner password (e.g. NepalPowerHouse@2026)" required style="font-size:0.95rem;">
+              <small style="color:#64748B; font-size:0.75rem; display:block; margin-top:3px;">
+                Restricted operation. Requires credentials of Executive Super Administrator (admin@exidebattery.com.np).
+              </small>
+            </div>
+
+            <div style="display:flex; justify-content:flex-end; gap:0.5rem;">
+              <button type="button" class="erp-btn erp-btn-secondary" onclick="window.erpApp.closeOrderModal()">Cancel</button>
+              <button type="submit" id="btn-confirm-purge-demo" class="erp-btn" style="background:#DC2626; color:#FFFFFF; font-weight:800; padding:8px 20px;">
+                Confirm & Permanently Remove Demo Data
+              </button>
+            </div>
+          </form>
+        `;
+      } catch (err) {
+        modalContent.innerHTML = `
+          <div style="padding:1.5rem; text-align:center; color:#DC2626;">
+            <h4>Error Loading Demo Data Preview</h4>
+            <p>${err.message}</p>
+            <button class="erp-btn erp-btn-secondary" onclick="window.erpApp.closeOrderModal()">Close</button>
+          </div>
+        `;
+      }
+    }
+
+    async executePurgeDemoData() {
+      const password = document.getElementById('erp-demo-owner-password')?.value.trim();
+      if (!password) {
+        alert('Please enter your Owner password.');
+        return;
+      }
+
+      const btn = document.getElementById('btn-confirm-purge-demo');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '⏳ Purging demo records...';
+      }
+
+      try {
+        const token = this.getAuthToken();
+        const res = await fetch('/api/erp/demo?action=purge-demo', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ ownerPassword: password })
+        });
+
+        const data = await res.json();
+        if (!data.success) {
+          alert('Failed to purge demo data: ' + (data.message || 'Verification failed.'));
+          if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = 'Confirm & Permanently Remove Demo Data';
+          }
+          return;
+        }
+
+        // Clean memory and local storage
+        try {
+          const localOrders = JSON.parse(localStorage.getItem('exide_orders') || '[]');
+          const cleanOrders = localOrders.filter(o => o.isDemo !== true);
+          localStorage.setItem('exide_orders', JSON.stringify(cleanOrders));
+          localStorage.setItem('bm_exide_orders', JSON.stringify(cleanOrders));
+          localStorage.setItem('bm_demo_purged', 'true');
+        } catch (e) {}
+
+        if (Array.isArray(this.ordersData)) {
+          this.ordersData = this.ordersData.filter(o => o.isDemo !== true);
+        }
+
+        this.closeOrderModal();
+        await this.checkDemoModeStatus();
+
+        const mainView = document.getElementById('erp-main-view');
+        if (mainView) {
+          if (this.activeRoute === 'settings') {
+            this.renderSettingsView(mainView);
+          } else if (this.activeRoute === 'orders') {
+            this.renderOrdersView(mainView, true);
+          }
+        }
+
+        if (typeof showToast === 'function') {
+          showToast('Demo data successfully purged. Live production active!', 'success');
+        } else {
+          alert('Demo data successfully purged! Live production is active.');
+        }
+      } catch (err) {
+        alert('Error purging demo data: ' + err.message);
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = 'Confirm & Permanently Remove Demo Data';
+        }
+      }
+    }
+
+    // Modal 5: Clear Selected Operational Records
+    openClearOperationalModal() {
+      const modalOverlay = document.getElementById('erp-modal-overlay');
+      const modalContent = document.getElementById('erp-modal-content') || document.getElementById('erp-modal-body');
+      const modalBox = modalOverlay ? modalOverlay.querySelector('.erp-modal') : null;
+      if (!modalOverlay || !modalContent) return;
+
+      if (modalBox) modalBox.classList.remove('erp-modal-xl');
+
+      modalContent.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #E2E8F0; padding-bottom:1rem; margin-bottom:1.25rem;">
+          <div>
+            <h3 style="margin:0; font-size:1.25rem; font-weight:800; color:#0F172A;">🧹 Clear Selected Operations</h3>
+            <div style="font-size:0.8rem; color:#64748B;">Select collections to wipe while preserving catalogs</div>
+          </div>
+          <button type="button" class="erp-btn erp-btn-secondary" onclick="window.erpApp.closeOrderModal()">✕ Close</button>
+        </div>
+
+        <form onsubmit="event.preventDefault(); window.erpApp.executeClearOperational();">
+          <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:8px; padding:1rem; margin-bottom:1.25rem;">
+            <div style="font-size:0.8rem; font-weight:800; color:#0F172A; margin-bottom:0.5rem; text-transform:uppercase;">
+              Select Operational Modules to Clear:
+            </div>
+            <div style="display:flex; flex-direction:column; gap:0.4rem; font-size:0.85rem;">
+              <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+                <input type="checkbox" id="modal-chk-orders" checked style="accent-color:#003399;">
+                <span>Orders & Tax Invoices</span>
+              </label>
+              <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+                <input type="checkbox" id="modal-chk-purchases" checked style="accent-color:#003399;">
+                <span>Supplier Purchases & GRN Records</span>
+              </label>
+              <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+                <input type="checkbox" id="modal-chk-exchanges" checked style="accent-color:#003399;">
+                <span>Scrap Trade-in Exchanges</span>
+              </label>
+              <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+                <input type="checkbox" id="modal-chk-expenses" checked style="accent-color:#003399;">
+                <span>Operating Expense Records</span>
+              </label>
+              <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+                <input type="checkbox" id="modal-chk-tasks" checked style="accent-color:#003399;">
+                <span>Field Tasks & CRM Leads</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="erp-form-group" style="margin-bottom:1.25rem;">
+            <label class="erp-label">Owner Authentication Password *</label>
+            <input type="password" id="erp-op-owner-password" class="erp-input" placeholder="Enter Owner password" required>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end; gap:0.5rem; border-top:1px solid #E2E8F0; padding-top:1rem;">
+            <button type="button" class="erp-btn erp-btn-secondary" onclick="window.erpApp.closeOrderModal()">Cancel</button>
+            <button type="submit" class="erp-btn erp-btn-primary" style="background:#003399;">Clear Selected Modules</button>
+          </div>
+        </form>
+      `;
+
+      modalOverlay.classList.add('open');
+    }
+
+    async executeClearOperational() {
+      const password = document.getElementById('erp-op-owner-password')?.value.trim();
+      if (!password) {
+        alert('Please enter your Owner password.');
+        return;
+      }
+
+      const modules = [];
+      if (document.getElementById('modal-chk-orders')?.checked) modules.push('orders');
+      if (document.getElementById('modal-chk-purchases')?.checked) modules.push('purchases');
+      if (document.getElementById('modal-chk-exchanges')?.checked) modules.push('exchanges');
+      if (document.getElementById('modal-chk-expenses')?.checked) modules.push('expenses');
+      if (document.getElementById('modal-chk-tasks')?.checked) modules.push('tasks');
+
+      if (modules.length === 0) {
+        alert('Please select at least one module to clear.');
+        return;
+      }
+
+      try {
+        const token = this.getAuthToken();
+        const res = await fetch('/api/erp/demo?action=remove-operational', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ ownerPassword: password, modules })
+        });
+
+        const data = await res.json();
+        if (!data.success) {
+          alert('Failed to clear operational records: ' + (data.message || 'Denied.'));
+          return;
+        }
+
+        if (modules.includes('orders')) {
+          localStorage.removeItem('exide_orders');
+          localStorage.removeItem('bm_exide_orders');
+          this.ordersData = [];
+        }
+
+        this.closeOrderModal();
+        await this.checkDemoModeStatus();
+        this.renderSettingsView(document.getElementById('erp-main-view'));
+        alert(data.message || 'Operational records cleared successfully.');
+      } catch (e) {
+        alert('Error: ' + e.message);
+      }
+    }
+
+    // Modal 6: Prepare Empty Business Workspace (Destructive Reset)
+    openEmptyWorkspaceModal() {
+      const modalOverlay = document.getElementById('erp-modal-overlay');
+      const modalContent = document.getElementById('erp-modal-content') || document.getElementById('erp-modal-body');
+      const modalBox = modalOverlay ? modalOverlay.querySelector('.erp-modal') : null;
+      if (!modalOverlay || !modalContent) return;
+
+      if (modalBox) modalBox.classList.remove('erp-modal-xl');
+
+      modalContent.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #E2E8F0; padding-bottom:1rem; margin-bottom:1.25rem;">
+          <div>
+            <h3 style="margin:0; font-size:1.25rem; font-weight:800; color:#B91C1C;">⚠️ Prepare Empty Business Workspace</h3>
+            <div style="font-size:0.8rem; color:#64748B;">Complete production fresh start with automatic backup</div>
+          </div>
+          <button type="button" class="erp-btn erp-btn-secondary" onclick="window.erpApp.closeOrderModal()">✕ Close</button>
+        </div>
+
+        <div style="background:#FEF2F2; border:1.5px solid #F87171; border-radius:8px; padding:0.85rem 1rem; margin-bottom:1.25rem; font-size:0.85rem; color:#991B1B; line-height:1.45;">
+          <strong>Warning: Destructive Workspace Initialization</strong><br>
+          This will wipe all orders, invoices, purchases, scrap records, and expenses. A complete JSON safety backup will be automatically generated and downloaded to your computer prior to wiping. The Owner account and product catalog will be safely preserved.
+        </div>
+
+        <form onsubmit="event.preventDefault(); window.erpApp.executeEmptyWorkspace();">
+          <div class="erp-form-group" style="margin-bottom:1rem;">
+            <label class="erp-label">Owner Authentication Password *</label>
+            <input type="password" id="erp-empty-owner-password" class="erp-input" placeholder="Enter Owner password" required>
+          </div>
+
+          <div class="erp-form-group" style="margin-bottom:1.25rem;">
+            <label class="erp-label">Type "CONFIRM RESET" to acknowledge *</label>
+            <input type="text" id="erp-empty-confirm-text" class="erp-input" placeholder="CONFIRM RESET" required>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end; gap:0.5rem; border-top:1px solid #E2E8F0; padding-top:1rem;">
+            <button type="button" class="erp-btn erp-btn-secondary" onclick="window.erpApp.closeOrderModal()">Cancel</button>
+            <button type="submit" id="btn-do-workspace-reset" class="erp-btn erp-btn-danger" style="background:#B91C1C; color:#FFF; font-weight:800;">
+              Download Backup & Prepare Empty Workspace
+            </button>
+          </div>
+        </form>
+      `;
+
+      modalOverlay.classList.add('open');
+    }
+
+    async executeEmptyWorkspace() {
+      const password = document.getElementById('erp-empty-owner-password')?.value.trim();
+      const confirmText = document.getElementById('erp-empty-confirm-text')?.value.trim().toUpperCase();
+
+      if (!password) {
+        alert('Please enter Owner password.');
+        return;
+      }
+
+      if (confirmText !== 'CONFIRM RESET' && confirmText !== 'RESET WORKSPACE') {
+        alert('Please type "CONFIRM RESET" to acknowledge operational data deletion.');
+        return;
+      }
+
+      const btn = document.getElementById('btn-do-workspace-reset');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '⏳ Downloading backup & resetting...';
+      }
+
+      try {
+        // First download backup
+        await this.downloadSystemBackup();
+
+        const token = this.getAuthToken();
+        const res = await fetch('/api/erp/demo?action=prepare-empty-workspace', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            ownerPassword: password,
+            confirmationText: confirmText
+          })
+        });
+
+        const data = await res.json();
+        if (!data.success) {
+          alert('Failed to reset workspace: ' + (data.message || 'Denied.'));
+          if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = 'Download Backup & Prepare Empty Workspace';
+          }
+          return;
+        }
+
+        // Clean local state
+        localStorage.removeItem('exide_orders');
+        localStorage.removeItem('bm_exide_orders');
+        localStorage.setItem('bm_demo_purged', 'true');
+        this.ordersData = [];
+
+        this.closeOrderModal();
+        await this.checkDemoModeStatus();
+        this.renderSettingsView(document.getElementById('erp-main-view'));
+        alert('Business workspace successfully initialized! Owner account and products catalog were preserved.');
+      } catch (e) {
+        alert('Error: ' + e.message);
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = 'Download Backup & Prepare Empty Workspace';
+        }
+      }
+    }
+
+    async downloadSystemBackup() {
+      try {
+        const token = this.getAuthToken();
+        const res = await fetch('/api/erp/demo?action=backup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        const data = await res.json();
+        if (data.success && data.backup) {
+          const blob = new Blob([JSON.stringify(data.backup, null, 2)], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = data.filename || `exide-erp-backup-${Date.now()}.json`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }
+      } catch (e) {
+        console.warn('Backup download error:', e.message);
+      }
+    }
+
+    async seedDemoDataAction() {
+      if (!confirm('Re-inject realistic multi-period demo dataset (orders, expenses, tasks, reports)?')) return;
+      try {
+        const token = this.getAuthToken();
+        const res = await fetch('/api/erp/demo?action=seed-demo', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        const data = await res.json();
+        if (data.success) {
+          localStorage.removeItem('bm_demo_purged');
+          await this.checkDemoModeStatus();
+          await this.quickSyncOrders();
+          this.renderSettingsView(document.getElementById('erp-main-view'));
+          alert('Demo dataset seeded successfully across multiple periods! Reconciled financials active.');
+        } else {
+          alert('Failed to seed demo data: ' + data.message);
+        }
+      } catch (e) {
+        alert('Error: ' + e.message);
+      }
     }
 
     async exportSalesOrdersCSV() {
@@ -5085,6 +5877,7 @@
                 <h1 class="erp-page-title" id="erp-page-title">Executive Dashboard & Live Store Sync</h1>
               </div>
               <div class="erp-topbar-actions">
+                <span id="erp-demo-mode-pill-slot"></span>
                 <span class="erp-badge-live">● Live Store Sync (Bijulibazar)</span>
                 <div class="erp-theme-picker">
                   <span style="font-size:0.72rem; color:var(--erp-muted); font-weight:700;">Theme:</span>

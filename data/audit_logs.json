@@ -1,5 +1,1694 @@
 [
   {
+    "id": "log_mvw2shig_6cfe2d",
+    "userId": "usr_superadmin_01",
+    "action": "DEMO_DATA_PURGED",
+    "entityName": "system",
+    "entityId": "demo_reset",
+    "oldState": null,
+    "newState": {
+      "purgedCounts": {
+        "orders": 7,
+        "purchases": 0,
+        "exchanges": 0,
+        "expenses": 11,
+        "tasks": 5,
+        "aiReports": 2,
+        "users": 0
+      },
+      "remainingOrders": 87
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:28.456Z"
+  },
+  {
+    "id": "log_mvw2shgc_aefbc0",
+    "userId": "usr_superadmin_01",
+    "action": "UPDATE_ORDER_STATUS",
+    "entityName": "orders",
+    "entityId": "EXD-605456",
+    "oldState": {
+      "previousStatus": "SHIPPED"
+    },
+    "newState": {
+      "newStatus": "DELIVERED",
+      "paymentStatus": "PAID",
+      "assignedRider": "Ramesh Thapa (+977 9801234567 - Kathmandu Central / Bijulibazar)"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:28.380Z"
+  },
+  {
+    "id": "log_mvw2shfw_0e82cb",
+    "userId": "usr_superadmin_01",
+    "action": "UPDATE_ORDER_STATUS",
+    "entityName": "orders",
+    "entityId": "EXD-605456",
+    "oldState": {
+      "previousStatus": "PROCESSING"
+    },
+    "newState": {
+      "newStatus": "SHIPPED",
+      "paymentStatus": "Pending Cash Collection",
+      "assignedRider": "Ramesh Thapa (+977 9801234567 - Kathmandu Central / Bijulibazar)"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:28.364Z"
+  },
+  {
+    "id": "log_mvw2shfj_8e331f",
+    "userId": "usr_superadmin_01",
+    "action": "UPDATE_ORDER_STATUS",
+    "entityName": "orders",
+    "entityId": "EXD-605456",
+    "oldState": {
+      "previousStatus": "CONFIRMED"
+    },
+    "newState": {
+      "newStatus": "PROCESSING",
+      "paymentStatus": "Pending Cash Collection",
+      "assignedRider": "Ramesh Thapa (+977 9801234567 - Kathmandu Central / Bijulibazar)"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:28.351Z"
+  },
+  {
+    "id": "log_mvw2sgjv_0574e7",
+    "userId": "staff_superadmin_01",
+    "action": "UPDATE_ORDER_STATUS",
+    "entityName": "orders",
+    "entityId": "EXD-570898",
+    "oldState": {
+      "previousStatus": "CONFIRMED"
+    },
+    "newState": {
+      "newStatus": "SHIPPED",
+      "paymentStatus": "Pending Cash Collection",
+      "assignedRider": "Bikash Shrestha (+977 9812345678 - Lalitpur)"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:27.212Z"
+  },
+  {
+    "id": "log_mvw2sg9p_5d909a",
+    "userId": "staff_superadmin_01",
+    "action": "UPDATE_ORDER_STATUS",
+    "entityName": "orders",
+    "entityId": "ORD-SYNC-1793431466750",
+    "oldState": {
+      "previousStatus": "SHIPPED"
+    },
+    "newState": {
+      "newStatus": "DELIVERED",
+      "paymentStatus": "PAID",
+      "assignedRider": "Bikash Shrestha (+977 9812345678)"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:26.845Z"
+  },
+  {
+    "id": "log_mvw2sg9c_d46dda",
+    "userId": "staff_superadmin_01",
+    "action": "UPDATE_ORDER_STATUS",
+    "entityName": "orders",
+    "entityId": "ORD-SYNC-1793431466750",
+    "oldState": {
+      "previousStatus": "PROCESSING"
+    },
+    "newState": {
+      "newStatus": "SHIPPED",
+      "paymentStatus": "PENDING",
+      "assignedRider": "Bikash Shrestha (+977 9812345678)"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:26.832Z"
+  },
+  {
+    "id": "log_mvw2sg8z_82f998",
+    "userId": "staff_superadmin_01",
+    "action": "UPDATE_ORDER_STATUS",
+    "entityName": "orders",
+    "entityId": "ORD-SYNC-1793431466750",
+    "oldState": {
+      "previousStatus": "PENDING"
+    },
+    "newState": {
+      "newStatus": "PROCESSING",
+      "paymentStatus": "PENDING",
+      "assignedRider": "Standard Kathmandu Express"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:26.819Z"
+  },
+  {
+    "id": "log_mvw2sg0n_6aab9a",
+    "userId": "admin_test_user",
+    "action": "UPDATE_ORDER_STATUS",
+    "entityName": "orders",
+    "entityId": "EXD-TEST-792877",
+    "oldState": {
+      "previousStatus": "SHIPPED"
+    },
+    "newState": {
+      "newStatus": "DELIVERED",
+      "paymentStatus": "PAID",
+      "assignedRider": "Bikash Shrestha (+977 9812345678 - Lalitpur & Patan)"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:26.519Z"
+  },
+  {
+    "id": "log_mvw2sg09_f5501a",
+    "userId": "admin_test_user",
+    "action": "UPDATE_ORDER_STATUS",
+    "entityName": "orders",
+    "entityId": "EXD-TEST-792877",
+    "oldState": {
+      "previousStatus": "CONFIRMED"
+    },
+    "newState": {
+      "newStatus": "SHIPPED",
+      "paymentStatus": "PENDING",
+      "assignedRider": "Bikash Shrestha (+977 9812345678 - Lalitpur & Patan)"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:26.505Z"
+  },
+  {
+    "id": "log_mvw2sfzv_c73358",
+    "userId": "sales_test_user",
+    "action": "UPDATE_ORDER_STATUS",
+    "entityName": "orders",
+    "entityId": "EXD-TEST-792877",
+    "oldState": {
+      "previousStatus": "PENDING"
+    },
+    "newState": {
+      "newStatus": "CONFIRMED",
+      "paymentStatus": "PENDING"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:26.492Z"
+  },
+  {
+    "id": "log_mvw2sfjj_157b8d",
+    "userId": "usr_inv_manager",
+    "action": "UPDATE_EXCHANGE_DISPOSITION",
+    "entityName": "exchanges",
+    "entityId": "exc_exc_2026_00174_sfj0",
+    "oldState": {
+      "previousStatus": "HOLDING_YARD"
+    },
+    "newState": {
+      "newStatus": "CONSIGNMENT_SMELTER"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:25.903Z"
+  },
+  {
+    "id": "log_mvw2sfj6_e26613",
+    "userId": "usr_sales_staff",
+    "action": "CREATE_SCRAP_EXCHANGE",
+    "entityName": "exchanges",
+    "entityId": "exc_exc_2026_00174_sfj0",
+    "oldState": null,
+    "newState": {
+      "exchangeNumber": "EXC-2026-00174",
+      "customer": "Deepak Thapa",
+      "capacityAh": 200,
+      "rebateAmount": 7000
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:25.890Z"
+  },
+  {
+    "id": "log_mvw2sfin_2ddbd5",
+    "userId": "usr_super_admin",
+    "action": "UPDATE_ORDER_STATUS",
+    "entityName": "orders",
+    "entityId": "EXD-573645",
+    "oldState": {
+      "previousStatus": "CONFIRMED"
+    },
+    "newState": {
+      "newStatus": "CANCELLED",
+      "paymentStatus": "PENDING"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:25.872Z"
+  },
+  {
+    "id": "log_mvw2sfif_45f67a",
+    "userId": "usr_super_admin",
+    "action": "SALES_RETURN",
+    "entityName": "stock_movement",
+    "entityId": "prod_test-exp-mvw2sf21_sf27",
+    "oldState": {
+      "previousStock": 50
+    },
+    "newState": {
+      "newStock": 52,
+      "quantity": 2,
+      "referenceType": "SALES_INVOICE_CANCEL",
+      "referenceId": "INV-2026-01122",
+      "reason": "Restock cancelled sales order EXD-573645"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:25.863Z"
+  },
+  {
+    "id": "log_mvw2sfhi_7a2078",
+    "userId": "usr_sales_staff",
+    "action": "CREATE_SALES_INVOICE",
+    "entityName": "orders",
+    "entityId": "EXD-573645",
+    "oldState": null,
+    "newState": {
+      "invoiceNumber": "INV-2026-01122",
+      "customer": "Krishna Prasad Sharma",
+      "grandTotal": 58478,
+      "itemsCount": 1
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:25.831Z"
+  },
+  {
+    "id": "log_mvw2sfgn_8e1f4a",
+    "userId": "usr_sales_staff",
+    "action": "SALES_DISPATCH",
+    "entityName": "stock_movement",
+    "entityId": "prod_test-exp-mvw2sf21_sf27",
+    "oldState": {
+      "previousStock": 52
+    },
+    "newState": {
+      "newStock": 50,
+      "quantity": -2,
+      "referenceType": "SALES_INVOICE",
+      "referenceId": "INV-2026-01122",
+      "reason": "Customer sale order dispatch (EXD-573645) to Krishna Prasad Sharma"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:25.799Z"
+  },
+  {
+    "id": "log_mvw2sffh_085754",
+    "userId": "usr_inv_manager",
+    "action": "EXECUTE_GRN",
+    "entityName": "purchases",
+    "entityId": "po_po_2026_00126_sfd9",
+    "oldState": {
+      "previousStatus": "COMPLETED"
+    },
+    "newState": {
+      "grnNumber": "GRN-MVW2SFDK",
+      "movements": [
+        {
+          "productId": "prod_test-exp-mvw2sf21_sf27",
+          "quantityReceived": 20,
+          "newStock": 52
+        }
+      ]
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:25.757Z"
+  },
+  {
+    "id": "log_mvw2sfe0_85aaf3",
+    "userId": "usr_inv_manager",
+    "action": "PURCHASE_RECEIPT",
+    "entityName": "stock_movement",
+    "entityId": "prod_test-exp-mvw2sf21_sf27",
+    "oldState": {
+      "previousStock": 32
+    },
+    "newState": {
+      "newStock": 52,
+      "quantity": 20,
+      "referenceType": "PURCHASE_ORDER",
+      "referenceId": "PO-2026-00126",
+      "reason": "Inward GRN receipt (GRN-MVW2SFDK) for PO PO-2026-00126"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:25.704Z"
+  },
+  {
+    "id": "log_mvw2sfdf_a0f973",
+    "userId": "usr_inv_manager",
+    "action": "CREATE_PURCHASE_ORDER",
+    "entityName": "purchases",
+    "entityId": "po_po_2026_00126_sfd9",
+    "oldState": null,
+    "newState": {
+      "poNumber": "PO-2026-00126",
+      "supplier": "Exide Industries Ltd.",
+      "grandTotal": 406800
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:25.683Z"
+  },
+  {
+    "id": "log_mvw2sfcn_a7f21f",
+    "userId": "usr_inv_manager",
+    "action": "CREATE_SUPPLIER",
+    "entityName": "suppliers",
+    "entityId": "sup_amaron_nepal_in_sfch",
+    "oldState": null,
+    "newState": {
+      "name": "Amaron Nepal Industrial Supply",
+      "pan": "301327989"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:25.655Z"
+  },
+  {
+    "id": "log_mvw2sf5g_b3f92f",
+    "userId": "usr_inv_manager",
+    "action": "AUDIT_ADJUSTMENT_DEDUCT",
+    "entityName": "stock_movement",
+    "entityId": "prod_test-exp-mvw2sf21_sf27",
+    "oldState": {
+      "previousStock": 35
+    },
+    "newState": {
+      "newStock": 32,
+      "quantity": -3,
+      "referenceType": "MANUAL_AUDIT_ADJUSTMENT",
+      "referenceId": "DMG-TEST-202",
+      "reason": "Acid leak during transit to Butwal depot"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:25.396Z"
+  },
+  {
+    "id": "log_mvw2sf4x_4b20d4",
+    "userId": "usr_inv_manager",
+    "action": "AUDIT_ADJUSTMENT_ADD",
+    "entityName": "stock_movement",
+    "entityId": "prod_test-exp-mvw2sf21_sf27",
+    "oldState": {
+      "previousStock": 25
+    },
+    "newState": {
+      "newStock": 35,
+      "quantity": 10,
+      "referenceType": "MANUAL_AUDIT_ADJUSTMENT",
+      "referenceId": "GRN-TEST-101",
+      "reason": "Inward shipment from Birgunj dry port"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:25.377Z"
+  },
+  {
+    "id": "log_mvw2sf43_1433cc",
+    "userId": "usr_super_admin",
+    "action": "CREATE_PRODUCT_SKU",
+    "entityName": "products",
+    "entityId": "prod_test-exp-mvw2sf21_sf27",
+    "oldState": null,
+    "newState": {
+      "sku": "TEST-EXP-MVW2SF21",
+      "name": "Exide Enterprise Inverter Battery 180Ah",
+      "openingStock": 25
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:25.347Z"
+  },
+  {
+    "id": "log_mvw2sf30_459080",
+    "userId": "usr_super_admin",
+    "action": "OPENING_BALANCE",
+    "entityName": "stock_movement",
+    "entityId": "prod_test-exp-mvw2sf21_sf27",
+    "oldState": {
+      "previousStock": 0
+    },
+    "newState": {
+      "newStock": 25,
+      "quantity": 25,
+      "referenceType": "INVENTORY_INIT",
+      "referenceId": "INIT-001",
+      "reason": "Initial SKU Creation Opening Stock"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:25.309Z"
+  },
+  {
+    "id": "log_mvw2sete_5aab7b",
+    "userId": "usr_mvqn13xl_35d214",
+    "action": "CUSTOMER_UPDATE_PROFILE",
+    "entityName": "profiles",
+    "entityId": "usr_mvqn13xl_35d214",
+    "oldState": null,
+    "newState": {
+      "fullName": "Sunil Kumar Yadav",
+      "phone": "9851225449",
+      "district": "Kathmandu"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:24.962Z"
+  },
+  {
+    "id": "log_mvw2set1_b45935",
+    "userId": "usr_mvw2ses5_4f1cea",
+    "action": "STAFF_LOGIN",
+    "entityName": "profiles",
+    "entityId": "usr_mvw2ses5_4f1cea",
+    "oldState": null,
+    "newState": {
+      "role": "sales_staff"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:24.949Z"
+  },
+  {
+    "id": "log_mvw2sesk_a70419",
+    "userId": "USER-SUPERADMIN-001",
+    "action": "STAFF_USER_ASSIGNED",
+    "entityName": "profiles",
+    "entityId": "usr_mvw2ses5_4f1cea",
+    "oldState": null,
+    "newState": {
+      "username": "bibek_sales_5092",
+      "fullName": "Bibek Thapa",
+      "role": "sales_staff",
+      "assignedBy": "USER-SUPERADMIN-001"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:24.932Z"
+  },
+  {
+    "id": "log_mvw2serz_47176e",
+    "userId": "USER-SUPERADMIN-001",
+    "action": "CREATE_STAFF_INVITATION",
+    "entityName": "staff_invitations",
+    "entityId": "INVITE-MVW2SERW",
+    "oldState": null,
+    "newState": {
+      "email": "warehouse.staff@exidebattery.com.np",
+      "role": "inventory_manager"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:24.911Z"
+  },
+  {
+    "id": "log_mvw2serp_2121f4",
+    "userId": "USER-SUPERADMIN-001",
+    "action": "STAFF_LOGIN",
+    "entityName": "profiles",
+    "entityId": "USER-SUPERADMIN-001",
+    "oldState": null,
+    "newState": {
+      "role": "super_admin"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:24.901Z"
+  },
+  {
+    "id": "log_mvw2serb_5c1cf7",
+    "userId": "usr_mvqn13xl_35d214",
+    "action": "ACCOUNT_LINK_PHONE",
+    "entityName": "profiles",
+    "entityId": "usr_mvqn13xl_35d214",
+    "oldState": null,
+    "newState": {
+      "phone": "9851225449"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:24.887Z"
+  },
+  {
+    "id": "log_mvw2seqr_8c05cd",
+    "userId": "usr_mvw2seql_cf33e4",
+    "action": "LOGIN_PHONE_OTP",
+    "entityName": "profiles",
+    "entityId": "usr_mvw2seql_cf33e4",
+    "oldState": null,
+    "newState": {
+      "phone": "9801342160"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:24.867Z"
+  },
+  {
+    "id": "log_mvw2sepz_ee3d4c",
+    "userId": "usr_mvqn13xl_35d214",
+    "action": "LOGIN_GOOGLE",
+    "entityName": "profiles",
+    "entityId": "usr_mvqn13xl_35d214",
+    "oldState": null,
+    "newState": {
+      "email": "test.customer.nepal@gmail.com"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:24.839Z"
+  },
+  {
+    "id": "log_mvw2seht_c87fcf",
+    "userId": "system",
+    "action": "SALES_DEDUCTION",
+    "entityName": "stock_movement",
+    "entityId": "prod_test-exp-mvw2qqfj_qqfo",
+    "oldState": {
+      "previousStock": 52
+    },
+    "newState": {
+      "newStock": 51,
+      "quantity": -1,
+      "referenceType": "SALES_ORDER",
+      "referenceId": "legacy",
+      "reason": "Checkout stock deduction"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:24.545Z"
+  },
+  {
+    "id": "log_mvw2s18w_316893",
+    "userId": "usr_superadmin_01",
+    "action": "DEMO_DATA_PURGED",
+    "entityName": "system",
+    "entityId": "demo_reset",
+    "oldState": null,
+    "newState": {
+      "purgedCounts": {
+        "orders": 7,
+        "purchases": 0,
+        "exchanges": 0,
+        "expenses": 11,
+        "tasks": 5,
+        "aiReports": 2,
+        "users": 0
+      },
+      "remainingOrders": 81
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:07.377Z"
+  },
+  {
+    "id": "log_mvw2s16z_45ed54",
+    "userId": "usr_superadmin_01",
+    "action": "UPDATE_ORDER_STATUS",
+    "entityName": "orders",
+    "entityId": "EXD-339168",
+    "oldState": {
+      "previousStatus": "SHIPPED"
+    },
+    "newState": {
+      "newStatus": "DELIVERED",
+      "paymentStatus": "PAID",
+      "assignedRider": "Ramesh Thapa (+977 9801234567 - Kathmandu Central / Bijulibazar)"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:07.307Z"
+  },
+  {
+    "id": "log_mvw2s16n_c42f0d",
+    "userId": "usr_superadmin_01",
+    "action": "UPDATE_ORDER_STATUS",
+    "entityName": "orders",
+    "entityId": "EXD-339168",
+    "oldState": {
+      "previousStatus": "PROCESSING"
+    },
+    "newState": {
+      "newStatus": "SHIPPED",
+      "paymentStatus": "Pending Cash Collection",
+      "assignedRider": "Ramesh Thapa (+977 9801234567 - Kathmandu Central / Bijulibazar)"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:07.295Z"
+  },
+  {
+    "id": "log_mvw2s169_2f33dd",
+    "userId": "usr_superadmin_01",
+    "action": "UPDATE_ORDER_STATUS",
+    "entityName": "orders",
+    "entityId": "EXD-339168",
+    "oldState": {
+      "previousStatus": "CONFIRMED"
+    },
+    "newState": {
+      "newStatus": "PROCESSING",
+      "paymentStatus": "Pending Cash Collection",
+      "assignedRider": "Ramesh Thapa (+977 9801234567 - Kathmandu Central / Bijulibazar)"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:24:07.281Z"
+  },
+  {
+    "id": "log_mvw2qrx4_1ba5a1",
+    "userId": "staff_superadmin_01",
+    "action": "UPDATE_ORDER_STATUS",
+    "entityName": "orders",
+    "entityId": "EXD-907507",
+    "oldState": {
+      "previousStatus": "CONFIRMED"
+    },
+    "newState": {
+      "newStatus": "SHIPPED",
+      "paymentStatus": "Pending Cash Collection",
+      "assignedRider": "Bikash Shrestha (+977 9812345678 - Lalitpur)"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:23:08.632Z"
+  },
+  {
+    "id": "log_mvw2qrn3_26da0b",
+    "userId": "staff_superadmin_01",
+    "action": "UPDATE_ORDER_STATUS",
+    "entityName": "orders",
+    "entityId": "ORD-SYNC-1793431388167",
+    "oldState": {
+      "previousStatus": "SHIPPED"
+    },
+    "newState": {
+      "newStatus": "DELIVERED",
+      "paymentStatus": "PAID",
+      "assignedRider": "Bikash Shrestha (+977 9812345678)"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:23:08.271Z"
+  },
+  {
+    "id": "log_mvw2qrmr_74839c",
+    "userId": "staff_superadmin_01",
+    "action": "UPDATE_ORDER_STATUS",
+    "entityName": "orders",
+    "entityId": "ORD-SYNC-1793431388167",
+    "oldState": {
+      "previousStatus": "PROCESSING"
+    },
+    "newState": {
+      "newStatus": "SHIPPED",
+      "paymentStatus": "PENDING",
+      "assignedRider": "Bikash Shrestha (+977 9812345678)"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:23:08.259Z"
+  },
+  {
+    "id": "log_mvw2qrmd_234763",
+    "userId": "staff_superadmin_01",
+    "action": "UPDATE_ORDER_STATUS",
+    "entityName": "orders",
+    "entityId": "ORD-SYNC-1793431388167",
+    "oldState": {
+      "previousStatus": "PENDING"
+    },
+    "newState": {
+      "newStatus": "PROCESSING",
+      "paymentStatus": "PENDING",
+      "assignedRider": "Standard Kathmandu Express"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:23:08.246Z"
+  },
+  {
+    "id": "log_mvw2qrdk_b23787",
+    "userId": "admin_test_user",
+    "action": "UPDATE_ORDER_STATUS",
+    "entityName": "orders",
+    "entityId": "EXD-TEST-115647",
+    "oldState": {
+      "previousStatus": "SHIPPED"
+    },
+    "newState": {
+      "newStatus": "DELIVERED",
+      "paymentStatus": "PAID",
+      "assignedRider": "Bikash Shrestha (+977 9812345678 - Lalitpur & Patan)"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:23:07.928Z"
+  },
+  {
+    "id": "log_mvw2qrd9_8b16a7",
+    "userId": "admin_test_user",
+    "action": "UPDATE_ORDER_STATUS",
+    "entityName": "orders",
+    "entityId": "EXD-TEST-115647",
+    "oldState": {
+      "previousStatus": "CONFIRMED"
+    },
+    "newState": {
+      "newStatus": "SHIPPED",
+      "paymentStatus": "PENDING",
+      "assignedRider": "Bikash Shrestha (+977 9812345678 - Lalitpur & Patan)"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:23:07.917Z"
+  },
+  {
+    "id": "log_mvw2qrcx_b7a179",
+    "userId": "sales_test_user",
+    "action": "UPDATE_ORDER_STATUS",
+    "entityName": "orders",
+    "entityId": "EXD-TEST-115647",
+    "oldState": {
+      "previousStatus": "PENDING"
+    },
+    "newState": {
+      "newStatus": "CONFIRMED",
+      "paymentStatus": "PENDING"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:23:07.905Z"
+  },
+  {
+    "id": "log_mvw2qqx0_747c50",
+    "userId": "usr_inv_manager",
+    "action": "UPDATE_EXCHANGE_DISPOSITION",
+    "entityName": "exchanges",
+    "entityId": "exc_exc_2026_00171_qqwg",
+    "oldState": {
+      "previousStatus": "HOLDING_YARD"
+    },
+    "newState": {
+      "newStatus": "CONSIGNMENT_SMELTER"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:23:07.332Z"
+  },
+  {
+    "id": "log_mvw2qqwm_359b7a",
+    "userId": "usr_sales_staff",
+    "action": "CREATE_SCRAP_EXCHANGE",
+    "entityName": "exchanges",
+    "entityId": "exc_exc_2026_00171_qqwg",
+    "oldState": null,
+    "newState": {
+      "exchangeNumber": "EXC-2026-00171",
+      "customer": "Deepak Thapa",
+      "capacityAh": 200,
+      "rebateAmount": 7000
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:23:07.319Z"
+  },
+  {
+    "id": "log_mvw2qqw3_c67e4c",
+    "userId": "usr_super_admin",
+    "action": "UPDATE_ORDER_STATUS",
+    "entityName": "orders",
+    "entityId": "EXD-346630",
+    "oldState": {
+      "previousStatus": "CONFIRMED"
+    },
+    "newState": {
+      "newStatus": "CANCELLED",
+      "paymentStatus": "PENDING"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:23:07.299Z"
+  },
+  {
+    "id": "log_mvw2qqvw_a6bf5f",
+    "userId": "usr_super_admin",
+    "action": "SALES_RETURN",
+    "entityName": "stock_movement",
+    "entityId": "prod_test-exp-mvw2qqfj_qqfo",
+    "oldState": {
+      "previousStock": 50
+    },
+    "newState": {
+      "newStock": 52,
+      "quantity": 2,
+      "referenceType": "SALES_INVOICE_CANCEL",
+      "referenceId": "INV-2026-01117",
+      "reason": "Restock cancelled sales order EXD-346630"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:23:07.292Z"
+  },
+  {
+    "id": "log_mvw2qquy_1acb0f",
+    "userId": "usr_sales_staff",
+    "action": "CREATE_SALES_INVOICE",
+    "entityName": "orders",
+    "entityId": "EXD-346630",
+    "oldState": null,
+    "newState": {
+      "invoiceNumber": "INV-2026-01117",
+      "customer": "Krishna Prasad Sharma",
+      "grandTotal": 58478,
+      "itemsCount": 1
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:23:07.258Z"
+  },
+  {
+    "id": "log_mvw2qqto_e06693",
+    "userId": "usr_sales_staff",
+    "action": "SALES_DISPATCH",
+    "entityName": "stock_movement",
+    "entityId": "prod_test-exp-mvw2qqfj_qqfo",
+    "oldState": {
+      "previousStock": 52
+    },
+    "newState": {
+      "newStock": 50,
+      "quantity": -2,
+      "referenceType": "SALES_INVOICE",
+      "referenceId": "INV-2026-01117",
+      "reason": "Customer sale order dispatch (EXD-346630) to Krishna Prasad Sharma"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:23:07.212Z"
+  },
+  {
+    "id": "log_mvw2qqsh_11bb2c",
+    "userId": "usr_inv_manager",
+    "action": "EXECUTE_GRN",
+    "entityName": "purchases",
+    "entityId": "po_po_2026_00125_qqq6",
+    "oldState": {
+      "previousStatus": "COMPLETED"
+    },
+    "newState": {
+      "grnNumber": "GRN-MVW2QQQI",
+      "movements": [
+        {
+          "productId": "prod_test-exp-mvw2qqfj_qqfo",
+          "quantityReceived": 20,
+          "newStock": 52
+        }
+      ]
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:23:07.169Z"
+  },
+  {
+    "id": "log_mvw2qqqz_5311ab",
+    "userId": "usr_inv_manager",
+    "action": "PURCHASE_RECEIPT",
+    "entityName": "stock_movement",
+    "entityId": "prod_test-exp-mvw2qqfj_qqfo",
+    "oldState": {
+      "previousStock": 32
+    },
+    "newState": {
+      "newStock": 52,
+      "quantity": 20,
+      "referenceType": "PURCHASE_ORDER",
+      "referenceId": "PO-2026-00125",
+      "reason": "Inward GRN receipt (GRN-MVW2QQQI) for PO PO-2026-00125"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:23:07.115Z"
+  },
+  {
+    "id": "log_mvw2qqqd_b60c34",
+    "userId": "usr_inv_manager",
+    "action": "CREATE_PURCHASE_ORDER",
+    "entityName": "purchases",
+    "entityId": "po_po_2026_00125_qqq6",
+    "oldState": null,
+    "newState": {
+      "poNumber": "PO-2026-00125",
+      "supplier": "Exide Industries Ltd.",
+      "grandTotal": 406800
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:23:07.093Z"
+  },
+  {
+    "id": "log_mvw2qqph_ee1d79",
+    "userId": "usr_inv_manager",
+    "action": "CREATE_SUPPLIER",
+    "entityName": "suppliers",
+    "entityId": "sup_amaron_nepal_in_qqpb",
+    "oldState": null,
+    "newState": {
+      "name": "Amaron Nepal Industrial Supply",
+      "pan": "307584174"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:23:07.061Z"
+  },
+  {
+    "id": "log_mvw2qqiq_5192f4",
+    "userId": "usr_inv_manager",
+    "action": "AUDIT_ADJUSTMENT_DEDUCT",
+    "entityName": "stock_movement",
+    "entityId": "prod_test-exp-mvw2qqfj_qqfo",
+    "oldState": {
+      "previousStock": 35
+    },
+    "newState": {
+      "newStock": 32,
+      "quantity": -3,
+      "referenceType": "MANUAL_AUDIT_ADJUSTMENT",
+      "referenceId": "DMG-TEST-202",
+      "reason": "Acid leak during transit to Butwal depot"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:23:06.819Z"
+  },
+  {
+    "id": "log_mvw2qqi7_73882b",
+    "userId": "usr_inv_manager",
+    "action": "AUDIT_ADJUSTMENT_ADD",
+    "entityName": "stock_movement",
+    "entityId": "prod_test-exp-mvw2qqfj_qqfo",
+    "oldState": {
+      "previousStock": 25
+    },
+    "newState": {
+      "newStock": 35,
+      "quantity": 10,
+      "referenceType": "MANUAL_AUDIT_ADJUSTMENT",
+      "referenceId": "GRN-TEST-101",
+      "reason": "Inward shipment from Birgunj dry port"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:23:06.800Z"
+  },
+  {
+    "id": "log_mvw2qqhd_d81264",
+    "userId": "usr_super_admin",
+    "action": "CREATE_PRODUCT_SKU",
+    "entityName": "products",
+    "entityId": "prod_test-exp-mvw2qqfj_qqfo",
+    "oldState": null,
+    "newState": {
+      "sku": "TEST-EXP-MVW2QQFJ",
+      "name": "Exide Enterprise Inverter Battery 180Ah",
+      "openingStock": 25
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:23:06.769Z"
+  },
+  {
+    "id": "log_mvw2qqgc_f8a150",
+    "userId": "usr_super_admin",
+    "action": "OPENING_BALANCE",
+    "entityName": "stock_movement",
+    "entityId": "prod_test-exp-mvw2qqfj_qqfo",
+    "oldState": {
+      "previousStock": 0
+    },
+    "newState": {
+      "newStock": 25,
+      "quantity": 25,
+      "referenceType": "INVENTORY_INIT",
+      "referenceId": "INIT-001",
+      "reason": "Initial SKU Creation Opening Stock"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:23:06.732Z"
+  },
+  {
+    "id": "log_mvw2qq9k_6d6f32",
+    "userId": "usr_mvqn13xl_35d214",
+    "action": "CUSTOMER_UPDATE_PROFILE",
+    "entityName": "profiles",
+    "entityId": "usr_mvqn13xl_35d214",
+    "oldState": null,
+    "newState": {
+      "fullName": "Sunil Kumar Yadav",
+      "phone": "9851315610",
+      "district": "Kathmandu"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:23:06.488Z"
+  },
+  {
+    "id": "log_mvw2qq9a_2d21b9",
+    "userId": "usr_mvw2qq8j_78cf46",
+    "action": "STAFF_LOGIN",
+    "entityName": "profiles",
+    "entityId": "usr_mvw2qq8j_78cf46",
+    "oldState": null,
+    "newState": {
+      "role": "sales_staff"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:23:06.478Z"
+  },
+  {
+    "id": "log_mvw2qq8w_1148eb",
+    "userId": "USER-SUPERADMIN-001",
+    "action": "STAFF_USER_ASSIGNED",
+    "entityName": "profiles",
+    "entityId": "usr_mvw2qq8j_78cf46",
+    "oldState": null,
+    "newState": {
+      "username": "bibek_sales_1392",
+      "fullName": "Bibek Thapa",
+      "role": "sales_staff",
+      "assignedBy": "USER-SUPERADMIN-001"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:23:06.464Z"
+  },
+  {
+    "id": "log_mvw2qq8d_10112a",
+    "userId": "USER-SUPERADMIN-001",
+    "action": "CREATE_STAFF_INVITATION",
+    "entityName": "staff_invitations",
+    "entityId": "INVITE-MVW2QQ8A",
+    "oldState": null,
+    "newState": {
+      "email": "warehouse.staff@exidebattery.com.np",
+      "role": "inventory_manager"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:23:06.445Z"
+  },
+  {
+    "id": "log_mvw2qq84_ce34aa",
+    "userId": "USER-SUPERADMIN-001",
+    "action": "STAFF_LOGIN",
+    "entityName": "profiles",
+    "entityId": "USER-SUPERADMIN-001",
+    "oldState": null,
+    "newState": {
+      "role": "super_admin"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:23:06.436Z"
+  },
+  {
+    "id": "log_mvw2qq7m_79ba2e",
+    "userId": "usr_mvqn13xl_35d214",
+    "action": "ACCOUNT_LINK_PHONE",
+    "entityName": "profiles",
+    "entityId": "usr_mvqn13xl_35d214",
+    "oldState": null,
+    "newState": {
+      "phone": "9851315610"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:23:06.419Z"
+  },
+  {
+    "id": "log_mvw2qq74_82f054",
+    "userId": "usr_mvw2qq70_1c109d",
+    "action": "LOGIN_PHONE_OTP",
+    "entityName": "profiles",
+    "entityId": "usr_mvw2qq70_1c109d",
+    "oldState": null,
+    "newState": {
+      "phone": "9801550998"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:23:06.400Z"
+  },
+  {
+    "id": "log_mvw2qq6h_1db5d4",
+    "userId": "usr_mvqn13xl_35d214",
+    "action": "LOGIN_GOOGLE",
+    "entityName": "profiles",
+    "entityId": "usr_mvqn13xl_35d214",
+    "oldState": null,
+    "newState": {
+      "email": "test.customer.nepal@gmail.com"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:23:06.377Z"
+  },
+  {
+    "id": "log_mvw2qpz2_e9ad92",
+    "userId": "system",
+    "action": "SALES_DEDUCTION",
+    "entityName": "stock_movement",
+    "entityId": "prod_test-exp-mvw2pia0_pia6",
+    "oldState": {
+      "previousStock": 52
+    },
+    "newState": {
+      "newStock": 51,
+      "quantity": -1,
+      "referenceType": "SALES_ORDER",
+      "referenceId": "legacy",
+      "reason": "Checkout stock deduction"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:23:06.110Z"
+  },
+  {
+    "id": "log_mvw2pjy0_ccaca1",
+    "userId": "staff_superadmin_01",
+    "action": "UPDATE_ORDER_STATUS",
+    "entityName": "orders",
+    "entityId": "EXD-989978",
+    "oldState": {
+      "previousStatus": "CONFIRMED"
+    },
+    "newState": {
+      "newStatus": "SHIPPED",
+      "paymentStatus": "Pending Cash Collection",
+      "assignedRider": "Bikash Shrestha (+977 9812345678 - Lalitpur)"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:22:11.640Z"
+  },
+  {
+    "id": "log_mvw2pjnm_60447c",
+    "userId": "staff_superadmin_01",
+    "action": "UPDATE_ORDER_STATUS",
+    "entityName": "orders",
+    "entityId": "ORD-SYNC-1793431331169",
+    "oldState": {
+      "previousStatus": "SHIPPED"
+    },
+    "newState": {
+      "newStatus": "DELIVERED",
+      "paymentStatus": "PAID",
+      "assignedRider": "Bikash Shrestha (+977 9812345678)"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:22:11.266Z"
+  },
+  {
+    "id": "log_mvw2pjna_65c881",
+    "userId": "staff_superadmin_01",
+    "action": "UPDATE_ORDER_STATUS",
+    "entityName": "orders",
+    "entityId": "ORD-SYNC-1793431331169",
+    "oldState": {
+      "previousStatus": "PROCESSING"
+    },
+    "newState": {
+      "newStatus": "SHIPPED",
+      "paymentStatus": "PENDING",
+      "assignedRider": "Bikash Shrestha (+977 9812345678)"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:22:11.255Z"
+  },
+  {
+    "id": "log_mvw2pjmx_2d8761",
+    "userId": "staff_superadmin_01",
+    "action": "UPDATE_ORDER_STATUS",
+    "entityName": "orders",
+    "entityId": "ORD-SYNC-1793431331169",
+    "oldState": {
+      "previousStatus": "PENDING"
+    },
+    "newState": {
+      "newStatus": "PROCESSING",
+      "paymentStatus": "PENDING",
+      "assignedRider": "Standard Kathmandu Express"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:22:11.241Z"
+  },
+  {
+    "id": "log_mvw2pjbh_1cf5bf",
+    "userId": "admin_test_user",
+    "action": "UPDATE_ORDER_STATUS",
+    "entityName": "orders",
+    "entityId": "EXD-TEST-377871",
+    "oldState": {
+      "previousStatus": "SHIPPED"
+    },
+    "newState": {
+      "newStatus": "DELIVERED",
+      "paymentStatus": "PAID",
+      "assignedRider": "Bikash Shrestha (+977 9812345678 - Lalitpur & Patan)"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:22:10.829Z"
+  },
+  {
+    "id": "log_mvw2pjb6_73c2d8",
+    "userId": "admin_test_user",
+    "action": "UPDATE_ORDER_STATUS",
+    "entityName": "orders",
+    "entityId": "EXD-TEST-377871",
+    "oldState": {
+      "previousStatus": "CONFIRMED"
+    },
+    "newState": {
+      "newStatus": "SHIPPED",
+      "paymentStatus": "PENDING",
+      "assignedRider": "Bikash Shrestha (+977 9812345678 - Lalitpur & Patan)"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:22:10.818Z"
+  },
+  {
+    "id": "log_mvw2pjat_92a430",
+    "userId": "sales_test_user",
+    "action": "UPDATE_ORDER_STATUS",
+    "entityName": "orders",
+    "entityId": "EXD-TEST-377871",
+    "oldState": {
+      "previousStatus": "PENDING"
+    },
+    "newState": {
+      "newStatus": "CONFIRMED",
+      "paymentStatus": "PENDING"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:22:10.805Z"
+  },
+  {
+    "id": "log_mvw2pirz_077880",
+    "userId": "usr_inv_manager",
+    "action": "UPDATE_EXCHANGE_DISPOSITION",
+    "entityName": "exchanges",
+    "entityId": "exc_exc_2026_00168_pirg",
+    "oldState": {
+      "previousStatus": "HOLDING_YARD"
+    },
+    "newState": {
+      "newStatus": "CONSIGNMENT_SMELTER"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:22:10.128Z"
+  },
+  {
+    "id": "log_mvw2pirm_af227b",
+    "userId": "usr_sales_staff",
+    "action": "CREATE_SCRAP_EXCHANGE",
+    "entityName": "exchanges",
+    "entityId": "exc_exc_2026_00168_pirg",
+    "oldState": null,
+    "newState": {
+      "exchangeNumber": "EXC-2026-00168",
+      "customer": "Deepak Thapa",
+      "capacityAh": 200,
+      "rebateAmount": 7000
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:22:10.114Z"
+  },
+  {
+    "id": "log_mvw2pir2_b88e38",
+    "userId": "usr_super_admin",
+    "action": "UPDATE_ORDER_STATUS",
+    "entityName": "orders",
+    "entityId": "EXD-866864",
+    "oldState": {
+      "previousStatus": "CONFIRMED"
+    },
+    "newState": {
+      "newStatus": "CANCELLED",
+      "paymentStatus": "PENDING"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:22:10.094Z"
+  },
+  {
+    "id": "log_mvw2piqr_7e04ce",
+    "userId": "usr_super_admin",
+    "action": "SALES_RETURN",
+    "entityName": "stock_movement",
+    "entityId": "prod_test-exp-mvw2pia0_pia6",
+    "oldState": {
+      "previousStock": 50
+    },
+    "newState": {
+      "newStock": 52,
+      "quantity": 2,
+      "referenceType": "SALES_INVOICE_CANCEL",
+      "referenceId": "INV-2026-01113",
+      "reason": "Restock cancelled sales order EXD-866864"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:22:10.084Z"
+  },
+  {
+    "id": "log_mvw2pipr_541ff1",
+    "userId": "usr_sales_staff",
+    "action": "CREATE_SALES_INVOICE",
+    "entityName": "orders",
+    "entityId": "EXD-866864",
+    "oldState": null,
+    "newState": {
+      "invoiceNumber": "INV-2026-01113",
+      "customer": "Krishna Prasad Sharma",
+      "grandTotal": 58478,
+      "itemsCount": 1
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:22:10.047Z"
+  },
+  {
+    "id": "log_mvw2pios_5a0174",
+    "userId": "usr_sales_staff",
+    "action": "SALES_DISPATCH",
+    "entityName": "stock_movement",
+    "entityId": "prod_test-exp-mvw2pia0_pia6",
+    "oldState": {
+      "previousStock": 52
+    },
+    "newState": {
+      "newStock": 50,
+      "quantity": -2,
+      "referenceType": "SALES_INVOICE",
+      "referenceId": "INV-2026-01113",
+      "reason": "Customer sale order dispatch (EXD-866864) to Krishna Prasad Sharma"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:22:10.012Z"
+  },
+  {
+    "id": "log_mvw2pinj_ec4f80",
+    "userId": "usr_inv_manager",
+    "action": "EXECUTE_GRN",
+    "entityName": "purchases",
+    "entityId": "po_po_2026_00124_pil5",
+    "oldState": {
+      "previousStatus": "COMPLETED"
+    },
+    "newState": {
+      "grnNumber": "GRN-MVW2PILG",
+      "movements": [
+        {
+          "productId": "prod_test-exp-mvw2pia0_pia6",
+          "quantityReceived": 20,
+          "newStock": 52
+        }
+      ]
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:22:09.967Z"
+  },
+  {
+    "id": "log_mvw2pily_cab318",
+    "userId": "usr_inv_manager",
+    "action": "PURCHASE_RECEIPT",
+    "entityName": "stock_movement",
+    "entityId": "prod_test-exp-mvw2pia0_pia6",
+    "oldState": {
+      "previousStock": 32
+    },
+    "newState": {
+      "newStock": 52,
+      "quantity": 20,
+      "referenceType": "PURCHASE_ORDER",
+      "referenceId": "PO-2026-00124",
+      "reason": "Inward GRN receipt (GRN-MVW2PILG) for PO PO-2026-00124"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:22:09.910Z"
+  },
+  {
+    "id": "log_mvw2pilb_fe172f",
+    "userId": "usr_inv_manager",
+    "action": "CREATE_PURCHASE_ORDER",
+    "entityName": "purchases",
+    "entityId": "po_po_2026_00124_pil5",
+    "oldState": null,
+    "newState": {
+      "poNumber": "PO-2026-00124",
+      "supplier": "Exide Industries Ltd.",
+      "grandTotal": 406800
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:22:09.887Z"
+  },
+  {
+    "id": "log_mvw2pikc_57cc72",
+    "userId": "usr_inv_manager",
+    "action": "CREATE_SUPPLIER",
+    "entityName": "suppliers",
+    "entityId": "sup_amaron_nepal_in_pik5",
+    "oldState": null,
+    "newState": {
+      "name": "Amaron Nepal Industrial Supply",
+      "pan": "304229621"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:22:09.852Z"
+  },
+  {
+    "id": "log_mvw2pid9_af81a5",
+    "userId": "usr_inv_manager",
+    "action": "AUDIT_ADJUSTMENT_DEDUCT",
+    "entityName": "stock_movement",
+    "entityId": "prod_test-exp-mvw2pia0_pia6",
+    "oldState": {
+      "previousStock": 35
+    },
+    "newState": {
+      "newStock": 32,
+      "quantity": -3,
+      "referenceType": "MANUAL_AUDIT_ADJUSTMENT",
+      "referenceId": "DMG-TEST-202",
+      "reason": "Acid leak during transit to Butwal depot"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:22:09.597Z"
+  },
+  {
+    "id": "log_mvw2picq_e74df5",
+    "userId": "usr_inv_manager",
+    "action": "AUDIT_ADJUSTMENT_ADD",
+    "entityName": "stock_movement",
+    "entityId": "prod_test-exp-mvw2pia0_pia6",
+    "oldState": {
+      "previousStock": 25
+    },
+    "newState": {
+      "newStock": 35,
+      "quantity": 10,
+      "referenceType": "MANUAL_AUDIT_ADJUSTMENT",
+      "referenceId": "GRN-TEST-101",
+      "reason": "Inward shipment from Birgunj dry port"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:22:09.578Z"
+  },
+  {
+    "id": "log_mvw2pibw_17ed61",
+    "userId": "usr_super_admin",
+    "action": "CREATE_PRODUCT_SKU",
+    "entityName": "products",
+    "entityId": "prod_test-exp-mvw2pia0_pia6",
+    "oldState": null,
+    "newState": {
+      "sku": "TEST-EXP-MVW2PIA0",
+      "name": "Exide Enterprise Inverter Battery 180Ah",
+      "openingStock": 25
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:22:09.548Z"
+  },
+  {
+    "id": "log_mvw2piav_96f387",
+    "userId": "usr_super_admin",
+    "action": "OPENING_BALANCE",
+    "entityName": "stock_movement",
+    "entityId": "prod_test-exp-mvw2pia0_pia6",
+    "oldState": {
+      "previousStock": 0
+    },
+    "newState": {
+      "newStock": 25,
+      "quantity": 25,
+      "referenceType": "INVENTORY_INIT",
+      "referenceId": "INIT-001",
+      "reason": "Initial SKU Creation Opening Stock"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:22:09.511Z"
+  },
+  {
+    "id": "log_mvw2pi38_abd3b0",
+    "userId": "usr_mvqn13xl_35d214",
+    "action": "CUSTOMER_UPDATE_PROFILE",
+    "entityName": "profiles",
+    "entityId": "usr_mvqn13xl_35d214",
+    "oldState": null,
+    "newState": {
+      "fullName": "Sunil Kumar Yadav",
+      "phone": "9851346923",
+      "district": "Kathmandu"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:22:09.236Z"
+  },
+  {
+    "id": "log_mvw2pi2x_4860b1",
+    "userId": "usr_mvw2pi24_c750b4",
+    "action": "STAFF_LOGIN",
+    "entityName": "profiles",
+    "entityId": "usr_mvw2pi24_c750b4",
+    "oldState": null,
+    "newState": {
+      "role": "sales_staff"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:22:09.225Z"
+  },
+  {
+    "id": "log_mvw2pi2i_6f6187",
+    "userId": "USER-SUPERADMIN-001",
+    "action": "STAFF_USER_ASSIGNED",
+    "entityName": "profiles",
+    "entityId": "usr_mvw2pi24_c750b4",
+    "oldState": null,
+    "newState": {
+      "username": "bibek_sales_5268",
+      "fullName": "Bibek Thapa",
+      "role": "sales_staff",
+      "assignedBy": "USER-SUPERADMIN-001"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:22:09.210Z"
+  },
+  {
+    "id": "log_mvw2pi1z_0fa884",
+    "userId": "USER-SUPERADMIN-001",
+    "action": "CREATE_STAFF_INVITATION",
+    "entityName": "staff_invitations",
+    "entityId": "INVITE-MVW2PI1W",
+    "oldState": null,
+    "newState": {
+      "email": "warehouse.staff@exidebattery.com.np",
+      "role": "inventory_manager"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:22:09.191Z"
+  },
+  {
+    "id": "log_mvw2pi1p_a372ea",
+    "userId": "USER-SUPERADMIN-001",
+    "action": "STAFF_LOGIN",
+    "entityName": "profiles",
+    "entityId": "USER-SUPERADMIN-001",
+    "oldState": null,
+    "newState": {
+      "role": "super_admin"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:22:09.182Z"
+  },
+  {
+    "id": "log_mvw2pi1b_85fe1d",
+    "userId": "usr_mvqn13xl_35d214",
+    "action": "ACCOUNT_LINK_PHONE",
+    "entityName": "profiles",
+    "entityId": "usr_mvqn13xl_35d214",
+    "oldState": null,
+    "newState": {
+      "phone": "9851346923"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:22:09.167Z"
+  },
+  {
+    "id": "log_mvw2pi0p_f5a041",
+    "userId": "usr_mvw2pi0k_3c4129",
+    "action": "LOGIN_PHONE_OTP",
+    "entityName": "profiles",
+    "entityId": "usr_mvw2pi0k_3c4129",
+    "oldState": null,
+    "newState": {
+      "phone": "9801820114"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:22:09.145Z"
+  },
+  {
+    "id": "log_mvw2phzu_ad00d0",
+    "userId": "usr_mvqn13xl_35d214",
+    "action": "LOGIN_GOOGLE",
+    "entityName": "profiles",
+    "entityId": "usr_mvqn13xl_35d214",
+    "oldState": null,
+    "newState": {
+      "email": "test.customer.nepal@gmail.com"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:22:09.114Z"
+  },
+  {
+    "id": "log_mvw2phqp_f53d86",
+    "userId": "system",
+    "action": "SALES_DEDUCTION",
+    "entityName": "stock_movement",
+    "entityId": "prod_test-exp-mvw0lvqm_lvqt",
+    "oldState": {
+      "previousStock": 52
+    },
+    "newState": {
+      "newStock": 51,
+      "quantity": -1,
+      "referenceType": "SALES_ORDER",
+      "referenceId": "legacy",
+      "reason": "Checkout stock deduction"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:22:08.785Z"
+  },
+  {
+    "id": "log_mvw2p83l_c896b3",
+    "userId": "usr_superadmin_01",
+    "action": "DEMO_DATA_PURGED",
+    "entityName": "system",
+    "entityId": "demo_reset",
+    "oldState": null,
+    "newState": {
+      "purgedCounts": {
+        "orders": 7,
+        "purchases": 0,
+        "exchanges": 0,
+        "expenses": 11,
+        "tasks": 5,
+        "aiReports": 2,
+        "users": 0
+      },
+      "remainingOrders": 70
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:21:56.289Z"
+  },
+  {
+    "id": "log_mvw2p81n_7bce36",
+    "userId": "usr_superadmin_01",
+    "action": "UPDATE_ORDER_STATUS",
+    "entityName": "orders",
+    "entityId": "EXD-291579",
+    "oldState": {
+      "previousStatus": "SHIPPED"
+    },
+    "newState": {
+      "newStatus": "DELIVERED",
+      "paymentStatus": "PAID",
+      "assignedRider": "Ramesh Thapa (+977 9801234567 - Kathmandu Central / Bijulibazar)"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:21:56.219Z"
+  },
+  {
+    "id": "log_mvw2p81a_c13426",
+    "userId": "usr_superadmin_01",
+    "action": "UPDATE_ORDER_STATUS",
+    "entityName": "orders",
+    "entityId": "EXD-291579",
+    "oldState": {
+      "previousStatus": "PROCESSING"
+    },
+    "newState": {
+      "newStatus": "SHIPPED",
+      "paymentStatus": "Pending Cash Collection",
+      "assignedRider": "Ramesh Thapa (+977 9801234567 - Kathmandu Central / Bijulibazar)"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:21:56.206Z"
+  },
+  {
+    "id": "log_mvw2p80y_8a5d3f",
+    "userId": "usr_superadmin_01",
+    "action": "UPDATE_ORDER_STATUS",
+    "entityName": "orders",
+    "entityId": "EXD-291579",
+    "oldState": {
+      "previousStatus": "CONFIRMED"
+    },
+    "newState": {
+      "newStatus": "PROCESSING",
+      "paymentStatus": "Pending Cash Collection",
+      "assignedRider": "Ramesh Thapa (+977 9801234567 - Kathmandu Central / Bijulibazar)"
+    },
+    "ipAddress": "",
+    "timestamp": "2026-10-31T07:21:56.195Z"
+  },
+  {
     "id": "log_mvw0lxr0_7ce451",
     "userId": "staff_superadmin_01",
     "action": "UPDATE_ORDER_STATUS",
