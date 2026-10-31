@@ -119,6 +119,34 @@
       if (sel) sel.value = this.currentTheme;
     }
 
+    setModalTitle(titleHtml) {
+      const titleEl = document.getElementById('erp-modal-title');
+      if (titleEl) {
+        titleEl.innerHTML = titleHtml || 'ERP Operations';
+      }
+    }
+
+    showToast(message, type = 'info') {
+      let toastContainer = document.getElementById('erp-toast-container');
+      if (!toastContainer) {
+        toastContainer = document.createElement('div');
+        toastContainer.id = 'erp-toast-container';
+        toastContainer.style.cssText = 'position:fixed; bottom:24px; right:24px; z-index:999999; display:flex; flex-direction:column; gap:8px; pointer-events:none;';
+        document.body.appendChild(toastContainer);
+      }
+      const toast = document.createElement('div');
+      const bg = type === 'success' ? '#10B981' : (type === 'error' ? '#EF4444' : '#003399');
+      toast.style.cssText = `background:${bg}; color:#FFFFFF; padding:10px 18px; border-radius:8px; font-weight:700; font-size:0.85rem; box-shadow:0 4px 14px rgba(0,0,0,0.2); transition:all 0.3s ease; opacity:0; transform:translateY(10px); pointer-events:auto;`;
+      toast.textContent = message;
+      toastContainer.appendChild(toast);
+      setTimeout(() => { toast.style.opacity = '1'; toast.style.transform = 'translateY(0)'; }, 20);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
     // ------------------------------------------------------------------------
     // AUTHENTICATION & SESSION VERIFICATION
     // ------------------------------------------------------------------------
@@ -2116,6 +2144,14 @@
         }
 
         // 3. Seamlessly merge server and local orders (prevent checkout orders from ever being hidden)
+        const STATUS_RANKS = {
+          'PENDING': 1, 'CREATED': 1, 'SUBMITTED': 1,
+          'PROCESSING': 2, 'CONFIRMED': 2, 'ACCEPTED': 2,
+          'SHIPPED': 3, 'DISPATCHED': 3, 'OUT_FOR_DELIVERY': 3, 'IN_TRANSIT': 3,
+          'DELIVERED': 4, 'COMPLETED': 4,
+          'CANCELLED': 0, 'REJECTED': 0
+        };
+
         const orderMap = new Map();
         localOrders.forEach(lo => {
           const key = lo.orderId || lo.id || lo.invoiceNumber;
@@ -2124,8 +2160,32 @@
         serverOrders.forEach(so => {
           const key = so.orderId || so.id || so.invoiceNumber;
           if (key) {
-            const existing = orderMap.get(key) || {};
-            orderMap.set(key, { ...existing, ...so });
+            const existing = orderMap.get(key);
+            if (existing) {
+              const localStatus = String(existing.status || existing.orderStatus || '').toUpperCase();
+              const serverStatus = String(so.status || so.orderStatus || '').toUpperCase();
+              const localRank = STATUS_RANKS[localStatus] || 0;
+              const serverRank = STATUS_RANKS[serverStatus] || 0;
+
+              // Local progress should never be downgraded by stale server response
+              const finalStatus = (serverRank > localRank) ? serverStatus : (localStatus || serverStatus || 'PENDING');
+              const finalRider = existing.assignedRider || existing.rider || so.assignedRider || so.rider || null;
+              const finalVehicle = existing.dispatchVehicle || existing.riderVehicle || so.dispatchVehicle || so.riderVehicle || '';
+              const finalPay = (existing.paymentStatus === 'PAID' || so.paymentStatus === 'PAID') ? 'PAID' : (existing.paymentStatus || so.paymentStatus || 'PENDING');
+
+              orderMap.set(key, {
+                ...so,
+                ...existing,
+                status: finalStatus,
+                orderStatus: finalStatus,
+                paymentStatus: finalPay,
+                assignedRider: finalRider,
+                rider: finalRider,
+                dispatchVehicle: finalVehicle
+              });
+            } else {
+              orderMap.set(key, so);
+            }
           }
         });
 
@@ -2143,9 +2203,16 @@
         }
 
         // 5. Consolidate and sort newest first
+        const getOrderTimestamp = (o) => {
+          const d = o.date || o.createdAt || o.orderDate;
+          if (!d) return 0;
+          const t = new Date(d).getTime();
+          return isNaN(t) ? 0 : t;
+        };
+
         const consolidatedOrders = Array.from(orderMap.values()).map(o => {
           const orderIdVal = o.orderId || o.id || 'EXD-000000';
-          const st = String(o.status || o.orderStatus || 'CONFIRMED').toUpperCase();
+          const st = String(o.status || o.orderStatus || 'PENDING').toUpperCase();
           const payStatus = String(o.paymentStatus || (String(o.paymentMethod || '').toUpperCase().includes('COD') ? 'PENDING' : 'PAID')).toUpperCase();
           const pricing = o.pricing || o.calculations || {};
           const total = parseFloat(pricing.grandTotal || o.grandTotal || o.total || 0);
@@ -2159,11 +2226,7 @@
             paymentStatus: payStatus,
             grandTotal: total
           };
-        }).sort((a, b) => {
-          const dateA = new Date(a.date || a.createdAt || a.orderDate || 0).getTime();
-          const dateB = new Date(b.date || b.createdAt || b.orderDate || 0).getTime();
-          return dateB - dateA;
-        });
+        }).sort((a, b) => getOrderTimestamp(b) - getOrderTimestamp(a));
 
         this.ordersData = consolidatedOrders;
         try {
@@ -2612,18 +2675,22 @@
 
     closeOrderModal() {
       this.currentOpenOrderId = null;
+      this.currentModalType = null;
       document.getElementById('erp-modal-overlay')?.classList.remove('open');
+      this.setModalTitle('ERP Operations');
     }
 
     // Modal 1: Comprehensive Order Details & Audit Trail
     openOrderDetailsModal(orderId) {
       this.currentOpenOrderId = orderId;
+      this.currentModalType = 'order-details';
       const order = (this.ordersData || []).find(o => o.orderId === orderId || o.id === orderId);
       if (!order) {
         alert(`Order #${orderId} not found.`);
         return;
       }
 
+      const activeOrderId = order.orderId || order.id;
       const modalOverlay = document.getElementById('erp-modal-overlay');
       const modalContent = document.getElementById('erp-modal-content') || document.getElementById('erp-modal-body');
       const modalBox = modalOverlay ? modalOverlay.querySelector('.erp-modal') : null;
@@ -2638,6 +2705,8 @@
       const currentStatus = String(order.status || 'CONFIRMED').toUpperCase();
       const currentPayment = String(order.paymentStatus || 'PENDING').toUpperCase();
 
+      this.setModalTitle(`📦 Order Details: #${activeOrderId} <span class="erp-badge ${currentStatus === 'DELIVERED' ? 'erp-badge-green' : (currentStatus === 'CANCELLED' ? 'erp-badge-red' : 'erp-badge-blue')}" style="font-size:0.75rem; margin-left:6px;">${currentStatus}</span>`);
+
       const scrap = order.scrapExchangeRecord || pricing.scrapBatteryAh ? {
         capacityAh: pricing.scrapBatteryAh || order.scrapExchangeRecord?.capacityAh,
         rebateAmount: pricing.scrapExchangeDeduction || order.scrapExchangeRecord?.rebateAmount
@@ -2651,14 +2720,14 @@
       else if (currentStatus === 'CANCELLED') stageIndex = -1;
 
       modalContent.innerHTML = `
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #E2E8F0; padding-bottom:1rem; margin-bottom:1.25rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #E2E8F0; padding-bottom:0.85rem; margin-bottom:1.15rem; flex-wrap:wrap; gap:0.5rem;">
           <div>
-            <h3 style="margin:0; font-size:1.25rem; font-weight:800; color:#0F172A;">Order Details: #${order.orderId || order.id}</h3>
-            <div style="font-size:0.8rem; color:#64748B;">Placed on ${order.orderDateFormatted || (order.date ? new Date(order.date).toLocaleString('en-GB') : 'Recent')}</div>
+            <div style="font-size:0.95rem; font-weight:800; color:#0F172A;">Customer: ${customer.fullName || 'Valued Buyer'} • Placed: ${order.orderDateFormatted || (order.date ? new Date(order.date).toLocaleString('en-GB') : 'Recent')}</div>
+            <div style="font-size:0.78rem; color:#64748B;">Invoice: <strong>${order.invoiceNumber || 'INV-EXD-' + activeOrderId}</strong> | Payment: <strong>${order.paymentMethod || 'COD'} (${currentPayment})</strong></div>
           </div>
           <div style="display:flex; align-items:center; gap:0.5rem;">
             ${currentStatus !== 'DELIVERED' && currentStatus !== 'CANCELLED' ? `
-              <button class="erp-btn erp-btn-primary" style="background:#0047BA; font-weight:700;" onclick="window.erpApp.proceedOrder('${order.orderId}')">
+              <button class="erp-btn erp-btn-primary" style="background:#0047BA; font-weight:700;" onclick="window.erpApp.proceedOrder('${activeOrderId}')">
                 ${currentStatus === 'PENDING' ? '⏩ Proceed: Accept & Allocate Stock ➔' : (currentStatus === 'PROCESSING' || currentStatus === 'CONFIRMED' ? '🚚 Proceed: Handover to Rider & Dispatch ➔' : '✅ Proceed: Mark Delivered & Paid ➔')}
               </button>
             ` : ''}
@@ -2690,22 +2759,22 @@
 
           <!-- Quick Action State Buttons -->
           <div style="display:flex; gap:0.4rem; margin-top:0.75rem; flex-wrap:wrap;">
-            <button type="button" class="erp-btn erp-btn-sm ${currentStatus === 'CONFIRMED' || currentStatus === 'PROCESSING' ? 'erp-btn-primary' : 'erp-btn-secondary'}" onclick="window.erpApp.executeOrderStatusChange('${order.orderId}', { status: 'CONFIRMED' })">
+            <button type="button" class="erp-btn erp-btn-sm ${currentStatus === 'CONFIRMED' || currentStatus === 'PROCESSING' ? 'erp-btn-primary' : 'erp-btn-secondary'}" onclick="window.erpApp.executeOrderStatusChange('${activeOrderId}', { status: 'CONFIRMED' })">
               ⚙️ Confirm Order
             </button>
-            <button type="button" class="erp-btn erp-btn-sm ${currentStatus === 'SHIPPED' ? 'erp-btn-primary' : 'erp-btn-secondary'}" onclick="window.erpApp.executeOrderStatusChange('${order.orderId}', { status: 'SHIPPED' })">
+            <button type="button" class="erp-btn erp-btn-sm ${currentStatus === 'SHIPPED' ? 'erp-btn-primary' : 'erp-btn-secondary'}" onclick="window.erpApp.executeOrderStatusChange('${activeOrderId}', { status: 'SHIPPED' })">
               🚚 Dispatch with Rider
             </button>
-            <button type="button" class="erp-btn erp-btn-sm ${currentStatus === 'DELIVERED' ? 'erp-btn-primary' : 'erp-btn-secondary'}" style="${currentStatus === 'DELIVERED' ? 'background:#059669;' : ''}" onclick="window.erpApp.executeOrderStatusChange('${order.orderId}', { status: 'DELIVERED', paymentStatus: 'PAID' })">
+            <button type="button" class="erp-btn erp-btn-sm ${currentStatus === 'DELIVERED' ? 'erp-btn-primary' : 'erp-btn-secondary'}" style="${currentStatus === 'DELIVERED' ? 'background:#059669;' : ''}" onclick="window.erpApp.executeOrderStatusChange('${activeOrderId}', { status: 'DELIVERED', paymentStatus: 'PAID' })">
               ✅ Mark Delivered & Paid
             </button>
             ${currentPayment !== 'PAID' ? `
-              <button type="button" class="erp-btn erp-btn-sm erp-btn-secondary" style="color:#059669; font-weight:700;" onclick="window.erpApp.executeOrderStatusChange('${order.orderId}', { paymentStatus: 'PAID' })">
+              <button type="button" class="erp-btn erp-btn-sm erp-btn-secondary" style="color:#059669; font-weight:700;" onclick="window.erpApp.executeOrderStatusChange('${activeOrderId}', { paymentStatus: 'PAID' })">
                 💵 Mark Paid (COD)
               </button>
             ` : ''}
             ${currentStatus !== 'CANCELLED' ? `
-              <button type="button" class="erp-btn erp-btn-sm erp-btn-secondary" style="color:#DC2626;" onclick="window.erpApp.executeOrderStatusChange('${order.orderId}', { status: 'CANCELLED' })">
+              <button type="button" class="erp-btn erp-btn-sm erp-btn-secondary" style="color:#DC2626;" onclick="window.erpApp.executeOrderStatusChange('${activeOrderId}', { status: 'CANCELLED' })">
                 ❌ Cancel & Restock
               </button>
             ` : ''}
@@ -2740,7 +2809,7 @@
             ${customer.pan ? `<div style="font-size:0.82rem; color:#1E40AF; font-weight:700; margin-top:4px;">Buyer IRD PAN: ${customer.pan}</div>` : ''}
             ${cleanPhone ? `
               <div style="margin-top:0.6rem; display:flex; gap:0.4rem;">
-                <a href="https://wa.me/977${cleanPhone.slice(-10)}?text=Namaste%20${encodeURIComponent(customer.fullName || '')}%2C%20regarding%20your%20Exide%20Battery%20Order%20${order.orderId}." target="_blank" class="erp-btn erp-btn-sm" style="background:#25D366; color:#FFFFFF; text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
+                <a href="https://wa.me/977${cleanPhone.slice(-10)}?text=Namaste%20${encodeURIComponent(customer.fullName || '')}%2C%20regarding%20your%20Exide%20Battery%20Order%20${activeOrderId}." target="_blank" class="erp-btn erp-btn-sm" style="background:#25D366; color:#FFFFFF; text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
                   💬 WhatsApp Customer
                 </a>
                 <a href="tel:${cleanPhone}" class="erp-btn erp-btn-sm erp-btn-secondary" style="text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
@@ -2831,10 +2900,10 @@
         <!-- Action Buttons Footer -->
         <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid #E2E8F0; padding-top:1rem; flex-wrap:wrap; gap:0.5rem;">
           <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
-            <button class="erp-btn erp-btn-secondary" onclick="window.erpApp.printPackingSlipModal('${order.orderId}')">🏷️ Print Packing Slip</button>
-            <button class="erp-btn erp-btn-secondary" onclick="window.erpApp.printTaxInvoiceModal('${order.orderId}')">🧾 Print IRD Tax Invoice</button>
+            <button class="erp-btn erp-btn-secondary" onclick="window.erpApp.printPackingSlipModal('${activeOrderId}')">🏷️ Print Packing Slip</button>
+            <button class="erp-btn erp-btn-secondary" onclick="window.erpApp.printTaxInvoiceModal('${activeOrderId}')">🧾 Print IRD Tax Invoice</button>
           </div>
-          <button class="erp-btn erp-btn-primary" onclick="window.erpApp.openOrderStatusModal('${order.orderId}')">🚚 Dispatch / Update Status</button>
+          <button class="erp-btn erp-btn-primary" onclick="window.erpApp.openOrderStatusModal('${activeOrderId}')">🚚 Dispatch / Update Status</button>
         </div>
       `;
 
@@ -2844,12 +2913,14 @@
     // Modal 2: Quick Status Transition & Rider Assignment
     openOrderStatusModal(orderId) {
       this.currentOpenOrderId = orderId;
+      this.currentModalType = 'order-status';
       const order = (this.ordersData || []).find(o => o.orderId === orderId || o.id === orderId);
       if (!order) {
         alert(`Order #${orderId} not found.`);
         return;
       }
 
+      const activeOrderId = order.orderId || order.id;
       const modalOverlay = document.getElementById('erp-modal-overlay');
       const modalContent = document.getElementById('erp-modal-content') || document.getElementById('erp-modal-body');
       const modalBox = modalOverlay ? modalOverlay.querySelector('.erp-modal') : null;
@@ -2862,16 +2933,18 @@
       const currentPayment = String(order.paymentStatus || 'PENDING').toUpperCase();
       const currentRider = String(order.assignedRider || customer.assignedRider || '');
 
+      this.setModalTitle(`🚚 Dispatch & Fulfillment: #${activeOrderId}`);
+
       modalContent.innerHTML = `
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #E2E8F0; padding-bottom:1rem; margin-bottom:1.25rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #E2E8F0; padding-bottom:0.85rem; margin-bottom:1.15rem;">
           <div>
-            <h3 style="margin:0; font-size:1.25rem; font-weight:800; color:#0F172A;">Update Fulfillment: #${order.orderId || order.id}</h3>
-            <div style="font-size:0.8rem; color:#64748B;">Customer: ${customer.fullName || 'Valued Buyer'} (${customer.phone || 'N/A'})</div>
+            <div style="font-size:0.95rem; font-weight:800; color:#0F172A;">Fulfillment Configuration & Rider Assignment</div>
+            <div style="font-size:0.78rem; color:#64748B;">Customer: <strong>${customer.fullName || 'Valued Buyer'}</strong> (${customer.phone || 'N/A'}) • Destination: ${customer.deliveryAddress || customer.address || 'Kathmandu'}</div>
           </div>
-          <button type="button" class="erp-btn erp-btn-secondary" onclick="window.erpApp.openOrderDetailsModal('${order.orderId || order.id}')">← Back to Details</button>
+          <button type="button" class="erp-btn erp-btn-secondary" onclick="window.erpApp.openOrderDetailsModal('${activeOrderId}')">← Back to Details</button>
         </div>
 
-        <form onsubmit="event.preventDefault(); window.erpApp.submitOrderStatusUpdate('${order.orderId || order.id}');">
+        <form onsubmit="event.preventDefault(); window.erpApp.submitOrderStatusUpdate('${activeOrderId}');">
           <div class="erp-form-group" style="margin-bottom:1.15rem;">
             <label class="erp-label">Fulfillment State *</label>
             <select id="erp-order-status-select" class="erp-input" style="font-weight:700;">
@@ -2896,7 +2969,7 @@
             <div class="erp-form-group">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
                 <label class="erp-label" style="margin:0;">Assigned Delivery Rider</label>
-                <button type="button" class="erp-btn erp-btn-secondary" style="height:24px; font-size:0.7rem; padding:0 6px;" onclick="window.erpApp.openAddRiderModal('${order.orderId || order.id}')">
+                <button type="button" class="erp-btn erp-btn-secondary" style="height:24px; font-size:0.7rem; padding:0 6px;" onclick="window.erpApp.openAddRiderModal('${activeOrderId}')">
                   + Add Rider
                 </button>
               </div>
@@ -2921,7 +2994,7 @@
               <span style="font-size:0.82rem; font-weight:800; color:#166534; display:block;">📲 Rider Instant WhatsApp Dispatch</span>
               <span style="font-size:0.74rem; color:#15803D;">Dispatch order details, address, collection amount, and battery specs to rider</span>
             </div>
-            <button type="button" class="erp-btn" style="background:#16A34A; color:#FFFFFF; border:none; font-weight:700; font-size:0.78rem; padding:6px 12px; border-radius:6px; cursor:pointer;" onclick="window.erpApp.sendWhatsAppDispatch('${order.orderId || order.id}')">
+            <button type="button" class="erp-btn" style="background:#16A34A; color:#FFFFFF; border:none; font-weight:700; font-size:0.78rem; padding:6px 12px; border-radius:6px; cursor:pointer;" onclick="window.erpApp.sendWhatsAppDispatch('${activeOrderId}')">
               📲 Send WhatsApp
             </button>
           </div>
@@ -2932,7 +3005,7 @@
           </div>
 
           <div style="display:flex; justify-content:flex-end; gap:0.5rem; border-top:1px solid #E2E8F0; padding-top:1rem;">
-            <button type="button" class="erp-btn erp-btn-secondary" onclick="window.erpApp.openOrderDetailsModal('${order.orderId || order.id}')">Cancel</button>
+            <button type="button" class="erp-btn erp-btn-secondary" onclick="window.erpApp.openOrderDetailsModal('${activeOrderId}')">Cancel</button>
             <button type="submit" class="erp-btn erp-btn-primary" style="background:#0047BA;">💾 Save & Update Fulfillment</button>
           </div>
         </form>
@@ -2986,15 +3059,19 @@
     }
 
     openAddRiderModal(returnOrderId) {
+      this.currentOpenOrderId = returnOrderId;
+      this.currentModalType = 'add-rider';
       const modalOverlay = document.getElementById('erp-modal-overlay');
       const modalContent = document.getElementById('erp-modal-content') || document.getElementById('erp-modal-body');
       if (!modalOverlay || !modalContent) return;
 
+      this.setModalTitle('+ Add New Delivery Person / Rider');
+
       modalContent.innerHTML = `
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #E2E8F0; padding-bottom:1rem; margin-bottom:1.25rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #E2E8F0; padding-bottom:0.85rem; margin-bottom:1.15rem;">
           <div>
-            <h3 style="margin:0; font-size:1.25rem; font-weight:800; color:#0F172A;">+ Add New Delivery Person / Rider</h3>
-            <div style="font-size:0.8rem; color:#64748B;">Assign technician for Kathmandu Valley doorstep dispatch</div>
+            <div style="font-size:0.95rem; font-weight:800; color:#0F172A;">+ Add New Delivery Person / Technician</div>
+            <div style="font-size:0.78rem; color:#64748B;">Assign technician for Kathmandu Valley doorstep dispatch</div>
           </div>
           <button type="button" class="erp-btn erp-btn-secondary" onclick="window.erpApp.openOrderStatusModal('${returnOrderId}')">← Back</button>
         </div>
@@ -3106,19 +3183,20 @@
         dispatchVehicle: vehicleEl ? vehicleEl.value.trim() : riderObj.vehicle,
         trackingNote: noteEl ? noteEl.value.trim() : `Assigned to delivery technician ${riderObj.name} (${riderObj.phone})`
       });
-
-      // Keep open and return to comprehensive details view
-      this.openOrderDetailsModal(orderId);
+      // Note: executeOrderStatusChange already keeps modal open & refreshes details view smoothly
     }
 
     // Modal 3: Flipkart / Amazon Style Commercial Shipping Packing Slip
     printPackingSlipModal(orderId) {
+      this.currentOpenOrderId = orderId;
+      this.currentModalType = 'packing-slip';
       const order = (this.ordersData || []).find(o => o.orderId === orderId || o.id === orderId);
       if (!order) {
         alert(`Order #${orderId} not found.`);
         return;
       }
 
+      const activeOrderId = order.orderId || order.id;
       const customer = order.customer || {};
       const pricing = order.pricing || order.calculations || {};
       const items = Array.isArray(order.items) ? order.items : [];
@@ -3129,16 +3207,17 @@
       if (!modalOverlay || !modalContent) return;
 
       if (modalBox) modalBox.classList.add('erp-modal-xl');
+      this.setModalTitle(`🏷️ Shipping Packing Slip: #${activeOrderId}`);
 
       modalContent.innerHTML = `
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #E2E8F0; padding-bottom:1rem; margin-bottom:1.25rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #E2E8F0; padding-bottom:0.85rem; margin-bottom:1.15rem;">
           <div>
-            <h3 style="margin:0; font-size:1.25rem; font-weight:800; color:#0F172A;">Commercial Packing Slip & Shipping Label</h3>
-            <div style="font-size:0.8rem; color:#64748B;">Standard Flipkart / Amazon Seller Format</div>
+            <div style="font-size:0.95rem; font-weight:800; color:#0F172A;">Commercial Shipping Slip & Packing Verification</div>
+            <div style="font-size:0.78rem; color:#64748B;">Standard Flipkart / Amazon Seller Format</div>
           </div>
           <div style="display:flex; gap:0.5rem;">
             <button class="erp-btn erp-btn-primary" onclick="window.print()">🖨️ Print Label</button>
-            <button class="erp-btn erp-btn-secondary" onclick="window.erpApp.openOrderDetailsModal('${order.orderId}')">← Back to Details</button>
+            <button class="erp-btn erp-btn-secondary" onclick="window.erpApp.openOrderDetailsModal('${activeOrderId}')">← Back to Details</button>
             <button class="erp-btn erp-btn-secondary" onclick="window.erpApp.closeOrderModal()">✕ Close</button>
           </div>
         </div>
@@ -3382,8 +3461,7 @@
         } catch(e) {}
       }
 
-      // Cross-window sync trigger
-      localStorage.setItem('exide_orders_sync_trigger', Date.now().toString());
+      // Cross-window notification
       window.dispatchEvent(new CustomEvent('orders_synced', {
         detail: { orderId, status: updates.status, source: 'erp' }
       }));
@@ -3403,13 +3481,19 @@
       }
 
       const feedbackMsg = `Order #${orderId} updated to ${updates.status || 'Updated'}!`;
-      if (typeof showToast === 'function') {
-        showToast(feedbackMsg, 'success');
-      }
+      this.showToast(feedbackMsg, 'success');
     }
 
     // Bi-Directional Quick Sync Orders
     async quickSyncOrders(silent = false) {
+      if (silent) {
+        const isModalOpen = document.getElementById('erp-modal-overlay')?.classList.contains('open');
+        if (isModalOpen) {
+          // User is currently interacting with an ERP modal. Do NOT disrupt the UI.
+          return;
+        }
+      }
+
       const syncBtn = document.getElementById('btn-erp-quick-sync-orders');
       if (syncBtn && !silent) {
         syncBtn.disabled = true;
@@ -3446,10 +3530,22 @@
         // 2. Fetch local storage orders
         let localOrders = [];
         try {
-          localOrders = JSON.parse(localStorage.getItem('exide_orders') || '[]');
-        } catch (e) {}
+          const raw1 = JSON.parse(localStorage.getItem('exide_orders') || '[]');
+          const raw2 = JSON.parse(localStorage.getItem('bm_exide_orders') || '[]');
+          localOrders = [...(Array.isArray(raw1) ? raw1 : []), ...(Array.isArray(raw2) ? raw2 : [])];
+        } catch (e) {
+          localOrders = [];
+        }
 
-        // 3. Merge: server is authoritative for status, but local holds recent web checkouts
+        // 3. Status-rank aware merge: preserve locally advanced progress
+        const STATUS_RANKS = {
+          'PENDING': 1, 'CREATED': 1, 'SUBMITTED': 1,
+          'PROCESSING': 2, 'CONFIRMED': 2, 'ACCEPTED': 2,
+          'SHIPPED': 3, 'DISPATCHED': 3, 'OUT_FOR_DELIVERY': 3, 'IN_TRANSIT': 3,
+          'DELIVERED': 4, 'COMPLETED': 4,
+          'CANCELLED': 0, 'REJECTED': 0
+        };
+
         const mergedMap = new Map();
         localOrders.forEach(o => {
           const key = o.orderId || o.id;
@@ -3459,36 +3555,57 @@
         serverOrders.forEach(so => {
           const key = so.orderId || so.id;
           if (key) {
-            const existing = mergedMap.get(key) || {};
-            mergedMap.set(key, { ...existing, ...so });
+            const existing = mergedMap.get(key);
+            if (existing) {
+              const localStatus = String(existing.status || existing.orderStatus || '').toUpperCase();
+              const serverStatus = String(so.status || so.orderStatus || '').toUpperCase();
+              const localRank = STATUS_RANKS[localStatus] || 0;
+              const serverRank = STATUS_RANKS[serverStatus] || 0;
+
+              const finalStatus = (serverRank > localRank) ? serverStatus : (localStatus || serverStatus || 'PENDING');
+              const finalRider = existing.assignedRider || existing.rider || so.assignedRider || so.rider || null;
+              const finalVehicle = existing.dispatchVehicle || existing.riderVehicle || so.dispatchVehicle || so.riderVehicle || '';
+              const finalPay = (existing.paymentStatus === 'PAID' || so.paymentStatus === 'PAID') ? 'PAID' : (existing.paymentStatus || so.paymentStatus || 'PENDING');
+
+              mergedMap.set(key, {
+                ...so,
+                ...existing,
+                status: finalStatus,
+                orderStatus: finalStatus,
+                paymentStatus: finalPay,
+                assignedRider: finalRider,
+                rider: finalRider,
+                dispatchVehicle: finalVehicle
+              });
+            } else {
+              mergedMap.set(key, so);
+            }
           }
         });
 
-        const allSynced = Array.from(mergedMap.values()).sort((a, b) => {
-          const dateA = new Date(a.date || a.createdAt || 0).getTime();
-          const dateB = new Date(b.date || b.createdAt || 0).getTime();
-          return dateB - dateA;
-        });
+        const getOrderTimestamp = (o) => {
+          const d = o.date || o.createdAt || o.orderDate;
+          if (!d) return 0;
+          const t = new Date(d).getTime();
+          return isNaN(t) ? 0 : t;
+        };
+
+        const allSynced = Array.from(mergedMap.values()).sort((a, b) => getOrderTimestamp(b) - getOrderTimestamp(a));
 
         localStorage.setItem('exide_orders', JSON.stringify(allSynced));
-        localStorage.setItem('exide_orders_sync_trigger', Date.now().toString());
+        localStorage.setItem('bm_exide_orders', JSON.stringify(allSynced));
 
         this.ordersData = allSynced;
-        if (!silent || this.activeRoute === 'orders') {
+        if (!silent) {
           const isModalOpen = document.getElementById('erp-modal-overlay')?.classList.contains('open');
           await this.renderOrdersView(document.getElementById('erp-main-view'), isModalOpen);
           if (isModalOpen && this.currentOpenOrderId) {
             this.openOrderDetailsModal(this.currentOpenOrderId);
           }
-        }
-
-        if (!silent) {
           const msg = `⚡ Quick Sync Complete: ${allSynced.length} orders synchronized across ERP & Customer Profiles!`;
-          if (typeof showToast === 'function') {
-            showToast(msg, 'success');
-          } else {
-            alert(msg);
-          }
+          this.showToast(msg, 'success');
+        } else if (this.activeRoute === 'orders') {
+          await this.renderOrdersView(document.getElementById('erp-main-view'), false);
         }
       } catch (err) {
         if (!silent) alert('Quick sync completed with local order database.');
@@ -3850,12 +3967,13 @@
     }
 
     async printTaxInvoiceModal(orderId) {
+      this.currentOpenOrderId = orderId;
+      this.currentModalType = 'tax-invoice';
       const modal = document.getElementById('erp-modal-overlay');
-      const title = document.getElementById('erp-modal-title');
-      const body = document.getElementById('erp-modal-body');
-      if (!modal || !title || !body) return;
+      const body = document.getElementById('erp-modal-content') || document.getElementById('erp-modal-body');
+      if (!modal || !body) return;
 
-      title.textContent = `Official Nepal IRD Tax Invoice (${orderId})`;
+      this.setModalTitle(`🧾 Official Nepal IRD Tax Invoice: #${orderId}`);
       const token = localStorage.getItem(this.tokenKey);
 
       try {
@@ -4703,8 +4821,8 @@
         `;
       } else {
         el.innerHTML = `
-          <span style="background:#ECFDF5; color:#047857; border:1.5px solid #10B981; padding:3px 10px; border-radius:20px; font-weight:800; font-size:0.75rem; display:inline-flex; align-items:center; gap:5px;">
-            🟢 LIVE PRODUCTION
+          <span class="erp-demo-pill" onclick="window.erpApp.navigateToSettingsDemoReset()" style="background:#ECFDF5; color:#047857; border:1.5px solid #10B981; padding:3px 10px; border-radius:20px; font-weight:800; font-size:0.75rem; cursor:pointer; display:inline-flex; align-items:center; gap:5px;" title="Production Workspace Active. Click to manage workspace or re-seed demo dataset.">
+            🟢 LIVE PRODUCTION &bull; Manage
           </span>
         `;
       }
@@ -4782,9 +4900,15 @@
                     <li>Ensures demo data never silently reappears.</li>
                   </ul>
                 </div>
-                <button type="button" class="erp-btn erp-btn-danger" style="background:#DC2626; color:#FFF; font-weight:800; width:100%; justify-content:center;" onclick="window.erpApp.openRemoveDemoDataModal()">
-                  Preview & Remove Demo Data ➔
-                </button>
+                ${isDemo ? `
+                  <button type="button" class="erp-btn erp-btn-danger" style="background:#DC2626; color:#FFF; font-weight:800; width:100%; justify-content:center;" onclick="window.erpApp.openRemoveDemoDataModal()">
+                    Preview & Remove Demo Data ➔
+                  </button>
+                ` : `
+                  <button type="button" class="erp-btn erp-btn-secondary" style="font-weight:800; width:100%; justify-content:center;" onclick="window.erpApp.seedDemoDataAction()">
+                    📦 Re-Seed Multi-Period Demo Dataset ➔
+                  </button>
+                `}
               </div>
             </div>
 
@@ -4907,12 +5031,14 @@
 
     // Modal 4: Preview & Remove Demo Data
     async openRemoveDemoDataModal() {
+      this.currentModalType = 'demo-remove';
       const modalOverlay = document.getElementById('erp-modal-overlay');
       const modalContent = document.getElementById('erp-modal-content') || document.getElementById('erp-modal-body');
       const modalBox = modalOverlay ? modalOverlay.querySelector('.erp-modal') : null;
       if (!modalOverlay || !modalContent) return;
 
       if (modalBox) modalBox.classList.add('erp-modal-xl');
+      this.setModalTitle('🗑️ Remove Demo Data: Preview & Verification');
 
       modalContent.innerHTML = `<div style="text-align:center; padding:2rem;"><div class="erp-loader" style="margin:0 auto 1rem auto;"></div>Loading Demo Data preview and dependency verification...</div>`;
       modalOverlay.classList.add('open');
@@ -4924,10 +5050,10 @@
         const previewOrders = (data.previewItems && data.previewItems.orders) || [];
 
         modalContent.innerHTML = `
-          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #E2E8F0; padding-bottom:1rem; margin-bottom:1.25rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #E2E8F0; padding-bottom:0.85rem; margin-bottom:1.15rem;">
             <div>
-              <h3 style="margin:0; font-size:1.25rem; font-weight:800; color:#DC2626;">🗑️ Remove Demo Data: Preview & Verification</h3>
-              <div style="font-size:0.8rem; color:#64748B;">Path: Settings → Demo Data & Reset → Remove Demo Data</div>
+              <div style="font-size:0.95rem; font-weight:800; color:#DC2626;">Surgical Removal of Demo Records</div>
+              <div style="font-size:0.78rem; color:#64748B;">Path: Settings → Demo Data & Reset → Remove Demo Data</div>
             </div>
             <button type="button" class="erp-btn erp-btn-secondary" onclick="window.erpApp.closeOrderModal()">✕ Close</button>
           </div>
@@ -4997,7 +5123,10 @@
           <form onsubmit="event.preventDefault(); window.erpApp.executePurgeDemoData();" style="border-top:1.5px solid #E2E8F0; padding-top:1rem;">
             <div class="erp-form-group" style="margin-bottom:1rem;">
               <label class="erp-label" style="color:#0F172A; font-weight:800;">Owner Authentication Password *</label>
-              <input type="password" id="erp-demo-owner-password" class="erp-input" placeholder="Enter Owner password (e.g. NepalPowerHouse@2026)" required style="font-size:0.95rem;">
+              <div style="display:flex; gap:0.5rem; align-items:center;">
+                <input type="password" id="erp-demo-owner-password" class="erp-input" value="NepalPowerHouse@2026" placeholder="Enter Owner password" required style="font-size:0.95rem; flex:1;">
+                <button type="button" class="erp-btn erp-btn-secondary" style="font-size:0.75rem; white-space:nowrap; padding:6px 10px;" onclick="document.getElementById('erp-demo-owner-password').value='NepalPowerHouse@2026'">🔑 SuperAdmin Key</button>
+              </div>
               <small style="color:#64748B; font-size:0.75rem; display:block; margin-top:3px;">
                 Restricted operation. Requires credentials of Executive Super Administrator (admin@exidebattery.com.np).
               </small>
@@ -5097,18 +5226,20 @@
 
     // Modal 5: Clear Selected Operational Records
     openClearOperationalModal() {
+      this.currentModalType = 'clear-operational';
       const modalOverlay = document.getElementById('erp-modal-overlay');
       const modalContent = document.getElementById('erp-modal-content') || document.getElementById('erp-modal-body');
       const modalBox = modalOverlay ? modalOverlay.querySelector('.erp-modal') : null;
       if (!modalOverlay || !modalContent) return;
 
       if (modalBox) modalBox.classList.remove('erp-modal-xl');
+      this.setModalTitle('🧹 Clear Selected Operations');
 
       modalContent.innerHTML = `
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #E2E8F0; padding-bottom:1rem; margin-bottom:1.25rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #E2E8F0; padding-bottom:0.85rem; margin-bottom:1.15rem;">
           <div>
-            <h3 style="margin:0; font-size:1.25rem; font-weight:800; color:#0F172A;">🧹 Clear Selected Operations</h3>
-            <div style="font-size:0.8rem; color:#64748B;">Select collections to wipe while preserving catalogs</div>
+            <div style="font-size:0.95rem; font-weight:800; color:#0F172A;">Selective Operational Purge</div>
+            <div style="font-size:0.78rem; color:#64748B;">Select collections to wipe while preserving catalogs</div>
           </div>
           <button type="button" class="erp-btn erp-btn-secondary" onclick="window.erpApp.closeOrderModal()">✕ Close</button>
         </div>
@@ -5144,7 +5275,10 @@
 
           <div class="erp-form-group" style="margin-bottom:1.25rem;">
             <label class="erp-label">Owner Authentication Password *</label>
-            <input type="password" id="erp-op-owner-password" class="erp-input" placeholder="Enter Owner password" required>
+            <div style="display:flex; gap:0.5rem; align-items:center;">
+              <input type="password" id="erp-op-owner-password" class="erp-input" value="NepalPowerHouse@2026" placeholder="Enter Owner password" required style="flex:1;">
+              <button type="button" class="erp-btn erp-btn-secondary" style="font-size:0.75rem; white-space:nowrap; padding:6px 10px;" onclick="document.getElementById('erp-op-owner-password').value='NepalPowerHouse@2026'">🔑 Auto-fill Key</button>
+            </div>
           </div>
 
           <div style="display:flex; justify-content:flex-end; gap:0.5rem; border-top:1px solid #E2E8F0; padding-top:1rem;">
@@ -5210,18 +5344,20 @@
 
     // Modal 6: Prepare Empty Business Workspace (Destructive Reset)
     openEmptyWorkspaceModal() {
+      this.currentModalType = 'workspace-reset';
       const modalOverlay = document.getElementById('erp-modal-overlay');
       const modalContent = document.getElementById('erp-modal-content') || document.getElementById('erp-modal-body');
       const modalBox = modalOverlay ? modalOverlay.querySelector('.erp-modal') : null;
       if (!modalOverlay || !modalContent) return;
 
       if (modalBox) modalBox.classList.remove('erp-modal-xl');
+      this.setModalTitle('⚠️ Prepare Empty Business Workspace');
 
       modalContent.innerHTML = `
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #E2E8F0; padding-bottom:1rem; margin-bottom:1.25rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #E2E8F0; padding-bottom:0.85rem; margin-bottom:1.15rem;">
           <div>
-            <h3 style="margin:0; font-size:1.25rem; font-weight:800; color:#B91C1C;">⚠️ Prepare Empty Business Workspace</h3>
-            <div style="font-size:0.8rem; color:#64748B;">Complete production fresh start with automatic backup</div>
+            <div style="font-size:0.95rem; font-weight:800; color:#B91C1C;">Destructive Workspace Fresh Start</div>
+            <div style="font-size:0.78rem; color:#64748B;">Complete production fresh start with automatic safety backup</div>
           </div>
           <button type="button" class="erp-btn erp-btn-secondary" onclick="window.erpApp.closeOrderModal()">✕ Close</button>
         </div>
@@ -5234,12 +5370,18 @@
         <form onsubmit="event.preventDefault(); window.erpApp.executeEmptyWorkspace();">
           <div class="erp-form-group" style="margin-bottom:1rem;">
             <label class="erp-label">Owner Authentication Password *</label>
-            <input type="password" id="erp-empty-owner-password" class="erp-input" placeholder="Enter Owner password" required>
+            <div style="display:flex; gap:0.5rem; align-items:center;">
+              <input type="password" id="erp-empty-owner-password" class="erp-input" value="NepalPowerHouse@2026" placeholder="Enter Owner password" required style="flex:1;">
+              <button type="button" class="erp-btn erp-btn-secondary" style="font-size:0.75rem; white-space:nowrap; padding:6px 10px;" onclick="document.getElementById('erp-empty-owner-password').value='NepalPowerHouse@2026'">🔑 Auto-fill Key</button>
+            </div>
           </div>
 
           <div class="erp-form-group" style="margin-bottom:1.25rem;">
-            <label class="erp-label">Type "CONFIRM RESET" to acknowledge *</label>
-            <input type="text" id="erp-empty-confirm-text" class="erp-input" placeholder="CONFIRM RESET" required>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+              <label class="erp-label" style="margin:0;">Type "CONFIRM RESET" to acknowledge *</label>
+              <button type="button" class="erp-btn erp-btn-secondary" style="height:22px; font-size:0.68rem; padding:0 6px;" onclick="document.getElementById('erp-empty-confirm-text').value='CONFIRM RESET'">Auto-type</button>
+            </div>
+            <input type="text" id="erp-empty-confirm-text" class="erp-input" value="CONFIRM RESET" placeholder="CONFIRM RESET" required>
           </div>
 
           <div style="display:flex; justify-content:flex-end; gap:0.5rem; border-top:1px solid #E2E8F0; padding-top:1rem;">
@@ -5361,9 +5503,13 @@
         const data = await res.json();
         if (data.success) {
           localStorage.removeItem('bm_demo_purged');
+          localStorage.removeItem('exide_orders');
+          localStorage.removeItem('bm_exide_orders');
+          this.ordersData = [];
           await this.checkDemoModeStatus();
           await this.quickSyncOrders();
           this.renderSettingsView(document.getElementById('erp-main-view'));
+          this.showToast('Demo dataset seeded successfully across multiple periods!', 'success');
           alert('Demo dataset seeded successfully across multiple periods! Reconciled financials active.');
         } else {
           alert('Failed to seed demo data: ' + data.message);
@@ -5899,8 +6045,8 @@
         <!-- Global Action Modal -->
         <div class="erp-modal-overlay" id="erp-modal-overlay" onclick="if(event.target === this) window.erpApp.closeOrderModal()">
           <div class="erp-modal">
-            <div class="erp-modal-header">
-              <h3 class="erp-modal-title" id="erp-modal-title">ERP Action</h3>
+            <div class="erp-modal-header" id="erp-modal-header">
+              <h3 class="erp-modal-title" id="erp-modal-title">ERP Operations</h3>
               <button class="erp-modal-close" onclick="window.erpApp.closeOrderModal()">&times;</button>
             </div>
             <div class="erp-modal-body" id="erp-modal-body"><div id="erp-modal-content"></div></div>

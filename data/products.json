@@ -1,5 +1,79 @@
 [
   {
+    "id": "prod_test-exp-mvw50xyj_0xyp",
+    "sku": "TEST-EXP-MVW50XYJ",
+    "name": "Exide Enterprise Inverter Battery 180Ah",
+    "brand": "Exide",
+    "brandSlug": "exide",
+    "categories": [
+      "Inverter Batteries"
+    ],
+    "capacity": "180Ah",
+    "warranty": "36 Months Official Warranty",
+    "warrantyFree": "",
+    "warrantyProRata": "",
+    "costPrice": 18000,
+    "price": 28500,
+    "wholesalePrice": 25650,
+    "mrp": 32775,
+    "stock": 52,
+    "minStock": 5,
+    "image": "assets/logo.png",
+    "images": [
+      "assets/logo.png"
+    ],
+    "description": "Tubular heavy-duty inverter battery for continuous Kathmandu power backup.",
+    "shortDesc": "",
+    "specs": {},
+    "complimentaryServices": [],
+    "features": [],
+    "compatibleVehicles": [],
+    "vatRate": 13,
+    "scrapRebateEligible": true,
+    "scrapAh": 180,
+    "featured": false,
+    "isActive": true,
+    "createdAt": "2026-10-31T08:27:02.257Z",
+    "updatedAt": "2026-10-31T08:27:02.641Z"
+  },
+  {
+    "id": "prod_test-exp-mvw4xzhs_xzhz",
+    "sku": "TEST-EXP-MVW4XZHS",
+    "name": "Exide Enterprise Inverter Battery 180Ah",
+    "brand": "Exide",
+    "brandSlug": "exide",
+    "categories": [
+      "Inverter Batteries"
+    ],
+    "capacity": "180Ah",
+    "warranty": "36 Months Official Warranty",
+    "warrantyFree": "",
+    "warrantyProRata": "",
+    "costPrice": 18000,
+    "price": 28500,
+    "wholesalePrice": 25650,
+    "mrp": 32775,
+    "stock": 51,
+    "minStock": 5,
+    "image": "assets/logo.png",
+    "images": [
+      "assets/logo.png"
+    ],
+    "description": "Tubular heavy-duty inverter battery for continuous Kathmandu power backup.",
+    "shortDesc": "",
+    "specs": {},
+    "complimentaryServices": [],
+    "features": [],
+    "compatibleVehicles": [],
+    "vatRate": 13,
+    "scrapRebateEligible": true,
+    "scrapAh": 180,
+    "featured": false,
+    "isActive": true,
+    "createdAt": "2026-10-31T08:24:44.279Z",
+    "updatedAt": "2026-10-31T08:24:44.688Z"
+  },
+  {
     "id": "prod_test-exp-mvw2sf21_sf27",
     "sku": "TEST-EXP-MVW2SF21",
     "name": "Exide Enterprise Inverter Battery 180Ah",
@@ -16,7 +90,7 @@
     "price": 28500,
     "wholesalePrice": 25650,
     "mrp": 32775,
-    "stock": 52,
+    "stock": 51,
     "minStock": 5,
     "image": "assets/logo.png",
     "images": [

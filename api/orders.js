@@ -29,6 +29,10 @@ module.exports = async (req, res) => {
         if (!o.orderStatus && o.status) o.orderStatus = o.status;
         if (!o.orderId && o.id) o.orderId = o.id;
         return o;
+      }).sort((a, b) => {
+        const dateA = new Date(a.date || a.createdAt || a.orderDate || 0).getTime();
+        const dateB = new Date(b.date || b.createdAt || b.orderDate || 0).getTime();
+        return dateB - dateA;
       });
 
       if (phone) {
@@ -325,8 +329,8 @@ module.exports = async (req, res) => {
         appliedCoupon: appliedCoupon,
         paymentMethod: paymentMethod || 'COD',
         paymentStatus: (paymentMethod === 'COD' || paymentMethod === 'cod') ? 'Pending Cash Collection' : 'Paid / Confirmed',
-        status: 'Confirmed',
-        orderStatus: 'Confirmed',
+        status: 'PENDING',
+        orderStatus: 'PENDING',
         notes: notes || '',
         idempotencyKey: cleanIdempotencyKey || null
       };
