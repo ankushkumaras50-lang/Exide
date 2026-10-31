@@ -2847,6 +2847,16 @@ const latest = orders.slice(0, 3);
       this.backToCustomerDashboard();
       this.populateCustomerProfileData(cust);
       modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+
+      if (!modal._hasBackdropListener) {
+        modal._hasBackdropListener = true;
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) {
+            this.closeCustomerProfileModal();
+          }
+        });
+      }
     }
   }
 

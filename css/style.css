@@ -385,13 +385,11 @@ button {
   background: #FFFFFF !important;
 }
 
-/* HIDE EVERYTHING ELSE WHEN SEARCHING: SHOW ONLY SEARCHED THING */
+/* HIDE NON-CATALOG PROMOTIONAL STRIPS WHEN SEARCHING (KEEP BRANDS & CATEGORIES ACCESSIBLE) */
 body.search-mode-active #hero,
 body.search-mode-active .top-features-strip,
 body.search-mode-active #finder-section,
-body.search-mode-active #categories-section,
 body.search-mode-active #calculator-section,
-body.search-mode-active #brands-section,
 body.search-mode-active #warranty-section,
 body.search-mode-active #outlets-section,
 body.search-mode-active .cta-banner {
@@ -1284,6 +1282,138 @@ body.search-mode-active {
   border-color: var(--color-exide-red);
   color: var(--color-exide-red);
   background: var(--color-exide-red-light);
+}
+
+/* ==========================================================================
+   FLEXIBLE CATALOG SEARCH BAR & LOAD MORE BUTTON
+   ========================================================================== */
+.catalog-live-search-bar {
+  background: #FFFFFF;
+  border: 1.5px solid #CBD5E1;
+  border-radius: 12px;
+  padding: 0.5rem 0.85rem;
+  margin-bottom: 1.15rem;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.catalog-live-search-bar:focus-within {
+  border-color: var(--color-exide-blue);
+  box-shadow: 0 0 0 3.5px rgba(0, 71, 186, 0.14);
+}
+
+.catalog-live-search-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  position: relative;
+  width: 100%;
+}
+
+.catalog-live-search-icon {
+  color: #64748B;
+  flex-shrink: 0;
+}
+
+.catalog-live-search-input {
+  flex: 1;
+  border: none !important;
+  outline: none !important;
+  background: transparent !important;
+  font-size: 0.94rem !important;
+  color: #0F172A !important;
+  font-weight: 500 !important;
+  padding: 0.35rem 0 !important;
+  min-width: 0 !important;
+  box-shadow: none !important;
+}
+
+.catalog-live-search-input::placeholder {
+  color: #94A3B8;
+  font-weight: 400;
+}
+
+.catalog-live-search-clear {
+  border: none;
+  background: #E2E8F0;
+  color: #475569;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: bold;
+  padding: 0;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+
+.catalog-live-search-clear.visible {
+  display: flex;
+}
+
+.catalog-live-search-clear:hover {
+  background: #CBD5E1;
+  color: #0F172A;
+}
+
+/* Load More Products Container */
+.catalog-load-more-box {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  margin: 2rem 0 1rem;
+  padding: 1.5rem 1rem;
+  background: linear-gradient(180deg, #F8FAFC 0%, #EFF6FF 100%);
+  border: 2px dashed #93C5FD;
+  border-radius: 14px;
+  text-align: center;
+}
+
+.btn-load-more-products {
+  background: linear-gradient(135deg, #0047BA 0%, #002D7A 100%);
+  color: #FFFFFF;
+  border: none;
+  padding: 0.85rem 2.2rem;
+  font-size: 0.98rem;
+  font-weight: 800;
+  border-radius: 10px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  box-shadow: 0 4px 14px rgba(0, 71, 186, 0.28);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-load-more-products:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(0, 71, 186, 0.4);
+  background: linear-gradient(135deg, #0056DE 0%, #003694 100%);
+}
+
+.btn-load-more-products:active {
+  transform: translateY(0);
+}
+
+.btn-load-more-products svg {
+  transition: transform 0.22s ease;
+}
+
+.btn-load-more-products:hover svg {
+  transform: translateY(2px);
+}
+
+.load-more-progress {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748B;
 }
 
 /* ==========================================================================
@@ -6561,26 +6691,28 @@ body.search-mode-active {
 .customer-profile-modal-box {
   width: 100%;
   max-width: 520px;
-  max-height: 92vh;
+  max-height: 90vh;
   background: #F8FAFC;
   border-radius: 24px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
   display: flex;
   flex-direction: column;
   box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.35), 0 0 0 1px rgba(15, 23, 42, 0.08);
   position: relative;
+  touch-action: pan-y !important;
 }
 
 .prof-view-screen {
   width: 100%;
-  min-height: 100%;
   height: auto;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
-  overflow: visible;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
 }
 
 /* 1. Top Vibrant Sunset Hero (Matching Left Screen of Reference Image) */
@@ -7889,7 +8021,8 @@ body.search-mode-active {
   .prof-view-screen {
     min-height: 100% !important;
     height: auto !important;
-    overflow: visible !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
   }
 
   .prof-mobile-drag-pill {
@@ -10102,8 +10235,6 @@ button:active,
 
   .brand-card-hover-pill {
     display: none !important;
-  }
-    text-align: center !important;
   }
 
   .brand-card-tag {
@@ -12807,6 +12938,37 @@ input[type="search"]::-webkit-search-results-decoration {
   .mobile-nav-item span {
     font-size: 0.6rem !important;
   }
+}
+
+/* ==========================================================================
+   CUSTOMER PROFILE UNIVERSAL SCROLLABILITY ACROSS ALL DEVICE SIZES
+   ========================================================================== */
+#customer-profile-modal-overlay {
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+#customer-profile-modal-overlay .customer-profile-modal-box {
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: pan-y !important;
+  overscroll-behavior: contain !important;
+}
+
+#customer-profile-modal-overlay .prof-view-screen {
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: pan-y !important;
+  overscroll-behavior: contain !important;
+}
+
+#customer-profile-modal-overlay .prof-scrollable-body,
+#customer-profile-modal-overlay .prof-settings-body,
+#customer-profile-modal-overlay .prof-orders-scroll-body,
+#customer-profile-modal-overlay .prof-subforms-body {
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: pan-y !important;
 }
 
 

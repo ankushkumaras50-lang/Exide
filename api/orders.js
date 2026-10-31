@@ -14,7 +14,7 @@ module.exports = async (req, res) => {
     // 1. GET ORDERS
     // ------------------------------------------------------------------------
     if (req.method === 'GET') {
-      const { orderId, invoice, phone } = req.query;
+      const { orderId, invoice, phone } = req.query || {};
 
       if (orderId || invoice) {
         const found = db.findOrderById(orderId || invoice);

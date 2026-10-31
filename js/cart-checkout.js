@@ -64,45 +64,92 @@ class CartSystem {
   }
 
   addItem(productId, quantity = 1, buttonElement = null) {
-    const product = window.productsCatalog ? window.productsCatalog.find(p => p.id === productId) : null;
-    if (!product) {
-      showToast('Product not found', 'error');
+    if (!productId) {
+      if (typeof showToast === 'function') showToast('Invalid product selected', 'error');
       return;
     }
 
-    if (product.stock <= 0) {
-      showToast('Sorry, this product is currently out of stock!', 'error');
+    // Comprehensive product resolver: catalog, INITIAL_PRODUCTS, window.PRODUCTS, stockManager
+    let product = null;
+    const sources = [
+      window.productsCatalog,
+      (typeof INITIAL_PRODUCTS !== 'undefined' ? INITIAL_PRODUCTS : null),
+      window.PRODUCTS,
+      (window.stockManager ? window.stockManager.inventory : null)
+    ];
+
+    for (const src of sources) {
+      if (Array.isArray(src)) {
+        product = src.find(p => 
+          p.id === productId || 
+          p.sku === productId || 
+          String(p.id) === String(productId) ||
+          (p.sku && String(p.sku).toLowerCase() === String(productId).toLowerCase()) ||
+          p.slug === productId
+        );
+        if (product) break;
+      }
+    }
+
+    if (!product) {
+      // Fallback loose match
+      const all = window.productsCatalog || (typeof INITIAL_PRODUCTS !== 'undefined' ? INITIAL_PRODUCTS : []);
+      const needle = String(productId).toLowerCase().trim();
+      product = all.find(p => 
+        (p.name && p.name.toLowerCase().includes(needle)) ||
+        (p.id && String(p.id).toLowerCase().includes(needle))
+      );
+    }
+
+    if (!product) {
+      if (typeof showToast === 'function') showToast('Product not found in catalog', 'error');
+      return;
+    }
+
+    // Available stock evaluation (guarantee valid positive number)
+    let availableStock = 25;
+    if (typeof product.stock === 'number' && !isNaN(product.stock)) {
+      availableStock = product.stock;
+    } else if (product.stock !== undefined && product.stock !== null && !isNaN(Number(product.stock))) {
+      availableStock = Number(product.stock);
+    }
+
+    if (availableStock <= 0) {
+      if (typeof showToast === 'function') showToast('Sorry, this product is currently out of stock!', 'error');
       return;
     }
 
     // Trigger button animation if provided or from click event
     const btn = buttonElement || (window.event?.target?.closest('button'));
-    if (btn) {
-      animateAddToCartButton(btn);
+    if (btn && typeof animateAddToCartButton === 'function') {
+      try { animateAddToCartButton(btn); } catch(e) {}
     }
 
-    const existingIndex = this.items.findIndex(item => item.id === productId);
+    const prodId = product.id;
+    const existingIndex = this.items.findIndex(item => item.id === prodId || item.id === productId);
+    const addQty = Math.max(1, Number(quantity) || 1);
+
     if (existingIndex > -1) {
-      const newQty = this.items[existingIndex].quantity + quantity;
-      if (newQty > product.stock) {
-        showToast(`Only ${product.stock} units available in stock.`, 'warning');
-        this.items[existingIndex].quantity = product.stock;
+      const newQty = this.items[existingIndex].quantity + addQty;
+      if (newQty > availableStock) {
+        if (typeof showToast === 'function') showToast(`Only ${availableStock} units available in stock.`, 'warning');
+        this.items[existingIndex].quantity = availableStock;
       } else {
         this.items[existingIndex].quantity = newQty;
-        showToast(`Updated quantity: ${product.name}`, 'success');
+        if (typeof showToast === 'function') showToast(`Updated quantity: ${product.name}`, 'success');
       }
     } else {
       this.items.push({
         id: product.id,
-        sku: product.sku,
+        sku: product.sku || product.id,
         name: product.name,
-        price: product.price,
-        image: product.image,
-        brand: product.brand,
-        capacity: product.capacity,
-        quantity: Math.min(quantity, product.stock)
+        price: Number(product.price) || 0,
+        image: product.image || 'assets/logo.png',
+        brand: product.brand || 'Exide',
+        capacity: product.capacity || '',
+        quantity: Math.min(addQty, availableStock)
       });
-      showToast(`Added to cart: ${product.name}`, 'success');
+      if (typeof showToast === 'function') showToast(`Added to cart: ${product.name}`, 'success');
     }
 
     this.saveCart();
@@ -1924,4 +1971,11 @@ function printShippingParcelLabel(order) {
 window.printTaxInvoice = printTaxInvoice;
 window.printShippingParcelLabel = printShippingParcelLabel;
 window.numberToWordsNepal = numberToWordsNepal;
+
+if (typeof window !== 'undefined') {
+  window.CartSystem = CartSystem;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = CartSystem;
+}
 

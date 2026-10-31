@@ -280,13 +280,15 @@ let currentCatalogFilter = {
   onSale: false,
   inStockOnly: false,
   sort: 'featured',
-  priceMax: 100000
+  priceMax: 100000,
+  displayedCount: 24
 };
 
 function renderProductsCatalog() {
   const grid = document.getElementById('products-catalog-grid');
   const countEl = document.getElementById('catalog-products-count');
   const bannerSlot = document.getElementById('search-results-banner-slot');
+  const loadMoreSlot = document.getElementById('catalog-load-more-slot');
   if (!grid) return;
 
   const catalog = window.productsCatalog || [];
@@ -365,7 +367,35 @@ function renderProductsCatalog() {
     }
   }
 
-  if (countEl) countEl.textContent = `Showing ${filtered.length} of ${catalog.length} products`;
+  const displayedCount = currentCatalogFilter.displayedCount || 24;
+  const pagedProducts = filtered.slice(0, displayedCount);
+
+  if (countEl) {
+    if (filtered.length === catalog.length) {
+      countEl.textContent = `Showing ${Math.min(displayedCount, filtered.length)} of ${filtered.length} products`;
+    } else {
+      countEl.textContent = `Showing ${Math.min(displayedCount, filtered.length)} of ${filtered.length} filtered products (${catalog.length} total)`;
+    }
+  }
+
+  // Render Load More Products Slot
+  if (loadMoreSlot) {
+    if (filtered.length > displayedCount) {
+      const remaining = filtered.length - displayedCount;
+      const nextBatch = Math.min(24, remaining);
+      loadMoreSlot.innerHTML = `
+        <div class="catalog-load-more-box">
+          <button type="button" class="btn-load-more-products" onclick="window.loadMoreCatalogProducts()" aria-label="Load ${nextBatch} More Products">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="8 12 12 16 16 12"/><line x1="12" y1="8" x2="12" y2="16"/></svg>
+            <span>Load More Products (+${nextBatch} More)</span>
+          </button>
+          <span class="load-more-progress">Showing ${displayedCount} of ${filtered.length} batteries (${remaining} remaining)</span>
+        </div>
+      `;
+    } else {
+      loadMoreSlot.innerHTML = '';
+    }
+  }
 
   if (filtered.length === 0) {
     grid.innerHTML = `
@@ -385,7 +415,7 @@ function renderProductsCatalog() {
     return;
   }
 
-  grid.innerHTML = filtered.map(product => {
+  grid.innerHTML = pagedProducts.map(product => {
     let stockTag = '<span class="product-stock-tag in-stock">● In Stock</span>';
     if (product.stock === 0) {
       stockTag = '<span class="product-stock-tag out-stock">● Out of Stock</span>';
@@ -434,42 +464,97 @@ function renderProductsCatalog() {
   }).join('');
 }
 
+window.loadMoreCatalogProducts = function() {
+  currentCatalogFilter.displayedCount = (currentCatalogFilter.displayedCount || 24) + 24;
+  renderProductsCatalog();
+};
+
 function handleAddToCart(productId, btnEl) {
-  if (!btnEl || btnEl.disabled) return;
+  if (!btnEl) return;
+  if (!window.cartSystem && typeof CartSystem !== 'undefined') {
+    window.cartSystem = new CartSystem();
+  }
+  if (!window.cartSystem) {
+    console.error('Cart system not available');
+    return;
+  }
+
   const originalHtml = btnEl.innerHTML;
   btnEl.disabled = true;
   btnEl.innerHTML = `
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation: spin 0.8s linear infinite;"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation: spin 0.8s linear infinite;"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
     <span>Adding...</span>
   `;
 
-  setTimeout(() => {
+  try {
     window.cartSystem.addItem(productId, 1, btnEl);
     btnEl.innerHTML = `
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
       <span>Added ✓</span>
     `;
     btnEl.classList.add('btn-added-animate');
-
+  } catch (err) {
+    console.error('Cart add error', err);
+  } finally {
     setTimeout(() => {
       btnEl.innerHTML = originalHtml;
       btnEl.disabled = false;
       btnEl.classList.remove('btn-added-animate');
-    }, 1400);
-  }, 180);
+    }, 1200);
+  }
 }
 
 function initCatalogFilters() {
   const searchInput = document.getElementById('catalog-search-input');
+  const gridSearchInput = document.getElementById('catalog-grid-search-input');
+  const gridSearchClear = document.getElementById('catalog-grid-search-clear');
   const sortSelect = document.getElementById('catalog-sort-select');
   const priceRange = document.getElementById('filter-price-slider');
   const priceDisplay = document.getElementById('price-slider-display');
   const saleCheckbox = document.getElementById('filter-sale-only');
   const inStockCheckbox = document.getElementById('filter-stock-only');
 
+  function syncSearchInputs(val) {
+    const q = val || '';
+    if (searchInput && searchInput.value !== q) searchInput.value = q;
+    if (gridSearchInput && gridSearchInput.value !== q) gridSearchInput.value = q;
+    const globalInput = document.getElementById('global-search-input');
+    if (globalInput && globalInput.value !== q) globalInput.value = q;
+
+    if (gridSearchClear) {
+      if (q.trim().length > 0) gridSearchClear.classList.add('visible');
+      else gridSearchClear.classList.remove('visible');
+    }
+
+    const clearBtn = document.getElementById('search-clear-btn');
+    if (clearBtn) {
+      if (q.trim().length > 0) clearBtn.classList.add('visible');
+      else clearBtn.classList.remove('visible');
+    }
+  }
+  window.syncSearchInputs = syncSearchInputs;
+
+  if (gridSearchInput) {
+    gridSearchInput.addEventListener('input', (e) => {
+      currentCatalogFilter.search = e.target.value;
+      currentCatalogFilter.displayedCount = 24;
+      syncSearchInputs(e.target.value);
+      renderProductsCatalog();
+    });
+  }
+
+  window.clearCatalogGridSearch = function() {
+    currentCatalogFilter.search = '';
+    currentCatalogFilter.displayedCount = 24;
+    syncSearchInputs('');
+    renderProductsCatalog();
+  };
+
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
       currentCatalogFilter.search = e.target.value;
+      currentCatalogFilter.displayedCount = 24;
+      syncSearchInputs(e.target.value);
       renderProductsCatalog();
     });
   }
@@ -507,6 +592,7 @@ function initCatalogFilters() {
   document.querySelectorAll('input[name="cat-filter-radio"]').forEach(radio => {
     radio.addEventListener('change', (e) => {
       currentCatalogFilter.category = e.target.value;
+      currentCatalogFilter.displayedCount = 24;
       renderProductsCatalog();
     });
   });
@@ -515,6 +601,7 @@ function initCatalogFilters() {
   document.querySelectorAll('input[name="brand-filter-radio"]').forEach(radio => {
     radio.addEventListener('change', (e) => {
       currentCatalogFilter.brand = e.target.value;
+      currentCatalogFilter.displayedCount = 24;
       renderProductsCatalog();
     });
   });
@@ -522,6 +609,7 @@ function initCatalogFilters() {
 
 function filterProductsByCategory(catId) {
   currentCatalogFilter.category = catId;
+  currentCatalogFilter.displayedCount = 24;
   const radio = document.querySelector(`input[name="cat-filter-radio"][value="${catId}"]`);
   if (radio) radio.checked = true;
   renderProductsCatalog();
@@ -529,6 +617,7 @@ function filterProductsByCategory(catId) {
 
 function filterProductsByBrand(brandSlug) {
   currentCatalogFilter.brand = brandSlug;
+  currentCatalogFilter.displayedCount = 24;
   const radio = document.querySelector(`input[name="brand-filter-radio"][value="${brandSlug}"]`);
   if (radio) radio.checked = true;
   renderProductsCatalog();
@@ -543,8 +632,11 @@ function resetCatalogFilters() {
     onSale: false,
     inStockOnly: false,
     sort: 'featured',
-    priceMax: 100000
+    priceMax: 100000,
+    displayedCount: 24
   };
+
+  if (window.syncSearchInputs) window.syncSearchInputs('');
 
   const searchInput = document.getElementById('catalog-search-input');
   if (searchInput) searchInput.value = '';
@@ -573,13 +665,52 @@ function resetCatalogFilters() {
 }
 
 // ==========================================================================
-// 4. BRANDS & CATEGORIES RENDERING (BIGGER BRANDS LOGOS)
+// 4. BRANDS & CATEGORIES RENDERING (BIGGER BRANDS LOGOS & ROBUST FALLBACKS)
 // ==========================================================================
+const DEFAULT_BRANDS = [
+  { name: "Exide", slug: "exide", logo: "assets/brands/exide-logo.webp", color: "#ED1C24", desc: "India & Nepal's #1 Battery Giant", featured: true },
+  { name: "Amaron Quanta", slug: "amaron-quanta", logo: "assets/brands/amaron-quanta.webp", color: "#618520", desc: "Long Life VRLA & Industrial Batteries" },
+  { name: "Livfast", slug: "livfast", logo: "assets/brands/livfast.webp", color: "#FF5F1D", desc: "Fast Charging Inverters & Tubular Batteries" },
+  { name: "SF Sonic", slug: "sf-sonic", logo: "assets/brands/sf-sonic.webp", color: "#2E3077", desc: "Exide Group Power Innovation" },
+  { name: "Smarten", slug: "smarten", logo: "assets/brands/smarten.webp", color: "#10509A", desc: "Next-gen Lithium Inverters & Solar MPPT" },
+  { name: "Eastman", slug: "eastman", logo: "assets/brands/eastman.webp", color: "#253B81", desc: "Solar Hybrid & Tall Tubular Power" },
+  { name: "Genus", slug: "genus", logo: "assets/brands/genus.webp", color: "#0161A8", desc: "Smart Digital Sinewave UPS Systems" },
+  { name: "Geon", slug: "geon", logo: "assets/brands/geon.png", color: "#004B85", desc: "Lithium Power Stations & Inverters" },
+  { name: "Luminous", slug: "luminous", logo: "assets/brands/luminous.webp", color: "#0A387E", desc: "Global Backup & Solar Solutions" },
+  { name: "Livguard", slug: "livguard", logo: "assets/brands/livguard.webp", color: "#E02636", desc: "Rugged Power Storage Solutions" },
+  { name: "Fuji Electric", slug: "fuji-electric", logo: "assets/brands/fuji-electric.webp", color: "#C00000", desc: "Japanese Precision Online UPS" },
+  { name: "Delta", slug: "delta", logo: "assets/brands/delta.png", color: "#0083CA", desc: "Industrial Grade Power Electronics" },
+  { name: "HBL", slug: "hbl", logo: "assets/brands/hbl.webp", color: "#003366", desc: "Specialized VRLA Batteries" },
+  { name: "Mtekpower", slug: "mtekpower", logo: "assets/brands/mtekpower.png", color: "#D71920", desc: "Tubular Inverter Backup" },
+  { name: "Sukam", slug: "sukam", logo: "assets/brands/sukam.webp", color: "#005596", desc: "Pioneering Sinewave & Solar Inverters" },
+  { name: "Suntek", slug: "suntek", logo: "assets/brands/suntek.png", color: "#E86C00", desc: "Solar PCUs & Charge Controllers" }
+];
+
+const DEFAULT_CATEGORIES = [
+  { id: "inverter-battery", name: "Inverter Battery", icon: "battery-charging", count: 8, desc: "Tall tubular, short tubular & flat plate inverter batteries" },
+  { id: "car-battery", name: "Car Battery", icon: "car", count: 5, desc: "Sealed maintenance-free batteries for hatchbacks, sedans & SUVs" },
+  { id: "automotive-battery", name: "Automotive Battery", icon: "truck", count: 6, desc: "Commercial vehicle, tractor, bus & motorcycle batteries" },
+  { id: "lithium-battery", name: "Lithium Battery", icon: "zap", count: 6, desc: "LiFePO4 high-cycle lithium storage packs for homes & solar" },
+  { id: "inverter", name: "Inverter & Home UPS", icon: "cpu", count: 6, desc: "Pure sinewave inverters, digital UPS & integrated power units" },
+  { id: "solar-hybrid-pcu", name: "Solar Hybrid PCU", icon: "sun", count: 3, desc: "Solar inverters with smart MPPT/PWM solar charge priority" },
+  { id: "online-ups", name: "Online UPS", icon: "server", count: 2, desc: "Zero transfer time online power backup for medical & servers" },
+  { id: "solar-charge-controller", name: "Solar Charge Controller", icon: "sun-medium", count: 3, desc: "MPPT & PWM intelligent solar controllers" },
+  { id: "voltage-stabilizer", name: "Voltage Stabilizer", icon: "sliders", count: 2, desc: "Automatic digital voltage regulators for AC and refrigerators" },
+  { id: "erickshaw-battery", name: "Erickshaw Battery", icon: "activity", count: 2, desc: "Deep cycle traction batteries for Nepal electric three-wheelers" },
+  { id: "vrla-battery", name: "VRLA Battery", icon: "shield-check", count: 3, desc: "Sealed lead acid AGM batteries for lifts, telecom & UPS" },
+  { id: "battery-charger", name: "Battery Charger", icon: "power", count: 2, desc: "Heavy duty workshop & commercial battery fast chargers" }
+];
+
 function renderBrandsGrid() {
   const container = document.getElementById('brands-grid-container');
   if (!container) return;
 
-  container.innerHTML = BRANDS_LIST.map(brand => `
+  const brands = (typeof BRANDS_LIST !== 'undefined' && Array.isArray(BRANDS_LIST) && BRANDS_LIST.length > 0 ? BRANDS_LIST : null)
+    || (typeof window !== 'undefined' && Array.isArray(window.BRANDS_DATA) && window.BRANDS_DATA.length > 0 ? window.BRANDS_DATA : null)
+    || (typeof window !== 'undefined' && Array.isArray(window.BRANDS_LIST) && window.BRANDS_LIST.length > 0 ? window.BRANDS_LIST : null)
+    || DEFAULT_BRANDS;
+
+  container.innerHTML = brands.map(brand => `
     <div class="brand-card-item ${brand.featured ? 'featured' : ''}" onclick="filterProductsByBrand('${brand.slug}')" title="Browse ${brand.name} Products" role="button" tabindex="0">
       <div class="brand-logo-frame">
         <img src="${brand.logo}" alt="${brand.name} official partner" class="brand-card-logo" loading="lazy" onerror="this.onerror=null; this.src='assets/logo.png';">
@@ -628,7 +759,12 @@ function renderCategoriesGrid() {
   const container = document.getElementById('categories-grid-container');
   if (!container) return;
 
-  container.innerHTML = CATEGORIES_LIST.map(cat => `
+  const categories = (typeof CATEGORIES_LIST !== 'undefined' && Array.isArray(CATEGORIES_LIST) && CATEGORIES_LIST.length > 0 ? CATEGORIES_LIST : null)
+    || (typeof window !== 'undefined' && Array.isArray(window.CATEGORIES_DATA) && window.CATEGORIES_DATA.length > 0 ? window.CATEGORIES_DATA : null)
+    || (typeof window !== 'undefined' && Array.isArray(window.CATEGORIES_LIST) && window.CATEGORIES_LIST.length > 0 ? window.CATEGORIES_LIST : null)
+    || DEFAULT_CATEGORIES;
+
+  container.innerHTML = categories.map(cat => `
     <div class="category-card" onclick="filterProductsByCategory('${cat.id}'); document.getElementById('products-section')?.scrollIntoView({behavior:'smooth'});" role="button" tabindex="0" title="Browse ${cat.name} solutions">
       <div class="category-card-icon" aria-hidden="true">
         ${getCategorySvg(cat.id)}
@@ -675,7 +811,19 @@ function initQuickViewModal() {
 let activeDetailQuantity = 1;
 
 function navigateToProduct(productId, updateHistory = true) {
-  const product = window.productsCatalog ? window.productsCatalog.find(p => p.id === productId) : null;
+  let product = null;
+  const sources = [
+    window.productsCatalog,
+    (typeof INITIAL_PRODUCTS !== 'undefined' ? INITIAL_PRODUCTS : null),
+    window.PRODUCTS,
+    (window.stockManager ? window.stockManager.inventory : null)
+  ];
+  for (const src of sources) {
+    if (Array.isArray(src)) {
+      product = src.find(p => p.id === productId || p.sku === productId || String(p.id) === String(productId));
+      if (product) break;
+    }
+  }
   if (!product) return;
 
   activeDetailQuantity = 1;
@@ -1511,11 +1659,11 @@ window.confirmSearchToCatalog = function(overrideTerm) {
   const dropdown = document.getElementById('global-search-dropdown');
   const term = overrideTerm !== undefined ? overrideTerm : (headerSearchInput ? headerSearchInput.value.trim() : '');
 
-  if (headerSearchInput) headerSearchInput.value = term;
-  if (catalogSearchInput) catalogSearchInput.value = term;
+  if (window.syncSearchInputs) window.syncSearchInputs(term);
   if (dropdown) dropdown.classList.remove('open');
 
   currentCatalogFilter.search = term;
+  currentCatalogFilter.displayedCount = 24;
   updateSearchModePinning(term);
   renderProductsCatalog();
 
@@ -1529,16 +1677,13 @@ window.confirmSearchToCatalog = function(overrideTerm) {
 };
 
 window.clearGlobalSearch = function() {
-  const headerSearchInput = document.getElementById('global-search-input');
-  const catalogSearchInput = document.getElementById('catalog-search-input');
   const dropdown = document.getElementById('global-search-dropdown');
-
-  if (headerSearchInput) headerSearchInput.value = '';
-  if (catalogSearchInput) catalogSearchInput.value = '';
   if (dropdown) dropdown.classList.remove('open');
 
+  if (window.syncSearchInputs) window.syncSearchInputs('');
   updateSearchModePinning('');
   currentCatalogFilter.search = '';
+  currentCatalogFilter.displayedCount = 24;
   renderProductsCatalog();
 
   const productsSection = document.getElementById('products-section');

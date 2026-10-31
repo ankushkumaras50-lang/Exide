@@ -228,7 +228,29 @@ class StockManagementSystem {
     try {
       const stored = localStorage.getItem(this.storageKey);
       if (stored) {
-        this.inventory = JSON.parse(stored);
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          // Merge any products from INITIAL_PRODUCTS missing from local storage
+          if (typeof INITIAL_PRODUCTS !== 'undefined' && Array.isArray(INITIAL_PRODUCTS)) {
+            const existingIds = new Set(parsed.map(p => String(p.id)));
+            const existingSkus = new Set(parsed.map(p => String(p.sku || '')));
+            let mergedCount = 0;
+            INITIAL_PRODUCTS.forEach(item => {
+              if (!existingIds.has(String(item.id)) && (!item.sku || !existingSkus.has(String(item.sku)))) {
+                parsed.push(item);
+                existingIds.add(String(item.id));
+                if (item.sku) existingSkus.add(String(item.sku));
+                mergedCount++;
+              }
+            });
+            if (mergedCount > 0) {
+              console.log(`[ERP Stock] Merged ${mergedCount} new catalog products into live inventory.`);
+            }
+          }
+          this.inventory = parsed;
+        } else {
+          this.inventory = JSON.parse(JSON.stringify(INITIAL_PRODUCTS));
+        }
       } else {
         // Initialize with INITIAL_PRODUCTS
         this.inventory = JSON.parse(JSON.stringify(INITIAL_PRODUCTS));
@@ -611,10 +633,6 @@ class StockManagementSystem {
       }
     } catch (err) {
       console.warn('Backend orders sync offline notice:', err);
-    }
-  }
-      console.error('Error loading orders', e);
-      this.orders = [];
     }
   }
 
@@ -3213,3 +3231,10 @@ window.printShippingParcelLabel = function(orderOrId) {
     return window.erpApp.printPackingSlipModal(id);
   }
 };
+
+if (typeof window !== 'undefined') {
+  window.StockManagementSystem = StockManagementSystem;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = StockManagementSystem;
+}

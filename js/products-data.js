@@ -15420,6 +15420,8 @@ if (typeof window !== 'undefined') {
   window.PRODUCTS = window.productsCatalog;
   window.BRANDS_DATA = BRANDS_LIST;
   window.CATEGORIES_DATA = CATEGORIES_LIST;
+  window.BRANDS_LIST = BRANDS_LIST;
+  window.CATEGORIES_LIST = CATEGORIES_LIST;
   window.NEPAL_LOCATIONS = NEPAL_LOCATIONS;
   window.VEHICLE_DATABASE = VEHICLE_DATABASE;
 }
