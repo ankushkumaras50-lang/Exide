@@ -165,6 +165,10 @@ async function runTests() {
   assert.strictEqual(updateData.order.assignedRider, 'Bikash Shrestha (+977 9812345678 - Lalitpur)');
   console.log(`  ✅ PASS: Order #${createdOrder.orderId} successfully transitioned to SHIPPED with assigned rider`);
 
+  // Cleanup temporary test orders
+  const cleanedOrders = db.getOrders().filter(o => (o.orderId || o.id) !== createdOrder.orderId && (o.orderId || o.id) !== clientCheckoutOrder.orderId);
+  db.saveOrders(cleanedOrders);
+
   console.log('\n======================================================');
   console.log('🏁 ALL TESTS PASSED: ORDER VISIBILITY & WORKFLOW VERIFIED');
   console.log('======================================================\n');

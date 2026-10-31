@@ -1,5 +1,6 @@
 {
-  "isDemoActive": true,
-  "demoPurged": false,
-  "seededAt": "2026-10-31T08:27:04.806Z"
+  "isDemoActive": false,
+  "demoPurged": true,
+  "purgedAt": "2026-10-31T09:11:02.415Z",
+  "purgedBy": "admin_root_001"
 }

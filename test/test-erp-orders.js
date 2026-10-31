@@ -240,6 +240,10 @@ async function run() {
     assert.strictEqual(res.data.order.status, 'DELIVERED');
   });
 
+  // Cleanup test order
+  const currentOrders = db.getOrders().filter(o => o.orderId !== sampleOrder.orderId);
+  db.saveOrders(currentOrders);
+
   console.log('\n======================================================');
   console.log(`🏁 ORDER MANAGEMENT TEST RESULTS: ${passedTests} PASSED, ${failedTests} FAILED`);
   console.log('======================================================\n');

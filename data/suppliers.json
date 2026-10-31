@@ -566,5 +566,90 @@
     ],
     "status": "ACTIVE",
     "createdAt": "2026-10-31T08:27:02.557Z"
+  },
+  {
+    "id": "sup_amaron_nepal_in_g27v",
+    "name": "Amaron Nepal Industrial Supply",
+    "contactPerson": "Bimal Pandey",
+    "email": "bimal@amaron.com.np",
+    "phone": "+977-1-4781290",
+    "pan": "304762757",
+    "address": "Balkumari, Lalitpur",
+    "city": "Lalitpur",
+    "country": "Nepal",
+    "paymentTerms": "Net 30",
+    "categories": [
+      "Battery Manufacturer"
+    ],
+    "status": "ACTIVE",
+    "createdAt": "2026-10-31T09:06:47.227Z"
+  },
+  {
+    "id": "sup_amaron_nepal_in_gg11",
+    "name": "Amaron Nepal Industrial Supply",
+    "contactPerson": "Bimal Pandey",
+    "email": "bimal@amaron.com.np",
+    "phone": "+977-1-4781290",
+    "pan": "306675027",
+    "address": "Balkumari, Lalitpur",
+    "city": "Lalitpur",
+    "country": "Nepal",
+    "paymentTerms": "Net 30",
+    "categories": [
+      "Battery Manufacturer"
+    ],
+    "status": "ACTIVE",
+    "createdAt": "2026-10-31T09:07:05.125Z"
+  },
+  {
+    "id": "sup_amaron_nepal_in_iilq",
+    "name": "Amaron Nepal Industrial Supply",
+    "contactPerson": "Bimal Pandey",
+    "email": "bimal@amaron.com.np",
+    "phone": "+977-1-4781290",
+    "pan": "306524239",
+    "address": "Balkumari, Lalitpur",
+    "city": "Lalitpur",
+    "country": "Nepal",
+    "paymentTerms": "Net 30",
+    "categories": [
+      "Battery Manufacturer"
+    ],
+    "status": "ACTIVE",
+    "createdAt": "2026-10-31T09:08:41.774Z"
+  },
+  {
+    "id": "sup_amaron_nepal_in_j6b1",
+    "name": "Amaron Nepal Industrial Supply",
+    "contactPerson": "Bimal Pandey",
+    "email": "bimal@amaron.com.np",
+    "phone": "+977-1-4781290",
+    "pan": "306270869",
+    "address": "Balkumari, Lalitpur",
+    "city": "Lalitpur",
+    "country": "Nepal",
+    "paymentTerms": "Net 30",
+    "categories": [
+      "Battery Manufacturer"
+    ],
+    "status": "ACTIVE",
+    "createdAt": "2026-10-31T09:09:12.493Z"
+  },
+  {
+    "id": "sup_amaron_nepal_in_lgw9",
+    "name": "Amaron Nepal Industrial Supply",
+    "contactPerson": "Bimal Pandey",
+    "email": "bimal@amaron.com.np",
+    "phone": "+977-1-4781290",
+    "pan": "307615792",
+    "address": "Balkumari, Lalitpur",
+    "city": "Lalitpur",
+    "country": "Nepal",
+    "paymentTerms": "Net 30",
+    "categories": [
+      "Battery Manufacturer"
+    ],
+    "status": "ACTIVE",
+    "createdAt": "2026-10-31T09:10:59.529Z"
   }
 ]

@@ -5,6 +5,7 @@ const path = require('path');
 const { signJwt } = require('../lib/auth/token.js');
 const ordersApiHandler = require('../api/orders.js');
 const erpOrdersHandler = require('../lib/erp/orders.js');
+const db = require('../db/client.js');
 
 console.log('================================================================');
 console.log('🧪 RUNNING FULL END-TO-END ORDER MANAGEMENT TEST');
@@ -216,6 +217,10 @@ async function run() {
   assert.strictEqual(verifyRes.status, 200, 'Order lookup expected HTTP 200');
   assert.strictEqual(verifyRes.data.order.status, 'SHIPPED');
   console.log(`   ✅ Verified persisted status is SHIPPED in database`);
+
+  // Cleanup temporary test order
+  const cleanedOrders = db.getOrders().filter(o => (o.orderId || o.id) !== placedOrder.orderId);
+  db.saveOrders(cleanedOrders);
 
   console.log('\n🎉 ALL 6 END-TO-END TESTS PASSED SUCCESSFULLY! ✓\n');
 }

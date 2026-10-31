@@ -108,6 +108,12 @@ async function runTestSuite() {
   assert(createdOrder && createdOrder.pricing && createdOrder.pricing.vatAmount > 0, `13% Nepal VAT included: NPR ${createdOrder?.pricing?.vatAmount?.toLocaleString()}`);
   assert(createdOrder && createdOrder.scrapExchange && createdOrder.scrapExchange.capacityAh === 200, `Scrap battery registered: ${createdOrder?.scrapExchange?.capacityAh} Ah (Rebate: NPR ${createdOrder?.scrapExchange?.calculatedDiscount})`);
 
+  // Cleanup temporary test order
+  if (createdOrder && createdOrder.orderId) {
+    const db = require('../db/client.js');
+    db.saveOrders(db.getOrders().filter(o => (o.orderId || o.id) !== createdOrder.orderId));
+  }
+
   // Summary
   console.log('\n======================================================');
   console.log(`🏁 TEST RESULTS: ${passedTests} PASSED, ${failedTests} FAILED`);

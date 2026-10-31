@@ -290,6 +290,11 @@ async function runSalesPurchasesTests() {
   }, dispRes);
   assert(dispRes.statusCode === 200 && dispRes.data.exchange.dispositionStatus === 'CONSIGNMENT_SMELTER', 'Exchanges: Disposition updated to CONSIGNMENT_SMELTER');
 
+  // Cleanup temporary test order
+  if (order && order.orderId) {
+    db.saveOrders(db.getOrders().filter(o => (o.orderId || o.id) !== order.orderId));
+  }
+
   console.log('\n======================================================');
   console.log(`📊 PHASE 4 TEST RUNNER SUMMARY:`);
   console.log(`   Passed: ${passed}`);

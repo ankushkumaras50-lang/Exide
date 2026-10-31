@@ -288,7 +288,7 @@ async function runTests() {
   assert(preservedRealOrder, `Real customer order #${createdOrder.orderId} must be preserved after demo purge`);
   console.log(`✅ Real customer order #${createdOrder.orderId} preserved after demo purge`);
 
-  // Re-seed demo records
+  // Re-seed demo records test
   const reseedRes = await directDispatch(erpDemoHandler, {
     method: 'POST',
     query: { action: 'seed-demo' },
@@ -296,7 +296,23 @@ async function runTests() {
   });
   assert.strictEqual(reseedRes.statusCode, 200);
   assert.strictEqual(reseedRes.data.success, true);
-  console.log(`✅ Demo dataset re-seeded successfully`);
+  console.log(`✅ Demo dataset re-seeding verified successfully`);
+
+  // Final Cleanup: Purge demo records so test run leaves clean production workspace
+  const finalPurgeRes = await directDispatch(erpDemoHandler, {
+    method: 'POST',
+    query: { action: 'purge-demo' },
+    headers: { 'Authorization': `Bearer ${adminToken}` },
+    body: { ownerPassword: 'NepalPowerHouse@2026' }
+  });
+  assert.strictEqual(finalPurgeRes.statusCode, 200);
+  assert.strictEqual(finalPurgeRes.data.success, true);
+  console.log(`✅ Final clean state restored: demo records purged permanently`);
+
+  // Also remove the temporary test order created during test
+  const db = require('../db/client.js');
+  const remaining = db.getOrders().filter(o => (o.orderId || o.id) !== createdOrder.orderId);
+  db.saveOrders(remaining);
 
   console.log('\n================================================================');
   console.log('🎉 ALL TESTS PASSED: ERP ACTION GLITCH & ORDER WORKFLOW 100% OK');
@@ -307,3 +323,4 @@ runTests().catch(err => {
   console.error('\n❌ TEST SUITE FAILED:', err);
   process.exit(1);
 });
+

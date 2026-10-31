@@ -265,7 +265,8 @@
     handleRouteFromUrl() {
       const path = window.location.pathname.toLowerCase();
       let route = 'dashboard';
-      if (path.includes('/products')) route = 'products';
+      if (path.includes('/orders')) route = 'orders';
+      else if (path.includes('/products')) route = 'products';
       else if (path.includes('/inventory')) route = 'inventory';
       else if (path.includes('/purchases')) route = 'purchases';
       else if (path.includes('/sales')) route = 'sales';
@@ -298,6 +299,7 @@
       if (titleEl) {
         const titles = {
           dashboard: 'Executive Dashboard & Live Store Sync',
+          orders: 'Online Store Orders & Live Fulfillment Dispatch',
           products: 'Product Catalogue & Pricing Management',
           inventory: 'Warehouse Stock Balances & Movement Ledger',
           purchases: 'Purchase Orders & Inward Goods (GRN)',
@@ -2138,10 +2140,19 @@
         try {
           const raw1 = JSON.parse(localStorage.getItem('exide_orders') || '[]');
           const raw2 = JSON.parse(localStorage.getItem('bm_exide_orders') || '[]');
-          localOrders = [...(Array.isArray(raw1) ? raw1 : []), ...(Array.isArray(raw2) ? raw2 : [])];
+          const combined = [...(Array.isArray(raw1) ? raw1 : []), ...(Array.isArray(raw2) ? raw2 : [])];
+          // Always sanitize local storage: remove demo records
+          localOrders = combined.filter(lo => lo && lo.isDemo !== true && !String(lo.orderId || lo.id || '').includes('DEMO') && !String(lo.invoiceNumber || '').includes('DEMO'));
+          if (localOrders.length !== combined.length) {
+            localStorage.setItem('exide_orders', JSON.stringify(localOrders));
+            localStorage.setItem('bm_exide_orders', JSON.stringify(localOrders));
+          }
         } catch(e) {
           localOrders = [];
         }
+
+        // Filter server orders to exclude demo records
+        serverOrders = (Array.isArray(serverOrders) ? serverOrders : []).filter(so => so && so.isDemo !== true && !String(so.orderId || so.id || '').includes('DEMO') && !String(so.invoiceNumber || '').includes('DEMO'));
 
         // 3. Seamlessly merge server and local orders (prevent checkout orders from ever being hidden)
         const STATUS_RANKS = {
@@ -2192,7 +2203,8 @@
         // 4. Background push any local-only checkout order to the server so data/orders.json has it
         const unSyncedOrders = localOrders.filter(lo => {
           const key = lo.orderId || lo.id;
-          return key && !serverOrders.some(so => (so.orderId === key || so.id === key));
+          const isDemo = lo.isDemo === true || String(key || '').includes('DEMO') || String(lo.invoiceNumber || '').includes('DEMO');
+          return key && !isDemo && !serverOrders.some(so => (so.orderId === key || so.id === key));
         });
         if (unSyncedOrders.length > 0 && token) {
           fetch('/api/erp/orders', {
@@ -2210,7 +2222,9 @@
           return isNaN(t) ? 0 : t;
         };
 
-        const consolidatedOrders = Array.from(orderMap.values()).map(o => {
+        const consolidatedOrders = Array.from(orderMap.values())
+          .filter(o => o && o.isDemo !== true && !String(o.orderId || o.id || '').includes('DEMO') && !String(o.invoiceNumber || '').includes('DEMO'))
+          .map(o => {
           const orderIdVal = o.orderId || o.id || 'EXD-000000';
           const st = String(o.status || o.orderStatus || 'PENDING').toUpperCase();
           const payStatus = String(o.paymentStatus || (String(o.paymentMethod || '').toUpperCase().includes('COD') ? 'PENDING' : 'PAID')).toUpperCase();
@@ -3532,10 +3546,17 @@
         try {
           const raw1 = JSON.parse(localStorage.getItem('exide_orders') || '[]');
           const raw2 = JSON.parse(localStorage.getItem('bm_exide_orders') || '[]');
-          localOrders = [...(Array.isArray(raw1) ? raw1 : []), ...(Array.isArray(raw2) ? raw2 : [])];
+          const combined = [...(Array.isArray(raw1) ? raw1 : []), ...(Array.isArray(raw2) ? raw2 : [])];
+          localOrders = combined.filter(o => o && o.isDemo !== true && !String(o.orderId || o.id || '').includes('DEMO') && !String(o.invoiceNumber || '').includes('DEMO'));
+          if (localOrders.length !== combined.length) {
+            localStorage.setItem('exide_orders', JSON.stringify(localOrders));
+            localStorage.setItem('bm_exide_orders', JSON.stringify(localOrders));
+          }
         } catch (e) {
           localOrders = [];
         }
+
+        serverOrders = (Array.isArray(serverOrders) ? serverOrders : []).filter(so => so && so.isDemo !== true && !String(so.orderId || so.id || '').includes('DEMO') && !String(so.invoiceNumber || '').includes('DEMO'));
 
         // 3. Status-rank aware merge: preserve locally advanced progress
         const STATUS_RANKS = {
@@ -3590,7 +3611,9 @@
           return isNaN(t) ? 0 : t;
         };
 
-        const allSynced = Array.from(mergedMap.values()).sort((a, b) => getOrderTimestamp(b) - getOrderTimestamp(a));
+        const allSynced = Array.from(mergedMap.values())
+          .filter(o => o && o.isDemo !== true && !String(o.orderId || o.id || '').includes('DEMO') && !String(o.invoiceNumber || '').includes('DEMO'))
+          .sort((a, b) => getOrderTimestamp(b) - getOrderTimestamp(a));
 
         localStorage.setItem('exide_orders', JSON.stringify(allSynced));
         localStorage.setItem('bm_exide_orders', JSON.stringify(allSynced));
@@ -5187,15 +5210,17 @@
 
         // Clean memory and local storage
         try {
-          const localOrders = JSON.parse(localStorage.getItem('exide_orders') || '[]');
-          const cleanOrders = localOrders.filter(o => o.isDemo !== true);
+          const raw1 = JSON.parse(localStorage.getItem('exide_orders') || '[]');
+          const raw2 = JSON.parse(localStorage.getItem('bm_exide_orders') || '[]');
+          const combined = [...(Array.isArray(raw1) ? raw1 : []), ...(Array.isArray(raw2) ? raw2 : [])];
+          const cleanOrders = combined.filter(o => o && o.isDemo !== true && !String(o.orderId || o.id || '').includes('DEMO') && !String(o.invoiceNumber || '').includes('DEMO'));
           localStorage.setItem('exide_orders', JSON.stringify(cleanOrders));
           localStorage.setItem('bm_exide_orders', JSON.stringify(cleanOrders));
           localStorage.setItem('bm_demo_purged', 'true');
         } catch (e) {}
 
         if (Array.isArray(this.ordersData)) {
-          this.ordersData = this.ordersData.filter(o => o.isDemo !== true);
+          this.ordersData = this.ordersData.filter(o => o && o.isDemo !== true && !String(o.orderId || o.id || '').includes('DEMO') && !String(o.invoiceNumber || '').includes('DEMO'));
         }
 
         this.closeOrderModal();

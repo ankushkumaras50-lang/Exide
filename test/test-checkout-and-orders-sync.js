@@ -167,6 +167,9 @@ async function asyncTest(description, fn) {
     assert.strictEqual(updated.paymentStatus, 'PAID');
     assert.ok(Array.isArray(updated.trackingHistory));
     assert.ok(updated.trackingHistory.length >= 3);
+
+    // Cleanup temporary test order
+    db.saveOrders(db.getOrders().filter(o => (o.orderId || o.id) !== testOrderId));
   });
 
   console.log('\n======================================================');

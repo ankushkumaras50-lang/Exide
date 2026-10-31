@@ -223,6 +223,11 @@ async function runErpInventoryTests() {
   assert(ledgerRes.statusCode === 200 && ledgerRes.data.success, 'Inventory: Movement ledger history retrieved (200)');
   assert(Array.isArray(ledgerRes.data.movements) && ledgerRes.data.movements.length > 0, 'Inventory: Ledger contains recorded stock adjustments');
 
+  // Cleanup created test product
+  if (createdProd && createdProd.id) {
+    db.saveProducts(db.getProducts().filter(p => p.id !== createdProd.id));
+  }
+
   console.log('\n======================================================');
   console.log(`📊 ERP TEST RUNNER SUMMARY:`);
   console.log(`   Passed: ${passed}`);

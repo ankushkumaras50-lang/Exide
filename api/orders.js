@@ -24,12 +24,19 @@ module.exports = async (req, res) => {
         return res.status(200).json({ success: true, order: found });
       }
 
-      const allOrders = db.getOrders().map(o => {
+      let allOrders = db.getOrders().map(o => {
         if (!o.status && o.orderStatus) o.status = o.orderStatus;
         if (!o.orderStatus && o.status) o.orderStatus = o.status;
         if (!o.orderId && o.id) o.orderId = o.id;
         return o;
-      }).sort((a, b) => {
+      });
+
+      const { includeDemo } = req.query || {};
+      if (includeDemo !== 'true') {
+        allOrders = allOrders.filter(o => o && o.isDemo !== true && !String(o.orderId || o.id || '').includes('DEMO') && !String(o.invoiceNumber || '').includes('DEMO'));
+      }
+
+      allOrders.sort((a, b) => {
         const dateA = new Date(a.date || a.createdAt || a.orderDate || 0).getTime();
         const dateB = new Date(b.date || b.createdAt || b.orderDate || 0).getTime();
         return dateB - dateA;

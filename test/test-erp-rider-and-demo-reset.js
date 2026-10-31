@@ -279,6 +279,10 @@ async function runTestSuite() {
   console.log(`Generated backup: ${backupRes.data.filename}`);
   console.log('✓ TEST 7 PASSED: Disaster recovery snapshot created.\n');
 
+  // Cleanup temporary test order so database remains clean
+  const cleanedOrders = db.getOrders().filter(o => (o.orderId || o.id) !== realOrder.orderId);
+  db.saveOrders(cleanedOrders);
+
   console.log('================================================================');
   console.log('🎉 ALL TESTS PASSED! ERP RIDER & DEMO RESET VERIFIED 100%');
   console.log('================================================================');
